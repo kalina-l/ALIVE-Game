@@ -8,4 +8,8 @@ public class Intelligence : MonoBehaviour {
 	{
 		Debug.Log ("This is just the Base class, it does nothing");
 	}
+    public virtual void receiveBall()
+    {
+        Debug.Log("This is just the Base class, it does nothing");
+    }
 }

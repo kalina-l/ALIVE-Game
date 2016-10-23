@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour {
 
 	public void SendFeedback(int score)
 	{
+        //Debug.Log("Feedback: " + score);
 		AI.ReceiveFeedback (score);
 	}
 
@@ -48,12 +49,17 @@ public class UIManager : MonoBehaviour {
 	{
 		OutputText.text += msg + "\n" + "\n";
 
-		if(messages > 6)
+		if(messages > 4)
 		{
-			OutputText.rectTransform.anchoredPosition += Vector2.up * 80;
-			OutputText.rectTransform.sizeDelta += Vector2.up * 80;
+			OutputText.rectTransform.anchoredPosition += Vector2.up * 90;
+			OutputText.rectTransform.sizeDelta += Vector2.up * 90;
 		}
 
 		messages++;
 	}
+
+    public void actionBall()
+    {
+        AI.receiveBall();
+    }
 }
