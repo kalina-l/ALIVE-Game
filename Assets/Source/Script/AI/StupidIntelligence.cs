@@ -12,46 +12,168 @@ public class StupidIntelligence : Intelligence {
 
 	private List<string> _actions;
 
-    //Properties
-    private int _disciplined;
-    public int disciplined
+    //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
+    private int _strong;
+    public int strong
     {
         get
         {
-            return _disciplined;
+            return _strong;
         }
         set
         {
-            if (disciplined > 100)
-                _disciplined = 100;
-            else if (disciplined < 0)
+            if (strong > 20)
+                _strong = 20;
+            else if (strong < 1)
             {
-                _disciplined = 0;
+                _strong = 1;
             }
         }
     }
-    private int _forgiving;
-    public int forgiving
+    private int _intelligence;
+    public int intelligence
     {
         get
         {
-            return _forgiving;
+            return _intelligence;
         }
         set
         {
-            if (forgiving > 100)
-                _forgiving = 100;
-            else if (forgiving < 0)
+            if (intelligence > 20)
+                _intelligence = 20;
+            else if (intelligence < 1)
             {
-                _forgiving = 0;
+                _intelligence = 1;
             }
         }
     }
-    
+    private int _charisma;
+    public int charisma
+    {
+        get
+        {
+            return _charisma;
+        }
+        set
+        {
+            if (charisma > 20)
+                _charisma = 20;
+            else if (charisma < 1)
+            {
+                _charisma = 1;
+            }
+        }
+    }
+    private int _constituation;
+    public int constituation
+    {
+        get
+        {
+            return _constituation;
+        }
+        set
+        {
+            if (constituation > 20)
+                _constituation = 20;
+            else if (constituation < 1)
+            {
+                _constituation = 1;
+            }
+        }
+    }
+    private int _wisdom;
+    public int wisdom
+    {
+        get
+        {
+            return _wisdom;
+        }
+        set
+        {
+            if (wisdom > 20)
+                _wisdom = 20;
+            else if (wisdom < 1)
+            {
+                _wisdom = 1;
+            }
+        }
+    }
 
-    //Statuses
+
+    //states: hungry, tiredness, healthiness, general satisfaction - every value 0-100
+    private int _hungry = 20;
+    public int hungry
+    {
+        get
+        {
+            return _hungry;
+        }
+        set
+        {
+            if (hungry > 100)
+                _hungry = 100;
+            else if (hungry < 0)
+            {
+                _hungry = 0;
+            }
+        }
+    }
+    private int _tiredness = 0;
+    public int tiredness
+    {
+        get
+        {
+            return _tiredness;
+        }
+        set
+        {
+            if (tiredness > 100)
+                _tiredness = 100;
+            else if (tiredness < 0)
+            {
+                _tiredness = 0;
+            }
+        }
+    }
+    private int _healthiness = 100;
+    public int healthiness
+    {
+        get
+        {
+            return _healthiness;
+        }
+        set
+        {
+            if (healthiness > 100)
+                _healthiness = 100;
+            else if (healthiness < 0)
+            {
+                _healthiness = 0;
+            }
+        }
+    }
+    private int _general_satisfaction = 80;
+    public int general_satisfaction
+    {
+        get
+        {
+            return _general_satisfaction;
+        }
+        set
+        {
+            if (general_satisfaction > 100)
+                _general_satisfaction = 100;
+            else if (general_satisfaction < 0)
+            {
+                _general_satisfaction = 0;
+            }
+        }
+    }
+
+
+    //Actions
     private Dictionary<string, int> receivedBall = new Dictionary<string, int> { {"Creature eats the ball...", -5}, {"Your pet is playing with it.", 0}, {"The ball gets destroyed.", 3} };
-    private Dictionary<string, int> conditions = new Dictionary<string, int> { {"hungry", 0}, { "general satisfaction", 80 } };
+
 
     //Feedback
     private Dictionary<string, int> lastActionSet;
@@ -98,19 +220,19 @@ public class StupidIntelligence : Intelligence {
 			{
 			case -1:
 				UIManager.Instance.ReceiveMessage ("It seems to feel bad about it.");
-                conditions["general satisfaction"] -= 3;
+                general_satisfaction -= 3;
                 actionsReward -= 3;
 				_waitForAnswer = false;
 				break;
 			case 0:
 				UIManager.Instance.ReceiveMessage ("It stares blanky at you.");
-                conditions["general satisfaction"] -= 1;
+                general_satisfaction -= 1;
                 _waitForAnswer = false;
                 actionsReward -= 1;
                 break;
 			case 1:
 				UIManager.Instance.ReceiveMessage ("It claps its hands in glee.");
-                conditions["general satisfaction"] += 3;
+                general_satisfaction += 3;
 				_waitForAnswer = false;
                 actionsReward += 3;
                 break;
@@ -118,17 +240,18 @@ public class StupidIntelligence : Intelligence {
 
             lastActionSet[lastAction] = actionsReward;
 
-            foreach(KeyValuePair<string, int> state in conditions)
-            {
-                Debug.Log("condition: " + state.Key + ": " + state.Value);
-            }
-		}
+            Debug.Log("condition: general_satisfaction: " + general_satisfaction);
+            Debug.Log("condition: hungry: " + hungry);
+            Debug.Log("condition: tiredness: " + tiredness);
+            Debug.Log("condition: healthiness: " + healthiness);
+
+        }
 	}
 
     public override void receiveBall()
     {
 
-        if(conditions["hungry"] > 20)
+        if(hungry > 20)
         {
             UIManager.Instance.ReceiveMessage("It is hungry and wants to eat something...");
             List<string> keys = new List<string>(receivedBall.Keys);
@@ -147,11 +270,11 @@ public class StupidIntelligence : Intelligence {
         }
 
 
-        if (conditions["general satisfaction"] < 30)
+        if (general_satisfaction < 30)
         {
             UIManager.Instance.ReceiveMessage("It doesn't want to play anymore...");
 
-            conditions["general satisfaction"]++;
+            general_satisfaction++;
         }
         else
         {
@@ -162,10 +285,10 @@ public class StupidIntelligence : Intelligence {
         }
 
 
-        conditions["hungry"] += 1;
+        hungry += 1;
         if (lastAction.Contains("eat"))
         {
-            conditions["hungry"] -= 20;
+            hungry -= 20;
         }
 
     }
