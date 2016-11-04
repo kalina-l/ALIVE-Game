@@ -13,6 +13,7 @@ public class StupidIntelligence : Intelligence {
 	private List<string> _actions;
 
     //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
+	//Valorous - Coward
     private int _strong;
     public int strong
     {
@@ -30,6 +31,7 @@ public class StupidIntelligence : Intelligence {
             }
         }
     }
+	//Generous - Selfish
     private int _intelligence;
     public int intelligence
     {
@@ -47,6 +49,7 @@ public class StupidIntelligence : Intelligence {
             }
         }
     }
+	//Introvert - Extrovert
     private int _charisma;
     public int charisma
     {
@@ -64,6 +67,7 @@ public class StupidIntelligence : Intelligence {
             }
         }
     }
+	//Disciplined - Wild
     private int _constituation;
     public int constituation
     {
@@ -81,6 +85,7 @@ public class StupidIntelligence : Intelligence {
             }
         }
     }
+	//Forgiving - Vengeful
     private int _wisdom;
     public int wisdom
     {
@@ -100,7 +105,24 @@ public class StupidIntelligence : Intelligence {
     }
 
 
-    //states: hungry, tiredness, healthiness, general satisfaction - every value 0-100
+	//states: healthiness, hunger, social, tiredness, general satisfaction - every value 0-100
+	private int _healthiness = 100;
+	public int healthiness
+	{
+		get
+		{
+			return _healthiness;
+		}
+		set
+		{
+			if (healthiness > 100)
+				_healthiness = 100;
+			else if (healthiness < 0)
+			{
+				_healthiness = 0;
+			}
+		}
+	}
     private int _hungry = 20;
     public int hungry
     {
@@ -118,40 +140,40 @@ public class StupidIntelligence : Intelligence {
             }
         }
     }
-    private int _tiredness = 0;
-    public int tiredness
+    private int _social = 0;
+    public int social
     {
         get
         {
-            return _tiredness;
+			return _social;
         }
         set
         {
-            if (tiredness > 100)
-                _tiredness = 100;
-            else if (tiredness < 0)
+			if (social > 100)
+				_social = 100;
+			else if (social < 0)
             {
-                _tiredness = 0;
+				_social = 0;
             }
         }
     }
-    private int _healthiness = 100;
-    public int healthiness
-    {
-        get
-        {
-            return _healthiness;
-        }
-        set
-        {
-            if (healthiness > 100)
-                _healthiness = 100;
-            else if (healthiness < 0)
-            {
-                _healthiness = 0;
-            }
-        }
-    }
+	private int _tireness = 0;
+	public int tireness
+	{
+		get
+		{
+			return _tireness;
+		}
+		set
+		{
+			if (tireness > 100)
+				_tireness = 100;
+			else if (tireness < 0)
+			{
+				_tireness = 0;
+			}
+		}
+	}
     private int _general_satisfaction = 80;
     public int general_satisfaction
     {
