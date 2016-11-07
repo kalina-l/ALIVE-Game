@@ -30,12 +30,12 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (strong > 20)
+            if (value > 20)
                 _strong = 20;
-            else if (strong < 1)
-            {
+            else if (value < 1) {
                 _strong = 1;
             }
+            else _strong = value;
         }
     }
 	//Generous - Selfish
@@ -48,12 +48,12 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (intelligence > 20)
+            if (value > 20)
                 _intelligence = 20;
-            else if (intelligence < 1)
-            {
+            else if (value < 1) {
                 _intelligence = 1;
             }
+            else _intelligence = value;
         }
     }
 	//Introvert - Extrovert
@@ -66,12 +66,12 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (charisma > 20)
+            if (value > 20)
                 _charisma = 20;
-            else if (charisma < 1)
-            {
+            else if (value < 1) {
                 _charisma = 1;
             }
+            else _charisma = value;
         }
     }
 	//Disciplined - Wild
@@ -84,12 +84,12 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (constituation > 20)
+            if (value > 20)
                 _constituation = 20;
-            else if (constituation < 1)
-            {
+            else if (value < 1) {
                 _constituation = 1;
             }
+            else _constituation = value;
         }
     }
 	//Forgiving - Vengeful
@@ -102,12 +102,12 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (wisdom > 20)
+            if (value > 20)
                 _wisdom = 20;
-            else if (wisdom < 1)
-            {
+            else if (value < 1) {
                 _wisdom = 1;
             }
+            else _wisdom = value;
         }
     }
 
@@ -122,16 +122,19 @@ public class StupidIntelligence : Intelligence {
 		}
 		set
 		{
-			if (healthiness > 100)
+			if (value > 100)
 				_healthiness = 100;
-			else if (healthiness < 0)
+			else if (value < 0)
 			{
 				_healthiness = 0;
 			}
+            else {
+                _healthiness = value;
+            }
 			_general_satisfaction = calcMeanState ();
 		}
 	}
-    private int _hunger = 20;
+    private int _hunger = 100;
     public int hunger
     {
         get
@@ -140,16 +143,19 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-			if (hunger > 100)
+			if (value > 100)
 				_hunger = 100;
-			else if (hunger < 0)
+			else if (value < 0)
             {
 				_hunger = 0;
+            }
+            else {
+                _hunger = value;
             }
 			_general_satisfaction = calcMeanState ();
         }
     }
-    private int _social = 0;
+    private int _social = 100;
     public int social
     {
         get
@@ -158,16 +164,16 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-			if (social > 100)
-				_social = 100;
-			else if (social < 0)
-            {
-				_social = 0;
+            if (value > 100)
+                _social = 100;
+            else if (value < 0) {
+                _social = 0;
             }
-			_general_satisfaction = calcMeanState ();
+            else _social = value;
+            _general_satisfaction = calcMeanState ();
         }
     }
-	private int _energy = 0;
+	private int _energy = 100;
 	public int energy {
 		get
 		{
@@ -175,12 +181,12 @@ public class StupidIntelligence : Intelligence {
 		}
 		set
 		{
-			if (energy > 100)
-				_energy = 100;
-			else if (energy < 0)
-			{
-				_energy = 0;
-			}
+            if (value > 100)
+                _energy = 100;
+            else if (value < 0) {
+                _energy = 0;
+            }
+            else _energy = value;
 			_general_satisfaction = calcMeanState ();
 		}
 	}
@@ -230,6 +236,7 @@ public class StupidIntelligence : Intelligence {
 
             if (_timer > ActionInterval) {
                 //UIManager.Instance.ReceiveMessage(_actions[randomID]);
+                naturalStateReduction();
                 decideOnAction();
                 _waitForAnswer = true;
                 _timer = 0;
@@ -408,6 +415,12 @@ public class StupidIntelligence : Intelligence {
 			hunger -= 20;
         }
 
+    }
+
+    private void naturalStateReduction() {
+        hunger -= 3;
+        energy = energy - 2;
+        social = social - 1;
     }
 
 	public int calcMeanState(){
