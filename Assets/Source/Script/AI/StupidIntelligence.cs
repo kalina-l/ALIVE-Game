@@ -2,56 +2,211 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+
+enum Activities { Idle, Sleeping, Playing };
 
 public class StupidIntelligence : Intelligence {
 
 	public float ActionInterval;
+    public float FeedbackInterval;
 
 	private float _timer;
 	private bool _waitForAnswer;
+    private float _feedbackTimer;
 
 	private List<string> _actions;
 
-    //Properties
-    private int _disciplined;
-    public int disciplined
-    {
-        get
-        {
-            return _disciplined;
-        }
-        set
-        {
-            if (disciplined > 100)
-                _disciplined = 100;
-            else if (disciplined < 0)
-            {
-                _disciplined = 0;
-            }
-        }
-    }
-    private int _forgiving;
-    public int forgiving
-    {
-        get
-        {
-            return _forgiving;
-        }
-        set
-        {
-            if (forgiving > 100)
-                _forgiving = 100;
-            else if (forgiving < 0)
-            {
-                _forgiving = 0;
-            }
-        }
-    }
-    
+    private Activities activity;
 
-    //Statuses
+    //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
+	//Valorous - Coward
+    private int _strong;
+    public int strong
+    {
+        get
+        {
+            return _strong;
+        }
+        set
+        {
+            if (value > 20)
+                _strong = 20;
+            else if (value < 1) {
+                _strong = 1;
+            }
+            else _strong = value;
+        }
+    }
+	//Generous - Selfish
+    private int _intelligence;
+    public int intelligence
+    {
+        get
+        {
+            return _intelligence;
+        }
+        set
+        {
+            if (value > 20)
+                _intelligence = 20;
+            else if (value < 1) {
+                _intelligence = 1;
+            }
+            else _intelligence = value;
+        }
+    }
+	//Introvert - Extrovert
+    private int _charisma;
+    public int charisma
+    {
+        get
+        {
+            return _charisma;
+        }
+        set
+        {
+            if (value > 20)
+                _charisma = 20;
+            else if (value < 1) {
+                _charisma = 1;
+            }
+            else _charisma = value;
+        }
+    }
+	//Disciplined - Wild
+    private int _constituation;
+    public int constituation
+    {
+        get
+        {
+            return _constituation;
+        }
+        set
+        {
+            if (value > 20)
+                _constituation = 20;
+            else if (value < 1) {
+                _constituation = 1;
+            }
+            else _constituation = value;
+        }
+    }
+	//Forgiving - Vengeful
+    private int _wisdom;
+    public int wisdom
+    {
+        get
+        {
+            return _wisdom;
+        }
+        set
+        {
+            if (value > 20)
+                _wisdom = 20;
+            else if (value < 1) {
+                _wisdom = 1;
+            }
+            else _wisdom = value;
+        }
+    }
+
+
+	//states: healthiness, hunger, social, energy, general satisfaction - every value 0-100
+	private int _healthiness = 100;
+	public int healthiness
+	{
+		get
+		{
+			return _healthiness;
+		}
+		set
+		{
+			if (value > 100)
+				_healthiness = 100;
+			else if (value < 0)
+			{
+				_healthiness = 0;
+			}
+            else {
+                _healthiness = value;
+            }
+			_general_satisfaction = calcMeanState ();
+		}
+	}
+    private int _hunger = 100;
+    public int hunger
+    {
+        get
+        {
+			return _hunger;
+        }
+        set
+        {
+			if (value > 100)
+				_hunger = 100;
+			else if (value < 0)
+            {
+				_hunger = 0;
+            }
+            else {
+                _hunger = value;
+            }
+			_general_satisfaction = calcMeanState ();
+        }
+    }
+    private int _social = 100;
+    public int social
+    {
+        get
+        {
+			return _social;
+        }
+        set
+        {
+            if (value > 100)
+                _social = 100;
+            else if (value < 0) {
+                _social = 0;
+            }
+            else _social = value;
+            _general_satisfaction = calcMeanState ();
+        }
+    }
+	private int _energy = 100;
+	public int energy {
+		get
+		{
+			return _energy;
+		}
+		set
+		{
+            if (value > 100)
+                _energy = 100;
+            else if (value < 0) {
+                _energy = 0;
+            }
+            else _energy = value;
+			_general_satisfaction = calcMeanState ();
+		}
+	}
+	private int _general_satisfaction;
+    public int general_satisfaction
+    {
+        get
+        {
+            return _general_satisfaction;
+        }
+        set
+        {
+           
+        }
+    }
+
+
+    //Actions
     private Dictionary<string, int> receivedBall = new Dictionary<string, int> { {"Creature eats the ball...", -5}, {"Your pet is playing with it.", 0}, {"The ball gets destroyed.", 3} };
-    private Dictionary<string, int> conditions = new Dictionary<string, int> { {"hungry", 0}, { "general satisfaction", 80 } };
+
 
     //Feedback
     private Dictionary<string, int> lastActionSet;
@@ -59,6 +214,7 @@ public class StupidIntelligence : Intelligence {
 
     // Use this for initialization
     void Start () {
+		_general_satisfaction = calcMeanState ();
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
 			"It pulls out some fireworks and lights them.",
@@ -75,19 +231,116 @@ public class StupidIntelligence : Intelligence {
 	
 	// Update is called once per frame
 	void Update () {
-		//if(!_waitForAnswer) {
-		//	_timer += Time.deltaTime;
+        if (!_waitForAnswer) {
+            _timer += Time.deltaTime;
 
-		//	if(_timer > ActionInterval) {
-		//		int randomID = (int)(Random.value * (float)_actions.Count);
-		//		UIManager.Instance.ReceiveMessage (_actions [randomID]);
-		//		_waitForAnswer = true;
-		//		_timer = 0;
-		//	}
-		//}
-	}
+            if (_timer > ActionInterval) {
+                //UIManager.Instance.ReceiveMessage(_actions[randomID]);
+                naturalStateReduction();
+                decideOnAction();
+                _waitForAnswer = true;
+                _timer = 0;
+            }
+        }
+        else {
+            _feedbackTimer += Time.deltaTime;
+            if (_feedbackTimer > FeedbackInterval) {
+                _waitForAnswer = false;
+                _feedbackTimer = 0;
+            }
+        }
+    }
 
-	public override void ReceiveFeedback(int feedback)
+    public void decideOnAction() {
+        Action action = null;
+        int biggestValue = -5;
+
+        // Basic actions
+        int sleepReward = shouldISleep();
+        if(sleepReward > biggestValue) {
+            action = () => sleep();
+            biggestValue = sleepReward;
+        }
+
+        int wakeUpReward = shouldIWakeUp();
+        if (wakeUpReward > biggestValue) {
+            action = () => wakeUp();
+            biggestValue = wakeUpReward;
+        }
+
+        int plainPlayReward = shouldIPlainPlay();
+        if (plainPlayReward > biggestValue) {
+            action = () => plainPlay();
+            biggestValue = plainPlayReward;
+        }
+
+        // Interactions with objects
+        List<Item> items = SceneManager.Instance.getItems();
+        int eatFoodReward = 0;
+        int playWithBallReward = 0;
+        foreach(Item item in items) {
+            if(item is Ball) {
+                eatFoodReward = shouldIEatFood();
+                if (eatFoodReward > biggestValue) {
+                    action = () => eatFood();
+                    biggestValue = eatFoodReward;
+                }
+            }
+            if (item is Ball) {
+                playWithBallReward = shouldIPlayBall();
+                if (playWithBallReward > biggestValue) {
+                    action = () => playBall();
+                    biggestValue = playWithBallReward;
+                }
+            }
+        }
+        if (action != null) action.Invoke();
+    }
+
+    private int shouldISleep() {
+        // TODO: implement logic (exptected value for this activity)
+        return 5;
+    }
+
+    private int shouldIWakeUp() {
+        // TODO: implement logic (exptected value for this activity)
+        if (activity == Activities.Sleeping)
+            return 7;
+        else return 0;
+    }
+
+    private int shouldIPlainPlay() {
+        // TODO: implement logic (exptected value for this activity)
+        return 3;
+    }
+
+    private int shouldIEatFood() {
+        // TODO: implement logic (exptected value for this activity)
+        return 10;
+    }
+
+    private int shouldIPlayBall() {
+        // TODO: implement logic (exptected value for this activity)
+        return 10;
+    }
+
+    private void sleep() {
+        Debug.Log("Monster falls asleep.");
+    }
+    private void wakeUp() {
+        Debug.Log("Monster falls asleep.");
+    }
+    private void plainPlay() {
+        Debug.Log("Monster plays with his tail.");
+    }
+    private void eatFood() {
+        Debug.Log("Monster eats given food.");
+    }
+    private void playBall() {
+        Debug.Log("Monster plays with the ball.");
+    }
+
+    public override void ReceiveFeedback(int feedback)
 	{
 		if (_waitForAnswer) 
 		{
@@ -98,19 +351,16 @@ public class StupidIntelligence : Intelligence {
 			{
 			case -1:
 				UIManager.Instance.ReceiveMessage ("It seems to feel bad about it.");
-                conditions["general satisfaction"] -= 3;
                 actionsReward -= 3;
 				_waitForAnswer = false;
 				break;
 			case 0:
 				UIManager.Instance.ReceiveMessage ("It stares blanky at you.");
-                conditions["general satisfaction"] -= 1;
                 _waitForAnswer = false;
                 actionsReward -= 1;
                 break;
 			case 1:
 				UIManager.Instance.ReceiveMessage ("It claps its hands in glee.");
-                conditions["general satisfaction"] += 3;
 				_waitForAnswer = false;
                 actionsReward += 3;
                 break;
@@ -118,17 +368,14 @@ public class StupidIntelligence : Intelligence {
 
             lastActionSet[lastAction] = actionsReward;
 
-            foreach(KeyValuePair<string, int> state in conditions)
-            {
-                Debug.Log("condition: " + state.Key + ": " + state.Value);
-            }
-		}
+            //Debug.Log("condition: general_satisfaction: " + general_satisfaction);
+        }
 	}
 
     public override void receiveBall()
     {
 
-        if(conditions["hungry"] > 20)
+        if(hunger > 20)
         {
             UIManager.Instance.ReceiveMessage("It is hungry and wants to eat something...");
             List<string> keys = new List<string>(receivedBall.Keys);
@@ -147,11 +394,11 @@ public class StupidIntelligence : Intelligence {
         }
 
 
-        if (conditions["general satisfaction"] < 30)
+        if (general_satisfaction < 30)
         {
             UIManager.Instance.ReceiveMessage("It doesn't want to play anymore...");
 
-            conditions["general satisfaction"]++;
+            general_satisfaction++;
         }
         else
         {
@@ -162,11 +409,21 @@ public class StupidIntelligence : Intelligence {
         }
 
 
-        conditions["hungry"] += 1;
+        hunger += 1;
         if (lastAction.Contains("eat"))
         {
-            conditions["hungry"] -= 20;
+			hunger -= 20;
         }
 
     }
+
+    private void naturalStateReduction() {
+        hunger -= 3;
+        energy = energy - 2;
+        social = social - 1;
+    }
+
+	public int calcMeanState(){
+		return (healthiness + hunger + social + energy) / 4;
+	}
 }
