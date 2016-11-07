@@ -241,19 +241,16 @@ public class StupidIntelligence : Intelligence {
 			{
 			case -1:
 				UIManager.Instance.ReceiveMessage ("It seems to feel bad about it.");
-                general_satisfaction -= 3;
                 actionsReward -= 3;
 				_waitForAnswer = false;
 				break;
 			case 0:
 				UIManager.Instance.ReceiveMessage ("It stares blanky at you.");
-                general_satisfaction -= 1;
                 _waitForAnswer = false;
                 actionsReward -= 1;
                 break;
 			case 1:
 				UIManager.Instance.ReceiveMessage ("It claps its hands in glee.");
-                general_satisfaction += 3;
 				_waitForAnswer = false;
                 actionsReward += 3;
                 break;
@@ -261,11 +258,7 @@ public class StupidIntelligence : Intelligence {
 
             lastActionSet[lastAction] = actionsReward;
 
-            Debug.Log("condition: general_satisfaction: " + general_satisfaction);
-			Debug.Log("condition: hungry: " + hunger);
-            Debug.Log("condition: tiredness: " + energy);
-            Debug.Log("condition: healthiness: " + healthiness);
-
+            //Debug.Log("condition: general_satisfaction: " + general_satisfaction);
         }
 	}
 
