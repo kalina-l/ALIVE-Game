@@ -105,7 +105,7 @@ public class StupidIntelligence : Intelligence {
     }
 
 
-	//states: healthiness, hunger, social, tiredness, general satisfaction - every value 0-100
+	//states: healthiness, hunger, social, energy, general satisfaction - every value 0-100
 	private int _healthiness = 100;
 	public int healthiness
 	{
@@ -121,23 +121,25 @@ public class StupidIntelligence : Intelligence {
 			{
 				_healthiness = 0;
 			}
+			_general_satisfaction = calcMeanState ();
 		}
 	}
-    private int _hungry = 20;
-    public int hungry
+    private int _hunger = 20;
+    public int hunger
     {
         get
         {
-            return _hungry;
+			return _hunger;
         }
         set
         {
-            if (hungry > 100)
-                _hungry = 100;
-            else if (hungry < 0)
+			if (hunger > 100)
+				_hunger = 100;
+			else if (hunger < 0)
             {
-                _hungry = 0;
+				_hunger = 0;
             }
+			_general_satisfaction = calcMeanState ();
         }
     }
     private int _social = 0;
@@ -155,26 +157,27 @@ public class StupidIntelligence : Intelligence {
             {
 				_social = 0;
             }
+			_general_satisfaction = calcMeanState ();
         }
     }
-	private int _tireness = 0;
-	public int tireness
-	{
+	private int _energy = 0;
+	public int energy {
 		get
 		{
-			return _tireness;
+			return _energy;
 		}
 		set
 		{
-			if (tireness > 100)
-				_tireness = 100;
-			else if (tireness < 0)
+			if (energy > 100)
+				_energy = 100;
+			else if (energy < 0)
 			{
-				_tireness = 0;
+				_energy = 0;
 			}
+			_general_satisfaction = calcMeanState ();
 		}
 	}
-    private int _general_satisfaction = 80;
+	private int _general_satisfaction;
     public int general_satisfaction
     {
         get
@@ -183,12 +186,7 @@ public class StupidIntelligence : Intelligence {
         }
         set
         {
-            if (general_satisfaction > 100)
-                _general_satisfaction = 100;
-            else if (general_satisfaction < 0)
-            {
-                _general_satisfaction = 0;
-            }
+           
         }
     }
 
@@ -203,6 +201,7 @@ public class StupidIntelligence : Intelligence {
 
     // Use this for initialization
     void Start () {
+		_general_satisfaction = calcMeanState ();
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
 			"It pulls out some fireworks and lights them.",
@@ -263,8 +262,8 @@ public class StupidIntelligence : Intelligence {
             lastActionSet[lastAction] = actionsReward;
 
             Debug.Log("condition: general_satisfaction: " + general_satisfaction);
-            Debug.Log("condition: hungry: " + hungry);
-            Debug.Log("condition: tiredness: " + tiredness);
+			Debug.Log("condition: hungry: " + hunger);
+            Debug.Log("condition: tiredness: " + energy);
             Debug.Log("condition: healthiness: " + healthiness);
 
         }
@@ -273,7 +272,7 @@ public class StupidIntelligence : Intelligence {
     public override void receiveBall()
     {
 
-        if(hungry > 20)
+        if(hunger > 20)
         {
             UIManager.Instance.ReceiveMessage("It is hungry and wants to eat something...");
             List<string> keys = new List<string>(receivedBall.Keys);
@@ -307,11 +306,15 @@ public class StupidIntelligence : Intelligence {
         }
 
 
-        hungry += 1;
+        hunger += 1;
         if (lastAction.Contains("eat"))
         {
-            hungry -= 20;
+			hunger -= 20;
         }
 
     }
+
+	public int calcMeanState(){
+		return (healthiness + hunger + social + energy) / 4;
+	}
 }
