@@ -2,15 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+
+enum Activities { Idle, Sleeping, Playing };
 
 public class StupidIntelligence : Intelligence {
 
 	public float ActionInterval;
+    public float FeedbackInterval;
 
 	private float _timer;
 	private bool _waitForAnswer;
+    private float _feedbackTimer;
 
 	private List<string> _actions;
+
+    private Activities activity;
 
     //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
 	//Valorous - Coward
@@ -218,19 +225,115 @@ public class StupidIntelligence : Intelligence {
 	
 	// Update is called once per frame
 	void Update () {
-		//if(!_waitForAnswer) {
-		//	_timer += Time.deltaTime;
+        if (!_waitForAnswer) {
+            _timer += Time.deltaTime;
 
-		//	if(_timer > ActionInterval) {
-		//		int randomID = (int)(Random.value * (float)_actions.Count);
-		//		UIManager.Instance.ReceiveMessage (_actions [randomID]);
-		//		_waitForAnswer = true;
-		//		_timer = 0;
-		//	}
-		//}
-	}
+            if (_timer > ActionInterval) {
+                //UIManager.Instance.ReceiveMessage(_actions[randomID]);
+                decideOnAction();
+                _waitForAnswer = true;
+                _timer = 0;
+            }
+        }
+        else {
+            _feedbackTimer += Time.deltaTime;
+            if (_feedbackTimer > FeedbackInterval) {
+                _waitForAnswer = false;
+                _feedbackTimer = 0;
+            }
+        }
+    }
 
-	public override void ReceiveFeedback(int feedback)
+    public void decideOnAction() {
+        Action action = null;
+        int biggestValue = -5;
+
+        // Basic actions
+        int sleepReward = shouldISleep();
+        if(sleepReward > biggestValue) {
+            action = () => sleep();
+            biggestValue = sleepReward;
+        }
+
+        int wakeUpReward = shouldIWakeUp();
+        if (wakeUpReward > biggestValue) {
+            action = () => wakeUp();
+            biggestValue = wakeUpReward;
+        }
+
+        int plainPlayReward = shouldIPlainPlay();
+        if (plainPlayReward > biggestValue) {
+            action = () => plainPlay();
+            biggestValue = plainPlayReward;
+        }
+
+        // Interactions with objects
+        List<Item> items = SceneManager.Instance.getItems();
+        int eatFoodReward = 0;
+        int playWithBallReward = 0;
+        foreach(Item item in items) {
+            if(item is Ball) {
+                eatFoodReward = shouldIEatFood();
+                if (eatFoodReward > biggestValue) {
+                    action = () => eatFood();
+                    biggestValue = eatFoodReward;
+                }
+            }
+            if (item is Ball) {
+                playWithBallReward = shouldIPlayBall();
+                if (playWithBallReward > biggestValue) {
+                    action = () => playBall();
+                    biggestValue = playWithBallReward;
+                }
+            }
+        }
+        if (action != null) action.Invoke();
+    }
+
+    private int shouldISleep() {
+        // TODO: implement logic (exptected value for this activity)
+        return 5;
+    }
+
+    private int shouldIWakeUp() {
+        // TODO: implement logic (exptected value for this activity)
+        if (activity == Activities.Sleeping)
+            return 7;
+        else return 0;
+    }
+
+    private int shouldIPlainPlay() {
+        // TODO: implement logic (exptected value for this activity)
+        return 3;
+    }
+
+    private int shouldIEatFood() {
+        // TODO: implement logic (exptected value for this activity)
+        return 10;
+    }
+
+    private int shouldIPlayBall() {
+        // TODO: implement logic (exptected value for this activity)
+        return 10;
+    }
+
+    private void sleep() {
+        Debug.Log("Monster falls asleep.");
+    }
+    private void wakeUp() {
+        Debug.Log("Monster falls asleep.");
+    }
+    private void plainPlay() {
+        Debug.Log("Monster plays with his tail.");
+    }
+    private void eatFood() {
+        Debug.Log("Monster eats given food.");
+    }
+    private void playBall() {
+        Debug.Log("Monster plays with the ball.");
+    }
+
+    public override void ReceiveFeedback(int feedback)
 	{
 		if (_waitForAnswer) 
 		{
