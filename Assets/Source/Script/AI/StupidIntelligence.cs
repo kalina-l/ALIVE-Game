@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.IO;
 
 enum Activities { Idle, Sleeping, Playing };
 
@@ -19,8 +20,11 @@ public class StupidIntelligence : Intelligence {
 
     private Activities activity;
 
+    private int[][] _rangesStates;
+
+
     //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
-	//Valorous - Coward
+    //Valorous - Coward
     private int _strong;
     public int strong
     {
@@ -426,4 +430,18 @@ public class StupidIntelligence : Intelligence {
 	public int calcMeanState(){
 		return (healthiness + hunger + social + energy) / 4;
 	}
+
+    private void readCSV(String pathCSV)
+    {
+        //string pathCSV = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\rangesStates.csv";
+        //string pathCSV = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\naturalLearning.csv";
+        if (File.Exists(pathCSV))
+        {
+            _rangesStates = File.ReadAllLines(pathCSV).Select(l => l.Split(';').Select(n => int.Parse(n)).ToArray()).ToArray();
+        }
+        else
+        {
+            Debug.Log("no such file...");
+        }
+    }
 }
