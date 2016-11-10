@@ -20,7 +20,10 @@ public class StupidIntelligence : Intelligence {
 
     private Activities activity;
 
+    private static string _pathCSV_rangesStates = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\rangesStates.csv";
+    private static string _pathCSV_naturalLearning = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\naturalLearning.csv";
     private int[][] _rangesStates;
+    private int[][] _naturalLearning;
 
 
     //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
@@ -218,6 +221,8 @@ public class StupidIntelligence : Intelligence {
 
     // Use this for initialization
     void Start () {
+        readCSV(_pathCSV_naturalLearning, _naturalLearning);
+        readCSV(_pathCSV_rangesStates, _rangesStates);
 		_general_satisfaction = calcMeanState ();
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
@@ -431,17 +436,16 @@ public class StupidIntelligence : Intelligence {
 		return (healthiness + hunger + social + energy) / 4;
 	}
 
-    private void readCSV(String pathCSV)
+    private void readCSV(String pathCSV, int[][] data)
     {
-        //string pathCSV = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\rangesStates.csv";
-        //string pathCSV = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\naturalLearning.csv";
         if (File.Exists(pathCSV))
         {
-            _rangesStates = File.ReadAllLines(pathCSV).Select(l => l.Split(';').Select(n => int.Parse(n)).ToArray()).ToArray();
+            data = File.ReadAllLines(pathCSV).Select(l => l.Split(';').Select(n => int.Parse(n)).ToArray()).ToArray();  
         }
         else
         {
             Debug.Log("no such file...");
+            //throw new FileNotFoundException();
         }
     }
 }
