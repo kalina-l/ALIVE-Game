@@ -63,6 +63,7 @@
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\UIWebcamSource.cs" />
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSource.cs" />
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSourceBase.cs" />
+     <Compile Include="Assets\Source\Script\AI\Condition.cs" />
      <Compile Include="Assets\Source\Script\AI\Intelligence.cs" />
      <Compile Include="Assets\Source\Script\AI\StupidIntelligence.cs" />
      <Compile Include="Assets\Source\Script\Scene\Ball.cs" />
