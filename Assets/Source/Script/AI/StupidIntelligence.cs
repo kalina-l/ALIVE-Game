@@ -288,7 +288,7 @@ public class StupidIntelligence : Intelligence {
         int eatFoodReward = 0;
         int playWithBallReward = 0;
         foreach(Item item in items) {
-            if(item is Ball) {
+            if(item is Food) {
                 eatFoodReward = shouldIEatFood();
                 if (eatFoodReward > biggestValue) {
                     action = () => eatFood();
