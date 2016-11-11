@@ -120,95 +120,11 @@ public class StupidIntelligence : Intelligence {
 
 
 	//states: healthiness, hunger, social, energy, general satisfaction - every value 0-100
-	private int _healthiness = 100;
-	public int healthiness
-	{
-		get
-		{
-			return _healthiness;
-		}
-		set
-		{
-			if (value > 100)
-				_healthiness = 100;
-			else if (value < 0)
-			{
-				_healthiness = 0;
-			}
-            else {
-                _healthiness = value;
-            }
-			_general_satisfaction = calcMeanState ();
-		}
-	}
-    private int _hunger = 100;
-    public int hunger
-    {
-        get
-        {
-			return _hunger;
-        }
-        set
-        {
-			if (value > 100)
-				_hunger = 100;
-			else if (value < 0)
-            {
-				_hunger = 0;
-            }
-            else {
-                _hunger = value;
-            }
-			_general_satisfaction = calcMeanState ();
-        }
-    }
-    private int _social = 100;
-    public int social
-    {
-        get
-        {
-			return _social;
-        }
-        set
-        {
-            if (value > 100)
-                _social = 100;
-            else if (value < 0) {
-                _social = 0;
-            }
-            else _social = value;
-            _general_satisfaction = calcMeanState ();
-        }
-    }
-	private int _energy = 100;
-	public int energy {
-		get
-		{
-			return _energy;
-		}
-		set
-		{
-            if (value > 100)
-                _energy = 100;
-            else if (value < 0) {
-                _energy = 0;
-            }
-            else _energy = value;
-			_general_satisfaction = calcMeanState ();
-		}
-	}
-	private int _general_satisfaction;
-    public int general_satisfaction
-    {
-        get
-        {
-            return _general_satisfaction;
-        }
-        set
-        {
-           
-        }
-    }
+	private Condition healthiness;
+	private Condition hunger;
+	private Condition social;
+	private Condition energy;
+	private Condition general_satisfaction;
 
 
     //Actions
@@ -221,9 +137,14 @@ public class StupidIntelligence : Intelligence {
 
     // Use this for initialization
     void Start () {
+		healthiness = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
+		hunger = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
+		social = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
+		energy = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
+		general_satisfaction = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
+
         readCSV(_pathCSV_naturalLearning, _naturalLearning);
         readCSV(_pathCSV_rangesStates, _rangesStates);
-		_general_satisfaction = calcMeanState ();
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
 			"It pulls out some fireworks and lights them.",
@@ -288,7 +209,7 @@ public class StupidIntelligence : Intelligence {
         int eatFoodReward = 0;
         int playWithBallReward = 0;
         foreach(Item item in items) {
-            if(item is Ball) {
+            if(item is Food) {
                 eatFoodReward = shouldIEatFood();
                 if (eatFoodReward > biggestValue) {
                     action = () => eatFood();
@@ -308,7 +229,8 @@ public class StupidIntelligence : Intelligence {
 
     private int shouldISleep() {
         // TODO: implement logic (exptected value for this activity)
-        return 5;
+		int value = 0;
+		return value;
     }
 
     private int shouldIWakeUp() {
@@ -384,7 +306,7 @@ public class StupidIntelligence : Intelligence {
     public override void receiveBall()
     {
 
-        if(hunger > 20)
+        /* if(hunger > 20)
         {
             UIManager.Instance.ReceiveMessage("It is hungry and wants to eat something...");
             List<string> keys = new List<string>(receivedBall.Keys);
@@ -422,19 +344,16 @@ public class StupidIntelligence : Intelligence {
         if (lastAction.Contains("eat"))
         {
 			hunger -= 20;
-        }
+        } */
 
     }
 
     private void naturalStateReduction() {
-        hunger -= 3;
-        energy = energy - 2;
-        social = social - 1;
+		hunger.value -= 3;
+		energy.value -= 2;
+        social.value -= 1;
     }
 
-	public int calcMeanState(){
-		return (healthiness + hunger + social + energy) / 4;
-	}
 
     private void readCSV(String pathCSV, int[][] data)
     {
