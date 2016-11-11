@@ -17,107 +17,12 @@ public class StupidIntelligence : Intelligence {
     private float _feedbackTimer;
 
 	private List<string> _actions;
-
     private Activities activity;
 
     private static string _pathCSV_rangesStates = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\rangesStates.csv";
     private static string _pathCSV_naturalLearning = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\naturalLearning.csv";
     private int[][] _rangesStates;
     private int[][] _naturalLearning;
-
-
-    //Attributes: Strong, Intelligence, Charisma, Constitution, Wisdom - every value 1-20; alltogether max. 100
-    //Valorous - Coward
-    private int _strong;
-    public int strong
-    {
-        get
-        {
-            return _strong;
-        }
-        set
-        {
-            if (value > 20)
-                _strong = 20;
-            else if (value < 1) {
-                _strong = 1;
-            }
-            else _strong = value;
-        }
-    }
-	//Generous - Selfish
-    private int _intelligence;
-    public int intelligence
-    {
-        get
-        {
-            return _intelligence;
-        }
-        set
-        {
-            if (value > 20)
-                _intelligence = 20;
-            else if (value < 1) {
-                _intelligence = 1;
-            }
-            else _intelligence = value;
-        }
-    }
-	//Introvert - Extrovert
-    private int _charisma;
-    public int charisma
-    {
-        get
-        {
-            return _charisma;
-        }
-        set
-        {
-            if (value > 20)
-                _charisma = 20;
-            else if (value < 1) {
-                _charisma = 1;
-            }
-            else _charisma = value;
-        }
-    }
-	//Disciplined - Wild
-    private int _constituation;
-    public int constituation
-    {
-        get
-        {
-            return _constituation;
-        }
-        set
-        {
-            if (value > 20)
-                _constituation = 20;
-            else if (value < 1) {
-                _constituation = 1;
-            }
-            else _constituation = value;
-        }
-    }
-	//Forgiving - Vengeful
-    private int _wisdom;
-    public int wisdom
-    {
-        get
-        {
-            return _wisdom;
-        }
-        set
-        {
-            if (value > 20)
-                _wisdom = 20;
-            else if (value < 1) {
-                _wisdom = 1;
-            }
-            else _wisdom = value;
-        }
-    }
-
 
 	//states: healthiness, hunger, social, energy, general satisfaction - every value 0-100
 	private Condition healthiness;
@@ -145,6 +50,8 @@ public class StupidIntelligence : Intelligence {
 
         readCSV(_pathCSV_naturalLearning, _naturalLearning);
         readCSV(_pathCSV_rangesStates, _rangesStates);
+
+
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
 			"It pulls out some fireworks and lights them.",

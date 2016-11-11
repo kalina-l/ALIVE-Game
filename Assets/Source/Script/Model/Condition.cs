@@ -14,12 +14,7 @@ public class Condition {
 		}
 		set
 		{
-			if (value > 100)
-				_value = 100;
-			else if (value < -100) {
-				_value = -100;
-			}
-			else _value = value;
+			_value = Mathf.Clamp(value, -100, 100);
 		}
 	}
 

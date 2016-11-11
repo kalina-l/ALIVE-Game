@@ -3,13 +3,5 @@ using System.Collections;
 
 public class Ball : Item {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	//
 }

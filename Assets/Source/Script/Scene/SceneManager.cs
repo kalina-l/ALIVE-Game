@@ -13,32 +13,34 @@ public class SceneManager : Singleton<SceneManager> {
 
     public void addBall() {
         if (this.ball == null) {
+            /*
             GameObject ball = (GameObject)Instantiate(ballPrefab);
             ball.transform.parent = itemsGroup.transform;
             this.ball = ball.GetComponent<Ball>();
+            */
+            this.ball = new Ball();
         }
     }
 
     public void takeBall() {
-        if (ball != null) {
-            Destroy(ball.gameObject);
-        }
-        ball = null;
+        
+        this.ball = null;
     }
 
     public void addFood() {
         if (this.food == null) {
+            /*
             GameObject food = (GameObject)Instantiate(foodPrefab);
             food.transform.parent = itemsGroup.transform;
             this.food = food.GetComponent<Food>();
+            */
+            this.food = new Food();
         }
     }
 
     public void takeFood() {
-        if (food != null) {
-            Destroy(food.gameObject);
-        }
-        food = null;
+        
+        this.food = null;
     }
 
     public List<Item> getItems() {
