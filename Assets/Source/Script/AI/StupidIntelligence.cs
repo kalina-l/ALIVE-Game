@@ -145,7 +145,6 @@ public class StupidIntelligence : Intelligence {
 
         readCSV(_pathCSV_naturalLearning, _naturalLearning);
         readCSV(_pathCSV_rangesStates, _rangesStates);
-		_general_satisfaction = calcMeanState ();
 		_actions = new List<string> () {
 			"It clacks two coconuts together and pretends to be a horse.",
 			"It pulls out some fireworks and lights them.",
@@ -307,7 +306,7 @@ public class StupidIntelligence : Intelligence {
     public override void receiveBall()
     {
 
-        if(hunger > 20)
+        /* if(hunger > 20)
         {
             UIManager.Instance.ReceiveMessage("It is hungry and wants to eat something...");
             List<string> keys = new List<string>(receivedBall.Keys);
@@ -345,14 +344,14 @@ public class StupidIntelligence : Intelligence {
         if (lastAction.Contains("eat"))
         {
 			hunger -= 20;
-        }
+        } */
 
     }
 
     private void naturalStateReduction() {
-        hunger -= 3;
-        energy = energy - 2;
-        social = social - 1;
+		hunger.value -= 3;
+		energy.value -= 2;
+        social.value -= 1;
     }
 
 

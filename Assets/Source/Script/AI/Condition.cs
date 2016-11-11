@@ -30,7 +30,7 @@ public class Condition {
 		this.thresholds = thresholds;
 	}
 
-	public void getEvaluation () {
+	public Evaluation getEvaluation () {
 		for(int i = 0; i < thresholds.Length; i++){
 			if (value < thresholds [i])
 				return (Evaluation)i;
