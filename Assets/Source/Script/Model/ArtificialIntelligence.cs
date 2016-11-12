@@ -55,6 +55,6 @@ public class ArtificialIntelligence {
             }
         }
         
-        if (chosenActivity != null) chosenActivity.DoActivity();
+		if (chosenActivity != null) chosenActivity.DoActivity(_personality);
     }
 }

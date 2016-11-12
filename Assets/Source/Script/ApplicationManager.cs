@@ -27,10 +27,10 @@ public class ApplicationManager : MonoBehaviour {
 
         _items = new Dictionary<string, Item>();
 
-        _items["Ball"] = new Item().AddActivity("PLAYWITHBALL", new Activity(_personality, "It plays with the ball")
+        _items["Ball"] = new Item().AddActivity("PLAYWITHBALL", new Activity("It plays with the ball")
                                                                     .AddReward("ENERGY", -2)
                                                                     .AddReward("SATISFACTION", 5))
-                                   .AddActivity("EATBALL", new Activity(_personality, "It eats the ball")
+                                   .AddActivity("EATBALL", new Activity("It eats the ball")
                                                                      .AddReward("HUNGER", 5));
 
         
@@ -53,7 +53,7 @@ public class ApplicationManager : MonoBehaviour {
             .AddCondition("ENERGY", new Condition(100, new int[] { 0, 10, 20, 30, 40, 50, 60 }))
             .AddCondition("SATISFACTION", new Condition(100, new int[] { 0, 10, 20, 30, 40, 50, 60 }));
 
-            person.AddBaseActivity("SLEEP", new Activity(person, "It falls asleep")
+            person.AddBaseActivity("SLEEP", new Activity("It falls asleep")
                                                 .AddReward("ENERGY", 20)
                                                 .AddReward("SOCIAL",-10));
 

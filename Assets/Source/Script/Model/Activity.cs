@@ -5,13 +5,11 @@ using System.Collections.Generic;
 public class Activity {
 
     public Dictionary<string, int> Rewards;
-    private Personality _parentPersonality;
 
     private string _feedBackString;
 
-	public Activity(Personality parentPersonality, string feedBackString)
+	public Activity(string feedBackString)
     {
-        _parentPersonality = parentPersonality;
         _feedBackString = feedBackString;
         Rewards = new Dictionary<string, int>();
     }
@@ -30,12 +28,12 @@ public class Activity {
         return this;
     }
 
-    public void DoActivity()
+	public void DoActivity(Personality parentPersonality)
     {
         //Change the Conditions of the Personality, depending on the Action
         foreach(KeyValuePair<string, int> reward in Rewards)
         {
-            _parentPersonality.GetCondition(reward.Key).value += reward.Value;
+			parentPersonality.GetCondition(reward.Key).value += reward.Value;
         }
 
         Debug.Log(_feedBackString);
