@@ -19,10 +19,6 @@ public class StupidIntelligence : Intelligence {
 	private List<string> _actions;
     private Activities activity;
 
-    private static string _pathCSV_rangesStates = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\rangesStates.csv";
-    private static string _pathCSV_naturalLearning = Directory.GetCurrentDirectory() + @"\Assets\Source\Script\Data\naturalLearning.csv";
-    private int[][] _rangesStates;
-    private int[][] _naturalLearning;
 
 	//states: healthiness, hunger, social, energy, general satisfaction - every value 0-100
 	private Condition healthiness;
@@ -47,9 +43,6 @@ public class StupidIntelligence : Intelligence {
 		social = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
 		energy = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
 		general_satisfaction = new Condition (100, new int[]{ 0, 10, 20, 30, 40, 50, 60 });
-
-        readCSV(_pathCSV_naturalLearning, _naturalLearning);
-        readCSV(_pathCSV_rangesStates, _rangesStates);
 
 
 		_actions = new List<string> () {
@@ -262,16 +255,4 @@ public class StupidIntelligence : Intelligence {
     }
 
 
-    private void readCSV(String pathCSV, int[][] data)
-    {
-        if (File.Exists(pathCSV))
-        {
-            data = File.ReadAllLines(pathCSV).Select(l => l.Split(';').Select(n => int.Parse(n)).ToArray()).ToArray();  
-        }
-        else
-        {
-            Debug.Log("no such file...");
-            //throw new FileNotFoundException();
-        }
-    }
 }
