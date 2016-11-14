@@ -51,7 +51,7 @@ public class Activity {
             if(addedValue != 0) benefits += (condition.Key + ": " + addedValue + ", ");
             weightedReward += addedValue;
         }
-        Debug.Log(benefits);
+        Debug.Log(benefits + weightedReward);
         return weightedReward;
     }
 

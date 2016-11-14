@@ -9,6 +9,8 @@ public class SliderViewController : AbstractViewController {
 
 	public SliderViewController(RectTransform container, string name)
     {
+        Rect = container;
+        View = Rect.gameObject;
 
         Text text = AddText(CreateContainer("Fill", container,
             new Vector2(0, 54), new Vector2(container.sizeDelta.x, 64),
@@ -17,7 +19,7 @@ public class SliderViewController : AbstractViewController {
         text.text = name;
 
         Image background = AddSprite(CreateContainer("Fill", container,
-            Vector2.zero, new Vector2(container.sizeDelta.x, 64),
+            new Vector2(0, 10), new Vector2(container.sizeDelta.x, 64),
             Vector2.zero, Vector2.zero, Vector2.zero), 
             GraphicsHelper.Instance.sliderBackgroundSpirte, GraphicsHelper.Instance.SpriteColorWhite);
 

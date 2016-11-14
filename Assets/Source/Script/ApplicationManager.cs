@@ -27,9 +27,6 @@ public class ApplicationManager : MonoBehaviour {
 	void Start () {
         _output = new OutputViewController(UICanvas.transform);
 
-        //ConditionThresholdsCSVpath = Application.dataPath + @"\Source\Script\Data\conditionThresholds.csv";
-        //ActionsNaturalRewardsCSVpath = Application.dataPath + @"\Source\Script\Data\actionsNaturalRewards.csv";
-
         _personality = new PersonalityCreator(ConditionThresholdsCSVpath, ActionsNaturalRewardsCSVpath).getPersonality();
 
         _intelligence = new ArtificialIntelligence(_personality, _output);
@@ -78,6 +75,7 @@ public class ApplicationManager : MonoBehaviour {
         _personality.AddItem("Cake", _items["Cake"]);
 
         //UI
+        new ItemCollectionViewController(UICanvas.transform, _items, _personality);
         new FeedbackViewController(UICanvas.transform, _intelligence);
 
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);

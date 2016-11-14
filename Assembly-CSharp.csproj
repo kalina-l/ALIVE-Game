@@ -81,8 +81,10 @@
      <Compile Include="Assets\Source\Script\UI\ConditionViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\FeedbackViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\GraphicsHelper.cs" />
+     <Compile Include="Assets\Source\Script\UI\ItemCollectionViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\OutputViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\SliderViewController.cs" />
+     <Compile Include="Assets\Source\Script\UI\ToggleViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\UIManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

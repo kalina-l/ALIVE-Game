@@ -15,6 +15,8 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite sliderBackgroundSpirte;
     public Sprite sliderFillSprite;
 
+    public Color ButtonColorOn;
+    public Color ButtonColorOff;
     public Color ContainerColor;
     public Color TextColor;
     public Color SpriteColorWhite;
