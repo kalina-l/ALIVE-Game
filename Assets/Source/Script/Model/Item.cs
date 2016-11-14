@@ -8,7 +8,7 @@ public class Item  {
 
 	public Item()
     {
-        //nothing here we use attributes
+        Activities = new Dictionary<string, Activity>();
     }
 
     public Item AddActivity(string name, Activity activity)

@@ -25,7 +25,9 @@ public class ArtificialIntelligence {
 
             if (_timer > ActionInterval)
             {
-                decideOnAction();
+                _personality.printConditions();
+                if(!decideOnAction())
+                    _personality.naturalStateReduction();
                 _waitForAnswer = true;
                 _timer = 0;
             }
@@ -41,20 +43,24 @@ public class ArtificialIntelligence {
         }
     }
 
-    public void decideOnAction()
+    public bool decideOnAction()
     {
         Activity chosenActivity = null;
-        int biggestValue = -5;
+        int biggestValue = int.MinValue;
 
         foreach(Activity activity in _personality.GetAllActivities())
         {
-            if(activity.GetTotalReward() > biggestValue)
+            int weightedReward = activity.GetWeightedReward(_personality);
+            if (weightedReward > biggestValue)
             {
                 chosenActivity = activity;
-                biggestValue = activity.GetTotalReward();
+                biggestValue = weightedReward;
             }
         }
-        
-		if (chosenActivity != null) chosenActivity.DoActivity(_personality);
+
+        if (chosenActivity != null) {
+            chosenActivity.DoActivity(_personality);
+            return true;
+        } else return false;
     }
 }
