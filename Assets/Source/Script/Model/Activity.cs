@@ -28,7 +28,7 @@ public class Activity {
         return this;
     }
 
-	public void DoActivity(Personality parentPersonality)
+	public void DoActivity(Personality parentPersonality, OutputViewController textOutput)
     {
         //Change the Conditions of the Personality, depending on the Action
         foreach(KeyValuePair<string, int> reward in Rewards)
@@ -36,7 +36,7 @@ public class Activity {
 			parentPersonality.GetCondition(reward.Key).value += reward.Value;
         }
 
-        Debug.Log(_feedBackString);
+        textOutput.DisplayMessage(_feedBackString);
     }
 
     public int GetTotalReward()

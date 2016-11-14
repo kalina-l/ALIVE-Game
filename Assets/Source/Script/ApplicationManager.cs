@@ -4,15 +4,19 @@ using System.Collections.Generic;
 
 public class ApplicationManager : MonoBehaviour {
 
+    public Canvas UICanvas;
     public static ApplicationManager Instance;
 
-    public string ConditionThresholdsCSVpath = Application.dataPath + @"\Source\Script\Data\conditionThresholds.csv";
-    public string ActionsNaturalRewardsCSVpath = Application.dataPath + @"\Source\Script\Data\actionsNaturalRewards.csv";
+    private string ConditionThresholdsCSVpath = "\\Resources\\Data\\conditionThresholds.csv";
+    private string ActionsNaturalRewardsCSVpath = "\\Resources\\Data\\actionsNaturalRewards.csv";
 
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
     private Dictionary<string, Item> _items;
+
+    private OutputViewController _output;
+    private ConditionViewController _conditionMonitor;
 
     void Awake()
     {
@@ -21,10 +25,11 @@ public class ApplicationManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        _output = new OutputViewController(UICanvas.transform);
 
         _personality = new PersonalityCreator(ConditionThresholdsCSVpath, ActionsNaturalRewardsCSVpath).getPersonality();
 
-        _intelligence = new ArtificialIntelligence(_personality);
+        _intelligence = new ArtificialIntelligence(_personality, _output);
 
         _items = new Dictionary<string, Item>();
 
@@ -35,11 +40,16 @@ public class ApplicationManager : MonoBehaviour {
                                    .AddActivity("EATBALL", new Activity("It eats the ball")
                                                                      .AddReward("HUNGER", 5));
 
+        //UI
+        new FeedbackViewController(UICanvas.transform, _intelligence);
+
+        _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
         
 	}
 
     void Update()
     {
         _intelligence.TimeStep();
+        _conditionMonitor.UpdateSlider(_personality);
     }
 }

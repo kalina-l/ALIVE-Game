@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Personality {
 
-    private Dictionary<string, Condition> Conditions;
+    public Dictionary<string, Condition> Conditions;
     private Dictionary<string, Attribute> Attributes;
 
     private Dictionary<string, Activity> BaseActivities;

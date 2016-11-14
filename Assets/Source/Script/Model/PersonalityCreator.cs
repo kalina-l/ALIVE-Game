@@ -12,8 +12,8 @@ public class PersonalityCreator
 
     public PersonalityCreator(string ConditionThresholdsCSVpath, string ActionsNaturalRewardsCSVpath)
     {
-        _conditionThresholds = readCSV(ConditionThresholdsCSVpath);
-        _actionsNaturalRewards = readCSV(ActionsNaturalRewardsCSVpath);
+        _conditionThresholds = readCSV(Application.dataPath + ConditionThresholdsCSVpath);
+        _actionsNaturalRewards = readCSV(Application.dataPath + ActionsNaturalRewardsCSVpath);
 
 
 

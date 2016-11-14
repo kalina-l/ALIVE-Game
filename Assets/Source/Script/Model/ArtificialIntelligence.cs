@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArtificialIntelligence {
+public class ArtificialIntelligence
+{
 
     private Personality _personality;
 
@@ -12,13 +13,17 @@ public class ArtificialIntelligence {
     private bool _waitForAnswer;
     private float _feedbackTimer;
 
-    public ArtificialIntelligence(Personality personality)
+    private OutputViewController _textOutput;
+
+    public ArtificialIntelligence(Personality personality, OutputViewController textOutput)
     {
         _personality = personality;
+        _textOutput = textOutput;
     }
-	
-	// Update is called once per frame
-	public void TimeStep () {
+
+    // Update is called once per frame
+    public void TimeStep()
+    {
         if (!_waitForAnswer)
         {
             _timer += Time.deltaTime;
@@ -46,15 +51,38 @@ public class ArtificialIntelligence {
         Activity chosenActivity = null;
         int biggestValue = -5;
 
-        foreach(Activity activity in _personality.GetAllActivities())
+        foreach (Activity activity in _personality.GetAllActivities())
         {
-            if(activity.GetTotalReward() > biggestValue)
+            if (activity.GetTotalReward() > biggestValue)
             {
                 chosenActivity = activity;
                 biggestValue = activity.GetTotalReward();
             }
         }
-        
-		if (chosenActivity != null) chosenActivity.DoActivity(_personality);
+
+        if (chosenActivity != null) chosenActivity.DoActivity(_personality, _textOutput);
+    }
+
+    public void ReceiveFeedback(int feedback)
+    {
+        if (_waitForAnswer)
+        {
+            switch (feedback)
+            {
+                case -1:
+                    _textOutput.DisplayMessage("It seems to feel bad about it.");
+                    _waitForAnswer = false;
+                    break;
+                case 0:
+                    _textOutput.DisplayMessage("It stares blanky at you.");
+                    _waitForAnswer = false;
+                    break;
+                case 1:
+                    _textOutput.DisplayMessage("It claps its hands in glee.");
+                    _waitForAnswer = false;
+                    break;
+            }
+            
+        }
     }
 }

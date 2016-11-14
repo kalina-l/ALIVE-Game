@@ -32,4 +32,9 @@ public class Condition {
 		}
 		return Evaluation.SUPER_GOOD;
 	}
+
+    public float GetSliderValue()
+    {
+        return (float)(_value + 100f) / 200f;
+    }
 }
