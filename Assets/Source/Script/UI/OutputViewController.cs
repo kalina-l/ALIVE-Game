@@ -31,7 +31,7 @@ public class OutputViewController : AbstractViewController {
     {
         OutputText.text += msg + "\n" + "\n";
 
-        if (messages > 4)
+        if (messages > 2)
         {
             OutputText.rectTransform.anchoredPosition += Vector2.up * 90;
             OutputText.rectTransform.sizeDelta += Vector2.up * 90;

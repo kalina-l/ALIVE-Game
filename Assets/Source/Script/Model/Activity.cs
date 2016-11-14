@@ -33,10 +33,26 @@ public class Activity {
         //Change the Conditions of the Personality, depending on the Action
         foreach(KeyValuePair<string, int> reward in Rewards)
         {
-			parentPersonality.GetCondition(reward.Key).value += reward.Value;
+            parentPersonality.GetCondition(reward.Key).value += reward.Value;
         }
 
         textOutput.DisplayMessage(_feedBackString);
+    }
+
+    /*
+     * This method increases rewards for these conditions, which are currently low. 
+     */
+    public int GetWeightedReward(Personality personality) {
+        int weightedReward = 0;
+        string benefits = "Benefits of '" + _feedBackString + "' are: ";
+        foreach (KeyValuePair<string, Condition> condition in personality.GetConditions()) {
+            // print rewards unequal 0
+            int addedValue = (100 - condition.Value.value) * Rewards[condition.Key];
+            if(addedValue != 0) benefits += (condition.Key + ": " + addedValue + ", ");
+            weightedReward += addedValue;
+        }
+        Debug.Log(benefits);
+        return weightedReward;
     }
 
     public int GetTotalReward()

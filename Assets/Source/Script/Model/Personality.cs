@@ -52,7 +52,11 @@ public class Personality {
 
         return null;
     }
-    
+
+    public Dictionary<string, Condition> GetConditions() {
+        return Conditions;
+    }
+
     public Attribute GetAttribute(string name)
     {
         if (Attributes.ContainsKey(name))
@@ -130,5 +134,17 @@ public class Personality {
         }
     }
 
+    public void naturalStateReduction() {
+        Conditions["HUNGER"].value -= 3;
+        Conditions["ENERGY"].value -= 2;
+        Conditions["SOCIAL"].value -= 1;
+    }
 
+    public void printConditions() {
+        string conditions = "";
+        foreach (KeyValuePair<string, Condition> condition in Conditions) {
+            conditions += condition.Key + ": " + condition.Value.value + ", ";
+        }
+        Debug.Log(conditions);
+    }
 }
