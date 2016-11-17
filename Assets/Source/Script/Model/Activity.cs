@@ -7,10 +7,21 @@ public class Activity {
     public Dictionary<string, int> Rewards;
 
     private string _feedBackString;
-
-	public Activity(string feedBackString)
+    public string feedBackString 
     {
-        _feedBackString = feedBackString;
+            get
+        {
+                return _feedBackString;
+            }
+            set
+        {
+                _feedBackString = value;
+            }
+        }
+
+        public Activity(string feedBackString)
+    {
+        this.feedBackString = feedBackString;
         Rewards = new Dictionary<string, int>();
     }
 
@@ -36,7 +47,7 @@ public class Activity {
             parentPersonality.GetCondition(reward.Key).value += reward.Value;
         }
 
-        textOutput.DisplayMessage(_feedBackString);
+        textOutput.DisplayMessage(feedBackString);
     }
 
     /*
@@ -44,7 +55,7 @@ public class Activity {
      */
     public int GetWeightedReward(Personality personality) {
         int weightedReward = 0;
-        string benefits = "Benefits of '" + _feedBackString + "' are: ";
+        string benefits = "Benefits of '" + feedBackString + "' are: ";
         foreach (KeyValuePair<string, Condition> condition in personality.GetConditions()) {
             // print rewards unequal 0
             int addedValue = (100 - condition.Value.value) * Rewards[condition.Key];

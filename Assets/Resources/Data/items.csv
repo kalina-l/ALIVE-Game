@@ -1,0 +1,7 @@
+ItemActionsRewards;HEALTHINESS;HUNGER;SATISFACTION;SOCIAL;ENERGY;feedBackString
+Ball:EAT;-5;3;-3;-3;-2;It eats the ball.
+Ball:PLAY;0;-10;25;20;-10;It plays with the ball.
+Doll:EAT;-7;1;-5;-20;-10;It eats the doll.
+Doll:PLAY;0;-5;20;25;-5;It plays with the doll.
+Cake:EAT;5;25;10;0;2;It eats the cake.
+Cake:PLAY;0;-3;10;10;-2;It plays with the cake.

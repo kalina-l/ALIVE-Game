@@ -2,75 +2,124 @@
 using System.Collections;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 public class PersonalityCreator
 {
+    public static readonly string ConditionIdentifier = "ConditionThresholds";
+    public static readonly int ConditionStart = 100;
+    public static readonly string AttributeIdentifier = "Attributes";
+    public static readonly int MinAttribute = 1;
+    public static readonly int MaxAttribute = 20;
+    public static readonly string BaseActivityIdentifier = "BaseActivities";
+
     private Personality _personality;
-
-    private int[][] _conditionThresholds;       //[0]healthiness, [1]hunger, [2]satisfaction, [3]social, [4]energy
-    private int[][] _actionsNaturalRewards;     //[i][0]eatBall, [i][1]eatFood, [i][2]sleep, [i][3]playBall, [i][4]playCake, [i][5]eatDoll, [i][6]playDoll
-
-    public PersonalityCreator(string ConditionThresholdsCSVpath, string ActionsNaturalRewardsCSVpath)
+    public Personality personality
     {
-        _conditionThresholds = readCSV(Application.dataPath + ConditionThresholdsCSVpath);
-        _actionsNaturalRewards = readCSV(Application.dataPath + ActionsNaturalRewardsCSVpath);
-
-
-
-        _personality = new Personality()
-            .AddAttribute("STRENGTH", new Attribute(10, 1, 20))
-            .AddAttribute("CHARISMA", new Attribute(10, 1, 20))
-            .AddAttribute("INTELLIGENCE", new Attribute(10, 1, 20))
-            .AddAttribute("CONSTITUTION", new Attribute(10, 1, 20))
-            .AddAttribute("WISDOM", new Attribute(10, 1, 20))
-
-            .AddCondition("HEALTHINESS", new Condition(100, _conditionThresholds[0]))
-            .AddCondition("HUNGER", new Condition(100, _conditionThresholds[1]))
-            .AddCondition("SOCIAL", new Condition(100, _conditionThresholds[3]))
-            .AddCondition("ENERGY", new Condition(100, _conditionThresholds[4]))
-            .AddCondition("SATISFACTION", new Condition(100, _conditionThresholds[2]));
-
-        _personality.AddBaseActivity("SLEEP", new Activity("It falls asleep")
-            .AddReward("HEALTHINESS", _actionsNaturalRewards[0][2])
-            .AddReward("HUNGER", _actionsNaturalRewards[1][2])
-            .AddReward("SOCIAL", _actionsNaturalRewards[3][2])
-            .AddReward("ENERGY", _actionsNaturalRewards[4][2])
-            .AddReward("SATISFACTION", _actionsNaturalRewards[2][2]));
+        get
+        {
+            return _personality;
+        }
     }
 
-    private int[][] readCSV(string pathCSV)
+    private string[][] _personalityCSV;
+
+    private Dictionary<string, int> _attributes;
+    private Dictionary<string, int[]> _conditionThresholds;
+    private Dictionary<string, Activity> _baseActivities;
+
+    public PersonalityCreator(string personalityCSVPath)
     {
-        int[][] _data;
-        string[] _lines;
-        int[] _values;
+        _personalityCSV = CSV.read(Application.dataPath + personalityCSVPath);
 
-        if (File.Exists(pathCSV))
+        getAllPersonalityData(_personalityCSV);
+
+        _personality = new Personality();
+
+        foreach(KeyValuePair<string, int> attribute in _attributes)
         {
-            _lines = File.ReadAllLines(pathCSV);
-            _data = new int[_lines.Length][];
+            _personality.AddAttribute(attribute.Key, new Attribute(attribute.Value, MinAttribute, MaxAttribute));
+        }
 
-            for(int i = 0; i < _lines.Length; i++)
+        foreach(KeyValuePair<string, int[]> conditionThreshold in _conditionThresholds)
+        {
+            _personality.AddCondition(conditionThreshold.Key, new Condition(ConditionStart, conditionThreshold.Value));
+        }
+
+        foreach (KeyValuePair<string, Activity> baseActivity in _baseActivities)
+        {
+            _personality.AddBaseActivity(baseActivity.Key, baseActivity.Value);
+        }
+
+    } 
+
+    private void getAllPersonalityData(string[][] personalityCSV)
+    {
+        _attributes = new Dictionary<string, int>();
+        _conditionThresholds = new Dictionary<string, int[]>();
+        int[] thresholds;
+        _baseActivities = new Dictionary<string, Activity>();
+        Activity activity;
+
+        int start = -1;
+        string identifier = null;
+
+        for (int i = 0; (i < personalityCSV.GetLength(0)) && (start == -1); i++)
+        {
+            if(Array.IndexOf(personalityCSV[i], AttributeIdentifier) != -1)
             {
-                _values = Array.ConvertAll<string, int>(_lines[i].Split(';'), int.Parse);
-                _data[i] = new int[_values.Length];
-
-                for (int j = 0; j < _values.Length; j++)
-                {
-                    _data[i][j] = _values[i];
-                }
+                start = i;
+                identifier = "attribute";
+            }
+            else if(Array.IndexOf(personalityCSV[i], ConditionIdentifier) != -1){
+                start = i;
+                identifier = "condition";
+            }
+            else if(Array.IndexOf(personalityCSV[i], BaseActivityIdentifier) != -1)
+            {
+                start = i;
+                identifier = "baseActivity";
             }
 
-            return _data;
+            if (start != -1)
+            {
+                for (int k = start + 1; k < personalityCSV.GetLength(0) && !String.IsNullOrEmpty(personalityCSV[k][0]); k++)
+                {
+                    switch (identifier)
+                    {
+                        case "attribute":
+                            _attributes.Add(personalityCSV[k][0], Int32.Parse(personalityCSV[k][1]));
+                            break;
+                        case "condition":
+                            thresholds = new int[personalityCSV[k].Length - 1];
+                            for (int j = 1; j < personalityCSV[k].Length; j++)
+                            {
+                                thresholds[j - 1] = Int32.Parse(personalityCSV[k][j]);
+                            }
+                            _conditionThresholds.Add(personalityCSV[k][0], thresholds);
+                            break;
+                        case "baseActivity":
+                            activity = new Activity("");
+                            for (int j = 1; j < personalityCSV[k].Length; j++)
+                            {
+                                if (personalityCSV[start][j] != "feedBackString")
+                                {
+                                    activity.AddReward(personalityCSV[start][j], Int32.Parse(personalityCSV[k][j]));
+                                }
+                                else
+                                {
+                                    activity.feedBackString = personalityCSV[k][j];
+                                }
+                            }
+                            _baseActivities.Add(personalityCSV[k][0], activity);
+                            break;
+                        default:
+                            break;
+                    }
+                    i = k;
+                }
+            }
+            start = -1;
         }
-        else
-        {
-            Debug.LogError("CSV-File doesn't exist!");
-            throw new FileNotFoundException();
-        }
-    }
-
-    public Personality getPersonality()
-    {
-        return _personality;
     }
 }
