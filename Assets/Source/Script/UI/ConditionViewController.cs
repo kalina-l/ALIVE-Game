@@ -7,7 +7,7 @@ public class ConditionViewController : AbstractViewController {
 
     private GridLayoutGroup _grid;
     
-    private Dictionary<string, SliderViewController> _sliders;
+    private Dictionary<NeedType, SliderViewController> _sliders;
 
 	public ConditionViewController(Transform parent, Personality personality)
     {
@@ -22,15 +22,15 @@ public class ConditionViewController : AbstractViewController {
         _grid.cellSize = new Vector2(490, 128);
         _grid.spacing = new Vector2(20, 20);
 
-        _sliders = new Dictionary<string, SliderViewController>();
+        _sliders = new Dictionary<NeedType, SliderViewController>();
 
-        foreach (KeyValuePair<string, Condition> kvp in personality.Conditions)
+        foreach (KeyValuePair<NeedType, Need> kvp in personality.Conditions)
         {
 
             SliderViewController slider = new SliderViewController(
                 CreateContainer("Slider_" + kvp.Key, Rect,
                                 Vector2.zero, _grid.cellSize,
-                                Vector2.zero, Vector2.zero, Vector2.zero), kvp.Key);
+                                Vector2.zero, Vector2.zero, Vector2.zero), kvp.Key.ToString());
 
             _sliders[kvp.Key] = slider;
         }
@@ -39,9 +39,9 @@ public class ConditionViewController : AbstractViewController {
 
     public void UpdateSlider(Personality personality)
     {
-        foreach(KeyValuePair<string, SliderViewController> slider in _sliders)
+        foreach(KeyValuePair<NeedType, SliderViewController> slider in _sliders)
         {
-            Condition c = personality.GetCondition(slider.Key);
+            Need c = personality.GetCondition(slider.Key);
 
             if(c != null)
                 slider.Value.UpdateSlider(c.GetSliderValue());

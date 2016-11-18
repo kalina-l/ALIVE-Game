@@ -13,7 +13,7 @@ public class ApplicationManager : MonoBehaviour {
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
-    private Dictionary<string, Item> _items;
+    private Dictionary<int, Item> _items;
 
     private OutputViewController _output;
     private ConditionViewController _conditionMonitor;
@@ -31,12 +31,12 @@ public class ApplicationManager : MonoBehaviour {
 
         _intelligence = new ArtificialIntelligence(_personality, _output);
 
-        _items = new Dictionary<string, Item>();
+        _items = new Dictionary<int, Item>();
         List<Item> itemList = new ItemCreator(itemsCSVpath).items;
         foreach(Item item in itemList)
         {
-            _items[item.name] = item;
-            _personality.AddItem(item.name, item);
+            _items[item.ID] = item;
+            _personality.AddItem(item.ID, item);
         }
 
 

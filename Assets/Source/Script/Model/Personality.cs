@@ -4,88 +4,90 @@ using System.Collections.Generic;
 
 public class Personality {
 
-    public Dictionary<string, Condition> Conditions;
-    private Dictionary<string, Attribute> Attributes;
+    public Dictionary<NeedType, Need> Conditions;
+    private Dictionary<int, Activity> BaseActivities;
+    private Dictionary<int, Item> Items;
 
-    private Dictionary<string, Activity> BaseActivities;
-    private Dictionary<string, Item> Items;
+
+    private Dictionary<AttributeType, Attribute> Attributes;
+    
 
 	public Personality parent;
 	public List<Personality> children;
 
     public Personality()
     {
-        Conditions = new Dictionary<string, Condition>();
-        Attributes = new Dictionary<string, Attribute>();
-        BaseActivities = new Dictionary<string, Activity>();
-        Items = new Dictionary<string, Item>();
+        Conditions = new Dictionary<NeedType, Need>();
+        Attributes = new Dictionary<AttributeType, Attribute>();
+        BaseActivities = new Dictionary<int, Activity>();
+        Items = new Dictionary<int, Item>();
     }
 
     //Attributes
-    public Personality AddCondition(string name, Condition condition)
+    public Personality AddCondition(NeedType value, Need condition)
     {
-        Conditions[name] = condition;
+        Conditions[value] = condition;
 
         return this;
     }
 
-    public Personality AddAttribute(string name, Attribute attribute)
+    public Personality AddAttribute(AttributeType value, Attribute attribute)
     {
-        Attributes[name] = attribute;
+        Attributes[value] = attribute;
 
         return this;
     }
 
-    public Personality AddBaseActivity(string name, Activity activity)
+    public Personality AddBaseActivity(int id, Activity activity)
     {
-        BaseActivities[name] = activity;
+        BaseActivities[id] = activity;
 
         return this;
     }
 
     //Getter
-    public Condition GetCondition(string name)
+    public Need GetCondition(NeedType value)
     {
-        if (Conditions.ContainsKey(name))
+        if (Conditions.ContainsKey(value))
         {
-            return Conditions[name];
+            return Conditions[value];
         }
 
-        Debug.LogError("Condition " + name + " doesn't exist!");
+        Debug.LogError("Condition " + value + " doesn't exist!");
 
         return null;
     }
 
-    public Dictionary<string, Condition> GetConditions() {
+    public Dictionary<NeedType, Need> GetConditions() {
         return Conditions;
     }
 
-    public Attribute GetAttribute(string name)
+    public Attribute GetAttribute(AttributeType value)
     {
-        if (Attributes.ContainsKey(name))
+        if (Attributes.ContainsKey(value))
         {
-            return Attributes[name];
+            return Attributes[value];
         }
 
-        Debug.LogError("Attribute " + name + " doesn't exist!");
+        Debug.LogError("Attribute " + value + " doesn't exist!");
 
         return null;
     }
 
-    public Activity GetActivity(string name)
+    public Activity GetActivity(int id)
     {
-        if (BaseActivities.ContainsKey(name))
+        if (BaseActivities.ContainsKey(id))
         {
-            return BaseActivities[name];
+            return BaseActivities[id];
         }
 
-        foreach(KeyValuePair<string, Item> item in Items)
+        foreach(KeyValuePair<int, Item> item in Items)
         {
-            if (item.Value.GetActivity(name) != null)
-                return item.Value.GetActivity(name);
+            if (item.Value.GetActivity(id) != null)
+                return item.Value.GetActivity(id);
         }
 
-        Debug.LogError("Activity " + name + " doesn't exist!");
+        Debug.LogError("Activity " + id + " doesn't exist!");
 
         return null;
     }
@@ -94,12 +96,12 @@ public class Personality {
     {
         List<Activity> activities = new List<Activity>();
 
-        foreach (KeyValuePair<string, Activity> activity in BaseActivities)
+        foreach (KeyValuePair<int, Activity> activity in BaseActivities)
         {
             activities.Add(activity.Value);
         }
 
-        foreach (KeyValuePair<string, Item> item in Items)
+        foreach (KeyValuePair<int, Item> item in Items)
         {
             activities.AddRange(item.Value.GetAllActivities());
         }
@@ -107,33 +109,33 @@ public class Personality {
         return activities;
     }
 
-    public Item GetItem(string name)
+    public Item GetItem(int id)
     {
-        if (Items.ContainsKey(name))
+        if (Items.ContainsKey(id))
         {
-            return Items[name];
+            return Items[id];
         }
 
-        Debug.LogError("Item " + name + " doesn't exist!");
+        Debug.LogError("Item " + id + " doesn't exist!");
 
         return null;
     }
 
     //Actions
-    public void AddItem(string name, Item item)
+    public void AddItem(int id, Item item)
     {
-        Items[name] = item;
+        Items[id] = item;
     }
 
-    public void RemoveItem(string name)
+    public void RemoveItem(int id)
     {
-        if (Items.ContainsKey(name))
+        if (Items.ContainsKey(id))
         {
-            Items.Remove(name);
+            Items.Remove(id);
         }
         else
         {
-            Debug.LogWarning("Item " + name + " couldn't be removed, because it's not in the dictionary.");
+            Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionairy.");
         }
     }
 
@@ -142,15 +144,15 @@ public class Personality {
 	}
 
     public void naturalStateReduction() {
-        Conditions["HUNGER"].value -= 3;
-        Conditions["ENERGY"].value -= 2;
-        Conditions["SOCIAL"].value -= 1;
+        Conditions[NeedType.HUNGER].Value -= 3;
+        Conditions[NeedType.ENERGY].Value -= 2;
+        Conditions[NeedType.SOCIAL].Value -= 1;
     }
 
     public void printConditions() {
         string conditions = "";
-        foreach (KeyValuePair<string, Condition> condition in Conditions) {
-            conditions += condition.Key + ": " + condition.Value.value + ", ";
+        foreach (KeyValuePair<NeedType, Need> condition in Conditions) {
+            conditions += condition.Key + ": " + condition.Value.Value + ", ";
         }
         Debug.Log(conditions);
     }

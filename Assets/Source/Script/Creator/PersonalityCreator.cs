@@ -26,7 +26,7 @@ public class PersonalityCreator
 
     private Dictionary<string, int> _attributes;
     private Dictionary<string, int[]> _conditionThresholds;
-    private Dictionary<string, Activity> _baseActivities;
+    private Dictionary<int, Activity> _baseActivities;
 
     public PersonalityCreator(string personalityCSVPath)
     {
@@ -38,15 +38,15 @@ public class PersonalityCreator
 
         foreach(KeyValuePair<string, int> attribute in _attributes)
         {
-            _personality.AddAttribute(attribute.Key, new Attribute(attribute.Value, MinAttribute, MaxAttribute));
+            _personality.AddAttribute((AttributeType)Enum.Parse(typeof(AttributeType), attribute.Key), new Attribute(attribute.Value, MinAttribute, MaxAttribute));
         }
 
         foreach(KeyValuePair<string, int[]> conditionThreshold in _conditionThresholds)
         {
-            _personality.AddCondition(conditionThreshold.Key, new Condition(ConditionStart, conditionThreshold.Value));
+            _personality.AddCondition((NeedType)Enum.Parse(typeof(NeedType), conditionThreshold.Key), new Need(ConditionStart, conditionThreshold.Value));
         }
 
-        foreach (KeyValuePair<string, Activity> baseActivity in _baseActivities)
+        foreach (KeyValuePair<int, Activity> baseActivity in _baseActivities)
         {
             _personality.AddBaseActivity(baseActivity.Key, baseActivity.Value);
         }
@@ -58,7 +58,7 @@ public class PersonalityCreator
         _attributes = new Dictionary<string, int>();
         _conditionThresholds = new Dictionary<string, int[]>();
         int[] thresholds;
-        _baseActivities = new Dictionary<string, Activity>();
+        _baseActivities = new Dictionary<int, Activity>();
         Activity activity;
 
         int start = -1;
@@ -104,14 +104,14 @@ public class PersonalityCreator
                             {
                                 if (personalityCSV[start][j] != "feedBackString")
                                 {
-                                    activity.AddReward(personalityCSV[start][j], Int32.Parse(personalityCSV[k][j]));
+                                    activity.AddReward((NeedType)Enum.Parse(typeof(NeedType), personalityCSV[start][j]), Int32.Parse(personalityCSV[k][j]));
                                 }
                                 else
                                 {
                                     activity.feedBackString = personalityCSV[k][j];
                                 }
                             }
-                            _baseActivities.Add(personalityCSV[k][0], activity);
+                            _baseActivities.Add(int.Parse(personalityCSV[k][0]), activity);
                             break;
                         default:
                             break;

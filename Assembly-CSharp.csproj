@@ -63,18 +63,24 @@
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\UIWebcamSource.cs" />
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSource.cs" />
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSourceBase.cs" />
-     <Compile Include="Assets\Source\Script\AI\Intelligence.cs" />
-     <Compile Include="Assets\Source\Script\AI\StupidIntelligence.cs" />
+     <Compile Include="Assets\Source\Script\AI\ArtificialIntelligence.cs" />
      <Compile Include="Assets\Source\Script\ApplicationManager.cs" />
+     <Compile Include="Assets\Source\Script\Creator\CSV.cs" />
+     <Compile Include="Assets\Source\Script\Creator\ItemCreator.cs" />
+     <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
      <Compile Include="Assets\Source\Script\Model\Activity.cs" />
-     <Compile Include="Assets\Source\Script\Model\ArtificialIntelligence.cs" />
      <Compile Include="Assets\Source\Script\Model\Attribute.cs" />
+<<<<<<< HEAD
+     <Compile Include="Assets\Source\Script\Model\Item.cs" />
+     <Compile Include="Assets\Source\Script\Model\Need.cs" />
+=======
      <Compile Include="Assets\Source\Script\Model\CSV.cs" />
      <Compile Include="Assets\Source\Script\Model\Condition.cs" />
      <Compile Include="Assets\Source\Script\Model\Item.cs" />
      <Compile Include="Assets\Source\Script\Model\ItemCreator.cs" />
+>>>>>>> 9944daea1c8203eda0c01c29793ae0424a4edc01
      <Compile Include="Assets\Source\Script\Model\Personality.cs" />
-     <Compile Include="Assets\Source\Script\Model\PersonalityCreator.cs" />
+     <Compile Include="Assets\Source\Script\Model\Reward.cs" />
      <Compile Include="Assets\Source\Script\Scene\Ball.cs" />
      <Compile Include="Assets\Source\Script\Scene\Food.cs" />
      <Compile Include="Assets\Source\Script\Scene\SceneManager.cs" />
@@ -87,7 +93,6 @@
      <Compile Include="Assets\Source\Script\UI\OutputViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\SliderViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\ToggleViewController.cs" />
-     <Compile Include="Assets\Source\Script\UI\UIManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
