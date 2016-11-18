@@ -101,7 +101,7 @@ public class ArtificialIntelligence
 
 	public void chooseBestFuturePersonality () {
 		lastCalculatedPersonalities.Clear ();
-		calcLastFuturePersonalities ();
+		calcLastFuturePersonalities (_personality);
 		int counter = 0;
 		int biggestReward = int.MinValue;
 		for (int i = 0; i < lastCalculatedPersonalities.Count; i++) {

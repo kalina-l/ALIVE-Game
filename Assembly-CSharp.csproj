@@ -70,15 +70,8 @@
      <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
      <Compile Include="Assets\Source\Script\Model\Activity.cs" />
      <Compile Include="Assets\Source\Script\Model\Attribute.cs" />
-<<<<<<< HEAD
      <Compile Include="Assets\Source\Script\Model\Item.cs" />
      <Compile Include="Assets\Source\Script\Model\Need.cs" />
-=======
-     <Compile Include="Assets\Source\Script\Model\CSV.cs" />
-     <Compile Include="Assets\Source\Script\Model\Condition.cs" />
-     <Compile Include="Assets\Source\Script\Model\Item.cs" />
-     <Compile Include="Assets\Source\Script\Model\ItemCreator.cs" />
->>>>>>> 9944daea1c8203eda0c01c29793ae0424a4edc01
      <Compile Include="Assets\Source\Script\Model\Personality.cs" />
      <Compile Include="Assets\Source\Script\Model\Reward.cs" />
      <Compile Include="Assets\Source\Script\Scene\Ball.cs" />
