@@ -10,6 +10,9 @@ public class Personality {
     private Dictionary<string, Activity> BaseActivities;
     private Dictionary<string, Item> Items;
 
+	public Personality parent;
+	public List<Personality> children;
+
     public Personality()
     {
         Conditions = new Dictionary<string, Condition>();
@@ -130,9 +133,13 @@ public class Personality {
         }
         else
         {
-            Debug.LogWarning("Item " + name + " couldn't be removed, because it's not in the dictionairy.");
+            Debug.LogWarning("Item " + name + " couldn't be removed, because it's not in the dictionary.");
         }
     }
+
+	public int Evaluation(){
+		return 0;
+	}
 
     public void naturalStateReduction() {
         Conditions["HUNGER"].value -= 3;

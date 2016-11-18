@@ -50,6 +50,17 @@ public class Activity {
         textOutput.DisplayMessage(feedBackString);
     }
 
+	public void DoActivity(Personality parentPersonality)
+	{
+		//Change the Conditions of the Personality, depending on the Action
+		foreach(KeyValuePair<string, int> reward in Rewards)
+		{
+			parentPersonality.GetCondition(reward.Key).value += reward.Value;
+		}
+	}
+
+
+	// TODO: Rewards methods not needed anymore?
     /*
      * This method increases rewards for these conditions, which are currently low. 
      */
