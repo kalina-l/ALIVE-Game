@@ -64,7 +64,7 @@ public class ItemCreator {
                                 {
                                     if (itemsCSV[start][j] != "feedBackString")
                                     {
-                                        activity.AddReward((NeedType)Enum.Parse(typeof(NeedType), itemsCSV[start][j]), Int32.Parse(itemsCSV[k][j]));
+                                        activity.AddReward(new Reward());
                                     }
                                     else
                                     {

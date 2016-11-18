@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ArtificialIntelligence
 {
@@ -9,9 +10,14 @@ public class ArtificialIntelligence
     public float ActionInterval = 5;
     public float FeedbackInterval = 5;
 
-    private float _timer;
+	private float _actionTimer;
     private bool _waitForAnswer;
     private float _feedbackTimer;
+
+	public float treeConstructionDuration = 5; // in sec
+	public bool treeConstruction;
+
+	List<Personality> lastCalculatedPersonalities = new List<Personality>(); 
 
     private OutputViewController _textOutput;
 
@@ -26,15 +32,14 @@ public class ArtificialIntelligence
     {
         if (!_waitForAnswer)
         {
-            _timer += Time.deltaTime;
+            _actionTimer += Time.deltaTime;
 
-            if (_timer > ActionInterval)
+            if (_actionTimer > ActionInterval)
             {
                 _personality.printConditions();
-                if(!decideOnAction())
-                    _personality.naturalStateReduction();
+				decideOnAction ();
                 _waitForAnswer = true;
-                _timer = 0;
+                _actionTimer = 0;
             }
         }
         else
@@ -48,28 +53,70 @@ public class ArtificialIntelligence
         }
     }
 
-    public bool decideOnAction()
-    {
-        Activity chosenActivity = null;
-        int biggestValue = int.MinValue;
+	public void decideOnAction()
+	{   
+		createPersonalityTree ();
+		Personality bestFuturePersonality = chooseBestFuturePersonality ();
+		int activityID = bestFuturePersonality.parentActionID;
 
-        foreach (Activity activity in _personality.GetAllActivities())
-        {
-            int weightedReward = activity.GetWeightedReward(_personality);
-            if (weightedReward > biggestValue)
-            {
-                chosenActivity = activity;
-                biggestValue = weightedReward;
-            }
-        }
-
-        if (chosenActivity != null)
-        {
-            chosenActivity.DoActivity(_personality, _textOutput);
-            return true;
-        }
-        else return false;
+		_personality.GetActivity(activityID).DoActivity (_personality, _textOutput);
     }
+
+	public void createPersonalityTree() {
+
+		treeConstruction = true;
+		ApplicationManager.Instance.StartCoroutine (treeConstructionCoroutine());
+
+		_personality.children.Clear ();
+		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
+		leafsToEvaluate.Enqueue (_personality);
+
+		foreach (Personality leafToEvaluate in leafsToEvaluate) {
+			if (treeConstruction) {
+				foreach (Activity activity in leafToEvaluate.GetAllActivities()) {
+					Personality changedPersonality = new Personality (leafToEvaluate, activity.ID); //TODO: change constr dont forget set children and parent
+					activity.DoActivity (changedPersonality);
+					leafToEvaluate.children.Add (changedPersonality);
+				}
+
+				leafsToEvaluate.Dequeue ();
+			}
+		}
+	}
+
+	public Personality chooseBestFuturePersonality () {
+		lastCalculatedPersonalities.Clear ();
+		calcLastFuturePersonalities (_personality);
+		int counter = 0;
+		int biggestReward = int.MinValue;
+		for (int i = 0; i < lastCalculatedPersonalities.Count; i++) {
+			if (biggestReward < lastCalculatedPersonalities[i].Evaluation()){
+				biggestReward = lastCalculatedPersonalities [i].Evaluation ();
+				counter = i;
+			}
+		}
+		Personality bestFuturePersonality = lastCalculatedPersonalities [counter];
+		Personality currParent;
+		while (bestFuturePersonality.parent != _personality) {
+			bestFuturePersonality = bestFuturePersonality.parent;
+		}
+		return bestFuturePersonality;
+	}
+
+	public void calcLastFuturePersonalities (Personality personality) {
+		if (personality.children.Count == 0) {
+			lastCalculatedPersonalities.Add (personality);
+		} else {
+			foreach (Personality childPersonality in personality.children){
+				calcLastFuturePersonalities (childPersonality);
+			}
+		}
+	}
+
+	IEnumerator treeConstructionCoroutine(){
+		yield return new WaitForSeconds (treeConstructionDuration);
+		treeConstruction = false;
+	}
 
     public void ReceiveFeedback(int feedback)
     {

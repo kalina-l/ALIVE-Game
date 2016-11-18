@@ -52,4 +52,5 @@ public class ApplicationManager : MonoBehaviour {
         _intelligence.TimeStep();
         _conditionMonitor.UpdateSlider(_personality);
     }
+
 }

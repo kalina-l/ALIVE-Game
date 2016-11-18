@@ -52,4 +52,12 @@ public class Activity {
 
         textOutput.DisplayMessage(feedBackString);
     }
+
+    public void DoActivity(Personality parentPersonality)
+    {
+        foreach (Reward reward in RewardList)
+        {
+            reward.DoReward(parentPersonality);
+        }
+    }
 }
