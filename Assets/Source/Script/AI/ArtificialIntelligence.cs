@@ -37,8 +37,7 @@ public class ArtificialIntelligence
             if (_actionTimer > ActionInterval)
             {
                 _personality.printConditions();
-                if(!decideOnAction())
-                    _personality.naturalStateReduction();
+				decideOnAction ();
                 _waitForAnswer = true;
                 _actionTimer = 0;
             }
@@ -54,27 +53,13 @@ public class ArtificialIntelligence
         }
     }
 
-	public bool decideOnAction()
-    {
-        Activity chosenActivity = null;
-        int biggestValue = int.MinValue;
+	public void decideOnAction()
+	{   
+		createPersonalityTree ();
+		Personality bestFuturePersonality = chooseBestFuturePersonality ();
+		int activityID = bestFuturePersonality.parentActionID;
 
-        foreach (Activity activity in _personality.GetAllActivities())
-        {
-            int weightedReward = activity.GetWeightedReward(_personality);
-            if (weightedReward > biggestValue)
-            {
-                chosenActivity = activity;
-                biggestValue = weightedReward;
-            }
-        }
-
-        if (chosenActivity != null)
-        {
-            chosenActivity.DoActivity(_personality, _textOutput);
-            return true;
-        }
-        else return false;
+		_personality.GetActivity(activityID).DoActivity (_personality, _textOutput);
     }
 
 	public void createPersonalityTree() {
@@ -89,7 +74,7 @@ public class ArtificialIntelligence
 		foreach (Personality leafToEvaluate in leafsToEvaluate) {
 			if (treeConstruction) {
 				foreach (Activity activity in leafToEvaluate.GetAllActivities()) {
-					Personality changedPersonality = new Personality (); //TODO: change constr dont forget set children and parent
+					Personality changedPersonality = new Personality (leafToEvaluate, activity.ID); //TODO: change constr dont forget set children and parent
 					activity.DoActivity (changedPersonality);
 					leafToEvaluate.children.Add (changedPersonality);
 				}
@@ -99,7 +84,7 @@ public class ArtificialIntelligence
 		}
 	}
 
-	public void chooseBestFuturePersonality () {
+	public Personality chooseBestFuturePersonality () {
 		lastCalculatedPersonalities.Clear ();
 		calcLastFuturePersonalities (_personality);
 		int counter = 0;
@@ -115,7 +100,7 @@ public class ArtificialIntelligence
 		while (bestFuturePersonality.parent != _personality) {
 			bestFuturePersonality = bestFuturePersonality.parent;
 		}
-		// TODO chose correct action
+		return bestFuturePersonality;
 	}
 
 	public void calcLastFuturePersonalities (Personality personality) {

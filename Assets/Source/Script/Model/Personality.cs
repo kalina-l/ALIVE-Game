@@ -5,15 +5,14 @@ using System.Collections.Generic;
 public class Personality {
 
     public Dictionary<NeedType, Need> Conditions;
-    private Dictionary<int, Activity> BaseActivities;
-    private Dictionary<int, Item> Items;
-
+	public Dictionary<int, Activity> BaseActivities;
+    public Dictionary<int, Item> Items;
 
     private Dictionary<AttributeType, Attribute> Attributes;
     
-
 	public Personality parent;
-	public List<Personality> children;
+	public List<Personality> children = new List<Personality>();
+	public int parentActionID;
 
     public Personality()
     {
@@ -22,6 +21,14 @@ public class Personality {
         BaseActivities = new Dictionary<int, Activity>();
         Items = new Dictionary<int, Item>();
     }
+
+	public Personality(Personality parent, int parentActionID){
+		Conditions = parent.Conditions;
+		BaseActivities = parent.BaseActivities;
+		Items = parent.Items;
+		this.parent = parent;
+		this.parentActionID = parentActionID;
+	}
 
     //Attributes
     public Personality AddCondition(NeedType value, Need condition)
@@ -58,9 +65,6 @@ public class Personality {
         return null;
     }
 
-    public Dictionary<NeedType, Need> GetConditions() {
-        return Conditions;
-    }
 
     public Attribute GetAttribute(AttributeType value)
     {
@@ -109,6 +113,10 @@ public class Personality {
         return activities;
     }
 
+	public Dictionary<int, Item> GetItems() {
+		return Items;
+	}
+
     public Item GetItem(int id)
     {
         if (Items.ContainsKey(id))
@@ -142,12 +150,6 @@ public class Personality {
 	public int Evaluation(){
 		return 0;
 	}
-
-    public void naturalStateReduction() {
-        Conditions[NeedType.HUNGER].Value -= 3;
-        Conditions[NeedType.ENERGY].Value -= 2;
-        Conditions[NeedType.SOCIAL].Value -= 1;
-    }
 
     public void printConditions() {
         string conditions = "";
