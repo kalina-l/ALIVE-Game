@@ -5,7 +5,10 @@ using System.Collections.Generic;
 public class Activity {
     public int ID { get; set; }
     public string Name { get; set; }
-    public Dictionary<NeedType, int> Rewards;
+
+    public List<Reward> RewardList;
+
+    public List<Reward> ExpectedRewardList;
 
     private string _feedBackString;
     public string feedBackString 
@@ -23,18 +26,18 @@ public class Activity {
     public Activity(string feedBackString)
     {
         this.feedBackString = feedBackString;
-        Rewards = new Dictionary<NeedType, int>();
+        RewardList = new List<Reward>();
     }
 
-    public Activity AddReward(NeedType conditionIdentifier, int rewardValue)
+    public Activity AddReward(Reward reward)
     {
-        if(!Rewards.ContainsKey(conditionIdentifier))
+        if(!RewardList.Contains(reward))
         {
-            Rewards[conditionIdentifier] = rewardValue;
+            RewardList.Add(reward);
         }
         else
         {
-            Debug.LogWarning(conditionIdentifier + " is already added as a reward");
+            Debug.LogWarning(reward.ID + " is already added as a reward");
         }
 
         return this;
@@ -42,45 +45,11 @@ public class Activity {
 
 	public void DoActivity(Personality parentPersonality, OutputViewController textOutput)
     {
-        //Change the Conditions of the Personality, depending on the Action
-        foreach(KeyValuePair<NeedType, int> reward in Rewards)
+        foreach(Reward reward in RewardList)
         {
-            parentPersonality.GetCondition(reward.Key).Value += reward.Value;
+            reward.DoReward(parentPersonality);
         }
 
         textOutput.DisplayMessage(feedBackString);
-    }
-
-    /*
-     * This method increases rewards for these conditions, which are currently low. 
-     */
-    public int GetWeightedReward(Personality personality) {
-        int weightedReward = 0;
-        string benefits = "Benefits of '" + feedBackString + "' are: ";
-        foreach (KeyValuePair<NeedType, Need> condition in personality.GetConditions()) {
-            // print rewards unequal 0
-            int addedValue = (100 - condition.Value.Value) * Rewards[condition.Key];
-            if(addedValue != 0) benefits += (condition.Key + ": " + addedValue + ", ");
-            weightedReward += addedValue;
-        }
-        Debug.Log(benefits + weightedReward);
-        return weightedReward;
-    }
-
-	public int getExpectedReward(){
-		//TODO: change total reward to expected reward
-		return GetTotalReward ();
-	}
-
-    public int GetTotalReward()
-    {
-        int returnValue = 0;
-
-        foreach (KeyValuePair<NeedType, int> reward in Rewards)
-        {
-            returnValue += reward.Value;
-        }
-
-        return returnValue;
     }
 }
