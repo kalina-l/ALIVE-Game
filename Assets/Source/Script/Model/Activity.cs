@@ -67,6 +67,11 @@ public class Activity {
         return weightedReward;
     }
 
+	public int getExpectedReward(){
+		//TODO: change total reward to expected reward
+		return GetTotalReward ();
+	}
+
     public int GetTotalReward()
     {
         int returnValue = 0;
