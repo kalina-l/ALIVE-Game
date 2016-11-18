@@ -4,35 +4,35 @@ using System.Collections.Generic;
 
 public class Item  {
 
-    private string _name;
-    public string name { get; set; }
+    public int ID { get; set; }
+    public string Name { get; set; }
 
-    public Dictionary<string, Activity> Activities;
+    public Dictionary<int, Activity> Activities;
 
 	public Item()
     {
-        Activities = new Dictionary<string, Activity>();
+        Activities = new Dictionary<int, Activity>();
     }
 
-    public Item AddActivity(string name, Activity activity)
+    public Item AddActivity(int id, Activity activity)
     {
-        if (!Activities.ContainsKey(name))
+        if (!Activities.ContainsKey(id))
         {
-            Activities[name] = activity;
+            Activities[id] = activity;
         }
         else
         {
-            Debug.LogWarning(name + " is already added as a Activity");
+            Debug.LogWarning(activity.Name + " is already added as a Activity");
         }
 
         return this;
     }
 
-    public Activity GetActivity(string name)
+    public Activity GetActivity(int id)
     {
-        if (Activities.ContainsKey(name))
+        if (Activities.ContainsKey(id))
         {
-            return Activities[name];
+            return Activities[id];
         }
 
         return null;
@@ -42,7 +42,7 @@ public class Item  {
     {
         List<Activity> activities = new List<Activity>();
 
-        foreach (KeyValuePair<string, Activity> activity in Activities)
+        foreach (KeyValuePair<int, Activity> activity in Activities)
         {
             activities.Add(activity.Value);
         }

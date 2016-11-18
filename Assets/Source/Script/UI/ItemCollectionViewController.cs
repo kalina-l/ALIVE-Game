@@ -8,7 +8,7 @@ public class ItemCollectionViewController : AbstractViewController {
     private GridLayoutGroup _grid;
     private Personality _personality;
 
-    public ItemCollectionViewController(Transform parent, Dictionary<string, Item> items, Personality personality)
+    public ItemCollectionViewController(Transform parent, Dictionary<int, Item> items, Personality personality)
     {
         _personality = personality;
 
@@ -23,19 +23,19 @@ public class ItemCollectionViewController : AbstractViewController {
         _grid.cellSize = new Vector2(490, 128);
         _grid.spacing = new Vector2(20, 20);
 
-        foreach (KeyValuePair<string, Item> kvp in items)
+        foreach (KeyValuePair<int, Item> kvp in items)
         {
 
-            string tempString = kvp.Key;
+            int tempKey = kvp.Key;
             Item tempItem = kvp.Value;
 
             ToggleViewController toggle = new ToggleViewController(
-                CreateContainer("Toggle_" + kvp.Key, Rect,
+                CreateContainer("Toggle_" + tempItem.Name, Rect,
                                 Vector2.zero, _grid.cellSize,
                                 Vector2.zero, Vector2.zero, Vector2.zero),
-                kvp.Key,
-                delegate { _personality.RemoveItem(tempString); Debug.Log("Take " + tempString); },
-                delegate { _personality.AddItem(tempString, tempItem); Debug.Log("Give " + tempString); });
+                tempItem.Name,
+                delegate { _personality.RemoveItem(tempKey); Debug.Log("Take " + tempItem.Name); },
+                delegate { _personality.AddItem(tempKey, tempItem); Debug.Log("Give " + tempItem.Name); });
             
         }
     }

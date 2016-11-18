@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum AttributeType { STRENGTH, WISDOM, INTELLIGENCE, CONSTITUTION, CHARISMA};
+
 public class Attribute {
+
+    public AttributeType Identifier { get; set; }
 
     private int _value;
     private int _min;

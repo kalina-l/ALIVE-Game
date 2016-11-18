@@ -46,7 +46,7 @@ public class ItemCreator {
                             itemAction = itemsCSV[k][0].Split(':');
                             foreach(Item itemName in items)
                             {
-                                if (itemName.name.Equals(itemAction[0]))
+                                if (itemName.Name.Equals(itemAction[0]))
                                 {
                                     itemExists = true;
                                     item = itemName;
@@ -55,7 +55,7 @@ public class ItemCreator {
                             if (itemExists == false)
                             {
                                 item = new Item();
-                                item.name = itemAction[0];
+                                item.Name = itemAction[0];
                             }
 
                             activity = new Activity("");
@@ -64,14 +64,14 @@ public class ItemCreator {
                                 {
                                     if (itemsCSV[start][j] != "feedBackString")
                                     {
-                                        activity.AddReward(itemsCSV[start][j], Int32.Parse(itemsCSV[k][j]));
+                                        activity.AddReward((NeedType)Enum.Parse(typeof(NeedType), itemsCSV[start][j]), Int32.Parse(itemsCSV[k][j]));
                                     }
                                     else
                                     {
                                         activity.feedBackString = itemsCSV[k][j];
                                     }
                                 }
-                            item.AddActivity(itemAction[1], activity);
+                            item.AddActivity(int.Parse(itemAction[1]), activity);
                             if(itemExists == false)
                             {
                                 items.Add(item);
