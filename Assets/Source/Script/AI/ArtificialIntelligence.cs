@@ -82,6 +82,19 @@ public class ArtificialIntelligence
 				leafsToEvaluate.Dequeue ();
 			}
 		}
+
+		while (leafsToEvaluate.Count != 0) {
+			Personality currPer = leafsToEvaluate.Dequeue ();
+			if (treeConstruction) {
+				foreach (Activity activity in currPer) {
+					Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
+					activity.DoActivity (changedPersonality);
+					currPer.children.Add (changedPersonality);
+					leafsToEvaluate.Enqueue (changedPersonality);
+				}
+			} else
+				break;
+		}
 	}
 
 	public Personality chooseBestFuturePersonality () {
