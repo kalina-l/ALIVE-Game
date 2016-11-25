@@ -28,6 +28,11 @@ public class Need {
 		this.thresholds = thresholds;
 	}
 
+    public Need Copy()
+    {
+      return new Need(Value, thresholds);
+    }
+
 	public Evaluation getEvaluation () {
 		for(int i = 0; i < thresholds.Length; i++){
 			if (Value < thresholds [i])

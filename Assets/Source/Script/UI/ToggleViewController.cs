@@ -30,6 +30,8 @@ public class ToggleViewController : AbstractViewController {
         text.text = identifier;
         text.raycastTarget = false;
 
+        _isOn = true;
+
         Toggle();
     }
 

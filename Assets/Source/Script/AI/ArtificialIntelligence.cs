@@ -7,14 +7,14 @@ public class ArtificialIntelligence
 
     private Personality _personality;
 
-    public float ActionInterval = 5;
-    public float FeedbackInterval = 5;
+    public float ActionInterval = 1.5f;
+    public float FeedbackInterval = 0.5f;
 
 	private float _actionTimer;
     private bool _waitForAnswer;
     private float _feedbackTimer;
 
-	public float treeConstructionDuration = 5; // in sec
+	public float treeConstructionDuration = 0.5f; // in sec
 	public bool treeConstruction;
 
 	List<Personality> lastCalculatedPersonalities = new List<Personality>(); 
@@ -54,48 +54,58 @@ public class ArtificialIntelligence
     }
 
 	public void decideOnAction()
-	{   
-		createPersonalityTree ();
-		Personality bestFuturePersonality = chooseBestFuturePersonality ();
-		int activityID = bestFuturePersonality.parentActionID;
-
-		_personality.GetActivity(activityID).DoActivity (_personality, _textOutput);
+	{
+        ApplicationManager.Instance.StartCoroutine(createPersonalityTree());
     }
 
-	public void createPersonalityTree() {
+	private IEnumerator createPersonalityTree() {
 
 		treeConstruction = true;
-		ApplicationManager.Instance.StartCoroutine (treeConstructionCoroutine());
+
+        float timer = 0;
 
 		_personality.children.Clear ();
 		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
 		leafsToEvaluate.Enqueue (_personality);
 
-		foreach (Personality leafToEvaluate in leafsToEvaluate) {
-			if (treeConstruction) {
-				foreach (Activity activity in leafToEvaluate.GetAllActivities()) {
-					Personality changedPersonality = new Personality (leafToEvaluate, activity.ID); //TODO: change constr dont forget set children and parent
-					activity.DoActivity (changedPersonality);
-					leafToEvaluate.children.Add (changedPersonality);
-				}
+        int counter = 0;
+        
 
-				leafsToEvaluate.Dequeue ();
-			}
-		}
-
-		while (leafsToEvaluate.Count != 0) {
+		while (leafsToEvaluate.Count != 0 && treeConstruction) {
 			Personality currPer = leafsToEvaluate.Dequeue ();
-			if (treeConstruction) {
-				foreach (Activity activity in currPer) {
-					Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
-					activity.DoActivity (changedPersonality);
-					currPer.children.Add (changedPersonality);
-					leafsToEvaluate.Enqueue (changedPersonality);
-				}
-			} else
-				break;
+
+			foreach (Activity activity in currPer.GetAllActivities()) {
+                
+				Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
+                counter++;
+				activity.DoActivity (changedPersonality);
+				currPer.children.Add (changedPersonality);
+				leafsToEvaluate.Enqueue (changedPersonality);
+			}
+
+            timer += Time.deltaTime;
+
+            if(timer > treeConstructionDuration)
+            {
+                treeConstruction = false;
+            }
+
+            yield return 0;
 		}
-	}
+        
+
+        Personality bestFuturePersonality = chooseBestFuturePersonality();
+        int activityID = bestFuturePersonality.parentActionID;
+
+        for(int i=0; i<_personality.children.Count; i++)
+        {
+            Debug.Log(_personality.GetActivity(_personality.children[i].parentActionID).feedBackString + ": " + _personality.children[i].Evaluation());
+        }
+
+        Debug.Log("Do Activity: " + _personality.GetActivity(activityID).feedBackString + " - " + bestFuturePersonality.Evaluation());
+
+        _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
+    }
 
 	public Personality chooseBestFuturePersonality () {
 		lastCalculatedPersonalities.Clear ();
@@ -108,12 +118,15 @@ public class ArtificialIntelligence
 				counter = i;
 			}
 		}
+        
 		Personality bestFuturePersonality = lastCalculatedPersonalities [counter];
-		Personality currParent;
 		while (bestFuturePersonality.parent != _personality) {
 			bestFuturePersonality = bestFuturePersonality.parent;
 		}
-		return bestFuturePersonality;
+
+        Debug.Log("Best Value: " + bestFuturePersonality.Evaluation());
+
+        return bestFuturePersonality;
 	}
 
 	public void calcLastFuturePersonalities (Personality personality) {
@@ -124,11 +137,6 @@ public class ArtificialIntelligence
 				calcLastFuturePersonalities (childPersonality);
 			}
 		}
-	}
-
-	IEnumerator treeConstructionCoroutine(){
-		yield return new WaitForSeconds (treeConstructionDuration);
-		treeConstruction = false;
 	}
 
     public void ReceiveFeedback(int feedback)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Reward {
     public int ID;
@@ -40,17 +41,17 @@ public class Reward {
         MaxSatisfaction = Evaluation.SUPER_GOOD;
     }
 
-    public void DoReward(Personality personality)
+    public void DoReward(Personality personality, Dictionary<NeedType, Need> need)
     {
-        if ((int)personality.GetCondition(NeedType.HEALTH).getEvaluation() >= (int)MinHealth && (int)personality.GetCondition(NeedType.HEALTH).getEvaluation() <= (int)MaxHealth)
+        if ((int)need[NeedType.HEALTH].getEvaluation() >= (int)MinHealth && (int)need[NeedType.HEALTH].getEvaluation() <= (int)MaxHealth)
         {
-            if ((int)personality.GetCondition(NeedType.HUNGER).getEvaluation() >= (int)MinHunger && (int)personality.GetCondition(NeedType.HUNGER).getEvaluation() <= (int)MaxHunger)
+            if ((int)need[NeedType.HUNGER].getEvaluation() >= (int)MinHunger && (int)need[NeedType.HUNGER].getEvaluation() <= (int)MaxHunger)
             {
-                if ((int)personality.GetCondition(NeedType.SOCIAL).getEvaluation() >= (int)MinSocial && (int)personality.GetCondition(NeedType.SOCIAL).getEvaluation() <= (int)MaxSocial)
+                if ((int)need[NeedType.SOCIAL].getEvaluation() >= (int)MinSocial && (int)need[NeedType.SOCIAL].getEvaluation() <= (int)MaxSocial)
                 {
-                    if ((int)personality.GetCondition(NeedType.ENERGY).getEvaluation() >= (int)MinEnergy && (int)personality.GetCondition(NeedType.ENERGY).getEvaluation() <= (int)MaxEnergy)
+                    if ((int)need[NeedType.ENERGY].getEvaluation() >= (int)MinEnergy && (int)need[NeedType.ENERGY].getEvaluation() <= (int)MaxEnergy)
                     {
-                        if ((int)personality.GetCondition(NeedType.SATISFACTION).getEvaluation() >= (int)MinSatisfaction && (int)personality.GetCondition(NeedType.SATISFACTION).getEvaluation() <= (int)MaxSatisfaction)
+                        if ((int)need[NeedType.SATISFACTION].getEvaluation() >= (int)MinSatisfaction && (int)need[NeedType.SATISFACTION].getEvaluation() <= (int)MaxSatisfaction)
                         {
                             personality.GetCondition(RewardType).Value += RewardValue;
                         }

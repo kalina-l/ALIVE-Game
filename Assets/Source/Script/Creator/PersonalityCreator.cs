@@ -48,7 +48,7 @@ public class PersonalityCreator
 
         foreach (KeyValuePair<int, Activity> baseActivity in _baseActivities)
         {
-            _personality.AddBaseActivity(baseActivity.Key, baseActivity.Value);
+            _personality.AddBaseActivity(baseActivity.Key, "", baseActivity.Value);
         }
 
     } 

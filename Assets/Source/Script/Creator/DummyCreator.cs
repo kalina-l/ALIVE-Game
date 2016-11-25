@@ -21,25 +21,24 @@ public class DummyCreator {
                 .AddCondition(NeedType.SATISFACTION, new Need(0, new int[] { -80, -40, -20, 0, 20, 40, 80 }))
                 .AddCondition(NeedType.SOCIAL, new Need(0, new int[] { -80, -40, -20, 0, 20, 40, 80 }));
 
-        person.AddBaseActivity(0, 
+        person.AddBaseActivity(0, "Schlafen",
             new Activity("Schlafen")
             .AddReward(_rewards[0])
             .AddReward(_rewards[1])
-            .AddReward(_rewards[2]));
-
-        person.AddBaseActivity(0,
-            new Activity("Essen")
-            .AddReward(_rewards[0])
-            .AddReward(_rewards[1])
             .AddReward(_rewards[2])
-            .AddReward(_rewards[6])
+            .AddReward(_rewards[11]));
+
+        person.AddBaseActivity(1, "Essen",
+            new Activity("Essen")
+            .AddReward(_rewards[3])
+            .AddReward(_rewards[4])
             .AddReward(_rewards[7]));
 
-        person.AddBaseActivity(0,
+        person.AddBaseActivity(2, "Idle",
             new Activity("Idle")
             .AddReward(_rewards[5])
-            .AddReward(_rewards[6])
-            .AddReward(_rewards[7]));
+            .AddReward(_rewards[7])
+            .AddReward(_rewards[12]));
 
         return person;
     }
@@ -49,7 +48,9 @@ public class DummyCreator {
         List<Item> items = new List<Item>();
 
         items.Add(new Item() { ID = 0, Name = "Ball" }
-            .AddActivity(0, new Activity("Play")
+            .AddActivity(3, "Spielen",
+                new Activity("Spielen")
+                .AddReward(_rewards[6])
                 .AddReward(_rewards[8])
                 .AddReward(_rewards[9])
                 .AddReward(_rewards[10])));
@@ -64,7 +65,7 @@ public class DummyCreator {
         //0
         _rewards.Add(new Reward() {
             RewardType = NeedType.ENERGY,
-            RewardValue = 60,
+            RewardValue = 80,
             MaxEnergy = Evaluation.NEUTRAL});
 
         //1
@@ -100,7 +101,7 @@ public class DummyCreator {
         _rewards.Add(new Reward()
         {
             RewardType = NeedType.ENERGY,
-            RewardValue = -40
+            RewardValue = -10
         });
 
         //6
@@ -114,7 +115,7 @@ public class DummyCreator {
         _rewards.Add(new Reward()
         {
             RewardType = NeedType.SOCIAL,
-            RewardValue = 30
+            RewardValue = 10
         });
 
         //8
@@ -135,7 +136,21 @@ public class DummyCreator {
         _rewards.Add(new Reward()
         {
             RewardType = NeedType.ENERGY,
-            RewardValue = -70
+            RewardValue = -40
+        });
+
+        //11
+        _rewards.Add(new Reward()
+        {
+            RewardType = NeedType.HEALTH,
+            RewardValue = 10
+        });
+
+        //12
+        _rewards.Add(new Reward()
+        {
+            RewardType = NeedType.SATISFACTION,
+            RewardValue = -10
         });
     }
 }

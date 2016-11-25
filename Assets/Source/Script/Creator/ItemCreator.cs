@@ -71,7 +71,7 @@ public class ItemCreator {
                                         activity.feedBackString = itemsCSV[k][j];
                                     }
                                 }
-                            item.AddActivity(int.Parse(itemAction[1]), activity);
+                            item.AddActivity(int.Parse(itemAction[1]), itemAction[1], activity);
                             if(itemExists == false)
                             {
                                 items.Add(item);

@@ -45,9 +45,16 @@ public class Activity {
 
 	public void DoActivity(Personality parentPersonality, OutputViewController textOutput)
     {
+        Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
+
+        foreach(KeyValuePair<NeedType, Need> kvp in parentPersonality.Conditions)
+        {
+            need[kvp.Key] = kvp.Value.Copy();
+        }
+
         foreach(Reward reward in RewardList)
         {
-            reward.DoReward(parentPersonality);
+            reward.DoReward(parentPersonality, need);
         }
 
         textOutput.DisplayMessage(feedBackString);
@@ -55,9 +62,16 @@ public class Activity {
 
     public void DoActivity(Personality parentPersonality)
     {
+        Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
+
+        foreach (KeyValuePair<NeedType, Need> kvp in parentPersonality.Conditions)
+        {
+            need[kvp.Key] = kvp.Value.Copy();
+        }
+
         foreach (Reward reward in RewardList)
         {
-            reward.DoReward(parentPersonality);
+            reward.DoReward(parentPersonality, need);
         }
     }
 }

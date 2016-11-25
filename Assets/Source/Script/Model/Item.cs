@@ -14,11 +14,13 @@ public class Item  {
         Activities = new Dictionary<int, Activity>();
     }
 
-    public Item AddActivity(int id, Activity activity)
+    public Item AddActivity(int id, string name, Activity activity)
     {
         if (!Activities.ContainsKey(id))
         {
             Activities[id] = activity;
+            activity.Name = name;
+            activity.ID = id;
         }
         else
         {

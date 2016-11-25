@@ -23,7 +23,14 @@ public class Personality {
     }
 
 	public Personality(Personality parent, int parentActionID){
-		Conditions = parent.Conditions;
+
+        Conditions = new Dictionary<NeedType, Need>();
+
+        foreach(KeyValuePair<NeedType, Need> need in parent.Conditions)
+        {
+            Conditions[need.Key] = need.Value.Copy();
+        }
+        
 		BaseActivities = parent.BaseActivities;
 		Items = parent.Items;
 		this.parent = parent;
@@ -45,9 +52,12 @@ public class Personality {
         return this;
     }
 
-    public Personality AddBaseActivity(int id, Activity activity)
+    public Personality AddBaseActivity(int id, string name, Activity activity)
     {
         BaseActivities[id] = activity;
+
+        activity.ID = id;
+        activity.Name = name;
 
         return this;
     }
@@ -148,7 +158,40 @@ public class Personality {
     }
 
 	public int Evaluation(){
-		return 0;
+        int value = 0;
+
+        foreach(KeyValuePair<NeedType, Need> need in Conditions)
+        {
+            switch(need.Value.getEvaluation())
+            {
+                case global::Evaluation.SUICIDAL:
+                    value -= 300;
+                    break;
+                case global::Evaluation.SUPER_BAD:
+                    value -= 150;
+                    break;
+                case global::Evaluation.VERY_BAD:
+                    value -= 100;
+                    break;
+                case global::Evaluation.BAD:
+                    value -= 50;
+                    break;
+                case global::Evaluation.NEUTRAL:
+                    value -= 0;
+                    break;
+                case global::Evaluation.GOOD:
+                    value += 40;
+                    break;
+                case global::Evaluation.VERY_GOOD:
+                    value += 80;
+                    break;
+                case global::Evaluation.SUPER_GOOD:
+                    value += 120;
+                    break;
+            }
+        }
+        
+        return value;
 	}
 
     public void printConditions() {
