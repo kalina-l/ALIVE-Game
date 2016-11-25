@@ -66,6 +66,7 @@
      <Compile Include="Assets\Source\Script\AI\ArtificialIntelligence.cs" />
      <Compile Include="Assets\Source\Script\ApplicationManager.cs" />
      <Compile Include="Assets\Source\Script\Creator\CSV.cs" />
+     <Compile Include="Assets\Source\Script\Creator\DummyCreator.cs" />
      <Compile Include="Assets\Source\Script\Creator\ItemCreator.cs" />
      <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
      <Compile Include="Assets\Source\Script\Model\Activity.cs" />

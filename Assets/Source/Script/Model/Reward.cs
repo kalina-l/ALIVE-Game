@@ -22,6 +22,24 @@ public class Reward {
     public Evaluation MinSatisfaction;
     public Evaluation MaxSatisfaction;
 
+    public Reward()
+    {
+        MinHealth = Evaluation.SUICIDAL;
+        MaxHealth = Evaluation.SUPER_GOOD;
+
+        MinHunger = Evaluation.SUICIDAL;
+        MaxHunger = Evaluation.SUPER_GOOD;
+
+        MinSocial = Evaluation.SUICIDAL;
+        MaxSocial = Evaluation.SUPER_GOOD;
+
+        MinEnergy = Evaluation.SUICIDAL;
+        MaxEnergy = Evaluation.SUPER_GOOD;
+
+        MinSatisfaction = Evaluation.SUICIDAL;
+        MaxSatisfaction = Evaluation.SUPER_GOOD;
+    }
+
     public void DoReward(Personality personality)
     {
         if ((int)personality.GetCondition(NeedType.HEALTH).getEvaluation() >= (int)MinHealth && (int)personality.GetCondition(NeedType.HEALTH).getEvaluation() <= (int)MaxHealth)
