@@ -104,7 +104,7 @@ public class PersonalityCreator
                             {
                                 if (personalityCSV[start][j] != "feedBackString")
                                 {
-                                    activity.AddReward((NeedType)Enum.Parse(typeof(NeedType), personalityCSV[start][j]), Int32.Parse(personalityCSV[k][j]));
+                                    activity.AddReward(new Reward());
                                 }
                                 else
                                 {
