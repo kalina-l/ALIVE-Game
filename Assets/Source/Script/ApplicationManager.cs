@@ -6,9 +6,8 @@ public class ApplicationManager : MonoBehaviour {
 
     public Canvas UICanvas;
     public static ApplicationManager Instance;
-    
-    private string personalityCSVPath = "\\Resources\\Data\\personality.csv";
-    private string itemsCSVpath = "\\Resources\\Data\\items.csv";
+
+    private string personalityCSVPath = "Data\\";
 
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
@@ -27,18 +26,19 @@ public class ApplicationManager : MonoBehaviour {
 	void Start () {
         _output = new OutputViewController(UICanvas.transform);
 
-        DummyCreator creator = new DummyCreator();
-
-        _personality = creator.CreateDummyPerson(); //new PersonalityCreator(personalityCSVPath).personality;
+        //DummyCreator creator = new DummyCreator();
+        //_personality = creator.CreateDummyPerson();
+        PersonalityCreator creator = new PersonalityCreator(personalityCSVPath);
+        _personality = creator.personality;
 
         _intelligence = new ArtificialIntelligence(_personality, _output);
 
         _items = new Dictionary<int, Item>();
-        List<Item> itemList = creator.CreateDummyItems(); //new ItemCreator(itemsCSVpath).items;
-        foreach(Item item in itemList)
+        List<Item> itemList = creator.ItemList;
+        foreach (Item item in itemList)
         {
             _items[item.ID] = item;
-            //_personality.AddItem(item.ID, item);
+            _personality.AddItem(item.ID, item);
         }
 
 
