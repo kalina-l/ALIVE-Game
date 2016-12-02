@@ -145,6 +145,7 @@ public class Personality {
     public void AddItem(int id, Item item)
     {
         Items[id] = item;
+		item.uses = 0;
     }
 
     public void RemoveItem(int id)

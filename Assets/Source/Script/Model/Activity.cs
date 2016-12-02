@@ -65,6 +65,13 @@ public class Activity {
             reward.DoReward(parentPersonality, need);
         }
 
+		if (item != null) {
+			item.uses += useConsume;
+			if (item.uses >= item.maxUses) {
+				parentPersonality.RemoveItem (item);
+			}
+		}
+
         textOutput.DisplayMessage(feedBackString);
     }
 
