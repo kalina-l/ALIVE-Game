@@ -57,12 +57,9 @@ public class Personality {
         return this;
     }
 
-    public Personality AddBaseActivity(int id, string name, Activity activity)
+    public Personality AddBaseActivity(Activity activity)
     {
-        BaseActivities[id] = activity;
-
-        activity.ID = id;
-        activity.Name = name;
+		BaseActivities[activity.ID] = activity;
 
         return this;
     }

@@ -10,6 +10,9 @@ public class Activity {
 
     public List<Reward> ExpectedRewardList;
 
+	public Item item;
+	public int useConsume;
+
     private string _feedBackString;
     public string feedBackString 
     {
@@ -23,10 +26,15 @@ public class Activity {
         }
     }
 
-    public Activity(string feedBackString)
+	public Activity(int ID, string Name, Item item, int useConsume, string feedBackString)
     {
+		this.ID = ID;
+		this.Name = Name;
+		this.item = item;
+		this.useConsume = useConsume;
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
+		item.AddActivity (this);
     }
 
     public Activity AddReward(Reward reward)

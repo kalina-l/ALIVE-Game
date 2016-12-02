@@ -7,14 +7,14 @@ public class ArtificialIntelligence
 
     private Personality _personality;
 
-    public float ActionInterval = 1.5f;
-    public float FeedbackInterval = 0.5f;
+    public float ActionInterval = 2.5f;
+    public float FeedbackInterval = 1.5f;
 
 	private float _actionTimer;
     private bool _waitForAnswer;
     private float _feedbackTimer;
 
-	public float treeConstructionDuration = 0.5f; // in sec
+	public float treeConstructionDuration = 1f; // in sec
 	public bool treeConstruction;
 
 	List<Personality> lastCalculatedPersonalities = new List<Personality>(); 

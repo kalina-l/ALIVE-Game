@@ -21,21 +21,18 @@ public class DummyCreator {
                 .AddCondition(NeedType.SATISFACTION, new Need(0, new int[] { -80, -40, -20, 0, 20, 40, 80 }))
                 .AddCondition(NeedType.SOCIAL, new Need(0, new int[] { -80, -40, -20, 0, 20, 40, 80 }));
 
-        person.AddBaseActivity(0, "Schlafen",
-            new Activity("Schlafen")
-            .AddReward(_rewards[0])
-            .AddReward(_rewards[1])
-            .AddReward(_rewards[2])
-            .AddReward(_rewards[11]));
+		person.AddBaseActivity (new Activity (0, "Schlafen", null, 0, "Schlafen")
+			.AddReward (_rewards [0])
+			.AddReward (_rewards [1])
+			.AddReward (_rewards [2])
+			.AddReward (_rewards [11]));
 
-        person.AddBaseActivity(1, "Essen",
-            new Activity("Essen")
+		person.AddBaseActivity(new Activity (1, "Essen", null, 0, "Essen")
             .AddReward(_rewards[3])
             .AddReward(_rewards[4])
             .AddReward(_rewards[7]));
 
-        person.AddBaseActivity(2, "Idle",
-            new Activity("Idle")
+		person.AddBaseActivity(new Activity (2, "Idle", null, 0, "Idle")
             .AddReward(_rewards[5])
             .AddReward(_rewards[7])
             .AddReward(_rewards[12]));
@@ -47,13 +44,13 @@ public class DummyCreator {
     {
         List<Item> items = new List<Item>();
 
-        items.Add(new Item() { ID = 0, Name = "Ball" }
-            .AddActivity(3, "Spielen",
-                new Activity("Spielen")
-                .AddReward(_rewards[6])
-                .AddReward(_rewards[8])
-                .AddReward(_rewards[9])
-                .AddReward(_rewards[10])));
+		Item item = new Item () { ID = 0, Name = "Ball", maxUses = 100 };
+		items.Add (item);
+		new Activity (3, "Spielen", item, 1, "Spielen")
+			.AddReward (_rewards [6])
+			.AddReward (_rewards [8])
+			.AddReward (_rewards [9])
+			.AddReward (_rewards [10]);
 
         return items;
     }
