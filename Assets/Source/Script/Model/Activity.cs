@@ -34,7 +34,7 @@ public class Activity {
 		this.useConsume = useConsume;
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
-		item.AddActivity (this);
+		if(item!=null) item.AddActivity (this);
     }
 
     public Activity AddReward(Reward reward)
@@ -68,7 +68,7 @@ public class Activity {
 		if (item != null) {
 			item.uses += useConsume;
 			if (item.uses >= item.maxUses) {
-				parentPersonality.RemoveItem (item);
+				parentPersonality.RemoveItem (item.ID);
 			}
 		}
 

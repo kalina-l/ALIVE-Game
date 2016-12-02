@@ -11,6 +11,8 @@ public class FeedbackViewController : AbstractViewController {
             new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0));
         View = Rect.gameObject;
 
+		ApplicationManager.Instance.StartCoroutine (updateFeedbackButtons (intelligence));
+
         AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
 
         //Buttons
@@ -43,4 +45,10 @@ public class FeedbackViewController : AbstractViewController {
 
     }
 
+	private IEnumerator updateFeedbackButtons(ArtificialIntelligence intelligence){
+		while (true) {
+			View.SetActive (intelligence._waitForAnswer);
+			yield return 0;
+		}
+	}
 }
