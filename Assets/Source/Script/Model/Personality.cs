@@ -21,6 +21,7 @@ public class Personality {
         Attributes = new Dictionary<AttributeType, Attribute>();
         BaseActivities = new Dictionary<int, Activity>();
         Items = new Dictionary<int, Item>();
+        deepnessInParent = 0;
     }
 
 	public Personality(Personality parent, int parentActionID){
@@ -159,8 +160,8 @@ public class Personality {
         }
     }
 
-	public int Evaluation(){
-        int value = 0;
+	public float Evaluation(){
+        float value = 0;
 
         foreach(KeyValuePair<NeedType, Need> need in Conditions)
         {
@@ -192,7 +193,14 @@ public class Personality {
                     break;
             }
         }
-        
+
+        //Discounting
+        if (parent != null)
+        {
+            value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, deepnessInParent - 1);
+            value += parent.Evaluation();
+        }
+
         return value;
 	}
 

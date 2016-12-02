@@ -64,7 +64,12 @@ public class ArtificialIntelligence
 
         float timer = 0;
 
+        _personality.parent = null;
+        _personality.deepnessInParent = 0;
 		_personality.children.Clear ();
+
+        Debug.Log("RootValue: " + _personality.Evaluation());
+
 		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
 		leafsToEvaluate.Enqueue (_personality);
 
@@ -74,11 +79,15 @@ public class ArtificialIntelligence
 		while (leafsToEvaluate.Count != 0 && treeConstruction) {
 			Personality currPer = leafsToEvaluate.Dequeue ();
 
+            Debug.Log("------");
 			foreach (Activity activity in currPer.GetAllActivities()) {
                 
 				Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
                 counter++;
 				activity.DoActivity (changedPersonality);
+
+                Debug.Log(activity.feedBackString + ": New Leaf with Deepness " + changedPersonality.deepnessInParent + " and Value: " + changedPersonality.Evaluation());
+
 				currPer.children.Add (changedPersonality);
 				leafsToEvaluate.Enqueue (changedPersonality);
 			}
@@ -96,10 +105,7 @@ public class ArtificialIntelligence
 
         Personality bestFuturePersonality = chooseBestFuturePersonality();
         int activityID = bestFuturePersonality.parentActionID;
-
-		foreach (Personality personality in lastCalculatedPersonalities) {
-			Debug.Log (personality.deepnessInParent);
-		}
+        
 
         for(int i=0; i<_personality.children.Count; i++)
         {
@@ -108,6 +114,8 @@ public class ArtificialIntelligence
 
         Debug.Log("Do Activity: " + _personality.GetActivity(activityID).feedBackString + " - " + bestFuturePersonality.Evaluation());
 
+        Debug.Log("Deepness: " + bestFuturePersonality.deepnessInParent);
+
         _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
     }
 
@@ -115,7 +123,7 @@ public class ArtificialIntelligence
 		lastCalculatedPersonalities.Clear ();
 		calcLastFuturePersonalities (_personality);
 		int counter = 0;
-		int biggestReward = int.MinValue;
+		float biggestReward = float.MinValue;
 		for (int i = 0; i < lastCalculatedPersonalities.Count; i++) {
 			if (biggestReward < lastCalculatedPersonalities[i].Evaluation()){
 				biggestReward = lastCalculatedPersonalities [i].Evaluation ();
@@ -124,11 +132,13 @@ public class ArtificialIntelligence
 		}
         
 		Personality bestFuturePersonality = lastCalculatedPersonalities [counter];
-		while (bestFuturePersonality.parent != _personality) {
+        Debug.Log("Best Value: " + bestFuturePersonality.Evaluation());
+
+        while (bestFuturePersonality.parent != _personality) {
 			bestFuturePersonality = bestFuturePersonality.parent;
 		}
 
-        Debug.Log("Best Value: " + bestFuturePersonality.Evaluation());
+        
 
         return bestFuturePersonality;
 	}
