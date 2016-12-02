@@ -97,6 +97,10 @@ public class ArtificialIntelligence
         Personality bestFuturePersonality = chooseBestFuturePersonality();
         int activityID = bestFuturePersonality.parentActionID;
 
+		foreach (Personality personality in lastCalculatedPersonalities) {
+			Debug.Log (personality.deepnessInParent);
+		}
+
         for(int i=0; i<_personality.children.Count; i++)
         {
             Debug.Log(_personality.GetActivity(_personality.children[i].parentActionID).feedBackString + ": " + _personality.children[i].Evaluation());

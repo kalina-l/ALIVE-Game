@@ -12,6 +12,7 @@ public class Personality {
     
 	public Personality parent;
 	public List<Personality> children = new List<Personality>();
+	public int deepnessInParent = 0;
 	public int parentActionID;
 
     public Personality()
@@ -35,6 +36,7 @@ public class Personality {
 		Items = parent.Items;
 		this.parent = parent;
 		this.parentActionID = parentActionID;
+		deepnessInParent = parent.deepnessInParent + 1;
 	}
 
     //Attributes
