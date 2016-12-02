@@ -15,6 +15,8 @@ public class Personality {
 	public int deepnessInParent = 0;
 	public int parentActionID;
 
+    public float storedEvaluation;
+
     public Personality()
     {
         Conditions = new Dictionary<NeedType, Need>();
@@ -198,7 +200,7 @@ public class Personality {
         if (parent != null)
         {
             value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, deepnessInParent - 1);
-            value += parent.Evaluation();
+            value += parent.storedEvaluation;
         }
 
         return value;

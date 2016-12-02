@@ -73,5 +73,7 @@ public class Activity {
         {
             reward.DoReward(parentPersonality, need);
         }
+
+        parentPersonality.storedEvaluation = parentPersonality.Evaluation();
     }
 }

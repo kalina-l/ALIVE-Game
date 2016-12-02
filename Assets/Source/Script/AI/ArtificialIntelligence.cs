@@ -66,6 +66,7 @@ public class ArtificialIntelligence
 
         _personality.parent = null;
         _personality.deepnessInParent = 0;
+        _personality.storedEvaluation = 0;
 		_personality.children.Clear ();
 
         Debug.Log("RootValue: " + _personality.Evaluation());
@@ -85,7 +86,6 @@ public class ArtificialIntelligence
 				Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
                 counter++;
 				activity.DoActivity (changedPersonality);
-
                 Debug.Log(activity.feedBackString + ": New Leaf with Deepness " + changedPersonality.deepnessInParent + " and Value: " + changedPersonality.Evaluation());
 
 				currPer.children.Add (changedPersonality);
