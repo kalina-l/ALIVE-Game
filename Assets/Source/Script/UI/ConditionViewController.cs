@@ -9,11 +9,12 @@ public class ConditionViewController : AbstractViewController {
     
     private Dictionary<NeedType, SliderViewController> _sliders;
 
-	public ConditionViewController(Transform parent, Personality personality)
+
+    public ConditionViewController(Transform parent, Personality personality)
     {
         Rect = CreateContainer("ConditionMonitor", parent,
-            new Vector2(0, 420), new Vector2(1000, 420),
-            new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0));
+            new Vector2(0, -580), new Vector2(1000, 460),
+            new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1));
         View = Rect.gameObject;
 
         AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
@@ -34,6 +35,7 @@ public class ConditionViewController : AbstractViewController {
 
             _sliders[kvp.Key] = slider;
         }
+
         
     }
 
@@ -43,8 +45,11 @@ public class ConditionViewController : AbstractViewController {
         {
             Need c = personality.GetCondition(slider.Key);
 
-            if(c != null)
+            if (c != null)
+            {
                 slider.Value.UpdateSlider(c.GetSliderValue());
+                slider.Value.SetColor(GraphicsHelper.Instance.evaluationColor[(int)c.getEvaluation()]);
+            }
         }
     }
 }

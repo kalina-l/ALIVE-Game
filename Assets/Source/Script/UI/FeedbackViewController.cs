@@ -4,14 +4,17 @@ using System.Collections;
 
 public class FeedbackViewController : AbstractViewController {
 
-	public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
+
+    private RawImage _block;
+
+    public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
             Vector2.zero, new Vector2(1080, 380),
             new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0));
         View = Rect.gameObject;
 
-		ApplicationManager.Instance.StartCoroutine (updateFeedbackButtons (intelligence));
+		
 
         AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
 
@@ -43,11 +46,17 @@ public class FeedbackViewController : AbstractViewController {
 
         AddSprite(negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
+        _block = AddImage(CreateContainer("Feedback", parent,
+            Vector2.zero, new Vector2(1080, 380),
+            new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0)),
+            null, new Color(0,0,0,0.6f));
+
+        ApplicationManager.Instance.StartCoroutine(updateFeedbackButtons(intelligence));
     }
 
 	private IEnumerator updateFeedbackButtons(ArtificialIntelligence intelligence){
 		while (true) {
-			View.SetActive (intelligence._waitForAnswer);
+			_block.enabled = !intelligence.NeedFeedback;
 			yield return 0;
 		}
 	}

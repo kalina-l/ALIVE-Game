@@ -89,7 +89,6 @@
      <Compile Include="Assets\Source\Script\UI\OutputViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\SliderViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\ToggleViewController.cs" />
-     <None Include="Assets\Source\Script\UI\blub.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

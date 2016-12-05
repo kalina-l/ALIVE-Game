@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class ApplicationManager : MonoBehaviour {
 
+    public bool UseDummy;
+
     public Canvas UICanvas;
     public static ApplicationManager Instance;
 
@@ -24,19 +26,28 @@ public class ApplicationManager : MonoBehaviour {
         Instance = this;
     }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         _output = new OutputViewController(UICanvas.transform);
 
-        DummyCreator creator = new DummyCreator();
-        _personality = creator.CreateDummyPerson();
-        //PersonalityCreator creator = new PersonalityCreator(personalityCSVPath);
-        //_personality = creator.personality;
+        List<Item> itemList = new List<Item>();
+        _items = new Dictionary<int, Item>();
+
+        if (UseDummy)
+        {
+            DummyCreator creator = new DummyCreator();
+            _personality = creator.CreateDummyPerson();
+            itemList = creator.CreateDummyItems();
+        }
+        else
+        {
+            PersonalityCreator creator = new PersonalityCreator(personalityCSVPath);
+            _personality = creator.personality;
+            itemList = creator.ItemList;
+        }
 
         _intelligence = new ArtificialIntelligence(_personality, _output);
-
-        _items = new Dictionary<int, Item>();
-        List<Item> itemList = creator.CreateDummyItems(); //creator.ItemList;
+        
         foreach (Item item in itemList)
         {
             _items[item.ID] = item;
@@ -45,7 +56,7 @@ public class ApplicationManager : MonoBehaviour {
 
 
         //UI
-        new ItemCollectionViewController(UICanvas.transform, _items, _personality);
+        new ItemCollectionViewController(UICanvas.transform, _items, _personality, _intelligence);
         new FeedbackViewController(UICanvas.transform, _intelligence);
 
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);

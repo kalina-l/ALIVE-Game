@@ -37,5 +37,12 @@ public class SliderViewController : AbstractViewController {
     public void UpdateSlider(float amount)
     {
         _fillImage.rectTransform.sizeDelta = new Vector2(_backgroundRect.sizeDelta.x * amount, _backgroundRect.sizeDelta.y);
+        _fillImage.enabled = amount > 0.05f;
+            
+    }
+
+    public void SetColor(Color c)
+    {
+        _fillImage.color = c;
     }
 }

@@ -30,6 +30,7 @@ public class DummyCreator {
 		person.AddBaseActivity(new Activity (1, "Essen", null, 0, "Essen")
             .AddReward(_rewards[3])
             .AddReward(_rewards[4])
+            .AddReward(_rewards[5])
             .AddReward(_rewards[7]));
 
 		person.AddBaseActivity(new Activity (2, "Idle", null, 0, "Idle")
@@ -140,7 +141,7 @@ public class DummyCreator {
         _rewards.Add(new Reward()
         {
             RewardType = NeedType.HEALTH,
-            RewardValue = 10
+            RewardValue = 20
         });
 
         //12

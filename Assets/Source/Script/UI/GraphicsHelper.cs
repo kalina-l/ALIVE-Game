@@ -8,6 +8,8 @@ public class GraphicsHelper : MonoBehaviour {
 
     public Font UIFont;
 
+    public Color[] evaluationColor;
+
     public Sprite feedbackNegativeSprite;
     public Sprite feedbackNeutralSprite;
     public Sprite feedbackPositiveSprite;

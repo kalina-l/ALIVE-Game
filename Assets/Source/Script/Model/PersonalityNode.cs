@@ -15,6 +15,8 @@ public class PersonalityNode {
 
     public float StoredEvaluation;
 
+    public int FeedBack;
+
     public PersonalityNode(Personality basePerson)
     {
         Needs = new Dictionary<NeedType, Evaluation>();
@@ -41,11 +43,12 @@ public class PersonalityNode {
     {
         Parent = parent;
         Depth = parent.Depth + 1;
+        FeedBack = xp.Feedback;
 
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
         {
-            Needs[need.Key] = need.Value + xp.Rewards[need.Key];
+            Needs[need.Key] = (Evaluation)((int)need.Value + xp.Rewards[need.Key]);
         }
 
         ParentActionID = activityID;
@@ -60,14 +63,14 @@ public class PersonalityNode {
 
     public float Evaluation()
     {
-        float value = 0;
+        float value = FeedBack * 100;
 
         foreach (KeyValuePair<NeedType, Evaluation> need in Needs)
         {
             switch (need.Value)
             {
                 case global::Evaluation.SUICIDAL:
-                    value -= 300;
+                    value -= 500;
                     break;
                 case global::Evaluation.SUPER_BAD:
                     value -= 150;

@@ -7,20 +7,24 @@ public class ArtificialIntelligence
 
     private Personality _personality;
 
-    public float ActionInterval = 2.5f;
-    public float FeedbackInterval = 1.5f;
+    private float _actionDelay = 2f;
+    private float _feedbackDuration = 2f;
+    private float _treeConstructionDuration = 1f;
 
-	private float _actionTimer;
+    private float _actionTimer;
     public bool _waitForAnswer;
     private float _feedbackTimer;
 
-	public float treeConstructionDuration = 1f; // in sec
-	public bool treeConstruction;
+	private bool _treeConstruction;
 
-	List<Personality> lastCalculatedPersonalities = new List<Personality>();
+    public bool NeedFeedback { get { return _waitForAnswer && !_treeConstruction; } }
+    public bool NeedItems { get { return !_waitForAnswer; } }
+
+    List<Personality> lastCalculatedPersonalities = new List<Personality>();
     List<PersonalityNode> lastCalculatedPersonalityNodes = new List<PersonalityNode>();
 
     private OutputViewController _textOutput;
+    private Experience _lastExperience;
 
     public ArtificialIntelligence(Personality personality, OutputViewController textOutput)
     {
@@ -35,21 +39,25 @@ public class ArtificialIntelligence
         {
             _actionTimer += Time.deltaTime;
 
-            if (_actionTimer > ActionInterval)
+            if (_actionTimer > _actionDelay)
             {
                 //_personality.printConditions();
 				decideOnAction ();
                 _waitForAnswer = true;
                 _actionTimer = 0;
+                _feedbackTimer = 0;
             }
         }
         else
         {
-            _feedbackTimer += Time.deltaTime;
-            if (_feedbackTimer > FeedbackInterval)
+            if (!_treeConstruction)
             {
-                _waitForAnswer = false;
-                _feedbackTimer = 0;
+                _feedbackTimer += Time.deltaTime;
+                if (_feedbackTimer > _feedbackDuration)
+                {
+                    _waitForAnswer = false;
+                    _feedbackTimer = 0;
+                }
             }
         }
     }
@@ -63,13 +71,13 @@ public class ArtificialIntelligence
     private IEnumerator createLearningTree()
     {
         float timer = 0;
-        treeConstruction = true;
+        _treeConstruction = true;
 
         PersonalityNode root = new PersonalityNode(_personality);
         Queue<PersonalityNode> leafsToEvaluate = new Queue<PersonalityNode>();
         leafsToEvaluate.Enqueue(root);
 
-        while (leafsToEvaluate.Count != 0 && treeConstruction)
+        while (leafsToEvaluate.Count != 0 && _treeConstruction)
         {
             PersonalityNode currPer = leafsToEvaluate.Dequeue();
 
@@ -82,9 +90,9 @@ public class ArtificialIntelligence
 
             timer += Time.deltaTime;
 
-            if (timer > treeConstructionDuration)
+            if (timer > _treeConstructionDuration)
             {
-                treeConstruction = false;
+                _treeConstruction = false;
             }
 
             yield return 0;
@@ -93,12 +101,12 @@ public class ArtificialIntelligence
         PersonalityNode bestFuturePersonality = GetBestPersonality(root);
         int activityID = bestFuturePersonality.ParentActionID;
 
-        _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
+        _lastExperience = _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
     }
 
 	private IEnumerator createPersonalityTree() {
 
-		treeConstruction = true;
+		_treeConstruction = true;
 
         float timer = 0;
 
@@ -107,15 +115,13 @@ public class ArtificialIntelligence
         _personality.storedEvaluation = 0;
 		_personality.children.Clear ();
 
-        //Debug.Log("RootValue: " + _personality.Evaluation());
-
 		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
 		leafsToEvaluate.Enqueue (_personality);
 
         int counter = 0;
         
 
-		while (leafsToEvaluate.Count != 0 && treeConstruction) {
+		while (leafsToEvaluate.Count != 0 && _treeConstruction) {
 			Personality currPer = leafsToEvaluate.Dequeue ();
 			foreach (Activity activity in currPer.GetAllActivities()) {
                 
@@ -129,9 +135,9 @@ public class ArtificialIntelligence
 
             timer += Time.deltaTime;
 
-            if(timer > treeConstructionDuration)
+            if(timer > _treeConstructionDuration)
             {
-                treeConstruction = false;
+                _treeConstruction = false;
             }
 
             yield return 0;
@@ -148,8 +154,7 @@ public class ArtificialIntelligence
         }
 
         Debug.Log("Do Activity: " + _personality.GetActivity(activityID).feedBackString + " - " + bestFuturePersonality.Evaluation());
-
-        //Debug.Log("Deepness: " + bestFuturePersonality.deepnessInParent);
+        
 
         _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
     }
@@ -233,18 +238,21 @@ public class ArtificialIntelligence
     {
         if (_waitForAnswer)
         {
+            if (_lastExperience != null)
+                _lastExperience.Feedback += feedback;
+
             switch (feedback)
             {
                 case -1:
-                    _textOutput.DisplayMessage("It seems to feel bad about it.");
+                    _textOutput.DisplayMessage("Negative Feedback");
                     _waitForAnswer = false;
                     break;
                 case 0:
-                    _textOutput.DisplayMessage("It stares blankly at you.");
+                    _textOutput.DisplayMessage("Neutral Feedback");
                     _waitForAnswer = false;
                     break;
                 case 1:
-                    _textOutput.DisplayMessage("It claps its hands in glee.");
+                    _textOutput.DisplayMessage("Positive Feedback");
                     _waitForAnswer = false;
                     break;
             }

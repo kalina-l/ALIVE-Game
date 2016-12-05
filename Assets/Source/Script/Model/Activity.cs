@@ -52,10 +52,12 @@ public class Activity {
         return this;
     }
 
-	public void DoActivity(Personality parentPersonality, OutputViewController textOutput)
+	public Experience DoActivity(Personality parentPersonality, OutputViewController textOutput)
     {
         Experience xp = new Experience();
         xp.AddBaseNeeds(parentPersonality);
+
+        string learning = "";
 
         Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
 
@@ -86,10 +88,12 @@ public class Activity {
                     Debug.Log(feedBackString + " (nothing learned...)");
                     xp.PrintRewards();
                 }
-
                 xp.PrintRewards();
 
+                learning = " (" + LearnedExperiences[i].Feedback + ")";
+
                 newXP = false;
+                break;
             }
         }
 
@@ -106,7 +110,9 @@ public class Activity {
 			}
 		}
 
-        textOutput.DisplayMessage(feedBackString);
+        textOutput.DisplayMessage(feedBackString + learning);
+
+        return xp;
     }
 
     public void DoActivity(Personality parentPersonality)
