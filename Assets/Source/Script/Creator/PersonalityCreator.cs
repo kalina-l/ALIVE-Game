@@ -77,7 +77,7 @@ public class PersonalityCreator
                     item.ID = itemCounter;
                     itemCounter++;
                 }
-                act = new Activity(personalityCSV[i][2]);
+                act = new Activity(0, personalityCSV[i][2], null, 0, null);
                 foreach (Reward rewa in _rewards)
                 {
                     if (rewa.ID == Int32.Parse(personalityCSV[i][0]))
@@ -85,7 +85,7 @@ public class PersonalityCreator
                         act.AddReward(rewa);
                     }
                 }
-                item.AddActivity(activityCounter, personalityCSV[i][2], act);
+                //item.AddActivity(activityCounter, personalityCSV[i][2], act);
                 activityCounter++;
                 ItemList.Add(item);
                 itemExists = false;
@@ -102,7 +102,7 @@ public class PersonalityCreator
         {
             if (personalityCSV[i][1].Equals("non"))
             {
-                act = new Activity(personalityCSV[i][2]);
+                act = new Activity(0, personalityCSV[i][2], null, 0, null);
                 foreach(Reward rewa in _rewards)
                 {
                     if(rewa.ID == Int32.Parse(personalityCSV[i][0]))
@@ -110,7 +110,7 @@ public class PersonalityCreator
                         act.AddReward(rewa);
                     }
                 }
-                _personality.AddBaseActivity(activityCounter, act.feedBackString, act);
+                //_personality.AddBaseActivity(activityCounter, act.feedBackString, act);
                 activityCounter++;
             }
         }

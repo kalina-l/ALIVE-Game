@@ -7,6 +7,9 @@ public class Item  {
     public int ID { get; set; }
     public string Name { get; set; }
 
+	public int uses;
+	public int maxUses;
+
     public Dictionary<int, Activity> Activities;
 
 	public Item()
@@ -14,13 +17,11 @@ public class Item  {
         Activities = new Dictionary<int, Activity>();
     }
 
-    public Item AddActivity(int id, string name, Activity activity)
+    public Item AddActivity(Activity activity)
     {
-        if (!Activities.ContainsKey(id))
+        if (!Activities.ContainsKey(activity.ID))
         {
-            Activities[id] = activity;
-            activity.Name = name;
-            activity.ID = id;
+			Activities[activity.ID] = activity;
         }
         else
         {

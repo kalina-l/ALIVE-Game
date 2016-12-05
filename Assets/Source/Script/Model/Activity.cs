@@ -10,6 +10,9 @@ public class Activity {
 
     public List<Experience> LearnedExperiences;
 
+	public Item item;
+	public int useConsume;
+
     private string _feedBackString;
     public string feedBackString 
     {
@@ -23,11 +26,19 @@ public class Activity {
         }
     }
 
-    public Activity(string feedBackString)
+	public Activity(int ID, string Name, Item item, int useConsume, string feedBackString)
     {
+		this.ID = ID;
+		this.Name = Name;
+		this.item = item;
+		this.useConsume = useConsume;
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
+<<<<<<< HEAD
         LearnedExperiences = new List<Experience>();
+=======
+		if(item!=null) item.AddActivity (this);
+>>>>>>> 8817e0b9dd5f19408b533989dc4466ac13716201
     }
 
     public Activity AddReward(Reward reward)
@@ -61,6 +72,7 @@ public class Activity {
             reward.DoReward(parentPersonality, need);
         }
 
+<<<<<<< HEAD
         xp.AddRewards(parentPersonality);
 
         bool newXP = true;
@@ -92,6 +104,14 @@ public class Activity {
             LearnedExperiences.Add(xp);
             Debug.Log(feedBackString + " (" + LearnedExperiences.Count + ")");
         }
+=======
+		if (item != null) {
+			item.uses += useConsume;
+			if (item.uses >= item.maxUses) {
+				parentPersonality.RemoveItem (item.ID);
+			}
+		}
+>>>>>>> 8817e0b9dd5f19408b533989dc4466ac13716201
 
         textOutput.DisplayMessage(feedBackString);
     }

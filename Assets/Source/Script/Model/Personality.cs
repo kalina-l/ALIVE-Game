@@ -57,12 +57,9 @@ public class Personality {
         return this;
     }
 
-    public Personality AddBaseActivity(int id, string name, Activity activity)
+    public Personality AddBaseActivity(Activity activity)
     {
-        BaseActivities[id] = activity;
-
-        activity.ID = id;
-        activity.Name = name;
+		BaseActivities[activity.ID] = activity;
 
         return this;
     }
@@ -148,6 +145,7 @@ public class Personality {
     public void AddItem(int id, Item item)
     {
         Items[id] = item;
+		item.uses = 0;
     }
 
     public void RemoveItem(int id)

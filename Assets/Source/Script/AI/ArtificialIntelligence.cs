@@ -7,14 +7,14 @@ public class ArtificialIntelligence
 
     private Personality _personality;
 
-    public float ActionInterval = 1.5f;
-    public float FeedbackInterval = 0.5f;
+    public float ActionInterval = 2.5f;
+    public float FeedbackInterval = 1.5f;
 
 	private float _actionTimer;
-    private bool _waitForAnswer;
+    public bool _waitForAnswer;
     private float _feedbackTimer;
 
-	public float treeConstructionDuration = 0.5f; // in sec
+	public float treeConstructionDuration = 1f; // in sec
 	public bool treeConstruction;
 
 	List<Personality> lastCalculatedPersonalities = new List<Personality>();
@@ -107,7 +107,7 @@ public class ArtificialIntelligence
         _personality.storedEvaluation = 0;
 		_personality.children.Clear ();
 
-        Debug.Log("RootValue: " + _personality.Evaluation());
+        //Debug.Log("RootValue: " + _personality.Evaluation());
 
 		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
 		leafsToEvaluate.Enqueue (_personality);
@@ -117,7 +117,6 @@ public class ArtificialIntelligence
 
 		while (leafsToEvaluate.Count != 0 && treeConstruction) {
 			Personality currPer = leafsToEvaluate.Dequeue ();
-            
 			foreach (Activity activity in currPer.GetAllActivities()) {
                 
 				Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
@@ -150,7 +149,7 @@ public class ArtificialIntelligence
 
         Debug.Log("Do Activity: " + _personality.GetActivity(activityID).feedBackString + " - " + bestFuturePersonality.Evaluation());
 
-        Debug.Log("Deepness: " + bestFuturePersonality.deepnessInParent);
+        //Debug.Log("Deepness: " + bestFuturePersonality.deepnessInParent);
 
         _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
     }
