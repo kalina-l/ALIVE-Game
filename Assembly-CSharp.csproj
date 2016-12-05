@@ -71,9 +71,11 @@
      <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
      <Compile Include="Assets\Source\Script\Model\Activity.cs" />
      <Compile Include="Assets\Source\Script\Model\Attribute.cs" />
+     <Compile Include="Assets\Source\Script\Model\Experience.cs" />
      <Compile Include="Assets\Source\Script\Model\Item.cs" />
      <Compile Include="Assets\Source\Script\Model\Need.cs" />
      <Compile Include="Assets\Source\Script\Model\Personality.cs" />
+     <Compile Include="Assets\Source\Script\Model\PersonalityNode.cs" />
      <Compile Include="Assets\Source\Script\Model\Reward.cs" />
      <Compile Include="Assets\Source\Script\Model\RewardCondition.cs" />
      <Compile Include="Assets\Source\Script\Scene\Ball.cs" />

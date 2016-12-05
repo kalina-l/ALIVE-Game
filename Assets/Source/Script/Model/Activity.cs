@@ -8,7 +8,7 @@ public class Activity {
 
     public List<Reward> RewardList;
 
-    public List<Reward> ExpectedRewardList;
+    public List<Experience> LearnedExperiences;
 
     private string _feedBackString;
     public string feedBackString 
@@ -27,6 +27,7 @@ public class Activity {
     {
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
+        LearnedExperiences = new List<Experience>();
     }
 
     public Activity AddReward(Reward reward)
@@ -45,6 +46,9 @@ public class Activity {
 
 	public void DoActivity(Personality parentPersonality, OutputViewController textOutput)
     {
+        Experience xp = new Experience();
+        xp.AddBaseNeeds(parentPersonality);
+
         Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
 
         foreach(KeyValuePair<NeedType, Need> kvp in parentPersonality.Conditions)
@@ -55,6 +59,38 @@ public class Activity {
         foreach(Reward reward in RewardList)
         {
             reward.DoReward(parentPersonality, need);
+        }
+
+        xp.AddRewards(parentPersonality);
+
+        bool newXP = true;
+
+        for(int i=0; i<LearnedExperiences.Count; i++)
+        {
+            if(LearnedExperiences[i].CompareStatus(xp.BaseNeeds) == 0)
+            {
+                /*
+                if(LearnedExperiences[i].UpdateRewards(xp.Rewards))
+                {
+                    Debug.Log(feedBackString + ": Updated Rewards!");
+                }
+                else
+                {
+                    Debug.Log(feedBackString + " (nothing learned...)");
+                    xp.PrintRewards();
+                }
+                */
+
+                xp.PrintRewards();
+
+                newXP = false;
+            }
+        }
+
+        if (newXP)
+        {
+            LearnedExperiences.Add(xp);
+            Debug.Log(feedBackString + " (" + LearnedExperiences.Count + ")");
         }
 
         textOutput.DisplayMessage(feedBackString);
@@ -75,5 +111,34 @@ public class Activity {
         }
 
         parentPersonality.storedEvaluation = parentPersonality.Evaluation();
+    }
+
+    public Experience GetExperience(PersonalityNode personality)
+    {
+        int bestValue = int.MinValue;
+        int bestExperienceID = 0;
+
+        if (LearnedExperiences.Count == 0)
+        {
+            //Return Random Experience
+            Experience xp = new Experience();
+            xp.AddBaseNeeds(personality.Needs);
+            xp.AddRandomRewards();
+
+            return xp;
+        }
+        else
+        {
+            for (int i = 0; i < LearnedExperiences.Count; i++)
+            {
+                if (LearnedExperiences[i].CompareStatus(personality.Needs) > bestValue)
+                {
+                    bestValue = LearnedExperiences[i].CompareStatus(personality.Needs);
+                    bestExperienceID = i;
+                }
+            }
+        }
+
+        return LearnedExperiences[bestExperienceID];
     }
 }
