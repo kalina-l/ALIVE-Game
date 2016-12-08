@@ -19,8 +19,6 @@ public class PersonalityCreator
     public static readonly int MinAttribute = 1;
     public static readonly int MaxAttribute = 20;
 
-    private static int activityCounter = 0;
-
     private Personality _personality;
     public Personality personality
     {
@@ -58,9 +56,10 @@ public class PersonalityCreator
         Item item = null;
         Boolean itemExists = false;
         int itemCounter = 0;
+        int ID;
         for (int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
         {
-            if (!personalityCSV[i][1].Equals("non"))
+            if (!personalityCSV[i][1].Equals("Body"))
             {
                 foreach(Item ite in ItemList)
                 {
@@ -75,19 +74,33 @@ public class PersonalityCreator
                     item = new Item();
                     item.Name = personalityCSV[i][1];
                     item.ID = itemCounter;
+                    item.maxUses = 100;
                     itemCounter++;
                 }
-                act = new Activity(0, personalityCSV[i][2], null, 0, null);
+                ID = Int32.Parse(personalityCSV[i][0]);
+                act = new Activity(ID, personalityCSV[i][2], item, 1, item.Name+"."+personalityCSV[i][2]);
+                string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
+                int[] activityRewards = new int[actRewards.Length];
+                for (int p = 0; p < activityRewards.Length; p++)
+                {
+                    activityRewards[p] = Int32.Parse(actRewards[p]);
+                }
                 foreach (Reward rewa in _rewards)
                 {
-                    if (rewa.ID == Int32.Parse(personalityCSV[i][0]))
+                    for (int q = 0; q < activityRewards.Length; q++)
                     {
-                        act.AddReward(rewa);
+                        int rewaID = activityRewards[q];
+                        if (rewa.ID == rewaID)
+                        {
+                            act.AddReward(rewa);
+                        }
                     }
                 }
-                //item.AddActivity(activityCounter, personalityCSV[i][2], act);
-                activityCounter++;
-                ItemList.Add(item);
+                item.AddActivity(act);
+                if (!itemExists)
+                {
+                    ItemList.Add(item);
+                }
                 itemExists = false;
             }
         }
@@ -97,21 +110,33 @@ public class PersonalityCreator
     private void getBaseActivites(string[][] personalityCSV)
     {
         Activity act;
+        int ID;
 
         for(int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
         {
-            if (personalityCSV[i][1].Equals("non"))
+            if (personalityCSV[i][1].Equals("Body"))
             {
-                act = new Activity(0, personalityCSV[i][2], null, 0, null);
-                foreach(Reward rewa in _rewards)
+                ID = Int32.Parse(personalityCSV[i][0]);
+                act = new Activity(ID, personalityCSV[i][2], null, 0, personalityCSV[i][2]);
+                string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
+                int[] activityRewards = new int[actRewards.Length];
+                for(int p = 0; p < activityRewards.Length; p++)
                 {
-                    if(rewa.ID == Int32.Parse(personalityCSV[i][0]))
+                    activityRewards[p] = Int32.Parse(actRewards[p]);
+                }
+                foreach (Reward rewa in _rewards)
+                {
+                    for (int q = 0; q < activityRewards.Length; q++)
                     {
-                        act.AddReward(rewa);
+                        int rewaID = activityRewards[q];
+                        if(rewa.ID == rewaID)
+                        {
+                            act.AddReward(rewa);
+                        } 
                     }
                 }
-                //_personality.AddBaseActivity(activityCounter, act.feedBackString, act);
-                activityCounter++;
+
+                _personality.AddBaseActivity(act);
             }
         }
     }
@@ -119,13 +144,13 @@ public class PersonalityCreator
     private void getRewards(string[][] personalityCSV)
     {
         Reward rew;
-        
-        for (int i = 1; i < personalityCSV.GetLength(0); i++)
+
+        for (int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
         {
             int ID = Int32.Parse(personalityCSV[i][0]);
 
             rew = new Reward();
-            rew.ID = ID;        //need to be changed in CSV -> Reward.ID instead of Activity.ID
+            rew.ID = ID;        
 
             int value = Int32.Parse(personalityCSV[i][1]);
             rew.RewardValue = value;
@@ -180,7 +205,6 @@ public class PersonalityCreator
 
         int start = -1;
         string identifier = null;
-
         for (int i = 0; (i < personalityCSV.GetLength(0)) && (start == -1); i++)
         {
             if(Array.IndexOf(personalityCSV[i], AttributeIdentifier) != -1)
