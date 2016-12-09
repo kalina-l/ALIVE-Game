@@ -9,7 +9,7 @@ public class ArtificialIntelligence
 
     private float _actionDelay = 2f;
     private float _feedbackDuration = 2f;
-    private float _treeConstructionDuration = 1f;
+    private float _treeConstructionDuration = 10f;
 
     private float _actionTimer;
     public bool _waitForAnswer;
@@ -25,6 +25,7 @@ public class ArtificialIntelligence
 
     private OutputViewController _textOutput;
     private Experience _lastExperience;
+    private Activity _lastActivity;
 
     public ArtificialIntelligence(Personality personality, OutputViewController textOutput)
     {
@@ -83,7 +84,7 @@ public class ArtificialIntelligence
 
             for(int i=0; i<currPer.ActivityIDs.Count; i++)
             {
-                PersonalityNode newPerson = new PersonalityNode(currPer, _personality.GetActivity(currPer.ActivityIDs[i]).GetExperience(currPer), currPer.ActivityIDs[i]);
+                PersonalityNode newPerson = new PersonalityNode(currPer, _personality.GetActivity(currPer.ActivityIDs[i]).GetExperience(currPer), currPer.ActivityIDs[i], _personality.GetActivity(currPer.ActivityIDs[i]).Feedback.GetFeedback(currPer.Needs));
                 currPer.Children.Add(newPerson);
                 leafsToEvaluate.Enqueue(newPerson);
             }
@@ -101,7 +102,8 @@ public class ArtificialIntelligence
         PersonalityNode bestFuturePersonality = GetBestPersonality(root);
         int activityID = bestFuturePersonality.ParentActionID;
 
-        _lastExperience = _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
+        _lastActivity = _personality.GetActivity(activityID);
+        _lastExperience = _lastActivity.DoActivity(_personality, _textOutput);
     }
 
 	private void createPartialLearningTree(){
@@ -189,8 +191,8 @@ public class ArtificialIntelligence
     {
         if (_waitForAnswer)
         {
-            if (_lastExperience != null)
-                _lastExperience.Feedback += feedback;
+            if (_lastActivity != null)
+                _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
 
             switch (feedback)
             {

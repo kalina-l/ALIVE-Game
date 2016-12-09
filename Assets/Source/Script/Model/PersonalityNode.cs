@@ -18,7 +18,7 @@ public class PersonalityNode {
 	public float BestChildsEvaluation;
 	public bool visited = false;
 
-    public int FeedBack;
+    public float FeedBack;
 
     public PersonalityNode(Personality basePerson)
     {
@@ -44,11 +44,11 @@ public class PersonalityNode {
         Children = new List<PersonalityNode>();
     }
 
-    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID)
+    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback)
     {
         Parent = parent;
         Depth = parent.Depth + 1;
-        FeedBack = xp.Feedback;
+        FeedBack = feedback;
 
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
