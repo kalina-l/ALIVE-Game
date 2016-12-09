@@ -64,8 +64,8 @@ public class ArtificialIntelligence
 
 	public void decideOnAction()
 	{
-        ApplicationManager.Instance.StartCoroutine(createLearningTree());
-        //ApplicationManager.Instance.StartCoroutine(createPersonalityTree());
+		createPartialLearningTree ();
+        //ApplicationManager.Instance.StartCoroutine(createLearningTree());
     }
 
     private IEnumerator createLearningTree()
@@ -104,60 +104,35 @@ public class ArtificialIntelligence
         _lastExperience = _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
     }
 
-	private IEnumerator createPersonalityTree() {
+	private void createPartialLearningTree(){
+		int maxDepth = 5;
+		PersonalityNode root = new PersonalityNode(_personality);
 
-		_treeConstruction = true;
+		dfs (root, maxDepth);
 
-        float timer = 0;
+		_lastExperience = _personality.GetActivity(root.Children[0].ParentActionID).DoActivity(_personality, _textOutput);
+	}
 
-        _personality.parent = null;
-        _personality.deepnessInParent = 0;
-        _personality.storedEvaluation = 0;
-		_personality.children.Clear ();
+	private void dfs(PersonalityNode pn, int maxDepth){
 
-		Queue<Personality> leafsToEvaluate = new Queue<Personality>();
-		leafsToEvaluate.Enqueue (_personality);
-
-        int counter = 0;
-        
-
-		while (leafsToEvaluate.Count != 0 && _treeConstruction) {
-			Personality currPer = leafsToEvaluate.Dequeue ();
-			foreach (Activity activity in currPer.GetAllActivities()) {
-                
-				Personality changedPersonality = new Personality (currPer, activity.ID); //TODO: change constr dont forget set children and parent
-                counter++;
-				activity.DoActivity (changedPersonality);
-
-				currPer.children.Add (changedPersonality);
-				leafsToEvaluate.Enqueue (changedPersonality);
+		if (pn.Depth < maxDepth && !pn.visited) {
+			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
+				PersonalityNode newPerson = new PersonalityNode (pn, _personality.GetActivity (pn.ActivityIDs [i]).GetExperience (pn), pn.ActivityIDs [i]);
+				pn.Children.Add (newPerson);
+				dfs (newPerson, maxDepth);
 			}
-
-            timer += Time.deltaTime;
-
-            if(timer > _treeConstructionDuration)
-            {
-                _treeConstruction = false;
-            }
-
-            yield return 0;
+			pn.visited = true;
 		}
-        
 
-        Personality bestFuturePersonality = chooseBestFuturePersonality();
-        int activityID = bestFuturePersonality.parentActionID;
-        
-
-        for(int i=0; i<_personality.children.Count; i++)
-        {
-            Debug.Log(_personality.GetActivity(_personality.children[i].parentActionID).feedBackString + ": " + _personality.children[i].Evaluation());
-        }
-
-        Debug.Log("Do Activity: " + _personality.GetActivity(activityID).feedBackString + " - " + bestFuturePersonality.Evaluation());
-        
-
-        _personality.GetActivity(activityID).DoActivity(_personality, _textOutput);
-    }
+		if ((pn.Depth >= maxDepth || pn.visited) && pn.Parent!=null) {
+			if (pn.Parent.BestChildsEvaluation < (pn.SelfEvaluation + pn.BestChildsEvaluation)) {
+				pn.Parent.removeAllChildrenExceptOne (pn);
+				pn.Parent.BestChildsEvaluation = (pn.SelfEvaluation + pn.BestChildsEvaluation);
+			} else {
+				pn.Parent.removeChildReference (pn);
+			}
+		}
+	}
 
     public PersonalityNode GetBestPersonality(PersonalityNode root)
     {
@@ -184,30 +159,6 @@ public class ArtificialIntelligence
         
         return bestFuturePersonality;
     }
-
-	public Personality chooseBestFuturePersonality () {
-		lastCalculatedPersonalities.Clear ();
-		calcLastFuturePersonalities (_personality);
-		int counter = 0;
-		float biggestReward = float.MinValue;
-		for (int i = 0; i < lastCalculatedPersonalities.Count; i++) {
-			if (biggestReward < lastCalculatedPersonalities[i].Evaluation()){
-				biggestReward = lastCalculatedPersonalities [i].Evaluation ();
-				counter = i;
-			}
-		}
-        
-		Personality bestFuturePersonality = lastCalculatedPersonalities [counter];
-        Debug.Log("Best Value: " + bestFuturePersonality.Evaluation());
-
-        while (bestFuturePersonality.parent != _personality) {
-			bestFuturePersonality = bestFuturePersonality.parent;
-		}
-
-        
-
-        return bestFuturePersonality;
-	}
 
     public void CalculatePersonalityNodes(PersonalityNode root)
     {
