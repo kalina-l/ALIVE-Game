@@ -103,7 +103,6 @@ public class Activity {
         if (newXP)
         {
             LearnedExperiences.Add(xp);
-            Debug.Log(feedBackString + " (" + LearnedExperiences.Count + ")");
         }
 
 		if (item != null) {

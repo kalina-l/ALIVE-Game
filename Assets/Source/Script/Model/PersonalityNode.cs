@@ -53,7 +53,7 @@ public class PersonalityNode {
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
         {
-            Needs[need.Key] = (Evaluation)((int)need.Value + xp.Rewards[need.Key]);
+            Needs[need.Key] = (Evaluation)Mathf.Clamp((int)need.Value + xp.Rewards[need.Key], 0, 7);
         }
 
         ParentActionID = activityID;

@@ -112,7 +112,16 @@ public class ArtificialIntelligence
 
 		dfs (root, maxDepth);
 
-		_lastExperience = _personality.GetActivity(root.Children[0].ParentActionID).DoActivity(_personality, _textOutput);
+        if (root.Children.Count != 0)
+        {
+            int activityID = root.Children[0].ParentActionID;
+            _lastActivity = _personality.GetActivity(activityID);
+            _lastExperience = _lastActivity.DoActivity(_personality, _textOutput);
+        }
+        else
+        {
+            Debug.LogError("No Child generated. why?");
+        }
 	}
 
 	private void dfs(PersonalityNode pn, int maxDepth){

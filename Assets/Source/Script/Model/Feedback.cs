@@ -112,7 +112,7 @@ public class Feedback {
         foreach (KeyValuePair<NeedType, Evaluation> kvp in Needs)
         {
             valueIndex = (int)kvp.Value;
-
+            
             switch (kvp.Key)
             {
                 case NeedType.ENERGY:
