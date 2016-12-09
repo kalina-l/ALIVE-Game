@@ -119,7 +119,7 @@ public class ArtificialIntelligence
 
 		if (pn.Depth < maxDepth && !pn.visited) {
 			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
-				PersonalityNode newPerson = new PersonalityNode (pn, _personality.GetActivity (pn.ActivityIDs [i]).GetExperience (pn), pn.ActivityIDs [i]);
+				PersonalityNode newPerson = new PersonalityNode (pn, _personality.GetActivity (pn.ActivityIDs [i]).GetExperience (pn), pn.ActivityIDs [i], _personality.GetActivity(pn.ActivityIDs[i]).Feedback.GetFeedback(pn.Needs));
 				pn.Children.Add (newPerson);
 				dfs (newPerson, maxDepth);
 			}
