@@ -17,6 +17,13 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite sliderBackgroundSpirte;
     public Sprite sliderFillSprite;
 
+    public Sprite radialSliderSprite;
+    public Sprite iconEnergy;
+    public Sprite iconHealth;
+    public Sprite iconHunger;
+    public Sprite iconSatisfaction;
+    public Sprite iconSocial;
+
     public Color ButtonColorOn;
     public Color ButtonColorOff;
     public Color ContainerColor;
