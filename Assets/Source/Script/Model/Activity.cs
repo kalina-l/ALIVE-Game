@@ -7,8 +7,9 @@ public class Activity {
     public string Name { get; set; }
 
     public List<Reward> RewardList;
-
     public List<Experience> LearnedExperiences;
+
+    public Feedback Feedback;
 
 	public Item item;
 	public int useConsume;
@@ -36,6 +37,8 @@ public class Activity {
         RewardList = new List<Reward>();
         LearnedExperiences = new List<Experience>();
 		if(item!=null) item.AddActivity (this);
+
+        Feedback = new Feedback();
     }
 
     public Activity AddReward(Reward reward)

@@ -19,7 +19,7 @@ public class ApplicationManager : MonoBehaviour {
     private OutputViewController _output;
     private ConditionViewController _conditionMonitor;
 
-    public static float DISCOUNT_FACTOR = 0.21f;
+    public static float DISCOUNT_FACTOR = 0.91f;
 
     void Awake()
     {

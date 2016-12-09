@@ -15,7 +15,7 @@ public class PersonalityNode {
 
     public float StoredEvaluation;
 
-    public int FeedBack;
+    public float FeedBack;
 
     public PersonalityNode(Personality basePerson)
     {
@@ -39,11 +39,11 @@ public class PersonalityNode {
         Children = new List<PersonalityNode>();
     }
 
-    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID)
+    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback)
     {
         Parent = parent;
         Depth = parent.Depth + 1;
-        FeedBack = xp.Feedback;
+        FeedBack = feedback;
 
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
@@ -100,7 +100,7 @@ public class PersonalityNode {
         if (Parent != null)
         {
             value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, Depth - 1);
-            value += Parent.StoredEvaluation;
+            value += Parent.StoredEvaluation; 
         }
 
         return value;

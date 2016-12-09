@@ -71,6 +71,7 @@
      <Compile Include="Assets\Source\Script\Model\Activity.cs" />
      <Compile Include="Assets\Source\Script\Model\Attribute.cs" />
      <Compile Include="Assets\Source\Script\Model\Experience.cs" />
+     <Compile Include="Assets\Source\Script\Model\Feedback.cs" />
      <Compile Include="Assets\Source\Script\Model\Item.cs" />
      <Compile Include="Assets\Source\Script\Model\Need.cs" />
      <Compile Include="Assets\Source\Script\Model\Personality.cs" />
