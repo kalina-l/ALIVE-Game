@@ -14,6 +14,9 @@ public class PersonalityNode {
     public int Depth;
 
     public float StoredEvaluation;
+	public float SelfEvaluation;
+	public float BestChildsEvaluation;
+	public bool visited = false;
 
     public float FeedBack;
 
@@ -35,6 +38,8 @@ public class PersonalityNode {
         Parent = null;
         Depth = 0;
         StoredEvaluation = 0;
+		SelfEvaluation = 0;
+		BestChildsEvaluation = 0;
 
         Children = new List<PersonalityNode>();
     }
@@ -58,7 +63,9 @@ public class PersonalityNode {
 
         Children = new List<PersonalityNode>();
 
-        StoredEvaluation = Evaluation();
+		SelfEvaluation = Evaluation ();
+		BestChildsEvaluation = 0;
+        //StoredEvaluation = Evaluation();
     }
 
     public float Evaluation()
@@ -100,9 +107,22 @@ public class PersonalityNode {
         if (Parent != null)
         {
             value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, Depth - 1);
-            value += Parent.StoredEvaluation; 
+            //value += Parent.StoredEvaluation;
         }
 
         return value;
     }
+
+	public void removeChildReference(PersonalityNode child){
+		Children.Remove (child);
+		child.Parent = null;
+	}
+
+	public void removeAllChildrenExceptOne(PersonalityNode child){
+		for(int i = Children.Count-1; i >= 0; i--){
+			if (Children[i] != child) {
+				removeChildReference (Children[i]);
+			}
+		}
+	}
 }
