@@ -66,8 +66,7 @@ public class ConditionViewController : AbstractViewController {
 
             if (c != null)
             {
-                slider.Value.UpdateSlider(c.GetSliderValue());
-                slider.Value.SetColor(GraphicsHelper.Instance.evaluationColor[(int)c.getEvaluation()]);
+                slider.Value.UpdateSlider(c.GetSliderValue(), GraphicsHelper.Instance.evaluationColor[(int)c.getEvaluation()]);
             }
         }
     }

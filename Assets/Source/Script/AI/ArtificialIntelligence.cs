@@ -117,6 +117,8 @@ public class ArtificialIntelligence
             int activityID = root.Children[0].ParentActionID;
             _lastActivity = _personality.GetActivity(activityID);
             _lastExperience = _lastActivity.DoActivity(_personality, _textOutput);
+
+            ApplicationManager.Instance.PersonalityUpdate();
         }
         else
         {

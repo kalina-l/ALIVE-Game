@@ -60,11 +60,17 @@ public class ApplicationManager : MonoBehaviour {
         new FeedbackViewController(UICanvas.transform, _intelligence);
 
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+
+        PersonalityUpdate();
     }
 
     void Update()
     {
         _intelligence.TimeStep();
+    }
+
+    public void PersonalityUpdate()
+    {
         _conditionMonitor.UpdateSlider(_personality);
     }
 
