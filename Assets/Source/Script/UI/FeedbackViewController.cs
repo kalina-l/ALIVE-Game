@@ -10,8 +10,8 @@ public class FeedbackViewController : AbstractViewController {
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
-            new Vector2(0, 380), new Vector2(1080, 380),
-            new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0));
+            new Vector2(296, 0), new Vector2(296, 572),
+            new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(1, 0.5f));
         View = Rect.gameObject;
 
 		
@@ -21,8 +21,8 @@ public class FeedbackViewController : AbstractViewController {
         //Buttons
         Button positiveButton = CreateButton(
                                     CreateContainer("PositiveFeedback", Rect,
-                                    Vector2.one * 40, Vector2.one * 300,
-                                    Vector2.zero, Vector2.zero, Vector2.zero),
+                                    new Vector2(-20, -20), Vector2.one * 256,
+                                    Vector2.one, Vector2.one, Vector2.one),
                                     delegate { intelligence.ReceiveFeedback(1); }
                                     );
 
@@ -30,24 +30,30 @@ public class FeedbackViewController : AbstractViewController {
 
         Button negativeButton = CreateButton(
                                     CreateContainer("NegativeFeedback", Rect,
-                                    new Vector2(-40, 40), Vector2.one * 300,
+                                    new Vector2(-20, 20), Vector2.one * 256,
                                     Vector2.right, Vector2.right, Vector2.right),
                                     delegate { intelligence.ReceiveFeedback(-1); }
                                     );
 
         AddSprite(negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhite);
-
-        _block = AddImage(CreateContainer("Feedback", parent,
-            Vector2.zero, new Vector2(1080, 380),
-            new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0)),
-            null, new Color(0,0,0,0.6f));
-
-        ApplicationManager.Instance.StartCoroutine(updateFeedbackButtons(intelligence));
     }
+
+    public void ShowFeedback(bool show)
+    {
+        //
+    }
+    
 
 	private IEnumerator updateFeedbackButtons(ArtificialIntelligence intelligence){
 		while (true) {
-			_block.enabled = !intelligence.NeedFeedback;
+            if(intelligence.NeedFeedback)
+            {
+                Rect.anchoredPosition = new Vector2(296, 0);
+            }
+            else
+            {
+                Rect.anchoredPosition = Vector2.zero;
+            }
 			yield return 0;
 		}
 	}

@@ -65,45 +65,8 @@ public class ArtificialIntelligence
 
 	public void decideOnAction()
 	{
+        //TODO: Start seperate thread for this
 		createPartialLearningTree ();
-        //ApplicationManager.Instance.StartCoroutine(createLearningTree());
-    }
-
-    private IEnumerator createLearningTree()
-    {
-        float timer = 0;
-        _treeConstruction = true;
-
-        PersonalityNode root = new PersonalityNode(_personality);
-        Queue<PersonalityNode> leafsToEvaluate = new Queue<PersonalityNode>();
-        leafsToEvaluate.Enqueue(root);
-
-        while (leafsToEvaluate.Count != 0 && _treeConstruction)
-        {
-            PersonalityNode currPer = leafsToEvaluate.Dequeue();
-
-            for(int i=0; i<currPer.ActivityIDs.Count; i++)
-            {
-                PersonalityNode newPerson = new PersonalityNode(currPer, _personality.GetActivity(currPer.ActivityIDs[i]).GetExperience(currPer), currPer.ActivityIDs[i], _personality.GetActivity(currPer.ActivityIDs[i]).Feedback.GetFeedback(currPer.Needs));
-                currPer.Children.Add(newPerson);
-                leafsToEvaluate.Enqueue(newPerson);
-            }
-
-            timer += Time.deltaTime;
-
-            if (timer > _treeConstructionDuration)
-            {
-                _treeConstruction = false;
-            }
-
-            yield return 0;
-        }
-
-        PersonalityNode bestFuturePersonality = GetBestPersonality(root);
-        int activityID = bestFuturePersonality.ParentActionID;
-
-        _lastActivity = _personality.GetActivity(activityID);
-        _lastExperience = _lastActivity.DoActivity(_personality, _textOutput);
     }
 
 	private void createPartialLearningTree(){
@@ -143,57 +106,6 @@ public class ArtificialIntelligence
 				pn.Parent.BestChildsEvaluation = (pn.SelfEvaluation + pn.BestChildsEvaluation);
 			} else {
 				pn.Parent.removeChildReference (pn);
-			}
-		}
-	}
-
-    public PersonalityNode GetBestPersonality(PersonalityNode root)
-    {
-        lastCalculatedPersonalityNodes.Clear();
-        CalculatePersonalityNodes(root);
-
-        int counter = 0;
-        float biggestReward = float.MinValue;
-        for (int i=0; i<lastCalculatedPersonalityNodes.Count; i++)
-        {
-            if(biggestReward < lastCalculatedPersonalityNodes[i].StoredEvaluation)
-            {
-                biggestReward = lastCalculatedPersonalityNodes[i].StoredEvaluation;
-                counter = i;
-            }
-        }
-
-        PersonalityNode bestFuturePersonality = lastCalculatedPersonalityNodes[counter];
-
-        while (bestFuturePersonality.Parent != root)
-        {
-            bestFuturePersonality = bestFuturePersonality.Parent;
-        }
-        
-        return bestFuturePersonality;
-    }
-
-    public void CalculatePersonalityNodes(PersonalityNode root)
-    {
-        if(root.Children.Count == 0)
-        {
-            lastCalculatedPersonalityNodes.Add(root);
-        }
-        else
-        {
-            foreach (PersonalityNode childPersonality in root.Children)
-            {
-                CalculatePersonalityNodes(childPersonality);
-            }
-        }
-    }
-
-	public void calcLastFuturePersonalities (Personality personality) {
-		if (personality.children.Count == 0) {
-			lastCalculatedPersonalities.Add (personality);
-		} else {
-			foreach (Personality childPersonality in personality.children){
-				calcLastFuturePersonalities (childPersonality);
 			}
 		}
 	}

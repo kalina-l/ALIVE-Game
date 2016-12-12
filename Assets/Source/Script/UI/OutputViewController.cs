@@ -11,32 +11,49 @@ public class OutputViewController : AbstractViewController {
     public OutputViewController(Transform parent)
     {
         Rect = CreateContainer("Output", parent,
-            new Vector2(0, -40), new Vector2(1000, 500),
-            new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1));
+            new Vector2(0, 0), new Vector2(1000, 500),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
 
-        AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
-
-        Mask mask = View.AddComponent<Mask>();
-        mask.showMaskGraphic = true;
+        //AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
 
         OutputText = AddText(
             CreateContainer("OutputText", Rect,
-            new Vector2(0, -210), new Vector2(920, 420),
+            new Vector2(0, -20), new Vector2(920, 420),
             new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1)),
-            GraphicsHelper.Instance.UIFont, 40, TextAnchor.UpperCenter);
+            GraphicsHelper.Instance.UIFont, 80, TextAnchor.UpperCenter);
     }
 
     public void DisplayMessage(string msg)
     {
-        OutputText.text += msg + "\n" + "\n";
+        //OutputText.text = msg;
+        ApplicationManager.Instance.StartCoroutine(AnimateText(msg));
+    }
 
-        if (messages > 2)
+    private IEnumerator AnimateText(string msg)
+    {
+        float timer = 0;
+
+        OutputText.text = msg;
+
+        while (timer < 1)
         {
-            OutputText.rectTransform.anchoredPosition += Vector2.up * 90;
-            OutputText.rectTransform.sizeDelta += Vector2.up * 90;
+            timer += Time.deltaTime * 2;
+
+            OutputText.fontSize = (int)Mathf.Lerp(0, 80, timer);
+            OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, timer);
+
+            yield return 0;
         }
 
-        messages++;
+        //Show Feedback
+
+        //Wait for Feedback or TimeOut
+
+            //Do Stuff when Feedback was given
+        
+        //Hide Feedback
+
+        //Hide Text
     }
 }

@@ -65,6 +65,7 @@
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSourceBase.cs" />
      <Compile Include="Assets\Source\Script\AI\ArtificialIntelligence.cs" />
      <Compile Include="Assets\Source\Script\ApplicationManager.cs" />
+     <Compile Include="Assets\Source\Script\Controller\InteractionController.cs" />
      <Compile Include="Assets\Source\Script\Creator\CSV.cs" />
      <Compile Include="Assets\Source\Script\Creator\DummyCreator.cs" />
      <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
@@ -84,8 +85,13 @@
      <Compile Include="Assets\Source\Script\Singleton.cs" />
      <Compile Include="Assets\Source\Script\UI\AbstractViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\ConditionViewController.cs" />
+     <Compile Include="Assets\Source\Script\UI\DragItemContainer.cs" />
+     <Compile Include="Assets\Source\Script\UI\DragItemHandler.cs" />
+     <Compile Include="Assets\Source\Script\UI\DropItemHandler.cs" />
      <Compile Include="Assets\Source\Script\UI\FeedbackViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\GraphicsHelper.cs" />
+     <Compile Include="Assets\Source\Script\UI\InteractionController.cs" />
+     <Compile Include="Assets\Source\Script\UI\ItemBoxViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\ItemCollectionViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\OutputViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\RadialSliderViewController.cs" />

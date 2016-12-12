@@ -32,6 +32,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Color ButtonColorOff;
     public Color ContainerColor;
     public Color TextColor;
+    public Color TextColorHidden { get { Color temp = TextColor; temp.a = 0; return temp; } }
     public Color SpriteColorWhite;
     public Color SpriteColorWhiteHidden { get { Color temp = SpriteColorWhite; temp.a = 0; return temp; } }
 
