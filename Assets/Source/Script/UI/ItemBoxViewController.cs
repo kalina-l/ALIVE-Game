@@ -25,10 +25,27 @@ public class ItemBoxViewController : AbstractViewController
 
         View = Rect.gameObject;
 
+        //ItemSlot
+        Image slot = AddSprite(
+            CreateContainer("ItemSlot", parent,
+                new Vector2(-20, -20), new Vector2(256, 256),
+                new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)),
+            GraphicsHelper.Instance.itemSlotSprite,
+            GraphicsHelper.Instance.SpriteColorWhite);
+
+        CreateButton(slot.rectTransform, delegate { RemoveItemFromSlot(); });
+
+        _itemSlotImage = AddSprite(
+            CreateContainer("ItemInSlotIcon", slot.rectTransform,
+                new Vector2(0, 0), new Vector2(128, 128),
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+            GraphicsHelper.Instance.itemSlotSprite,
+            GraphicsHelper.Instance.SpriteColorWhiteHidden);
+        _itemSlotImage.raycastTarget = false;
+
         _dropZone = CreateContainer("ItemDrop", parent,
             new Vector2(-20, -20), new Vector2(1040, 1300),
             new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)).gameObject.AddComponent<DropItemHandler>();
-        _dropZone.Setup(this);
 
         _boxImage = AddSprite(Rect, GraphicsHelper.Instance.itemboxClosedSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
@@ -54,7 +71,7 @@ public class ItemBoxViewController : AbstractViewController
             radPoint.y = (int)Mathf.Round(distance * Mathf.Sin(angle));
             radPoint.x = (int)Mathf.Round(distance * Mathf.Cos(angle));
 
-            RectTransform radRect = CreateContainer("ItemBox", Rect,
+            RectTransform radRect = CreateContainer("Item_" + kvp.Value.Name, Rect,
             radPoint, new Vector2(0, 0),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
             
@@ -69,23 +86,7 @@ public class ItemBoxViewController : AbstractViewController
             }
         }
 
-        //ItemSlot
-        Image slot = AddSprite(
-            CreateContainer("ItemSlot", parent,
-                new Vector2(-20, -20), new Vector2(256, 256),
-                new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)), 
-            GraphicsHelper.Instance.itemSlotSprite, 
-            GraphicsHelper.Instance.SpriteColorWhite);
-
-        CreateButton(slot.rectTransform, delegate { RemoveItemFromSlot(); });
-
-        _itemSlotImage = AddSprite(
-            CreateContainer("ItemInSlotIcon", slot.rectTransform,
-                new Vector2(0, 0), new Vector2(128, 128),
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-            GraphicsHelper.Instance.itemSlotSprite,
-            GraphicsHelper.Instance.SpriteColorWhiteHidden);
-        _itemSlotImage.raycastTarget = false;
+        
 
         _isOpen = false;
     }

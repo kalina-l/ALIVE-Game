@@ -6,15 +6,11 @@ using UnityEngine.UI;
 
 public class DropItemHandler : MonoBehaviour, IDropHandler
 {
-    private ItemBoxViewController _parentController;
-
     private CanvasGroup _interaction;
     private Image img;
 
-    public DropItemHandler Setup(ItemBoxViewController controller)
+    void Awake()
     {
-        _parentController = controller;
-
         _interaction = gameObject.AddComponent<CanvasGroup>();
         _interaction.blocksRaycasts = false;
         _interaction.interactable = false;
@@ -22,8 +18,6 @@ public class DropItemHandler : MonoBehaviour, IDropHandler
         img = gameObject.AddComponent<Image>();
         img.raycastTarget = false;
         img.color = GraphicsHelper.Instance.SpriteColorWhiteHidden; 
-
-        return this;
     }
 
     public void SetDropZone(bool activate)
@@ -35,12 +29,10 @@ public class DropItemHandler : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-
         if(DragItemHandler.itemIsDragged)
         {
             DragItemHandler.itemBeingDragged.GiveItem();
             DragItemHandler.itemIsDragged = false;
         }
-        //DragItemHandler.itemBeingDragged.transform.SetParent(transform);
     }
 }

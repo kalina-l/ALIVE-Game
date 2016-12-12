@@ -55,12 +55,11 @@ public class Activity {
         return this;
     }
 
-	public Experience DoActivity(Personality parentPersonality, OutputViewController textOutput)
+	public Experience DoActivity(Personality parentPersonality)
     {
         Experience xp = new Experience();
         xp.AddBaseNeeds(parentPersonality);
-
-        string learning = "";
+        
 
         Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
 
@@ -93,8 +92,6 @@ public class Activity {
                 }
                 xp.PrintRewards();
 
-                learning = " (" + LearnedExperiences[i].Feedback + ")";
-
                 newXP = false;
                 break;
             }
@@ -112,26 +109,7 @@ public class Activity {
 			}
 		}
 
-        textOutput.DisplayMessage(feedBackString + learning);
-
         return xp;
-    }
-
-    public void DoActivity(Personality parentPersonality)
-    {
-        Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
-
-        foreach (KeyValuePair<NeedType, Need> kvp in parentPersonality.Conditions)
-        {
-            need[kvp.Key] = kvp.Value.Copy();
-        }
-
-        foreach (Reward reward in RewardList)
-        {
-            reward.DoReward(parentPersonality, need);
-        }
-
-        parentPersonality.storedEvaluation = parentPersonality.Evaluation();
     }
 
     public Experience GetExperience(PersonalityNode personality)

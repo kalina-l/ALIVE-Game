@@ -30,6 +30,21 @@ public class OutputViewController : AbstractViewController {
         ApplicationManager.Instance.StartCoroutine(AnimateText(msg));
     }
 
+    public void ShowFeedback(int feedback)
+    {
+        if(feedback != 0)
+        {
+            if(feedback > 0)
+            {
+                OutputText.color = new Color32(0, 250, 50, 155);
+            }
+            else
+            {
+                OutputText.color = new Color32(200, 0, 0, 155);
+            }
+        }
+    }
+
     private IEnumerator AnimateText(string msg)
     {
         float timer = 0;
@@ -45,15 +60,6 @@ public class OutputViewController : AbstractViewController {
 
             yield return 0;
         }
-
-        //Show Feedback
-
-        //Wait for Feedback or TimeOut
-
-            //Do Stuff when Feedback was given
         
-        //Hide Feedback
-
-        //Hide Text
     }
 }

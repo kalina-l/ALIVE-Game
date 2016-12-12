@@ -23,7 +23,7 @@ public class RadialSliderViewController : AbstractViewController {
         _fillImage.type = Image.Type.Filled;
         _fillImage.fillOrigin = 2;
 
-        Image iconImage = AddSprite(CreateContainer("Icon", _fillImage.rectTransform,
+        AddSprite(CreateContainer("Icon", _fillImage.rectTransform,
             Vector2.zero, _fillImage.rectTransform.sizeDelta,
             Vector2.zero, Vector2.zero, Vector2.zero),
             icon, GraphicsHelper.Instance.SpriteColorWhite);

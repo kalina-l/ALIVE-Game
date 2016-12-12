@@ -4,57 +4,91 @@ using System.Collections;
 
 public class FeedbackViewController : AbstractViewController {
 
+    private bool _animating;
 
-    private RawImage _block;
+    private Button _positiveButton;
+    private Image _positiveButtonImage;
+
+    private Button _negativeButton;
+    private Image _negativeButtonImage;
+
+    private Vector2 _buttonSize = new Vector2(256, 256);
 
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
-            new Vector2(296, 0), new Vector2(296, 572),
-            new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(1, 0.5f));
+            Vector2.zero, new Vector2(296, 296),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
 
-		
-
-        AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
-
         //Buttons
-        Button positiveButton = CreateButton(
+        _positiveButton = CreateButton(
                                     CreateContainer("PositiveFeedback", Rect,
-                                    new Vector2(-20, -20), Vector2.one * 256,
-                                    Vector2.one, Vector2.one, Vector2.one),
-                                    delegate { intelligence.ReceiveFeedback(1); }
+                                    new Vector2(-256, 0), Vector2.zero,
+                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                                    delegate { SendFeedBack(1); }
                                     );
 
-        AddSprite(positiveButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackPositiveSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        _positiveButtonImage = AddSprite(_positiveButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackPositiveSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
-        Button negativeButton = CreateButton(
+        _negativeButton = CreateButton(
                                     CreateContainer("NegativeFeedback", Rect,
-                                    new Vector2(-20, 20), Vector2.one * 256,
-                                    Vector2.right, Vector2.right, Vector2.right),
-                                    delegate { intelligence.ReceiveFeedback(-1); }
+                                    new Vector2(256, 0), Vector2.zero,
+                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                                    delegate { SendFeedBack(-1); }
                                     );
 
-        AddSprite(negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        _negativeButtonImage = AddSprite(_negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
     }
 
     public void ShowFeedback(bool show)
     {
-        //
+        if(!_animating)
+            ApplicationManager.Instance.StartCoroutine(ShowFeedbackRoutine(show));
     }
-    
 
-	private IEnumerator updateFeedbackButtons(ArtificialIntelligence intelligence){
-		while (true) {
-            if(intelligence.NeedFeedback)
+    private IEnumerator ShowFeedbackRoutine(bool show)
+    {
+        float timer = 0;
+        _animating = true;
+
+        GraphicsHelper graphics = GraphicsHelper.Instance;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime * 2;
+
+            if(show)
             {
-                Rect.anchoredPosition = new Vector2(296, 0);
+                _positiveButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhiteHidden, graphics.SpriteColorWhite, timer);
+                _positiveButtonImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, _buttonSize, timer);
+
+                _negativeButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhiteHidden, graphics.SpriteColorWhite, timer);
+                _negativeButtonImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, _buttonSize, timer);
             }
             else
             {
-                Rect.anchoredPosition = Vector2.zero;
+                _positiveButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhite, graphics.SpriteColorWhiteHidden, timer);
+                _positiveButtonImage.rectTransform.sizeDelta = Vector2.Lerp(_buttonSize, Vector2.zero, timer);
+
+                _negativeButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhite, graphics.SpriteColorWhiteHidden, timer);
+                _negativeButtonImage.rectTransform.sizeDelta = Vector2.Lerp(_buttonSize, Vector2.zero, timer);
             }
-			yield return 0;
-		}
-	}
+
+            yield return 0;
+        }
+
+        _animating = false;
+    }
+
+
+    public void SendFeedBack(int feedback)
+    {
+        if(!_animating)
+        {
+            ApplicationManager.Instance.GiveFeedback(feedback);
+        }
+    }
+
+
 }

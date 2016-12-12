@@ -55,7 +55,7 @@ public class ConditionViewController : AbstractViewController {
             _sliders[kvp.Key] = slider;
         }
 
-        
+        UpdateSlider(personality);
     }
 
     public void UpdateSlider(Personality personality)
