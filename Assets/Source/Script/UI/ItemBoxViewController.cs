@@ -16,6 +16,7 @@ public class ItemBoxViewController : AbstractViewController
     private Image _itemSlotImage;
     private DragItemContainer _itemInSlot;
     private bool _animateSlot;
+    private Text _slotText;
 
 	public ItemBoxViewController(Transform parent, Dictionary<int, Item> items, Personality personality)
     {
@@ -42,6 +43,12 @@ public class ItemBoxViewController : AbstractViewController
             GraphicsHelper.Instance.itemSlotSprite,
             GraphicsHelper.Instance.SpriteColorWhiteHidden);
         _itemSlotImage.raycastTarget = false;
+
+        _slotText = AddText(
+            CreateContainer("SlotText", slot.rectTransform,
+            new Vector2(0, 0), new Vector2(920, 256),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+            GraphicsHelper.Instance.UIFont, 30, TextAnchor.LowerCenter);
 
         _dropZone = CreateContainer("ItemDrop", parent,
             new Vector2(-20, -20), new Vector2(1040, 1300),
@@ -113,7 +120,14 @@ public class ItemBoxViewController : AbstractViewController
 
     public void AddItemToSlot(Sprite icon, DragItemContainer itemInSlot)
     {
+        if(_itemInSlot != null)
+        {
+            _itemInSlot.RemoveItem();
+        }
+
         _itemInSlot = itemInSlot;
+
+        
 
         _itemSlotImage.sprite = icon;
         _itemSlotImage.color = GraphicsHelper.Instance.SpriteColorWhiteHidden;
@@ -125,6 +139,7 @@ public class ItemBoxViewController : AbstractViewController
     public void RemoveItemFromSlot()
     {
         _itemInSlot.RemoveItem();
+        
         ApplicationManager.Instance.StartCoroutine(ShowSlotItem(false));
     }
 
@@ -137,6 +152,11 @@ public class ItemBoxViewController : AbstractViewController
 
         _animateSlot = true;
 
+        if(show)
+        {
+            _slotText.text = _itemInSlot.ItemName;
+        }
+
         while(timer < 1)
         {
             timer += Time.deltaTime * 2;
@@ -144,11 +164,13 @@ public class ItemBoxViewController : AbstractViewController
             {
                 _itemSlotImage.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, timer);
                 _itemSlotImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, Vector2.one * 128, timer);
+                _slotText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, timer);
             }
             else
             {
                 _itemSlotImage.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, timer);
                 _itemSlotImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.one * 128, Vector2.zero, timer);
+                _slotText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColor, GraphicsHelper.Instance.TextColorHidden, timer);
             }
 
 
@@ -161,6 +183,7 @@ public class ItemBoxViewController : AbstractViewController
                 _itemInSlot.ShowItem(true, 1);
 
             _itemInSlot = null;
+            _slotText.text = "";
         }
 
         _animateSlot = false;

@@ -27,13 +27,7 @@ public class DummyCreator {
 			.AddReward (_rewards [2])
 			.AddReward (_rewards [11]));
 
-		person.AddBaseActivity(new Activity (1, "Essen", null, 0, "Essen")
-            .AddReward(_rewards[3])
-            .AddReward(_rewards[4])
-            .AddReward(_rewards[5])
-            .AddReward(_rewards[7]));
-
-		person.AddBaseActivity(new Activity (2, "Idle", null, 0, "Idle")
+		person.AddBaseActivity(new Activity (1, "Idle", null, 0, "Idle")
             .AddReward(_rewards[5])
             .AddReward(_rewards[7])
             .AddReward(_rewards[12]));
@@ -45,13 +39,21 @@ public class DummyCreator {
     {
         List<Item> items = new List<Item>();
 
-		Item item = new Item () { ID = 0, Name = "Ball", maxUses = 100 };
-		items.Add (item);
-		new Activity (3, "Spielen", item, 1, "Spielen")
+		Item ball = new Item () { ID = 0, Name = "Ball", maxUses = 100 };
+		items.Add (ball);
+		new Activity (2, "Spielen", ball, 1, "Spielen")
 			.AddReward (_rewards [6])
 			.AddReward (_rewards [8])
 			.AddReward (_rewards [9])
 			.AddReward (_rewards [10]);
+
+        Item cake = new Item() { ID = 1, Name = "Kuchen", maxUses = 100 };
+        items.Add(cake);
+        new Activity(3, "Essen", ball, 1, "Essen")
+            .AddReward(_rewards[3])
+            .AddReward(_rewards[4])
+            .AddReward(_rewards[5])
+            .AddReward(_rewards[7]);
 
         return items;
     }
