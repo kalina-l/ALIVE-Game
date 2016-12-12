@@ -56,8 +56,8 @@ public class ApplicationManager : MonoBehaviour {
 
 
         //UI
-        new ItemCollectionViewController(UICanvas.transform, _items, _personality, _intelligence);
         new FeedbackViewController(UICanvas.transform, _intelligence);
+        new ItemBoxViewController(UICanvas.transform, _items, _personality);
 
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
 

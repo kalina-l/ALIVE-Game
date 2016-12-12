@@ -14,6 +14,10 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite feedbackNeutralSprite;
     public Sprite feedbackPositiveSprite;
 
+    public Sprite itemboxOpenSprite;
+    public Sprite itemboxClosedSprite;
+    public Sprite itemSlotSprite;
+
     public Sprite sliderBackgroundSpirte;
     public Sprite sliderFillSprite;
 
@@ -29,6 +33,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Color ContainerColor;
     public Color TextColor;
     public Color SpriteColorWhite;
+    public Color SpriteColorWhiteHidden { get { Color temp = SpriteColorWhite; temp.a = 0; return temp; } }
 
     public AnimationCurve SliderAnimation;
 
