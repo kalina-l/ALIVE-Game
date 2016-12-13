@@ -41,6 +41,7 @@ public class DummyCreator {
 
 		Item ball = new Item () { ID = 0, Name = "Ball", maxUses = 100 };
 		items.Add (ball);
+
 		new Activity (2, "Spielen", ball, 1, "Spielen")
 			.AddReward (_rewards [6])
 			.AddReward (_rewards [8])
@@ -49,7 +50,7 @@ public class DummyCreator {
 
         Item cake = new Item() { ID = 1, Name = "Kuchen", maxUses = 100 };
         items.Add(cake);
-        new Activity(3, "Essen", ball, 1, "Essen")
+        new Activity(3, "Essen", cake, 1, "Essen")
             .AddReward(_rewards[3])
             .AddReward(_rewards[4])
             .AddReward(_rewards[5])

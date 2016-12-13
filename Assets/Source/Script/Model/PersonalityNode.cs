@@ -20,6 +20,8 @@ public class PersonalityNode {
 
     public float FeedBack;
 
+    public float DISCOUNT_FACTOR = 0.91f;
+
     public PersonalityNode(Personality basePerson)
     {
         Needs = new Dictionary<NeedType, Evaluation>();
@@ -106,7 +108,7 @@ public class PersonalityNode {
         //Discounting
         if (Parent != null)
         {
-            value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, Depth - 1);
+            value = value * Mathf.Pow(DISCOUNT_FACTOR, Depth - 1);
             //value += Parent.StoredEvaluation;
         }
 

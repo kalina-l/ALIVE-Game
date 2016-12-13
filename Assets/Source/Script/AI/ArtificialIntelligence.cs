@@ -1,63 +1,84 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Threading;
 using System.Collections.Generic;
 
 public class ArtificialIntelligence
 {
+    public int DFS_DEPTH_LEVEL = 6;
+
     private Personality _personality;
+    private Thread _thread = null;
 
-    public ArtificialIntelligence(Personality personality)
+    private bool _calculating;
+
+    public bool IsDone { get { return !_calculating; } }
+
+    private int _result;
+    
+
+    public void GetNextActivity(Personality personality)
     {
+        _calculating = true;
         _personality = personality;
+
+        _thread = new Thread(getBestAction);
+        _thread.Start();
     }
 
-    public int GetNextActivity()
+    public int GetResult()
     {
-        return getBestAction();
+        _thread.Abort();
+        return _result;
     }
 
-	public void decideOnAction()
-	{
-        //TODO: Start seperate thread for this
-		getBestAction ();
-    }
-
-	private int getBestAction(){
+	private void getBestAction(){
+        
 		PersonalityNode root = new PersonalityNode(_personality);
-
-        float timePassed = Time.realtimeSinceStartup;
-        dfs (root, ApplicationManager.DFS_DEPTH_LEVEL);
-        Debug.Log("Deciding on action with depth of " + ApplicationManager.DFS_DEPTH_LEVEL + " took " + (Time.realtimeSinceStartup-timePassed) + " second to calculate.");
+        
+        dfs (root, DFS_DEPTH_LEVEL);
 
         if (root.Children.Count != 0)
         {
-            return root.Children[0].ParentActionID;
+            _result = root.Children[0].ParentActionID;
         }
         else
         {
             Debug.LogError("No Child generated. why?");
-            return -1;
+            _result = -1;
         }
+
+        _calculating = false;
 	}
 
 	private void dfs(PersonalityNode pn, int maxDepth){
 
 		if (pn.Depth < maxDepth && !pn.visited) {
 			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
-				PersonalityNode newPerson = new PersonalityNode (pn, _personality.GetActivity (pn.ActivityIDs [i]).GetExperience (pn), pn.ActivityIDs [i], _personality.GetActivity(pn.ActivityIDs[i]).Feedback.GetFeedback(pn.Needs));
-				pn.Children.Add (newPerson);
-				dfs (newPerson, maxDepth);
+
+                Activity activity = _personality.GetActivity(pn.ActivityIDs[i]);
+                Experience experience = activity.GetExperience(pn);
+                float feedback = activity.Feedback.GetFeedback(pn.Needs);
+
+                PersonalityNode newPerson = new PersonalityNode (pn,
+                                                experience, 
+                                                pn.ActivityIDs [i],
+                                                feedback);
+                
+                pn.Children.Add (newPerson);
+                dfs (newPerson, maxDepth);
 			}
 			pn.visited = true;
 		}
+        
 
-		if ((pn.Depth >= maxDepth || pn.visited) && pn.Parent!=null) {
-			if (pn.Parent.BestChildsEvaluation < (pn.SelfEvaluation + pn.BestChildsEvaluation)) {
-				pn.Parent.removeAllChildrenExceptOne (pn);
+        if ((pn.Depth >= maxDepth || pn.visited) && pn.Parent!=null) {
+            if (pn.Parent.BestChildsEvaluation < (pn.SelfEvaluation + pn.BestChildsEvaluation)) {
+                pn.Parent.removeAllChildrenExceptOne (pn);
 				pn.Parent.BestChildsEvaluation = (pn.SelfEvaluation + pn.BestChildsEvaluation);
 			} else {
-				pn.Parent.removeChildReference (pn);
+                pn.Parent.removeChildReference (pn);
 			}
 		}
-	}
+    }
 }

@@ -160,50 +160,6 @@ public class Personality {
         }
     }
 
-	public float Evaluation(){
-        float value = 0;
-
-        foreach(KeyValuePair<NeedType, Need> need in Conditions)
-        {
-            switch(need.Value.getEvaluation())
-            {
-                case global::Evaluation.SUICIDAL:
-                    value -= 300;
-                    break;
-                case global::Evaluation.SUPER_BAD:
-                    value -= 150;
-                    break;
-                case global::Evaluation.VERY_BAD:
-                    value -= 100;
-                    break;
-                case global::Evaluation.BAD:
-                    value -= 50;
-                    break;
-                case global::Evaluation.NEUTRAL:
-                    value -= 0;
-                    break;
-                case global::Evaluation.GOOD:
-                    value += 40;
-                    break;
-                case global::Evaluation.VERY_GOOD:
-                    value += 80;
-                    break;
-                case global::Evaluation.SUPER_GOOD:
-                    value += 120;
-                    break;
-            }
-        }
-
-        //Discounting
-        if (parent != null)
-        {
-            value = value * Mathf.Pow(ApplicationManager.DISCOUNT_FACTOR, deepnessInParent - 1);
-            value += parent.storedEvaluation;
-        }
-
-        return value;
-	}
-
     public void printConditions() {
         string conditions = "";
         foreach (KeyValuePair<NeedType, Need> condition in Conditions) {

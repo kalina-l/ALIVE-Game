@@ -18,8 +18,8 @@ public class ApplicationManager : MonoBehaviour {
     private ArtificialIntelligence _intelligence;
 
     private Dictionary<int, Item> _items;
-    public static float DISCOUNT_FACTOR = 0.91f;
-    public static int DFS_DEPTH_LEVEL = 15;
+    
+    
 
     private Experience _lastExperience;
     private Activity _lastActivity;
@@ -60,7 +60,7 @@ public class ApplicationManager : MonoBehaviour {
             _items[item.ID] = item;
         }
         
-        _intelligence = new ArtificialIntelligence(_personality);
+        _intelligence = new ArtificialIntelligence();
 
         //UI
         _output = new OutputViewController(UICanvas.transform);
@@ -70,12 +70,31 @@ public class ApplicationManager : MonoBehaviour {
 
         StartCoroutine(Run());
     }
-    
+
 
     public void DoActivity()
     {
+        StartCoroutine(DoActivityRoutine());
+    }
+
+    private IEnumerator DoActivityRoutine()
+    {
         //GetActivity
-        int activityID = _intelligence.GetNextActivity();
+        _intelligence.GetNextActivity(_personality);
+
+        float timer = 0;
+
+        while(!_intelligence.IsDone)
+        {
+            timer += Time.deltaTime;
+            yield return 0;
+        }
+
+        int activityID = _intelligence.GetResult();
+
+        Debug.Log("Calculation took " + timer + " seconds");
+
+        
 
         if (activityID != -1)
         {

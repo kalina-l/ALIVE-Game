@@ -88,7 +88,6 @@ public class Activity {
                 else
                 {
                     Debug.Log(feedBackString + " (nothing learned...)");
-                    xp.PrintRewards();
                 }
                 xp.PrintRewards();
 
@@ -137,7 +136,7 @@ public class Activity {
                 }
             }
         }
-
+        
         return LearnedExperiences[bestExperienceID];
     }
 }

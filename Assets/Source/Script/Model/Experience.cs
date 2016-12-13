@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -49,11 +50,13 @@ public class Experience {
 
     public void AddRandomRewards()
     {
-        Rewards[NeedType.HUNGER] = (int)((Random.value * 4f) - 2f);
-        Rewards[NeedType.ENERGY] = (int)((Random.value * 4f) - 2f);
-        Rewards[NeedType.HEALTH] = (int)((Random.value * 4f) - 2f);
-        Rewards[NeedType.SATISFACTION] = (int)((Random.value * 4f) - 2f);
-        Rewards[NeedType.SOCIAL] = (int)((Random.value * 4f) - 2f);
+        System.Random r = new System.Random();
+
+        Rewards[NeedType.HUNGER] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.ENERGY] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.HEALTH] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.SATISFACTION] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f);
     }
 
     public Experience(Personality basePersonality, Personality resultPersonality)
