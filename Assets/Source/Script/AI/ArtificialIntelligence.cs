@@ -13,20 +13,21 @@ public class ArtificialIntelligence
 
     public int GetNextActivity()
     {
-        return createPartialLearningTree();
+        return getBestAction();
     }
 
 	public void decideOnAction()
 	{
         //TODO: Start seperate thread for this
-		createPartialLearningTree ();
+		getBestAction ();
     }
 
-	private int createPartialLearningTree(){
-		int maxDepth = 5;
+	private int getBestAction(){
 		PersonalityNode root = new PersonalityNode(_personality);
 
-		dfs (root, maxDepth);
+        float timePassed = Time.realtimeSinceStartup;
+        dfs (root, ApplicationManager.DFS_DEPTH_LEVEL);
+        Debug.Log("Deciding on action with depth of " + ApplicationManager.DFS_DEPTH_LEVEL + " took " + (Time.realtimeSinceStartup-timePassed) + " second to calculate.");
 
         if (root.Children.Count != 0)
         {

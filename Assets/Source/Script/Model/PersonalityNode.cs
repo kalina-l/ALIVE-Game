@@ -39,7 +39,7 @@ public class PersonalityNode {
         Depth = 0;
         StoredEvaluation = 0;
 		SelfEvaluation = 0;
-		BestChildsEvaluation = 0;
+		BestChildsEvaluation = int.MinValue;
 
         Children = new List<PersonalityNode>();
     }

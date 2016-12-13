@@ -19,6 +19,7 @@ public class ApplicationManager : MonoBehaviour {
 
     private Dictionary<int, Item> _items;
     public static float DISCOUNT_FACTOR = 0.91f;
+    public static int DFS_DEPTH_LEVEL = 15;
 
     private Experience _lastExperience;
     private Activity _lastActivity;
