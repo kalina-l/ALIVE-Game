@@ -8,6 +8,7 @@ public class DragItemContainer : AbstractViewController {
     private ItemBoxViewController _parentViewController;
 
     private Image _itemImage;
+    private Sprite _icon;
 
     public DropItemHandler Drop;
 
@@ -28,7 +29,15 @@ public class DragItemContainer : AbstractViewController {
 
         Drop = drop;
 
-        _itemImage = AddSprite(container, GraphicsHelper.Instance.radialSliderSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+        _icon = Resources.Load<Sprite>("Graphics/Items/" + item.Name);
+
+        if (_icon == null)
+        {
+            Debug.LogWarning("No Sprite found for " + item.Name);
+            _icon = GraphicsHelper.Instance.radialSliderSprite;
+        }
+
+        _itemImage = AddSprite(container, _icon, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         View.AddComponent<CanvasGroup>();
         View.AddComponent<DragItemHandler>().Setup(this);
@@ -72,7 +81,7 @@ public class DragItemContainer : AbstractViewController {
         _itemImage.color = GraphicsHelper.Instance.SpriteColorWhiteHidden;
         _itemImage.raycastTarget = false;
 
-        _parentViewController.AddItemToSlot(_itemImage.sprite, this);
+        _parentViewController.AddItemToSlot(_icon, this);
         _parentViewController.ToggleBox();
     }
 
