@@ -81,8 +81,9 @@ public class PersonalityNode {
 		SelfEvaluation = Evaluation ();
 		BestChildsEvaluation = 0;
 
-        if (usedItem != null)
+        /* if (usedItem != null)
         {
+			usedItem = usedItem.deepCopy ();
             usedItem.uses += activityUseConsume;
             if (usedItem.uses >= usedItem.maxUses)
             {
@@ -92,7 +93,7 @@ public class PersonalityNode {
                     ActivityIDs.Remove(activity.ID);
                 }
             }
-        }
+        } */
     }
 
     public float Evaluation()
