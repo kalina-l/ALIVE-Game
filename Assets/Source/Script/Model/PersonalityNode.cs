@@ -81,7 +81,7 @@ public class PersonalityNode {
 		SelfEvaluation = Evaluation ();
 		BestChildsEvaluation = 0;
 
-        /* if (usedItem != null)
+        if (usedItem != null)
         {
 			usedItem = usedItem.deepCopy ();
             usedItem.uses += activityUseConsume;
@@ -93,8 +93,21 @@ public class PersonalityNode {
                     ActivityIDs.Remove(activity.ID);
                 }
             }
-        } */
+        }
     }
+
+	public Item GetItem(int activityID)
+	{
+		foreach (Item item in Items) {
+			if (item.Activities.ContainsKey (activityID)) {
+				return item;
+			}
+		}
+
+		Debug.LogError("Item with activityId" + activityID + " doesn't exist!");
+
+		return null;
+	}
 
     public float Evaluation()
     {

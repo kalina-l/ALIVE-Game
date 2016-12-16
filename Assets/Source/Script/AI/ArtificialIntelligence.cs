@@ -57,6 +57,11 @@ public class ArtificialIntelligence
 			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
 
                 Activity activity = _personality.GetActivity(pn.ActivityIDs[i]);
+				Item item = null;
+				if (activity.item != null) {
+					item = pn.GetItem (pn.ActivityIDs [i]);
+				}
+
                 Experience experience = activity.GetExperience(pn);
                 float feedback = activity.Feedback.GetFeedback(pn.Needs);
 
@@ -64,7 +69,7 @@ public class ArtificialIntelligence
                                                 experience, 
                                                 pn.ActivityIDs [i],
 												feedback,
-												activity.item,
+												item,
 												activity.useConsume);
                 
                 pn.Children.Add (newPerson);
