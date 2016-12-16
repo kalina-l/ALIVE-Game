@@ -63,7 +63,9 @@ public class ArtificialIntelligence
                 PersonalityNode newPerson = new PersonalityNode (pn,
                                                 experience, 
                                                 pn.ActivityIDs [i],
-                                                feedback);
+												feedback,
+												activity.item,
+												activity.useConsume);
                 
                 pn.Children.Add (newPerson);
                 dfs (newPerson, maxDepth);

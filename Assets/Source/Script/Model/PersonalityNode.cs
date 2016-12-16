@@ -6,6 +6,7 @@ public class PersonalityNode {
 
     public Dictionary<NeedType, Evaluation> Needs;
     public List<int> ActivityIDs;
+	public List<Item> Items;
 
     public PersonalityNode Parent;
     public List<PersonalityNode> Children;
@@ -37,6 +38,11 @@ public class PersonalityNode {
             ActivityIDs.Add(activity.ID);
         }
 
+		Items = new List<Item>();
+		foreach (Item item in basePerson.GetItems()) {
+			Items.Add (item.deepCopy ());
+		}
+
         Parent = null;
         Depth = 0;
         StoredEvaluation = 0;
@@ -46,11 +52,21 @@ public class PersonalityNode {
         Children = new List<PersonalityNode>();
     }
 
-    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback)
+	public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback, Item usedItem, int activityUseConsume)
     {
         Parent = parent;
         Depth = parent.Depth + 1;
         FeedBack = feedback;
+
+		if (usedItem != null) {
+			usedItem.uses += activityUseConsume;
+			if (usedItem.uses >= usedItem.maxUses) {
+				Items.Remove (usedItem);
+				foreach (Activity activity in usedItem) {
+					ActivityIDs.Remove (activity.ID);
+				}
+			}
+		}
 
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
