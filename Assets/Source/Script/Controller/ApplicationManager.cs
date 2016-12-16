@@ -71,6 +71,9 @@ public class ApplicationManager : MonoBehaviour {
         StartCoroutine(Run());
     }
 
+	public void RemoveItem(Item item){
+		_itemBox.RemoveItemFromSlot ();
+	}
 
     private IEnumerator DoActivityRoutine()
     {
