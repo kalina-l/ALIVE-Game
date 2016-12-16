@@ -17,6 +17,13 @@ public class Item  {
         Activities = new Dictionary<int, Activity>();
     }
 
+	public Item(int ID, string Name, int uses, int maxUses){
+		this.ID = ID;
+		this.Name = Name;
+		this.uses = uses;
+		this.maxUses = maxUses;
+	}
+
     public Item AddActivity(Activity activity)
     {
         if (!Activities.ContainsKey(activity.ID))
@@ -52,4 +59,8 @@ public class Item  {
 
         return activities;
     }
+
+	public Item deepCopy(){
+		return new Item (item.ID, item.Name, item.uses, item.maxUses);
+	}
 }
