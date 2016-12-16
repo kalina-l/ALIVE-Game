@@ -65,16 +65,6 @@ public class PersonalityNode {
             Items.Add(item.deepCopy());
         }
 
-        if (usedItem != null) {
-			usedItem.uses += activityUseConsume;
-			if (usedItem.uses >= usedItem.maxUses) {
-				Items.Remove (usedItem);
-				foreach (Activity activity in usedItem.GetAllActivities()) {
-					ActivityIDs.Remove (activity.ID);
-				}
-			}
-		}
-
         Needs = new Dictionary<NeedType, Evaluation>();
         foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
         {
@@ -90,7 +80,19 @@ public class PersonalityNode {
 
 		SelfEvaluation = Evaluation ();
 		BestChildsEvaluation = 0;
-        //StoredEvaluation = Evaluation();
+
+        if (usedItem != null)
+        {
+            usedItem.uses += activityUseConsume;
+            if (usedItem.uses >= usedItem.maxUses)
+            {
+                Items.Remove(usedItem);
+                foreach (Activity activity in usedItem.GetAllActivities())
+                {
+                    ActivityIDs.Remove(activity.ID);
+                }
+            }
+        }
     }
 
     public float Evaluation()

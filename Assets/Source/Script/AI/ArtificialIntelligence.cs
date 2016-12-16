@@ -64,7 +64,7 @@ public class ArtificialIntelligence
                                                 experience, 
                                                 pn.ActivityIDs [i],
 												feedback,
-												activity.item,
+												activity.item.deepCopy(),
 												activity.useConsume);
                 
                 pn.Children.Add (newPerson);
