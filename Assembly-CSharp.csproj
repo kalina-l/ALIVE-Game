@@ -64,8 +64,7 @@
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSource.cs" />
      <Compile Include="Assets\CloudFaceDetection\DemoScenes\Scripts\WebcamSourceBase.cs" />
      <Compile Include="Assets\Source\Script\AI\ArtificialIntelligence.cs" />
-     <Compile Include="Assets\Source\Script\ApplicationManager.cs" />
-     <Compile Include="Assets\Source\Script\Controller\InteractionController.cs" />
+     <Compile Include="Assets\Source\Script\Controller\ApplicationManager.cs" />
      <Compile Include="Assets\Source\Script\Creator\CSV.cs" />
      <Compile Include="Assets\Source\Script\Creator\DummyCreator.cs" />
      <Compile Include="Assets\Source\Script\Creator\PersonalityCreator.cs" />
@@ -92,7 +91,6 @@
      <Compile Include="Assets\Source\Script\UI\GraphicsHelper.cs" />
      <Compile Include="Assets\Source\Script\UI\InteractionController.cs" />
      <Compile Include="Assets\Source\Script\UI\ItemBoxViewController.cs" />
-     <Compile Include="Assets\Source\Script\UI\ItemCollectionViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\OutputViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\RadialSliderViewController.cs" />
      <Compile Include="Assets\Source\Script\UI\SliderViewController.cs" />

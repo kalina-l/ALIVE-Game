@@ -56,6 +56,18 @@ public class DummyCreator {
             .AddReward(_rewards[5])
             .AddReward(_rewards[7]);
 
+        for(int i=0; i< 30; i++)
+        {
+            Item b = new Item() { ID = (i+2), Name = "Ball"+i, maxUses = 100 };
+            items.Add(b);
+
+            new Activity(i+3, "Spielen"+i, b, 1, "Spielen"+i)
+                .AddReward(_rewards[6])
+                .AddReward(_rewards[8])
+                .AddReward(_rewards[9])
+                .AddReward(_rewards[10]);
+        }
+
         return items;
     }
 
