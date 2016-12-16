@@ -152,6 +152,7 @@ public class Personality {
     {
         if (Items.ContainsKey(id))
         {
+            Items[id].uses = 0;
             Items.Remove(id);
         }
         else

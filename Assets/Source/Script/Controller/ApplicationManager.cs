@@ -72,11 +72,6 @@ public class ApplicationManager : MonoBehaviour {
     }
 
 
-    public void DoActivity()
-    {
-        StartCoroutine(DoActivityRoutine());
-    }
-
     private IEnumerator DoActivityRoutine()
     {
         //GetActivity
@@ -142,7 +137,7 @@ public class ApplicationManager : MonoBehaviour {
         {
             yield return new WaitForSeconds(WaitTime);
 
-            DoActivity();
+            yield return StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
 
