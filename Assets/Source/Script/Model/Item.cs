@@ -22,7 +22,8 @@ public class Item  {
 		this.Name = Name;
 		this.uses = uses;
 		this.maxUses = maxUses;
-	}
+        Activities = new Dictionary<int, Activity>();
+    }
 
     public Item AddActivity(Activity activity)
     {

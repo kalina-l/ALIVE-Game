@@ -58,7 +58,14 @@ public class PersonalityNode {
         Depth = parent.Depth + 1;
         FeedBack = feedback;
 
-		if (usedItem != null) {
+        Items = new List<Item>();
+
+        foreach(Item item in parent.Items)
+        {
+            Items.Add(item.deepCopy());
+        }
+
+        if (usedItem != null) {
 			usedItem.uses += activityUseConsume;
 			if (usedItem.uses >= usedItem.maxUses) {
 				Items.Remove (usedItem);
