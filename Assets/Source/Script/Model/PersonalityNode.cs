@@ -39,8 +39,8 @@ public class PersonalityNode {
         }
 
 		Items = new List<Item>();
-		foreach (Item item in basePerson.GetItems()) {
-			Items.Add (item.deepCopy ());
+		foreach (KeyValuePair<int,Item> item in basePerson.GetItems()) {
+			Items.Add (item.Value.deepCopy ());
 		}
 
         Parent = null;
@@ -62,7 +62,7 @@ public class PersonalityNode {
 			usedItem.uses += activityUseConsume;
 			if (usedItem.uses >= usedItem.maxUses) {
 				Items.Remove (usedItem);
-				foreach (Activity activity in usedItem) {
+				foreach (Activity activity in usedItem.GetAllActivities()) {
 					ActivityIDs.Remove (activity.ID);
 				}
 			}

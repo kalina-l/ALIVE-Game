@@ -61,6 +61,13 @@ public class Item  {
     }
 
 	public Item deepCopy(){
-		return new Item (item.ID, item.Name, item.uses, item.maxUses);
+		Item item = new Item (ID, Name, uses, maxUses);
+
+        foreach(Activity activity in GetAllActivities())
+        {
+            item.AddActivity(activity);
+        }
+
+        return item;
 	}
 }
