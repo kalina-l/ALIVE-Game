@@ -83,6 +83,7 @@ public class PersonalityNode {
 
         if (usedItem != null)
         {
+			usedItem = usedItem.deepCopy ();
             usedItem.uses += activityUseConsume;
             if (usedItem.uses >= usedItem.maxUses)
             {
@@ -94,6 +95,19 @@ public class PersonalityNode {
             }
         }
     }
+
+	public Item GetItem(int activityID)
+	{
+		foreach (Item item in Items) {
+			if (item.Activities.ContainsKey (activityID)) {
+				return item;
+			}
+		}
+
+		Debug.LogError("Item with activityId" + activityID + " doesn't exist!");
+
+		return null;
+	}
 
     public float Evaluation()
     {

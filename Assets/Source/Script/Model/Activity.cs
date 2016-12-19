@@ -103,7 +103,8 @@ public class Activity {
 		if (item != null) {
 			item.uses += useConsume;
 			if (item.uses >= item.maxUses) {
-				parentPersonality.RemoveItem (item.ID);
+				ApplicationManager.Instance.RemoveItem (item);
+				//parentPersonality.RemoveItem (item.ID);
 			}
 		}
 
