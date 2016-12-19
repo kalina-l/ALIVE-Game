@@ -136,10 +136,14 @@ public class ApplicationManager : MonoBehaviour {
 
     private IEnumerator Run()
     {
+        Debug.Log("Start!");
+
         while(true)
         {
+            Debug.Log("Wait");
             yield return new WaitForSeconds(WaitTime);
 
+            Debug.Log("Do Activity");
             StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
@@ -148,6 +152,8 @@ public class ApplicationManager : MonoBehaviour {
                 timer += Time.deltaTime;
                 yield return 0;
             }
+
+            Debug.Log("Feedback");
 
             timer = 0;
 

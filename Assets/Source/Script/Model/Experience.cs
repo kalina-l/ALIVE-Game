@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LitJson;
 
+[Serializable]
 public class Experience {
 
     public Dictionary<NeedType, Evaluation> BaseNeeds;
@@ -125,5 +127,10 @@ public class Experience {
         }
 
         Debug.Log(s);
+    }
+
+    public override string ToString()
+    {
+        return JsonMapper.ToJson(this);
     }
 }
