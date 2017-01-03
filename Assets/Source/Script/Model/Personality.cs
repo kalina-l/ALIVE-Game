@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FullSerializer;
 
 public class Personality {
 
@@ -8,11 +9,16 @@ public class Personality {
 	public Dictionary<int, Activity> BaseActivities;
     public Dictionary<int, Item> Items;
 
+    [SerializeField]
     private Dictionary<AttributeType, Attribute> Attributes;
     
+    [fsIgnore]
 	public Personality parent;
+    [fsIgnore]
 	public List<Personality> children = new List<Personality>();
+    [fsIgnore]
 	public int deepnessInParent = 0;
+    [fsIgnore]
 	public int parentActionID;
 
     public float storedEvaluation;

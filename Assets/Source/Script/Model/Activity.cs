@@ -15,6 +15,7 @@ public class Activity {
 	public int useConsume;
 
     private string _feedBackString;
+    [SerializeField]
     public string feedBackString 
     {
         get
@@ -36,7 +37,7 @@ public class Activity {
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
         LearnedExperiences = new List<Experience>();
-		if(item!=null) item.AddActivity (this);
+		//if(item!=null) item.AddActivity (this);
 
         Feedback = new Feedback();
     }

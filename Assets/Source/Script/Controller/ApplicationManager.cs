@@ -2,23 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum LoadStates { UseDummy, UseCSV, UseSavedState};
+
 public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
 
     public Canvas UICanvas;
-    public bool UseDummy;
+    public LoadStates Load;
 
     public float WaitTime = 2;
     public float FeedBackTime = 2;
+    public int AutomaticSaveAfterActions = 10;
+    private int saveCounter;
 
     //AI
     private string personalityCSVPath = "Data\\";
+    //private string JSONPath = "Data\\JSON\\";
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
     private Dictionary<int, Item> _items;
-    
+    private List<Item> itemList;
+    private List<Reward> rewardList;
     
 
     private Experience _lastExperience;
@@ -39,25 +45,40 @@ public class ApplicationManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        List<Item> itemList = new List<Item>();
+        itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
 
-        if (UseDummy)
+        switch(Load)
         {
-            DummyCreator creator = new DummyCreator();
-            _personality = creator.CreateDummyPerson();
-            itemList = creator.CreateDummyItems();
-        }
-        else
-        {
-            PersonalityCreator creator = new PersonalityCreator(personalityCSVPath);
-            _personality = creator.personality;
-            itemList = creator.ItemList;
+            case LoadStates.UseDummy:
+                DummyCreator creator = new DummyCreator();
+                _personality = creator.CreateDummyPerson();
+                itemList = creator.CreateDummyItems();
+                break;
+
+            case LoadStates.UseCSV:
+                PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
+                _personality = creatorCSV.personality;
+                itemList = creatorCSV.ItemList;
+                rewardList = creatorCSV.Rewards;
+                break;
+
+            case LoadStates.UseSavedState:
+                JSON readJSON = new JSON(_personality, rewardList, itemList);
+                readJSON.readJSON(readJSON);
+                _personality = readJSON.personality;
+                rewardList = readJSON.rewardList;
+                itemList = readJSON.itemList;
+                break;
+            default:
+                Debug.LogError("No Load State");
+                break;
         }
 
         foreach (Item item in itemList)
         {
             _items[item.ID] = item;
+            //_personality.AddItem(item.ID, item);
         }
         
         _intelligence = new ArtificialIntelligence();
@@ -68,6 +89,7 @@ public class ApplicationManager : MonoBehaviour {
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
 
+        saveCounter = 0;
         StartCoroutine(Run());
     }
 
@@ -113,6 +135,20 @@ public class ApplicationManager : MonoBehaviour {
         {
             _lastActivity = null;
         }
+
+
+        if(saveCounter >= AutomaticSaveAfterActions)
+        {
+            JSON writeJSON = new JSON(_personality, rewardList, itemList);
+            writeJSON.writeJSON(writeJSON);
+            Debug.Log("Status saved!");
+            saveCounter = 0;
+        }
+        else
+        {
+            saveCounter++;
+        }
+
     }
 
     public void GiveFeedback(int feedback)
