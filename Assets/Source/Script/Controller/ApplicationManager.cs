@@ -182,20 +182,19 @@ public class ApplicationManager : MonoBehaviour {
 
     private IEnumerator Run()
     {
+        Debug.Log("Start!");
+
         while(true)
         {
+            Debug.Log("Wait");
             yield return new WaitForSeconds(WaitTime);
 
-            StartCoroutine(DoActivityRoutine());
+            Debug.Log("Do Activity");
+            yield return StartCoroutine(DoActivityRoutine());
+
+            Debug.Log("Feedback");
 
             float timer = 0;
-            while(timer < 0.5f)
-            {
-                timer += Time.deltaTime;
-                yield return 0;
-            }
-
-            timer = 0;
 
             while(timer < FeedBackTime && waitForFeedback)
             {
