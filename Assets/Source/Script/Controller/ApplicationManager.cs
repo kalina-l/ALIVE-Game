@@ -19,7 +19,6 @@ public class ApplicationManager : MonoBehaviour {
 
     //AI
     private string personalityCSVPath = "Data\\";
-    //private string JSONPath = "Data\\JSON\\";
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
@@ -70,10 +69,6 @@ public class ApplicationManager : MonoBehaviour {
                 _personality = readJSON.personality;
                 rewardList = readJSON.rewardList;
                 _itemList = readJSON.itemList;
-                
-                //_itemBox.AddItemToSlot()
-
-
                 break;
             default:
                 Debug.LogError("No Load State");
