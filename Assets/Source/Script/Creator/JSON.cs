@@ -28,10 +28,9 @@ public class JSON {
         {
             this.itemList = itemList;
         }
-
         else
         {
-            Debug.LogError("No Path given! Please specify a Path for Writing/Reading the JSON-files!");
+            Debug.LogError("No saved state found");
         }
 
     }
