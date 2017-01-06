@@ -108,8 +108,6 @@ public class Activity {
 			}
 		}
 
-        Debug.Log(xp.ToString());
-
         return xp;
     }
 
