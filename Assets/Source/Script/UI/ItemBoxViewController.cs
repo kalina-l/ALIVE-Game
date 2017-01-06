@@ -118,6 +118,11 @@ public class ItemBoxViewController : AbstractViewController
         }
     }
 
+    public void AddItemFromPersonality(Item item)
+    {
+        
+    }
+
     public void AddItemToSlot(Sprite icon, DragItemContainer itemInSlot)
     {
         if(_itemInSlot != null)
