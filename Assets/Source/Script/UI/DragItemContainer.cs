@@ -17,6 +17,8 @@ public class DragItemContainer : AbstractViewController {
     private Personality _personality;
 
     public string ItemName { get { return _item.Name; } }
+    public int ItemID { get { return _item.ID; } }
+    public Sprite Icon { get { return _icon; } }
 
 	public DragItemContainer(RectTransform container, Item item, DropItemHandler drop, ItemBoxViewController parentViewController, Personality personality)
     {

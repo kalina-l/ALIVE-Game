@@ -120,7 +120,15 @@ public class ItemBoxViewController : AbstractViewController
 
     public void AddItemFromPersonality(Item item)
     {
-        
+        for(int i=0; i<_itemList.Count; i++)
+        {
+            if(_itemList[i].ItemID == item.ID)
+            {
+                Debug.Log("Add Item");
+                AddItemToSlot(_itemList[i].Icon, _itemList[i]);
+                return;
+            }
+        }
     }
 
     public void AddItemToSlot(Sprite icon, DragItemContainer itemInSlot)
