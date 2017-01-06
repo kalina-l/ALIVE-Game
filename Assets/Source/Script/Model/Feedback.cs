@@ -4,12 +4,18 @@ using System.Collections.Generic;
 
 public class Feedback {
 
+    [SerializeField]
     private float[] EnergyFeedback;
+    [SerializeField]
     private float[] HealthFeedback;
+    [SerializeField]
     private float[] HungerFeedback;
+    [SerializeField]
     private float[] SatisfactionFeedback;
+    [SerializeField]
     private float[] SocialFeedback;
 
+    [SerializeField]
     private int feedbackCounter;
 
     public Feedback()

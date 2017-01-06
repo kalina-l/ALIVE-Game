@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public enum NeedType { HEALTH, HUNGER, SOCIAL, ENERGY, SATISFACTION};
 public enum Evaluation {	SUICIDAL, SUPER_BAD, VERY_BAD, BAD, NEUTRAL, GOOD, VERY_GOOD, SUPER_GOOD}; 
@@ -9,7 +10,8 @@ public class Need {
     public NeedType Type { get; set; }
 
 	private int _value;
-	public int Value
+    [SerializeField]
+    public int Value
 	{
 		get
 		{
@@ -21,9 +23,10 @@ public class Need {
 		}
 	}
 
-	private int[] thresholds;
+    [SerializeField]
+    private int[] thresholds;
 
-	public Need (int value, int[] thresholds) {
+    public Need (int value, int[] thresholds) {
 		this.Value = value;
 		this.thresholds = thresholds;
 	}

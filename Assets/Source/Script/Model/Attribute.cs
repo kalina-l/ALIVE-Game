@@ -8,7 +8,9 @@ public class Attribute {
     public AttributeType Identifier { get; set; }
 
     private int _value;
+    [SerializeField]
     private int _min;
+    [SerializeField]
     private int _max;
 
     public Attribute(int value, int min, int max)

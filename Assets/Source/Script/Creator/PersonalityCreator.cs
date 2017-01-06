@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class PersonalityCreator
 {
-    private List<Reward> _rewards;
+    public List<Reward> Rewards;
     public List<Item> ItemList;
 
     public static readonly string AttributesAndNeedsCSV = "personality";
@@ -32,7 +32,7 @@ public class PersonalityCreator
 
     public PersonalityCreator(string personalityCSVPath)
     {
-        _rewards = new List<Reward>();
+        Rewards = new List<Reward>();
         _personalityCSV = CSV.read(personalityCSVPath + RewardsCSV);
         getRewards(_personalityCSV);
 
@@ -78,14 +78,14 @@ public class PersonalityCreator
                     itemCounter++;
                 }
                 ID = Int32.Parse(personalityCSV[i][0]);
-                act = new Activity(ID, personalityCSV[i][2], item, 1, item.Name+"."+personalityCSV[i][2]);
+                act = new Activity(ID, item.Name + "." + personalityCSV[i][2], item, 1, personalityCSV[i][2] + " " + item.Name);
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for (int p = 0; p < activityRewards.Length; p++)
                 {
                     activityRewards[p] = Int32.Parse(actRewards[p]);
                 }
-                foreach (Reward rewa in _rewards)
+                foreach (Reward rewa in Rewards)
                 {
                     for (int q = 0; q < activityRewards.Length; q++)
                     {
@@ -124,7 +124,7 @@ public class PersonalityCreator
                 {
                     activityRewards[p] = Int32.Parse(actRewards[p]);
                 }
-                foreach (Reward rewa in _rewards)
+                foreach (Reward rewa in Rewards)
                 {
                     for (int q = 0; q < activityRewards.Length; q++)
                     {
@@ -195,7 +195,7 @@ public class PersonalityCreator
                     }
                 }
             }
-            _rewards.Add(rew);
+            Rewards.Add(rew);
         }
     }
 
@@ -224,7 +224,10 @@ public class PersonalityCreator
                     switch (identifier)
                     {
                         case "attribute":
-                            _personality.AddAttribute((AttributeType)Enum.Parse(typeof(AttributeType), personalityCSV[k][0]), new Attribute(Int32.Parse(personalityCSV[k][1]), MinAttribute, MaxAttribute));
+                            AttributeType attributeType = (AttributeType)Enum.Parse(typeof(AttributeType), personalityCSV[k][0]);
+                            Attribute attribute = new Attribute(Int32.Parse(personalityCSV[k][1]), MinAttribute, MaxAttribute);
+                            attribute.Identifier = attributeType;
+                            _personality.AddAttribute(attributeType, attribute);
                             break;
                         case "condition":
                             thresholds = new int[personalityCSV[k].Length - 1];
@@ -232,7 +235,10 @@ public class PersonalityCreator
                             {
                                 thresholds[j - 1] = Int32.Parse(personalityCSV[k][j]);
                             }
-                            _personality.AddCondition((NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[k][0])), new Need(ConditionStart, thresholds));
+                            NeedType needType = (NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[k][0]));
+                            Need need = new Need(ConditionStart, thresholds);
+                            need.Type = needType;
+                            _personality.AddCondition(needType, need);
                             break;
                         default:
                             break;
