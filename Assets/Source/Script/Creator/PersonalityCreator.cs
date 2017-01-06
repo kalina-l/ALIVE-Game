@@ -160,37 +160,38 @@ public class PersonalityCreator
             {
                 if (!String.IsNullOrEmpty(personalityCSV[i][j]))
                 {
+                    string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                     switch (personalityCSV[0][j])
                     {
                         case "MinHealth":
-                            rew.MinHealth = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MinHealth = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MaxHealth":
-                            rew.MaxHealth = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MaxHealth = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MinHunger":
-                            rew.MinHunger = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MinHunger = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MaxHunger":
-                            rew.MaxHunger = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MaxHunger = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MinSatisfaction":
-                            rew.MinSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MinSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MaxSatisfaction":
-                            rew.MaxSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MaxSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MinSocial":
-                            rew.MinSocial = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MinSocial = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MaxSocial":
-                            rew.MaxSocial = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MaxSocial = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MinEnergy":
-                            rew.MinEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MinEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                         case "MaxEnergy":
-                            rew.MaxEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), personalityCSV[i][j], true);
+                            rew.MaxEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
                             break;
                     }
                 }

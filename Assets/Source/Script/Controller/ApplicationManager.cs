@@ -69,6 +69,16 @@ public class ApplicationManager : MonoBehaviour {
                 _personality = readJSON.personality;
                 rewardList = readJSON.rewardList;
                 itemList = readJSON.itemList;
+                if(_personality.GetItems().Count >= 1)
+                {
+                    foreach (KeyValuePair<int, Item> kvp in _personality.GetItems())
+                    {
+
+                    }
+                }
+                //_itemBox.AddItemToSlot()
+
+
                 break;
             default:
                 Debug.LogError("No Load State");
