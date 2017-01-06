@@ -18,7 +18,6 @@ public class ApplicationManager : MonoBehaviour {
 
     //AI
     private string personalityCSVPath = "Data\\";
-    //private string JSONPath = "Data\\JSON\\";
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
@@ -69,16 +68,6 @@ public class ApplicationManager : MonoBehaviour {
                 _personality = readJSON.personality;
                 rewardList = readJSON.rewardList;
                 itemList = readJSON.itemList;
-                if(_personality.GetItems().Count >= 1)
-                {
-                    foreach (KeyValuePair<int, Item> kvp in _personality.GetItems())
-                    {
-
-                    }
-                }
-                //_itemBox.AddItemToSlot()
-
-
                 break;
             default:
                 Debug.LogError("No Load State");
@@ -98,6 +87,14 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+
+        if (_personality.GetItems().Count >= 1)
+        {
+            foreach (KeyValuePair<int, Item> kvp in _personality.GetItems())
+            {
+                _itemBox.AddItemFromPersonality(kvp.Value);
+            }
+        }
 
         saveCounter = 0;
         StartCoroutine(Run());
@@ -145,20 +142,6 @@ public class ApplicationManager : MonoBehaviour {
         {
             _lastActivity = null;
         }
-
-
-        if(saveCounter >= AutomaticSaveAfterActions)
-        {
-            JSON writeJSON = new JSON(_personality, rewardList, itemList);
-            writeJSON.writeJSON(writeJSON);
-            Debug.Log("Status saved!");
-            saveCounter = 0;
-        }
-        else
-        {
-            saveCounter++;
-        }
-
     }
 
     public void GiveFeedback(int feedback)
@@ -205,6 +188,18 @@ public class ApplicationManager : MonoBehaviour {
             if(waitForFeedback)
             {
                 GiveFeedback(0);
+            }
+
+            if (saveCounter >= AutomaticSaveAfterActions)
+            {
+                JSON writeJSON = new JSON(_personality, rewardList, itemList);
+                writeJSON.writeJSON(writeJSON);
+                Debug.Log("Status saved!");
+                saveCounter = 0;
+            }
+            else
+            {
+                saveCounter++;
             }
         }
     }
