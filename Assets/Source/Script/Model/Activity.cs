@@ -14,6 +14,8 @@ public class Activity {
 	public Item item;
 	public int useConsume;
 
+    public bool IsKnown { get { return LearnedExperiences.Count > 0; } }
+
     private string _feedBackString;
     [SerializeField]
     public string feedBackString 

@@ -11,16 +11,29 @@ public class ArtificialIntelligence
     private Thread _thread = null;
 
     private bool _calculating;
+    private List<Item> _items;
 
     public bool IsDone { get { return !_calculating; } }
 
     private int _result;
+    private bool _askForItem;
     
+    public void AskForItem(Personality personality, List<Item> items)
+    {
+        _calculating = true;
+        _personality = personality;
+        _items = items;
+        _askForItem = true;
+
+        _thread = new Thread(getBestItem);
+        _thread.Start();
+    }
 
     public void GetNextActivity(Personality personality)
     {
         _calculating = true;
         _personality = personality;
+        _askForItem = false;
 
         _thread = new Thread(getBestAction);
         _thread.Start();
@@ -30,6 +43,25 @@ public class ArtificialIntelligence
     {
         _thread.Abort();
         return _result;
+    }
+
+    private void getBestItem()
+    {
+        PersonalityNode root = new PersonalityNode(_personality, _items);
+
+        dfs(root, 2);
+
+        if (root.Children.Count != 0)
+        {
+            _result = root.Children[0].ParentActionID;
+        }
+        else
+        {
+            Debug.LogError("No Child generated. why?");
+            _result = -1;
+        }
+
+        _calculating = false;
     }
 
 	private void getBestAction(){
@@ -56,10 +88,22 @@ public class ArtificialIntelligence
 		if (pn.Depth < maxDepth && !pn.visited) {
 			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
 
-                Activity activity = _personality.GetActivity(pn.ActivityIDs[i]);
+                Activity activity = _personality.GetActivity(pn.ActivityIDs[i], false);
+
+                if(activity == null && _askForItem)
+                {
+                    foreach(Item boxItem in _items)
+                    {
+                        if(activity == null)
+                        {
+                            activity = boxItem.GetActivity(pn.ActivityIDs[i]);
+                        }
+                    }
+                }
+
 				Item item = null;
 				if (activity.item != null) {
-					item = pn.GetItem (pn.ActivityIDs [i]);
+					item = pn.GetItem (pn.ActivityIDs [i], false);
 				}
 
                 Experience experience = activity.GetExperience(pn);

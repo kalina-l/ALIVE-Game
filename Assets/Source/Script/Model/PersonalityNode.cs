@@ -52,7 +52,52 @@ public class PersonalityNode {
         Children = new List<PersonalityNode>();
     }
 
-	public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback, Item usedItem, int activityUseConsume)
+    public PersonalityNode(Personality basePerson, List<Item> items)
+    {
+        Needs = new Dictionary<NeedType, Evaluation>();
+
+        foreach (KeyValuePair<NeedType, Need> need in basePerson.Conditions)
+        {
+            Needs[need.Key] = need.Value.getEvaluation();
+        }
+
+        ActivityIDs = new List<int>();
+        foreach (Activity activity in basePerson.GetAllActivities())
+        {
+            ActivityIDs.Add(activity.ID);
+        }
+
+        Items = new List<Item>();
+        foreach (KeyValuePair<int, Item> item in basePerson.GetItems())
+        {
+            Items.Add(item.Value.deepCopy());
+        }
+
+        foreach (Item item in items)
+        {
+            if (item.IsKnown)
+            {
+                Items.Add(item.deepCopy());
+
+                foreach (Activity activity in item.GetAllActivities())
+                {
+                    ActivityIDs.Add(activity.ID);
+                }
+            }
+        }
+
+        Items = new List<Item>();
+
+        Parent = null;
+        Depth = 0;
+        StoredEvaluation = 0;
+        SelfEvaluation = 0;
+        BestChildsEvaluation = int.MinValue;
+
+        Children = new List<PersonalityNode>();
+    }
+
+    public PersonalityNode(PersonalityNode parent, Experience xp, int activityID, float feedback, Item usedItem, int activityUseConsume)
     {
         Parent = parent;
         Depth = parent.Depth + 1;
@@ -96,7 +141,7 @@ public class PersonalityNode {
         }
     }
 
-	public Item GetItem(int activityID)
+	public Item GetItem(int activityID, bool showLog = true)
 	{
 		foreach (Item item in Items) {
 			if (item.Activities.ContainsKey (activityID)) {
@@ -104,7 +149,8 @@ public class PersonalityNode {
 			}
 		}
 
-		Debug.LogError("Item with activityId" + activityID + " doesn't exist!");
+        if(showLog)
+		    Debug.LogError("Item with activityId " + activityID + " doesn't exist!");
 
 		return null;
 	}

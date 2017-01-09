@@ -15,6 +15,7 @@ public class ApplicationManager : MonoBehaviour {
     public float FeedBackTime = 2;
     public int AutomaticSaveAfterActions = 10;
     private int saveCounter;
+    private int activityCounter;
 
     //AI
     private string personalityCSVPath = "Data\\";
@@ -22,7 +23,7 @@ public class ApplicationManager : MonoBehaviour {
     private ArtificialIntelligence _intelligence;
 
     private Dictionary<int, Item> _items;
-    private List<Item> itemList;
+    private List<Item> _itemList;
     private List<Reward> rewardList;
     
 
@@ -44,7 +45,7 @@ public class ApplicationManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        itemList = new List<Item>();
+        _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
 
         switch(Load)
@@ -52,29 +53,29 @@ public class ApplicationManager : MonoBehaviour {
             case LoadStates.UseDummy:
                 DummyCreator creator = new DummyCreator();
                 _personality = creator.CreateDummyPerson();
-                itemList = creator.CreateDummyItems();
+                _itemList = creator.CreateDummyItems();
                 break;
 
             case LoadStates.UseCSV:
                 PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
                 _personality = creatorCSV.personality;
-                itemList = creatorCSV.ItemList;
+                _itemList = creatorCSV.ItemList;
                 rewardList = creatorCSV.Rewards;
                 break;
 
             case LoadStates.UseSavedState:
-                JSON readJSON = new JSON(_personality, rewardList, itemList);
+                JSON readJSON = new JSON(_personality, rewardList, _itemList);
                 readJSON.readJSON(readJSON);
                 _personality = readJSON.personality;
                 rewardList = readJSON.rewardList;
-                itemList = readJSON.itemList;
+                _itemList = readJSON.itemList;
                 break;
             default:
                 Debug.LogError("No Load State");
                 break;
         }
 
-        foreach (Item item in itemList)
+        foreach (Item item in _itemList)
         {
             _items[item.ID] = item;
             //_personality.AddItem(item.ID, item);
@@ -107,7 +108,21 @@ public class ApplicationManager : MonoBehaviour {
     private IEnumerator DoActivityRoutine()
     {
         //GetActivity
-        _intelligence.GetNextActivity(_personality);
+
+        bool askForItem = activityCounter >= 2;
+
+        Debug.Log(activityCounter);
+        
+        if (askForItem)
+        {
+            Debug.Log("Ask for Item!!!");
+            _intelligence.AskForItem(_personality, _itemList);
+        }
+        else
+        {
+            activityCounter++;
+            _intelligence.GetNextActivity(_personality);
+        }
 
         float timer = 0;
 
@@ -119,24 +134,51 @@ public class ApplicationManager : MonoBehaviour {
 
         int activityID = _intelligence.GetResult();
 
-        Debug.Log("Calculation took " + timer + " seconds");
-
+        Debug.Log("Calculation took " + timer + " seconds " + askForItem.ToString());
         
 
         if (activityID != -1)
         {
-            _lastActivity = _personality.GetActivity(activityID);
+            if (askForItem)
+            {
+                Item askItem = null;
 
-            //Apply Rewards
-            _lastExperience = _lastActivity.DoActivity(_personality);
+                for (int i = 0; i < _itemList.Count; i++)
+                {
+                    foreach (Activity activity in _itemList[i].GetAllActivities())
+                    {
+                        if (activity.ID == activityID)
+                        {
+                            askItem = _itemList[i];
+                        }
+                    }
+                }
 
-            //Show Activity
-            _conditionMonitor.UpdateSlider(_personality);
-            _output.DisplayMessage(_lastActivity.feedBackString);
+                //TODO Create an Activity that asks for the Item
+                if (askItem != null)
+                {
+                    _output.DisplayMessage("Give me " + askItem.Name);
+                }
+                else
+                {
+                    Debug.Log("NO ITEM NEEDED - I want to " + _personality.GetActivity(activityID).feedBackString);
+                }
 
-            //Ask for Feedback
-            _feedback.ShowFeedback(true);
-            waitForFeedback = true;
+                activityCounter = 0;
+            }
+            else
+            {
+                _lastActivity = _personality.GetActivity(activityID);
+                _lastExperience = _lastActivity.DoActivity(_personality);
+
+                //Show Activity
+                _conditionMonitor.UpdateSlider(_personality);
+                _output.DisplayMessage(_lastActivity.feedBackString);
+
+                //Ask for Feedback
+                _feedback.ShowFeedback(true);
+                waitForFeedback = true;
+            }
         }
         else
         {
@@ -192,7 +234,7 @@ public class ApplicationManager : MonoBehaviour {
 
             if (saveCounter >= AutomaticSaveAfterActions)
             {
-                JSON writeJSON = new JSON(_personality, rewardList, itemList);
+                JSON writeJSON = new JSON(_personality, rewardList, _itemList);
                 writeJSON.writeJSON(writeJSON);
                 Debug.Log("Status saved!");
                 saveCounter = 0;

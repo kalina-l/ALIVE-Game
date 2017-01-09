@@ -17,6 +17,20 @@ public class Item  {
         Activities = new Dictionary<int, Activity>();
     }
 
+    public bool IsKnown
+    {
+        get
+        {
+            foreach(Activity activity in GetAllActivities())
+            {
+                if (activity.IsKnown)
+                    return true;
+            }
+
+            return false;
+        }
+    }
+
 	public Item(int ID, string Name, int uses, int maxUses){
 		this.ID = ID;
 		this.Name = Name;

@@ -96,7 +96,7 @@ public class Personality {
         return null;
     }
 
-    public Activity GetActivity(int id)
+    public Activity GetActivity(int id, bool showLog = true)
     {
         if (BaseActivities.ContainsKey(id))
         {
@@ -109,7 +109,8 @@ public class Personality {
                 return item.Value.GetActivity(id);
         }
 
-        Debug.LogError("Activity " + id + " doesn't exist!");
+        if(showLog)
+            Debug.LogError("Activity " + id + " doesn't exist!");
 
         return null;
     }
