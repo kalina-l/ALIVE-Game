@@ -20,6 +20,10 @@ public class JSON {
         {
             this.personality = personality;
         }
+        //else
+        //{
+        //    Debug.LogError("No Personality found");
+        //}
         if (rewardList != null)
         {
             this.rewardList = rewardList;
@@ -28,11 +32,6 @@ public class JSON {
         {
             this.itemList = itemList;
         }
-        else
-        {
-            Debug.LogError("No saved state found");
-        }
-
     }
 
     public bool writeJSON(JSON json)
@@ -90,23 +89,6 @@ public class JSON {
         jsonText = PlayerPrefs.GetString("personality");
         data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.personality);
-
-        //for testing
-        //foreach(KeyValuePair<int, Activity> kvp in json.personality.BaseActivities)
-        //{
-        //    if (kvp.Value.Name == "Idle")
-        //    {
-        //        foreach(Reward rew in kvp.Value.RewardList)
-        //        {
-                    //Debug.Log(rew.RewardType + "" + rew.RewardValue);
-        //        }
-        //    }
-        //}
-
-        //Item item = json.itemList[0];
-        //Activity act;
-        //item.Activities.TryGetValue(11, out act);
-        //Debug.Log(act.item.Name);
 
         return true;
     }
