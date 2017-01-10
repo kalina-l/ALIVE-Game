@@ -32,10 +32,10 @@ Reward ID;Value;Type;MinHealth;MaxHealth;MinHunger;MaxHunger;MinSatisfaction;Max
 30;-1;Energy;;;;;;;;;;;
 31;7;Hunger;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
 32;-3;Energy;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
-33;-4;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+33;-6;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
 34;-5;Hunger;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
 35;4;Hunger;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
-36;-7;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+36;-12;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
 37;-7;Satisfaction;Health.SUICIDAL;Health.VERY_BAD;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
 38;-4;Satisfaction;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
 39;3;Satisfaction;;;;;Satisfaction.SUICIDAL;Satisfaction.NEUTRAL;;;;;
