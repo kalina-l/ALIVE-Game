@@ -13,8 +13,7 @@ public class PersonalityNode {
 
     public int ParentActionID;
     public int Depth;
-
-    public float StoredEvaluation;
+    
 	public float SelfEvaluation;
 	public float BestChildsEvaluation;
 	public bool visited = false;
@@ -45,7 +44,6 @@ public class PersonalityNode {
 
         Parent = null;
         Depth = 0;
-        StoredEvaluation = 0;
 		SelfEvaluation = 0;
 		BestChildsEvaluation = int.MinValue;
 
@@ -90,7 +88,6 @@ public class PersonalityNode {
 
         Parent = null;
         Depth = 0;
-        StoredEvaluation = 0;
         SelfEvaluation = 0;
         BestChildsEvaluation = int.MinValue;
 
