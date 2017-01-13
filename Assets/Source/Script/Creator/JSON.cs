@@ -32,10 +32,28 @@ public class JSON {
         {
             this.itemList = itemList;
         }
+
     }
 
-    public bool writeJSON(JSON json)
+    public bool writeJSON(JSON json, string SaveFile)
     {
+        string path = Path.Combine(Application.persistentDataPath, "savestates");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+            path = Path.Combine(Application.persistentDataPath, SaveFile);
+            Directory.CreateDirectory(path);
+        }
+        path = Path.Combine(path, SaveFile);
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+
+
+        string pathToFile;
+
+
         StringBuilder sb = new StringBuilder();
 
         fsData data;
@@ -43,56 +61,97 @@ public class JSON {
         //write whole Personality
         serializer.TrySerialize(json.personality, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        PlayerPrefs.SetString("personality", sb.ToString());
+        //PlayerPrefs.SetString("personality", sb.ToString());
+        pathToFile = Path.Combine(path, SaveFile + "_personality.json");
+        File.WriteAllText(pathToFile, sb.ToString());
+
 
         sb.Length = 0;
 
         //write itemList
         serializer.TrySerialize(json.itemList, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        PlayerPrefs.SetString("itemList", sb.ToString());
+        //PlayerPrefs.SetString("itemList", sb.ToString());
+        pathToFile = Path.Combine(path, SaveFile + "_itemList.json");
+        File.WriteAllText(pathToFile, sb.ToString());
 
         sb.Length = 0;
 
         //write rewardList
         serializer.TrySerialize(json.rewardList, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        PlayerPrefs.SetString("rewardList", sb.ToString());
+        //PlayerPrefs.SetString("rewardList", sb.ToString());
+        pathToFile = Path.Combine(path, SaveFile + "_rewardList.json");
+        File.WriteAllText(pathToFile, sb.ToString());
 
-        PlayerPrefs.Save();
+        //PlayerPrefs.Save();
 
         return true;
     }
 
-    public bool readJSON(JSON json)
+
+    public bool readJSON(JSON json, string LoadFile)
     {
         json.personality = new Personality();
         json.rewardList = new List<Reward>();
         json.itemList = new List<Item>();
 
-        if (!PlayerPrefs.HasKey("personality"))
+        //if (!PlayerPrefs.HasKey("personality"))
+        //{
+        //    Debug.LogError("Savefile not found, please save a state before trying to load!");
+        //}
+
+        string path = Path.Combine(Application.persistentDataPath, "savestates");
+        if (!Directory.Exists(path))
         {
-            Debug.LogError("Savefile not found, please save a state before trying to load!");
+            Debug.LogError("The savestates folder does not exist!");
+        }
+        path = Path.Combine(path, LoadFile);
+        if (!Directory.Exists(path)) { 
+            Debug.LogError("There are no saved stats under this name!");
         }
 
+        string pathToFile;
+        string jsonText;
+        //String test = File.ReadAllText(pathToFile);
+        //Debug.Log(test);
+
         //read rewardList
-        string jsonText = PlayerPrefs.GetString("rewardList");
+        //string jsonText = PlayerPrefs.GetString("rewardList");
+        pathToFile = Path.Combine(path, LoadFile + "_rewardList.json");
+        if (!File.Exists(pathToFile))
+        {
+            Debug.LogError("There is no savefile with that name!");
+        }
+        jsonText = File.ReadAllText(pathToFile);
         fsData data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.rewardList);
 
         //read itemList
-        jsonText = PlayerPrefs.GetString("itemList");
+        //jsonText = PlayerPrefs.GetString("itemList");
+        pathToFile = Path.Combine(path, LoadFile + "_itemList.json");
+        if (!File.Exists(pathToFile))
+        {
+            Debug.LogError("There is no savefile with that name!");
+        }
+        jsonText = File.ReadAllText(pathToFile);
         data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.itemList);
 
         //read Personality
-        jsonText = PlayerPrefs.GetString("personality");
+        //jsonText = PlayerPrefs.GetString("personality");
+        pathToFile = Path.Combine(path, LoadFile + "_personality.json");
+        if (!File.Exists(pathToFile))
+        {
+            Debug.LogError("There is no savefile with that name!");
+        }
+        jsonText = File.ReadAllText(pathToFile);
         data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.personality);
 
         return true;
     }
-
+    
 
 
 }

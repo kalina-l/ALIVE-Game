@@ -17,8 +17,11 @@ public class ApplicationManager : MonoBehaviour {
     private int saveCounter;
     private int activityCounter;
 
-    //AI
     private string personalityCSVPath = "Data\\";
+    public string SaveFile = "please_specify_the_filename_for_saving";
+    public string LoadFile = "please_specify_the_filename_for_Loading";
+
+    //AI
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
 
@@ -65,7 +68,7 @@ public class ApplicationManager : MonoBehaviour {
 
             case LoadStates.UseSavedState:
                 JSON readJSON = new JSON(_personality, rewardList, _itemList);
-                readJSON.readJSON(readJSON);
+                readJSON.readJSON(readJSON, LoadFile);
                 _personality = readJSON.personality;
                 rewardList = readJSON.rewardList;
                 _itemList = readJSON.itemList;
@@ -235,7 +238,7 @@ public class ApplicationManager : MonoBehaviour {
             if (saveCounter >= AutomaticSaveAfterActions)
             {
                 JSON writeJSON = new JSON(_personality, rewardList, _itemList);
-                writeJSON.writeJSON(writeJSON);
+                writeJSON.writeJSON(writeJSON, SaveFile);
                 Debug.Log("Status saved!");
                 saveCounter = 0;
             }
