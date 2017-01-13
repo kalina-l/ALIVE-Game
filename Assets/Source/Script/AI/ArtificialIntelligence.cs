@@ -16,6 +16,7 @@ public class ArtificialIntelligence
     public bool IsDone { get { return !_calculating; } }
 
     private int _result;
+    private float _resultValue;
     private bool _askForItem;
     
     public void AskForItem(Personality personality, List<Item> items)
@@ -45,6 +46,11 @@ public class ArtificialIntelligence
         return _result;
     }
 
+    public float GetValue()
+    {
+        return _resultValue;
+    }
+
     private void getBestItem()
     {
         PersonalityNode root = new PersonalityNode(_personality, _items);
@@ -54,6 +60,7 @@ public class ArtificialIntelligence
         if (root.Children.Count != 0)
         {
             _result = root.Children[0].ParentActionID;
+            _resultValue = root.Children[0].Evaluation() - root.Evaluation();
         }
         else
         {
@@ -73,6 +80,10 @@ public class ArtificialIntelligence
         if (root.Children.Count != 0)
         {
             _result = root.Children[0].ParentActionID;
+
+            Debug.Log(root.Children[0].Evaluation() + " - " + root.Evaluation());
+
+            _resultValue = root.Children[0].Evaluation() - root.Evaluation();
         }
         else
         {

@@ -136,14 +136,17 @@ public class Personality {
 		return Items;
 	}
 
-    public Item GetItem(int id)
+    public Item GetItem(int id, bool log = true)
     {
         if (Items.ContainsKey(id))
         {
             return Items[id];
         }
 
-        Debug.LogError("Item " + id + " doesn't exist!");
+        if (log)
+        {
+            Debug.LogError("Item " + id + " doesn't exist!");
+        }
 
         return null;
     }

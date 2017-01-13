@@ -17,6 +17,17 @@ public class Experience {
         Rewards = new Dictionary<NeedType, int>();
     }
 
+    public int GetRewardValue()
+    {
+        int retVal = 0;
+        foreach(KeyValuePair<NeedType, int> kvp in Rewards)
+        {
+            retVal += kvp.Value;
+        }
+
+        return retVal;
+    }
+
     public void AddBaseNeeds(Personality basePersonality)
     {
         BaseNeeds = new Dictionary<NeedType, Evaluation>();

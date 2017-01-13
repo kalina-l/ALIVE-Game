@@ -107,22 +107,7 @@ public class ApplicationManager : MonoBehaviour {
 
     private IEnumerator DoActivityRoutine()
     {
-        //GetActivity
-
-        bool askForItem = activityCounter >= 2;
-
-        Debug.Log(activityCounter);
-        
-        if (askForItem)
-        {
-            Debug.Log("Ask for Item!!!");
-            _intelligence.AskForItem(_personality, _itemList);
-        }
-        else
-        {
-            activityCounter++;
-            _intelligence.GetNextActivity(_personality);
-        }
+        _intelligence.GetNextActivity(_personality);
 
         float timer = 0;
 
@@ -133,9 +118,28 @@ public class ApplicationManager : MonoBehaviour {
         }
 
         int activityID = _intelligence.GetResult();
+        int askActivityID = -1;
 
-        Debug.Log("Calculation took " + timer + " seconds " + askForItem.ToString());
-        
+        Debug.Log("Calculation took " + timer + " seconds " + _intelligence.GetValue());
+
+        bool askForItem = _intelligence.GetValue() <= 0;
+
+        if (askForItem)
+        {
+            Debug.Log("Ask for Item!!!");
+            _intelligence.AskForItem(_personality, _itemList);
+
+            timer = 0;
+
+            while (!_intelligence.IsDone)
+            {
+                timer += Time.deltaTime;
+                yield return 0;
+            }
+
+            askActivityID = _intelligence.GetResult();
+        }
+
 
         if (activityID != -1)
         {
@@ -147,38 +151,41 @@ public class ApplicationManager : MonoBehaviour {
                 {
                     foreach (Activity activity in _itemList[i].GetAllActivities())
                     {
-                        if (activity.ID == activityID)
+                        if (activity.ID == askActivityID)
                         {
                             askItem = _itemList[i];
                         }
                     }
                 }
-
-                //TODO Create an Activity that asks for the Item
+                
                 if (askItem != null)
                 {
-                    _output.DisplayMessage("Give me " + askItem.Name);
+                    if (_personality.GetItem(askItem.ID, false) == null)
+                    {
+                        _output.DisplayMessage("Give me " + askItem.Name);
+
+                        yield return new WaitForSeconds(2);
+                    }
                 }
                 else
                 {
-                    Debug.Log("NO ITEM NEEDED - I want to " + _personality.GetActivity(activityID).feedBackString);
+                    Debug.Log("NO EXTRA ITEM NEEDED - I want to " + _personality.GetActivity(activityID).feedBackString);
                 }
 
                 activityCounter = 0;
             }
-            else
-            {
-                _lastActivity = _personality.GetActivity(activityID);
-                _lastExperience = _lastActivity.DoActivity(_personality);
+            
+            _lastActivity = _personality.GetActivity(activityID);
+            _lastExperience = _lastActivity.DoActivity(_personality);
 
-                //Show Activity
-                _conditionMonitor.UpdateSlider(_personality);
-                _output.DisplayMessage(_lastActivity.feedBackString);
+            //Show Activity
+            _conditionMonitor.UpdateSlider(_personality);
+            _output.DisplayMessage(_lastActivity.feedBackString);
 
-                //Ask for Feedback
-                _feedback.ShowFeedback(true);
-                waitForFeedback = true;
-            }
+            //Ask for Feedback
+            _feedback.ShowFeedback(true);
+            waitForFeedback = true;
+            
         }
         else
         {
@@ -207,17 +214,11 @@ public class ApplicationManager : MonoBehaviour {
 
     private IEnumerator Run()
     {
-        Debug.Log("Start!");
-
         while(true)
         {
-            Debug.Log("Wait");
             yield return new WaitForSeconds(WaitTime);
-
-            Debug.Log("Do Activity");
+            
             yield return StartCoroutine(DoActivityRoutine());
-
-            Debug.Log("Feedback");
 
             float timer = 0;
 
