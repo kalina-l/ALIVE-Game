@@ -12,6 +12,7 @@ public class PersonalityCreator
     public static readonly string AttributesAndNeedsCSV = "personality";
     public static readonly string RewardsCSV = "rewards";
     public static readonly string ActivitiesRewardsCSV = "activities_rewards";
+    public static readonly string ItemsCSV = "items";
 
     public static readonly string ConditionIdentifier = "ConditionThresholds";
     public static readonly int ConditionStart = 100;
@@ -29,6 +30,7 @@ public class PersonalityCreator
     }
 
     private string[][] _personalityCSV;
+    private string[][] _itemCSV;
 
     public PersonalityCreator(string personalityCSVPath)
     {
@@ -44,41 +46,69 @@ public class PersonalityCreator
         getBaseActivites(_personalityCSV);
 
         _personalityCSV = CSV.read(personalityCSVPath + ActivitiesRewardsCSV);
-        getItems(_personalityCSV);
+        _itemCSV = CSV.read(personalityCSVPath + ItemsCSV);
+        getItems(_itemCSV, _personalityCSV);
 
 
     }
 
-    private List<Item> getItems(string[][] personalityCSV)
+    private List<Item> getItems(string[][] ItemsCSV, string[][] personalityCSV)
     {
         ItemList = new List<Item>();
         Activity act;
         Item item = null;
-        Boolean itemExists = false;
-        int itemCounter = 0;
+        //Boolean itemExists = false;
+        //int itemCounter = 0;
         int ID;
+
+        for(int i = 1; (i<ItemsCSV.GetLength(0)) && (!String.IsNullOrEmpty(ItemsCSV[i][0])); i++)
+        {
+            if (!ItemsCSV[i][1].Equals("Body"))
+            {
+                item = new Item(Int32.Parse(ItemsCSV[i][0]), ItemsCSV[i][1], 0, Int32.Parse(ItemsCSV[i][2]));
+                ItemList.Add(item);
+            }
+        }
+        item = null;
+
         for (int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
         {
             if (!personalityCSV[i][1].Equals("Body"))
             {
+                //foreach(Item ite in ItemList)
+                //{
+                //    if (ite.Name.Equals(personalityCSV[i][1]))
+                //    {
+                //        item = ite;
+                //        itemExists = true;
+                //    }
+                //}
+                //if (!itemExists)
+                //{
+                //    item = new Item();
+                //    item.Name = personalityCSV[i][1];
+                //    item.ID = itemCounter;
+                //    item.maxUses = 100;
+                //    itemCounter++;
+                //}
+                ID = Int32.Parse(personalityCSV[i][0]);
                 foreach(Item ite in ItemList)
                 {
-                    if (ite.Name.Equals(personalityCSV[i][1]))
+                    if(personalityCSV[i][1].Equals(ite.Name))
                     {
                         item = ite;
-                        itemExists = true;
                     }
                 }
-                if (!itemExists)
+                act = new Activity(ID, item.Name + "." + personalityCSV[i][2], item, 0, personalityCSV[i][2] + " " + item.Name);
+                if(Int32.TryParse(personalityCSV[i][4], out act.useConsume))
                 {
-                    item = new Item();
-                    item.Name = personalityCSV[i][1];
-                    item.ID = itemCounter;
-                    item.maxUses = 100;
-                    itemCounter++;
+
                 }
-                ID = Int32.Parse(personalityCSV[i][0]);
-                act = new Activity(ID, item.Name + "." + personalityCSV[i][2], item, 1, personalityCSV[i][2] + " " + item.Name);
+                else
+                {
+                    act.useConsume = item.maxUses;
+                }
+
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for (int p = 0; p < activityRewards.Length; p++)
@@ -97,11 +127,11 @@ public class PersonalityCreator
                     }
                 }
                 item.AddActivity(act);
-                if (!itemExists)
-                {
-                    ItemList.Add(item);
-                }
-                itemExists = false;
+                //if (!itemExists)
+                //{
+                //    ItemList.Add(item);
+                //}
+                //itemExists = false;
             }
         }
         return ItemList;
@@ -117,7 +147,7 @@ public class PersonalityCreator
             if (personalityCSV[i][1].Equals("Body"))
             {
                 ID = Int32.Parse(personalityCSV[i][0]);
-                act = new Activity(ID, personalityCSV[i][2], null, 0, personalityCSV[i][2]);
+                act = new Activity(ID, personalityCSV[i][2], null, Int32.Parse(personalityCSV[i][4]), personalityCSV[i][2]);
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for(int p = 0; p < activityRewards.Length; p++)
@@ -135,7 +165,6 @@ public class PersonalityCreator
                         } 
                     }
                 }
-
                 _personality.AddBaseActivity(act);
             }
         }

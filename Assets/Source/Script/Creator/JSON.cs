@@ -20,10 +20,6 @@ public class JSON {
         {
             this.personality = personality;
         }
-        //else
-        //{
-        //    Debug.LogError("No Personality found");
-        //}
         if (rewardList != null)
         {
             this.rewardList = rewardList;
@@ -85,7 +81,7 @@ public class JSON {
         File.WriteAllText(pathToFile, sb.ToString());
 
         //PlayerPrefs.Save();
-
+        Debug.Log("Saved in " + Application.persistentDataPath);
         return true;
     }
 
@@ -113,15 +109,13 @@ public class JSON {
 
         string pathToFile;
         string jsonText;
-        //String test = File.ReadAllText(pathToFile);
-        //Debug.Log(test);
 
         //read rewardList
         //string jsonText = PlayerPrefs.GetString("rewardList");
         pathToFile = Path.Combine(path, LoadFile + "_rewardList.json");
         if (!File.Exists(pathToFile))
         {
-            Debug.LogError("There is no savefile with that name!");
+            Debug.LogError("There is no reward_savefile with that name!");
         }
         jsonText = File.ReadAllText(pathToFile);
         fsData data = fsJsonParser.Parse(jsonText);
@@ -132,7 +126,7 @@ public class JSON {
         pathToFile = Path.Combine(path, LoadFile + "_itemList.json");
         if (!File.Exists(pathToFile))
         {
-            Debug.LogError("There is no savefile with that name!");
+            Debug.LogError("There is no itemList_savefile with that name!");
         }
         jsonText = File.ReadAllText(pathToFile);
         data = fsJsonParser.Parse(jsonText);
@@ -143,11 +137,13 @@ public class JSON {
         pathToFile = Path.Combine(path, LoadFile + "_personality.json");
         if (!File.Exists(pathToFile))
         {
-            Debug.LogError("There is no savefile with that name!");
+            Debug.LogError("There is no personality_savefile with that name!");
         }
         jsonText = File.ReadAllText(pathToFile);
         data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.personality);
+
+
 
         return true;
     }

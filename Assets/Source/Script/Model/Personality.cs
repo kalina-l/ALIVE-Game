@@ -12,13 +12,13 @@ public class Personality {
     [SerializeField]
     private Dictionary<AttributeType, Attribute> Attributes;
     
-    [fsIgnore]
+    //[fsIgnore]
 	public Personality parent;
-    [fsIgnore]
+    //[fsIgnore]
 	public List<Personality> children = new List<Personality>();
-    [fsIgnore]
+    //[fsIgnore]
 	public int deepnessInParent = 0;
-    [fsIgnore]
+    //[fsIgnore]
 	public int parentActionID;
 
     public float storedEvaluation;
