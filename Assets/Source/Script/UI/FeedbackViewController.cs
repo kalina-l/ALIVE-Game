@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using DigitalRubyShared;
 
 public class FeedbackViewController : AbstractViewController {
 
@@ -14,12 +15,18 @@ public class FeedbackViewController : AbstractViewController {
 
     private Vector2 _buttonSize = new Vector2(256, 256);
 
+    private GestureController _gestures;
+
+    private bool receiveFeedback;
+
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
             Vector2.zero, new Vector2(296, 296),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
+
+        _gestures = new GestureController(Rect.transform, this);
 
         //Buttons
         _positiveButton = CreateButton(
@@ -43,8 +50,18 @@ public class FeedbackViewController : AbstractViewController {
 
     public void ShowFeedback(bool show)
     {
-        if(!_animating)
-            ApplicationManager.Instance.StartCoroutine(ShowFeedbackRoutine(show));
+        if (show)
+        {
+            _gestures.AskForGesture();
+            receiveFeedback = true;
+        }
+        else
+        {
+            _gestures.StopAsking();
+        }
+
+        //if(!_animating)
+        //    ApplicationManager.Instance.StartCoroutine(ShowFeedbackRoutine(show));
     }
 
     private IEnumerator ShowFeedbackRoutine(bool show)
@@ -81,12 +98,12 @@ public class FeedbackViewController : AbstractViewController {
         _animating = false;
     }
 
-
     public void SendFeedBack(int feedback)
     {
-        if(!_animating)
+        if(receiveFeedback)
         {
             ApplicationManager.Instance.GiveFeedback(feedback);
+            receiveFeedback = false;
         }
     }
 

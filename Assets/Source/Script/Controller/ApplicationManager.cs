@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DigitalRubyShared;
 
 public enum LoadStates { UseDummy, UseCSV, UseSavedState};
 
@@ -40,6 +41,9 @@ public class ApplicationManager : MonoBehaviour {
     private ConditionViewController _conditionMonitor;
 
     private bool waitForFeedback;
+
+    public ParticleSystem positiveFX;
+    public ParticleSystem negativeFX;
 
     void Awake()
     {
@@ -207,6 +211,14 @@ public class ApplicationManager : MonoBehaviour {
 
                 //Show Feedback
                 _output.ShowFeedback(feedback);
+            }
+            
+            if(feedback == -1)
+            {
+                negativeFX.Play();
+            } else if(feedback == 1)
+            {
+                positiveFX.Play();
             }
 
             _feedback.ShowFeedback(false);

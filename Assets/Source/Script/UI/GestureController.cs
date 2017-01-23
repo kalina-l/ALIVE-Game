@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace DigitalRubyShared
 {
-    public class DemoScriptImage : MonoBehaviour
+    public class GestureController
     {
         private const float xPadding = 0.03f;
 
@@ -107,47 +107,65 @@ namespace DigitalRubyShared
         private List<Vector2> currentPointList;
         private ImageGestureImage lastImage;
 
-        public FingersScript FingersScript;
-        public UnityEngine.UI.RawImage Image;
+        private FingersScript FingersScript;
         public ImageGestureRecognizer imageGesture = new ImageGestureRecognizer();
-        public Material LineMaterial;
-        public UnityEngine.UI.Text MatchLabel;
+
+        private bool waitForGesture;
+
+        private FeedbackViewController _feedback;
+
+        public GestureController(Transform parent, FeedbackViewController feedback)
+        {
+            FingersScript = parent.gameObject.AddComponent<FingersScript>();
+            _feedback = feedback;
+
+            Start();
+        }
 
         private void UpdateImage()
         {
-            Texture2D t = new Texture2D(ImageGestureRecognizer.ImageColumns, ImageGestureRecognizer.ImageRows, TextureFormat.ARGB32, false, false);
-            t.filterMode = FilterMode.Point;
-            t.wrapMode = TextureWrapMode.Clamp;
-            for (int y = 0; y < ImageGestureRecognizer.ImageRows; y++)
-            {
-                for (int x = 0; x < ImageGestureRecognizer.ImageColumns; x++)
-                {
-                    // each bit in the row can be checked as well if Pixels is not available
-                    // if ((imageGesture.Image.Rows[y] & (ulong)(1 << x)) == 0)
-                    if (imageGesture.Image.Pixels[x + (y * ImageGestureRecognizer.ImageRows)] == 0)
-                    {
-                        t.SetPixel(x, y, Color.clear);
-                    }
-                    else
-                    {
-                        t.SetPixel(x, y, Color.white);
-                    }
-                }
-            }
-            t.Apply();
-            Image.texture = t;
             lastImage = imageGesture.Image.Clone();
 
-            if (imageGesture.MatchedGestureImage == null)
+            if (waitForGesture)
             {
-                MatchLabel.text = "No match";
-            }
-            else
-            {
-                MatchLabel.text = "Match: " + recognizableImages[imageGesture.MatchedGestureImage];
-            }
+                if (imageGesture.MatchedGestureImage == null)
+                {
+                    Debug.Log("No match");
+                }
+                else
+                {
+                    string gestureName = recognizableImages[imageGesture.MatchedGestureImage];
 
-            MatchLabel.text += " (" + imageGesture.MatchedGestureCalculationTimeMilliseconds + " ms)";
+                    Debug.Log("Match: " + recognizableImages[imageGesture.MatchedGestureImage]);
+
+                    switch (gestureName)
+                    {
+                        case "Horizontal Line":
+                        case "X":
+                            _feedback.SendFeedBack(-1);
+                            break;
+                        case "Vertical Line":
+                        case "Circle":
+                        case "Check Mark":
+                            _feedback.SendFeedBack(1);
+                            break;
+                    }
+                    
+                }
+            }
+        }
+
+        public void AskForGesture()
+        {
+            waitForGesture = true;
+            ResetLines();
+        }
+
+        public void StopAsking()
+        {
+            waitForGesture = false;
+            ResetLines();
+            imageGesture.Reset();
         }
 
         private void AddTouches(ICollection<GestureTouch> touches)
@@ -199,6 +217,7 @@ namespace DigitalRubyShared
             currentPointList = null;
             lineSet.Clear();
             UpdateImage();
+            
         }
 
         private void MaximumPathCountExceeded(object sender, System.EventArgs e)
@@ -227,57 +246,6 @@ namespace DigitalRubyShared
             {
                 UnityEngine.Debug.Log("Tap Gesture Ended");
             }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                imageGesture.Reset();
-                ResetLines();
-                UpdateImage();
-            }
-        }
-
-        private void OnRenderObject()
-        {
-            GL.PushMatrix();
-            LineMaterial.SetPass(0);
-            GL.LoadProjectionMatrix(Camera.main.projectionMatrix);
-            GL.Begin(GL.LINES);
-            foreach (List<Vector2> lines in lineSet)
-            {
-                for (int i = 1; i < lines.Count; i++)
-                {
-                    GL.Color(Color.white);
-                    GL.Vertex(lines[i - 1]);
-                    GL.Vertex(lines[i]);
-                }
-            }
-            GL.End();
-            GL.PopMatrix();
-        }
-        
-
-        public void CopyScriptToClipboard()
-        {
-
-#if UNITY_EDITOR
-
-            if (lastImage == null)
-            {
-                Debug.LogError("No image created yet");
-            }
-            else
-            {
-                TextEditor te = new TextEditor();
-                te.text = lastImage.GetCodeForRowsInitialize();
-                te.SelectAll();
-                te.Copy();
-            }
-
-#endif
-
         }
     }
 }
