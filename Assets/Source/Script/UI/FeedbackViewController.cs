@@ -22,9 +22,11 @@ public class FeedbackViewController : AbstractViewController {
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
-            Vector2.zero, new Vector2(296, 296),
+            Vector2.zero, new Vector2(1080, 1920),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
+
+        //AddImage(Rect, null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         _gestures = new GestureController(Rect.transform, this);
 
