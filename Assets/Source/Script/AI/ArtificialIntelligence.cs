@@ -81,8 +81,6 @@ public class ArtificialIntelligence
         {
             _result = root.Children[0].ParentActionID;
 
-            Debug.Log(root.Children[0].Evaluation() + " - " + root.Evaluation());
-
             _resultValue = root.Children[0].Evaluation() - root.Evaluation();
         }
         else
