@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using DigitalRubyShared;
+using UnityEngine.SceneManagement;
+using System.IO;
 
 public enum LoadStates { Dummy, CSV, SavedState};
 
@@ -19,6 +21,7 @@ public class ApplicationManager : MonoBehaviour {
     private int activityCounter;
 
     private string personalityCSVPath = "Data\\";
+
     public string SaveFile = "please_specify_the_filename_for_saving";
     public string LoadFile = "please_specify_the_filename_for_Loading";
 
@@ -86,6 +89,29 @@ public class ApplicationManager : MonoBehaviour {
 
     public void load(LoadStates LoadFrom)
     {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            SaveFile = "savefile";
+            LoadFile = "savefile";
+            AutomaticSaveAfterActions = 1;
+
+            string path = Path.Combine(Application.persistentDataPath, "savestates");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            path = Path.Combine(path, SaveFile);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                LoadFrom = LoadStates.CSV;
+            }
+            else
+            {
+                LoadFrom = LoadStates.SavedState;
+            }
+        }
+
         switch (LoadFrom)
         {
             case LoadStates.Dummy:
@@ -116,32 +142,12 @@ public class ApplicationManager : MonoBehaviour {
 
     public void reset()
     {
-        StopAllCoroutines();
-        RemoveItem();
-
-        load(LoadFrom);
-        _items = new Dictionary<int, Item>();
-        foreach (Item item in _itemList)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            _items[item.ID] = item;
+            string path = Path.Combine(Application.persistentDataPath, "savestates");
+            Directory.Delete(path, true);
         }
-
-        //if (_personality.GetItems().Count >= 1)
-        //{
-        //    foreach (KeyValuePair<int, Item> kvp in _personality.GetItems())
-        //    {
-        //        Debug.Log("Personaliy has " +kvp.Value.Name);
-        //        _itemBox.AddItemFromPersonality(kvp.Value);
-        //    }
-        //}
-
-        _intelligence = new ArtificialIntelligence();
-        _lastExperience = null;
-        _lastActivity = null;
-        saveCounter = 0;
-        _conditionMonitor.UpdateSlider(_personality);
-
-        StartCoroutine(Run());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 	public void RemoveItem(){

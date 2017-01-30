@@ -6,12 +6,15 @@ public class ResetViewController : AbstractViewController {
 
     public ResetViewController(Transform parent)
     {
-        Rect = CreateContainer("Reset", parent, Vector2.zero, new Vector2(1080, 1920), Vector2.one * 0.5f, Vector2.one * 0.5f, Vector2.one * 0.5f);
-        
+        Rect = CreateContainer("Reset", parent, new Vector2(0, 256), new Vector2(256, 256), Vector2.zero, Vector2.zero, new Vector2(0, 1));
+
+
         View = Rect.gameObject;
 
-        RectTransform buttonRect = CreateContainer("ResetButton", Rect, new Vector2(-444, -863), new Vector2(100, 100), Vector2.one * 0.5f, Vector2.one * 0.5f, Vector2.one * 0.5f);
-        AddSprite(buttonRect, null, GraphicsHelper.Instance.SpriteColorWhite);
+        RectTransform buttonRect = CreateContainer("ResetButton", Rect, new Vector2(20, 20), new Vector2(200, 200), Vector2.zero, Vector2.zero, Vector2.zero);
+
+
+        AddSprite(buttonRect, GraphicsHelper.Instance.resetSprite, GraphicsHelper.Instance.SpriteColorWhite);
         CreateButton(buttonRect, delegate { reset(); });
     }
 

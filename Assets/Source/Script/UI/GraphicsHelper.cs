@@ -17,6 +17,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite itemboxOpenSprite;
     public Sprite itemboxClosedSprite;
     public Sprite itemSlotSprite;
+    public Sprite resetSprite;
 
     public Sprite sliderBackgroundSpirte;
     public Sprite sliderFillSprite;

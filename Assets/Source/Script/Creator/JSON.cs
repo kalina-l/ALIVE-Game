@@ -37,8 +37,6 @@ public class JSON {
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
-            path = Path.Combine(Application.persistentDataPath, SaveFile);
-            Directory.CreateDirectory(path);
         }
         path = Path.Combine(path, SaveFile);
         if (!Directory.Exists(path))
