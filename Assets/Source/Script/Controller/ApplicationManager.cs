@@ -25,6 +25,8 @@ public class ApplicationManager : MonoBehaviour {
     public string SaveFile = "please_specify_the_filename_for_saving";
     public string LoadFile = "please_specify_the_filename_for_Loading";
 
+    public bool resetButton;
+
     //AI
     private Personality _personality;
     private ArtificialIntelligence _intelligence;
@@ -73,7 +75,11 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
-        new ResetViewController(UICanvas.transform);
+        if (resetButton)
+        {
+            new ResetViewController(UICanvas.transform);
+        }
+
 
         if (_personality.GetItems().Count >= 1)
         {
