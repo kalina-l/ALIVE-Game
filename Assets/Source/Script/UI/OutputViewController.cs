@@ -19,7 +19,7 @@ public class OutputViewController : AbstractViewController {
 
         OutputText = AddText(
             CreateContainer("OutputText", Rect,
-            new Vector2(0, -20), new Vector2(920, 420),
+            new Vector2(0, -850), new Vector2(920, 420),
             new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1)),
             GraphicsHelper.Instance.UIFont, 80, TextAnchor.UpperCenter);
     }
