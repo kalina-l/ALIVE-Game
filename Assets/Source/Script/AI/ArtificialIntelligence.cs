@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ArtificialIntelligence
 {
-    public int DFS_DEPTH_LEVEL = 6;
+    public int DFS_DEPTH_LEVEL = 4;
 
     private Personality _personality;
     private Thread _thread = null;
