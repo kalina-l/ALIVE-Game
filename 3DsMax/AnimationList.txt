@@ -1,0 +1,8 @@
+Idle 001-059
+Yawn
+FallAsleep
+Sleep
+WakeUp
+Eat
+Play
+Sneeze
