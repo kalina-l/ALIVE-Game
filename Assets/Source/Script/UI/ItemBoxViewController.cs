@@ -151,9 +151,12 @@ public class ItemBoxViewController : AbstractViewController
 
     public void RemoveItemFromSlot()
     {
-        _itemInSlot.RemoveItem();
-        
-        ApplicationManager.Instance.StartCoroutine(ShowSlotItem(false));
+        if(_itemInSlot != null)
+        {
+            _itemInSlot.RemoveItem();
+
+            ApplicationManager.Instance.StartCoroutine(ShowSlotItem(false));
+        }
     }
 
     private IEnumerator ShowSlotItem(bool show)

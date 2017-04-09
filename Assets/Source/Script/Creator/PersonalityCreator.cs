@@ -15,7 +15,7 @@ public class PersonalityCreator
     public static readonly string ItemsCSV = "items";
 
     public static readonly string ConditionIdentifier = "ConditionThresholds";
-    public static readonly int ConditionStart = 100;
+    public static readonly int ConditionStart = 0;
     public static readonly string AttributeIdentifier = "Attributes";
     public static readonly int MinAttribute = 1;
     public static readonly int MaxAttribute = 20;

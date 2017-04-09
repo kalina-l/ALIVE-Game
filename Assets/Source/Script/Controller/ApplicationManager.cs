@@ -2,25 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using DigitalRubyShared;
+using UnityEngine.SceneManagement;
+using System.IO;
 
-public enum LoadStates { UseDummy, UseCSV, UseSavedState};
+public enum LoadStates { Dummy, CSV, SavedState};
 
 public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
 
     public Canvas UICanvas;
-    public LoadStates Load;
+    public LoadStates LoadFrom;
 
     public float WaitTime = 2;
     public float FeedBackTime = 2;
-    public int AutomaticSaveAfterActions = 10;
+    public int AutomaticSaveAfterActions = 5;
     private int saveCounter;
     private int activityCounter;
 
     private string personalityCSVPath = "Data\\";
+
     public string SaveFile = "please_specify_the_filename_for_saving";
     public string LoadFile = "please_specify_the_filename_for_Loading";
+
+    public bool resetButton;
 
     //AI
     private Personality _personality;
@@ -55,33 +60,8 @@ public class ApplicationManager : MonoBehaviour {
         _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
 
-        switch(Load)
-        {
-            case LoadStates.UseDummy:
-                DummyCreator creator = new DummyCreator();
-                _personality = creator.CreateDummyPerson();
-                _itemList = creator.CreateDummyItems();
-                break;
-
-            case LoadStates.UseCSV:
-                PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
-                _personality = creatorCSV.personality;
-                _itemList = creatorCSV.ItemList;
-                rewardList = creatorCSV.Rewards;
-                break;
-
-            case LoadStates.UseSavedState:
-                JSON readJSON = new JSON(_personality, rewardList, _itemList);
-                readJSON.readJSON(readJSON, LoadFile);
-                _personality = readJSON.personality;
-                rewardList = readJSON.rewardList;
-                _itemList = readJSON.itemList;
-                break;
-            default:
-                Debug.LogError("No Load State");
-                break;
-        }
-
+        load(LoadFrom);
+        
         foreach (Item item in _itemList)
         {
             _items[item.ID] = item;
@@ -95,6 +75,11 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+        if (resetButton)
+        {
+            new ResetViewController(UICanvas.transform);
+        }
+
 
         if (_personality.GetItems().Count >= 1)
         {
@@ -108,7 +93,70 @@ public class ApplicationManager : MonoBehaviour {
         StartCoroutine(Run());
     }
 
-	public void RemoveItem(Item item){
+    public void load(LoadStates LoadFrom)
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            SaveFile = "savefile";
+            LoadFile = "savefile";
+            AutomaticSaveAfterActions = 1;
+
+            string path = Path.Combine(Application.persistentDataPath, "savestates");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            path = Path.Combine(path, SaveFile);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                LoadFrom = LoadStates.CSV;
+            }
+            else
+            {
+                LoadFrom = LoadStates.SavedState;
+            }
+        }
+
+        switch (LoadFrom)
+        {
+            case LoadStates.Dummy:
+                DummyCreator creator = new DummyCreator();
+                _personality = creator.CreateDummyPerson();
+                _itemList = creator.CreateDummyItems();
+                break;
+
+            case LoadStates.CSV:
+                PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
+                _personality = creatorCSV.personality;
+                _itemList = creatorCSV.ItemList;
+                rewardList = creatorCSV.Rewards;
+                break;
+
+            case LoadStates.SavedState:
+                JSON readJSON = new JSON(_personality, rewardList, _itemList);
+                readJSON.readJSON(readJSON, LoadFile);
+                _personality = readJSON.personality;
+                rewardList = readJSON.rewardList;
+                _itemList = readJSON.itemList;
+                break;
+            default:
+                Debug.LogError("No Load State");
+                break;
+        }
+    }
+
+    public void reset()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            string path = Path.Combine(Application.persistentDataPath, "savestates");
+            Directory.Delete(path, true);
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+	public void RemoveItem(){
 		_itemBox.RemoveItemFromSlot ();
 	}
 
