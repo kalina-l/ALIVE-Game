@@ -183,7 +183,10 @@ namespace DigitalRubyShared
 
                 // Debug.LogFormat("STW: {0},{1} = {2},{3}", t.Value.X, t.Value.Y, v.x, v.y);
 
-                currentPointList.Add(v);
+                if (v != null)
+                {
+                    currentPointList.Add(v);
+                }
             }
         }
 
