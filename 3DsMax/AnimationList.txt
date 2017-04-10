@@ -1,5 +1,5 @@
 Idle 001-059
-Yawn
+Yawn 060-149
 FallAsleep
 Sleep
 WakeUp
