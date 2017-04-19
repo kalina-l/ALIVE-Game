@@ -1,8 +1,8 @@
 Idle 001-059
 Yawn 060-149
-FallAsleep 150-269
+FallAsleep 150-270
 Sleep 270-389
-WakeUp
-Eat
+WakeUp 390 - 510
+Sneeze 510 - 569
 Play
-Sneeze
+
