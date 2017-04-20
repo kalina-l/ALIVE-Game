@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using DigitalRubyShared;
+using KKSpeech;
 
 public class FeedbackViewController : AbstractViewController {
 
@@ -55,11 +56,13 @@ public class FeedbackViewController : AbstractViewController {
         if (show)
         {
             _gestures.AskForGesture();
+            SpeechRecognizer.StartRecording(true);
             receiveFeedback = true;
         }
         else
         {
             _gestures.StopAsking();
+            SpeechRecognizer.StopIfRecording();
         }
 
         //if(!_animating)
