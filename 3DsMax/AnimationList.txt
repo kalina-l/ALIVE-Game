@@ -4,5 +4,7 @@ FallAsleep 150-270
 Sleep 270-389
 WakeUp 390 - 510
 Sneeze 510 - 569
-Play
+Play 570 - 719
+Dance 730 - 789
+End 800
 
