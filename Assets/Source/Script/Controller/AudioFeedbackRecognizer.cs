@@ -8,6 +8,13 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
 
     public Text recordDebugger;
 
+    private AudioFeedbackController _controller;
+
+    public void Setup(AudioFeedbackController controller)
+    {
+        _controller = controller;
+    }
+
 	// Use this for initialization
 	void Start () {
         if (SpeechRecognizer.ExistsOnDevice())
@@ -35,6 +42,19 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
     public void OnFinalResult(string result)
     {
         recordDebugger.text = result;
+        result = result.ToLower();
+        int feedback = 0;
+        if (result.Equals("gut gemacht") || result.Contains("braver junge") || result.Equals("sehr gut"))
+        {
+            feedback = 1;
+        }
+        else if (result.Equals("schlecht gemacht") || result.Equals("so nicht") || result.Equals("nein"))
+        {
+            feedback = -1;
+        }
+
+        Debug.Log("FEEDBACK: " + feedback);
+        _controller.SendFeedback(feedback);
     }
 
     public void OnPartialResult(string result)

@@ -29,18 +29,6 @@ public class RecordingCanvas : MonoBehaviour {
 
 	public void OnFinalResult(string result) {
 		resultText.text = result;
-        result = result.ToLower();
-        int feedback = 0;
-        if (result.Equals("gut gemacht") || result.Equals("braver junge") || result.Equals("sehr gut"))
-        {
-            feedback = 1;
-        }
-        else if (result.Equals("schlecht gemacht") || result.Equals("so nicht") || result.Equals("nein"))
-        {
-            feedback = -1;
-        }
-
-        ApplicationManager.Instance.GiveFeedback(feedback);
     }
 
 	public void OnPartialResult(string result) {

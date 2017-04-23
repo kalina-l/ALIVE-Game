@@ -17,6 +17,7 @@ public class FeedbackViewController : AbstractViewController {
     private Vector2 _buttonSize = new Vector2(256, 256);
 
     private GestureController _gestures;
+    private AudioFeedbackController _audioFeedbackController;
 
     private bool receiveFeedback;
 
@@ -29,7 +30,9 @@ public class FeedbackViewController : AbstractViewController {
 
         //AddImage(Rect, null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
-        _gestures = new GestureController(Rect.transform, this);
+        //_gestures = new GestureController(Rect.transform, this);
+
+        _audioFeedbackController = new AudioFeedbackController(this);
 
         //Buttons
         _positiveButton = CreateButton(
@@ -55,13 +58,13 @@ public class FeedbackViewController : AbstractViewController {
     {
         if (show)
         {
-            _gestures.AskForGesture();
+            //_gestures.AskForGesture();
             SpeechRecognizer.StartRecording(true);
             receiveFeedback = true;
         }
         else
         {
-            _gestures.StopAsking();
+            //_gestures.StopAsking();
             SpeechRecognizer.StopIfRecording();
         }
 

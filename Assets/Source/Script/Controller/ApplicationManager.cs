@@ -12,7 +12,7 @@ public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
 
-    public Text textToRemove;
+    public Text debugText;
 
     public Canvas UICanvas;
     public LoadStates LoadFrom;
@@ -267,11 +267,9 @@ public class ApplicationManager : MonoBehaviour {
             if(feedback == -1)
             {
                 negativeFX.Play();
-                textToRemove.text += "-";
             } else if(feedback == 1)
             {
                 positiveFX.Play();
-                textToRemove.text += "+";
             }
 
             _feedback.ShowFeedback(false);
