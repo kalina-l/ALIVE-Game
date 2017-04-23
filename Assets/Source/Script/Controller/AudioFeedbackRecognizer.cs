@@ -41,7 +41,7 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
 
     public void OnFinalResult(string result)
     {
-        recordDebugger.text = result;
+        /*recordDebugger.text = result;
         result = result.ToLower();
         int feedback = 0;
         if (result.Equals("gut gemacht") || result.Contains("braver junge") || result.Equals("sehr gut"))
@@ -55,11 +55,24 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
 
         Debug.Log("FEEDBACK: " + feedback);
         _controller.SendFeedback(feedback);
+        */
     }
 
     public void OnPartialResult(string result)
     {
         recordDebugger.text = result;
+        result = result.ToLower();
+        int feedback = 0;
+        if (result.Contains("gut gemacht") || result.Contains("braver junge") || result.Contains("sehr gut") || result.Contains("nicht schlecht"))
+        {
+            feedback = 1;
+            _controller.SendFeedback(feedback);
+        }
+        else if (result.Contains("schlecht gemacht") || result.Contains("so nicht") || result.Contains("aus") || result.Contains("stop"))
+        {
+            feedback = -1;
+            _controller.SendFeedback(feedback);
+        }
     }
 
     public void OnAvailabilityChange(bool available)
