@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DigitalRubyShared;
 using UnityEngine.SceneManagement;
 using System.IO;
+using UnityEngine.UI;
 
 public enum LoadStates { Dummy, CSV, SavedState};
 
@@ -11,11 +12,12 @@ public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
 
+    public Text debugText;
+
     public Canvas UICanvas;
     public LoadStates LoadFrom;
 
     public float WaitTime = 2;
-    public float FeedBackTime = 2;
     public int AutomaticSaveAfterActions = 5;
     private int saveCounter;
     private int activityCounter;
@@ -264,12 +266,12 @@ public class ApplicationManager : MonoBehaviour {
             if(feedback == -1)
             {
                 negativeFX.Play();
+                _feedback.ShowFeedback(false);
             } else if(feedback == 1)
             {
                 positiveFX.Play();
+                _feedback.ShowFeedback(false);
             }
-
-            _feedback.ShowFeedback(false);
 
             waitForFeedback = false;
         }
@@ -279,13 +281,12 @@ public class ApplicationManager : MonoBehaviour {
     {
         while(true)
         {
-            yield return new WaitForSeconds(WaitTime);
+            //yield return new WaitForSeconds(WaitTime);
             
             yield return StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
-
-            while(timer < FeedBackTime && waitForFeedback)
+            while(timer < WaitTime)// && waitForFeedback)
             {
                 timer += Time.deltaTime;
                 yield return 0;

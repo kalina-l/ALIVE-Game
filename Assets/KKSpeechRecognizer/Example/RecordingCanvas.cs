@@ -29,7 +29,7 @@ public class RecordingCanvas : MonoBehaviour {
 
 	public void OnFinalResult(string result) {
 		resultText.text = result;
-	}
+    }
 
 	public void OnPartialResult(string result) {
 		resultText.text = result;
