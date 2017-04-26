@@ -91,7 +91,7 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        saveCounter = 0;
+        saveCounter = 1;
         StartCoroutine(Run());
     }
 
@@ -301,8 +301,8 @@ public class ApplicationManager : MonoBehaviour {
             {
                 JSON writeJSON = new JSON(_personality, rewardList, _itemList);
                 writeJSON.writeJSON(writeJSON, SaveFile);
-                Debug.Log("Status saved!");
-                saveCounter = 0;
+                //Debug.Log("Status saved!");
+                saveCounter = 1;
             }
             else
             {
