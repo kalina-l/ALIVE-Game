@@ -60,7 +60,7 @@ public class ApplicationManager : MonoBehaviour {
         _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
 
-        load(LoadFrom);
+        loadPersonality(LoadFrom);
         
         foreach (Item item in _itemList)
         {
@@ -93,7 +93,7 @@ public class ApplicationManager : MonoBehaviour {
         StartCoroutine(Run());
     }
 
-    public void load(LoadStates LoadFrom)
+    public void loadPersonality(LoadStates LoadFrom)
     {
         if (Application.platform == RuntimePlatform.Android)
         {
