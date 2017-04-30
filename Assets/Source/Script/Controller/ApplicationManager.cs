@@ -46,6 +46,7 @@ public class ApplicationManager : MonoBehaviour {
     private FeedbackViewController _feedback;
     private ItemBoxViewController _itemBox;
     private ConditionViewController _conditionMonitor;
+    private AlertViewController _alert;
 
     private bool waitForFeedback;
 
@@ -73,10 +74,12 @@ public class ApplicationManager : MonoBehaviour {
         _intelligence = new ArtificialIntelligence();
 
         //UI
+        _alert = new AlertViewController(UICanvas.transform);
         _output = new OutputViewController(UICanvas.transform);
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+        
         if (resetButton)
         {
             new ResetViewController(UICanvas.transform);
@@ -219,7 +222,8 @@ public class ApplicationManager : MonoBehaviour {
                 {
                     if (_personality.GetItem(askItem.ID, false) == null)
                     {
-                        _output.DisplayMessage("Give me " + askItem.Name);
+                        //_output.DisplayMessage("Give me " + askItem.Name);
+                        _alert.ShowAlert(_itemBox.GetItemIcon(askItem));
 
                         yield return new WaitForSeconds(2);
                     }

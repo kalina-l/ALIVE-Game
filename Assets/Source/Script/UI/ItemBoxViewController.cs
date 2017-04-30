@@ -118,6 +118,19 @@ public class ItemBoxViewController : AbstractViewController
         }
     }
 
+    public Sprite GetItemIcon(Item item)
+    {
+        for (int i = 0; i < _itemList.Count; i++)
+        {
+            if (_itemList[i].ItemID == item.ID)
+            {
+                return _itemList[i].Icon;
+            }
+        }
+
+        return null;
+    }
+
     public void AddItemFromPersonality(Item item)
     {
         for(int i=0; i<_itemList.Count; i++)
