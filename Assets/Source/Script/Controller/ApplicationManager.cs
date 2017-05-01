@@ -5,6 +5,7 @@ using DigitalRubyShared;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
+using KKSpeech;
 
 public enum LoadStates { Dummy, CSV, SavedState};
 
@@ -92,6 +93,7 @@ public class ApplicationManager : MonoBehaviour {
         }
 
         saveCounter = 0;
+        SpeechRecognizer.StartRecording(true);
         StartCoroutine(Run());
     }
 

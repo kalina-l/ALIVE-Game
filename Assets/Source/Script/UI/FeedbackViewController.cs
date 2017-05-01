@@ -61,13 +61,13 @@ public class FeedbackViewController : AbstractViewController {
         if (show)
         {
             //_gestures.AskForGesture();
-            SpeechRecognizer.StartRecording(true);
+            //SpeechRecognizer.StartRecording(true);
             receiveFeedback = true;
         }
         else
         {
             //_gestures.StopAsking();
-            SpeechRecognizer.StopIfRecording();
+            //SpeechRecognizer.StopIfRecording();
         }
 
         if(_animating)
