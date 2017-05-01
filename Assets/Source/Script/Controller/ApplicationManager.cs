@@ -47,6 +47,7 @@ public class ApplicationManager : MonoBehaviour {
     private FeedbackViewController _feedback;
     private ItemBoxViewController _itemBox;
     private ConditionViewController _conditionMonitor;
+    private AlertViewController _alert;
 
     private bool waitForFeedback;
 
@@ -63,7 +64,7 @@ public class ApplicationManager : MonoBehaviour {
         _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
 
-        load(LoadFrom);
+        loadPersonality(LoadFrom);
         
         foreach (Item item in _itemList)
         {
@@ -74,10 +75,12 @@ public class ApplicationManager : MonoBehaviour {
         _intelligence = new ArtificialIntelligence();
 
         //UI
+        _alert = new AlertViewController(UICanvas.transform);
         _output = new OutputViewController(UICanvas.transform);
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+        
         if (resetButton)
         {
             new ResetViewController(UICanvas.transform);
@@ -92,12 +95,12 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        saveCounter = 0;
         SpeechRecognizer.StartRecording(true);
+        saveCounter = 1;
         StartCoroutine(Run());
     }
 
-    public void load(LoadStates LoadFrom)
+    public void loadPersonality(LoadStates LoadFrom)
     {
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -221,7 +224,8 @@ public class ApplicationManager : MonoBehaviour {
                 {
                     if (_personality.GetItem(askItem.ID, false) == null)
                     {
-                        _output.DisplayMessage("Give me " + askItem.Name);
+                        //_output.DisplayMessage("Give me " + askItem.Name);
+                        _alert.ShowAlert(_itemBox.GetItemIcon(askItem));
 
                         yield return new WaitForSeconds(2);
                     }
@@ -303,8 +307,8 @@ public class ApplicationManager : MonoBehaviour {
             {
                 JSON writeJSON = new JSON(_personality, rewardList, _itemList);
                 writeJSON.writeJSON(writeJSON, SaveFile);
-                Debug.Log("Status saved!");
-                saveCounter = 0;
+                //Debug.Log("Status saved!");
+                saveCounter = 1;
             }
             else
             {

@@ -6,5 +6,5 @@ WakeUp 390 - 510
 Sneeze 510 - 569
 Play 570 - 719
 Dance 730 - 789
-End 800
+Tongue 800 - 940
 
