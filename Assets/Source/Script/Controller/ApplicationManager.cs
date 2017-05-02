@@ -291,7 +291,7 @@ public class ApplicationManager : MonoBehaviour {
             yield return StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
-            while(timer < WaitTime)// && waitForFeedback)
+            while(timer < WaitTime || SpeechRecognizer.IsRecording())
             {
                 timer += Time.deltaTime;
                 yield return 0;
