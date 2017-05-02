@@ -6,6 +6,8 @@ public class GraphicsHelper : MonoBehaviour {
 
     public static GraphicsHelper Instance;
 
+    public GameObject lemo;
+
     public Font UIFont;
 
     public Color[] evaluationColor;

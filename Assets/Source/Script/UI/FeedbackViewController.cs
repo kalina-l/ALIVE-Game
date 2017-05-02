@@ -20,6 +20,7 @@ public class FeedbackViewController : AbstractViewController {
 
     private GestureController _gestures;
     private AudioFeedbackController _audioFeedbackController;
+    private TouchController _touchController;
 
     private bool receiveFeedback;
     private bool _buttonsVisible;
@@ -37,6 +38,7 @@ public class FeedbackViewController : AbstractViewController {
         //_gestures = new GestureController(Rect.transform, this);
 
         _audioFeedbackController = new AudioFeedbackController(this);
+        _touchController = new TouchController(this);
 
         //Buttons
         _positiveButton = CreateButton(
@@ -64,6 +66,11 @@ public class FeedbackViewController : AbstractViewController {
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
+
+        // create touch object
+        GameObject LeanTouchObject = new GameObject("LeanTouch");
+        LeanTouchObject.AddComponent<Lean.Touch.LeanTouch>();
+        LeanTouchObject.AddComponent<Lean.Touch.LeanTouchEvents>();
     }
 
     public void ShowFeedback(bool show)
