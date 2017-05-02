@@ -95,7 +95,6 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        SpeechRecognizer.StartRecording(true);
         saveCounter = 1;
         StartCoroutine(Run());
     }

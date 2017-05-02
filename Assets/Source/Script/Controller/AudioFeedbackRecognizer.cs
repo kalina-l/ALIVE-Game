@@ -39,9 +39,14 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
 		
 	}
 
-    public void OnFinalResult(string result)
+    public void StartRecording()
     {
         SpeechRecognizer.StartRecording(true);
+    }
+
+    public void OnFinalResult(string result)
+    {
+        
     }
 
     public void OnPartialResult(string result)
@@ -54,14 +59,12 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
             feedback = 1;
             _controller.SendFeedback(feedback);
             SpeechRecognizer.StopIfRecording();
-            SpeechRecognizer.StartRecording(true);
         }
-        else if (result.Contains("schlecht gemacht") || result.Contains("so nicht") || result.Contains("aus") || result.Contains("stopp"))
+        else if (result.Contains("aufhören") || result.Contains("so nicht") || result.Contains("aus") || result.Contains("stopp"))
         {
             feedback = -1;
             _controller.SendFeedback(feedback);
             SpeechRecognizer.StopIfRecording();
-            SpeechRecognizer.StartRecording(true);
         }
     }
 
@@ -82,7 +85,6 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
 
     public void OnError(string error)
     {
-        SpeechRecognizer.StartRecording(true);
         Debug.LogError(error);
         //recordDebugger.text = "Something went wrong... Try again! \n [" + error + "]";
     }

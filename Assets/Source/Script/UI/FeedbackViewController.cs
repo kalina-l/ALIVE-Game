@@ -14,6 +14,8 @@ public class FeedbackViewController : AbstractViewController {
     private Button _negativeButton;
     private Image _negativeButtonImage;
 
+    private Button _startRecording;
+
     private Vector2 _buttonSize = new Vector2(256, 256);
 
     private GestureController _gestures;
@@ -54,6 +56,14 @@ public class FeedbackViewController : AbstractViewController {
                                     );
 
         _negativeButtonImage = AddSprite(_negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+
+        _startRecording = CreateButton(
+                                    CreateContainer("StartRecording", Rect,
+                                    new Vector2(460, 40), _buttonSize*0.65f,
+                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                                    delegate { _audioFeedbackController.StartRecording(); }
+                                    );
+        AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
     }
 
     public void ShowFeedback(bool show)
