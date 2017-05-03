@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lean.Touch
 {
-    // This script will hook into event LeanTouch event, and spam the console with the information
+    // This script will hook into event LeanTouch event
     public class LeanTouchEvents : MonoBehaviour
     {
         private Collider Lemo;
@@ -15,6 +15,8 @@ namespace Lean.Touch
         private bool isPetting;
         private bool blockPetting;
         private float maximumPetDuration = 3;
+
+        private TouchController _controller;
 
         protected virtual void OnEnable()
         {
@@ -38,6 +40,11 @@ namespace Lean.Touch
             LeanTouch.OnGesture -= OnGesture;
         }
 
+        public void Setup(TouchController controller)
+        {
+            _controller = controller;
+        }
+
         public void OnFingerDown(LeanFinger finger)
         {
             //Debug.Log("Finger " + finger.Index + " began touching the screen");
@@ -54,7 +61,7 @@ namespace Lean.Touch
                     if (hit.collider == Lemo)
                     {
                         Vector2 distanceVector = finger.ScreenPosition - finger.StartScreenPosition;
-                        if (distanceVector.magnitude > 30 && finger.Age > 0.2)
+                        if (distanceVector.magnitude > 100 && finger.Age > 0.2)
                         {
                             isPetting = true;
                         }
@@ -73,7 +80,8 @@ namespace Lean.Touch
         private void petSucceded()
         {
             isPetting = false;
-            Debug.Log("Du hast Lemo gestreichelt.");
+            _controller.SendFeedback(1);
+            //Debug.Log("Du hast Lemo gestreichelt.");
         }
 
         public void OnFingerUp(LeanFinger finger)
@@ -97,7 +105,8 @@ namespace Lean.Touch
                 {
                     if (hit.collider == Lemo)
                     {
-                        Debug.Log("You SLAPPED " + hit.transform.name); // ensure you picked right object
+                        _controller.SendFeedback(-1);
+                        //Debug.Log("You SLAPPED " + hit.transform.name); // ensure you picked right object
                     }
                 }
             }

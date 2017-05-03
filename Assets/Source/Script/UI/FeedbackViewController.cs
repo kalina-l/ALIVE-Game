@@ -67,27 +67,16 @@ public class FeedbackViewController : AbstractViewController {
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
-        // create touch object
-        GameObject LeanTouchObject = new GameObject("LeanTouch");
-        LeanTouchObject.AddComponent<Lean.Touch.LeanTouch>();
-        LeanTouchObject.AddComponent<Lean.Touch.LeanTouchEvents>();
     }
 
     public void ShowFeedback(bool show)
     {
         if (show)
         {
-            //_gestures.AskForGesture();
-            //SpeechRecognizer.StartRecording(true);
             receiveFeedback = true;
         }
-        else
-        {
-            //_gestures.StopAsking();
-            //SpeechRecognizer.StopIfRecording();
-        }
 
-        if(_animating)
+        /*if(_animating)
         {
             ApplicationManager.Instance.StopCoroutine(showFeedbackCoroutine);
             _animating = false;
@@ -97,7 +86,7 @@ public class FeedbackViewController : AbstractViewController {
         {
             showFeedbackCoroutine = ShowFeedbackRoutine(show);
             ApplicationManager.Instance.StartCoroutine(showFeedbackCoroutine);
-        }
+        }*/
     }
 
     private void ShowImmediateFeedback()

@@ -6,7 +6,7 @@ public class TouchController {
 
     private FeedbackViewController _feedbackViewController;
 
-    private Lean.Touch.LeanTouchEvents _touchEventsController;
+    private Lean.Touch.LeanTouchEvents _touchEvents;
 
     public TouchController(FeedbackViewController feedbackViewConroller)
     {
@@ -14,9 +14,14 @@ public class TouchController {
 
         GameObject LeanTouchObject = new GameObject("LeanTouch");
         LeanTouchObject.AddComponent<Lean.Touch.LeanTouch>();
-        _touchEventsController = LeanTouchObject.AddComponent<Lean.Touch.LeanTouchEvents>();
+        _touchEvents = LeanTouchObject.AddComponent<Lean.Touch.LeanTouchEvents>();
+        _touchEvents.Setup(this);
+        _touchEvents.setLemo(GraphicsHelper.Instance.lemo.GetComponent<Collider>());
+    }
 
-        _touchEventsController.setLemo(GraphicsHelper.Instance.lemo.GetComponent<Collider>());
+    public void SendFeedback(int feedback)
+    {
+        _feedbackViewController.SendFeedBack(feedback);
     }
 
 }

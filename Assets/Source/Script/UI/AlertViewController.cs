@@ -14,8 +14,8 @@ public class AlertViewController : AbstractViewController {
 
 	public AlertViewController(Transform parent) {
 
-        _bubbleSize = new Vector2(512, 512);
-        _iconSize = new Vector2(200, 200);
+        _bubbleSize = new Vector2(350, 350);
+        _iconSize = new Vector2(110, 110);
 
         Rect = CreateContainer("Alert", parent,
             new Vector2(-510, 1146), _bubbleSize,
@@ -25,7 +25,7 @@ public class AlertViewController : AbstractViewController {
         AddSprite(Rect, GraphicsHelper.Instance.alertBubbleSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
         RectTransform iconRect = CreateContainer("Icon", Rect,
-            new Vector2(0, 45), _iconSize,
+            new Vector2(0, 30), _iconSize,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
 
         _icon = AddSprite(iconRect, null, GraphicsHelper.Instance.SpriteColorBlack);
