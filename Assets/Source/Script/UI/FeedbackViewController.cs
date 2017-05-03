@@ -17,10 +17,12 @@ public class FeedbackViewController : AbstractViewController {
     private Button _startRecording;
 
     private Vector2 _buttonSize = new Vector2(256, 256);
-
-    private GestureController _gestures;
+    
     private AudioFeedbackController _audioFeedbackController;
     private TouchController _touchController;
+
+    private Image fistImage;
+    private Image handImage;    
 
     private bool receiveFeedback;
     private bool _buttonsVisible;
@@ -32,10 +34,6 @@ public class FeedbackViewController : AbstractViewController {
             Vector2.zero, new Vector2(1080, 1920),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
-
-        //AddImage(Rect, null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
-
-        //_gestures = new GestureController(Rect.transform, this);
 
         _audioFeedbackController = new AudioFeedbackController(this);
         _touchController = new TouchController(this);
@@ -66,6 +64,16 @@ public class FeedbackViewController : AbstractViewController {
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
+
+        fistImage = AddSprite(
+            CreateContainer("FistFeedback", Rect, new Vector2(0, 0), new Vector2(128, 128), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)),
+            GraphicsHelper.Instance.fist, GraphicsHelper.Instance.SpriteColorWhite);
+        fistImage.enabled = false;
+
+        handImage = AddSprite(
+            CreateContainer("HandFeedback", Rect, new Vector2(0, 0), new Vector2(128, 128), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)),
+            GraphicsHelper.Instance.hand, GraphicsHelper.Instance.SpriteColorWhite);
+        handImage.enabled = false;
 
     }
 
@@ -131,6 +139,52 @@ public class FeedbackViewController : AbstractViewController {
         }
 
         _animating = false;
+    }
+
+    public void ShowFistFeedback(Vector2 position)
+    {
+        fistImage.rectTransform.anchoredPosition = new Vector2(position.x*2, position.y*2);
+        fistImage.enabled = true;
+        ApplicationManager.Instance.StartCoroutine(ShowFistRoutine(fistImage));
+    }
+
+    private IEnumerator ShowFistRoutine(Image image)
+    {
+        float timer = 0;
+        GraphicsHelper graphics = GraphicsHelper.Instance;
+        Vector3 currentAngle = fistImage.rectTransform.eulerAngles;
+     
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 8;
+
+            currentAngle = new Vector3(
+             Mathf.LerpAngle(0, 0, timer),
+             Mathf.LerpAngle(0, 0, timer),
+             Mathf.LerpAngle(0, 45, timer));
+            fistImage.rectTransform.eulerAngles = currentAngle;
+
+            yield return 0;
+        }
+        timer = 0;
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 4;
+            yield return 0;
+        }
+
+        image.enabled = false;
+    }
+
+    public void ShowPetFeedback(Vector2 position)
+    {
+        handImage.rectTransform.anchoredPosition = new Vector2(position.x * 2, position.y * 2);
+        if(!handImage.enabled) handImage.enabled = true;
+    }
+
+    public void EndPetFeedback()
+    {
+        handImage.enabled = false;
     }
 
     public void SendFeedBack(int feedback)

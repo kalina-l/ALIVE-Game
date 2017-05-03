@@ -35,6 +35,9 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite iconSatisfaction;
     public Sprite iconSocial;
 
+    public Sprite fist;
+    public Sprite hand;
+
     public Color ButtonColorOn;
     public Color ButtonColorOff;
     public Color ContainerColor;

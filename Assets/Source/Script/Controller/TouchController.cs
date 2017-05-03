@@ -24,4 +24,19 @@ public class TouchController {
         _feedbackViewController.SendFeedBack(feedback);
     }
 
+    public void ShowFistFeedback(Vector2 position)
+    {
+        _feedbackViewController.ShowFistFeedback(position);
+    }
+
+    public void ShowPetFeedback(Vector2 position)
+    {
+        _feedbackViewController.ShowPetFeedback(position);
+    }
+
+    public void EndPetFeedback()
+    {
+        _feedbackViewController.EndPetFeedback();
+    }
+
 }

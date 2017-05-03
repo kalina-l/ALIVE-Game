@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 namespace Lean.Touch
 {
     // This script will hook into event LeanTouch event
@@ -25,8 +24,6 @@ namespace Lean.Touch
             LeanTouch.OnFingerSet += OnFingerSet;
             LeanTouch.OnFingerUp += OnFingerUp;
             LeanTouch.OnFingerTap += OnFingerTap;
-            LeanTouch.OnFingerSwipe += OnFingerSwipe;
-            LeanTouch.OnGesture += OnGesture;
         }
 
         protected virtual void OnDisable()
@@ -36,8 +33,6 @@ namespace Lean.Touch
             LeanTouch.OnFingerSet -= OnFingerSet;
             LeanTouch.OnFingerUp -= OnFingerUp;
             LeanTouch.OnFingerTap -= OnFingerTap;
-            LeanTouch.OnFingerSwipe -= OnFingerSwipe;
-            LeanTouch.OnGesture -= OnGesture;
         }
 
         public void Setup(TouchController controller)
@@ -47,7 +42,7 @@ namespace Lean.Touch
 
         public void OnFingerDown(LeanFinger finger)
         {
-            //Debug.Log("Finger " + finger.Index + " began touching the screen");
+            Debug.Log("Finger " + finger.Index + " began touching the screen: " + finger.ScreenPosition);
         }
 
         public void OnFingerSet(LeanFinger finger)
@@ -64,6 +59,7 @@ namespace Lean.Touch
                         if (distanceVector.magnitude > 100 && finger.Age > 0.2)
                         {
                             isPetting = true;
+                            _controller.ShowPetFeedback(finger.ScreenPosition);
                         }
                         if (finger.Age > maximumPetDuration)
                         {
@@ -80,6 +76,7 @@ namespace Lean.Touch
         private void petSucceded()
         {
             isPetting = false;
+            _controller.EndPetFeedback();
             _controller.SendFeedback(1);
             //Debug.Log("Du hast Lemo gestreichelt.");
         }
@@ -105,27 +102,12 @@ namespace Lean.Touch
                 {
                     if (hit.collider == Lemo)
                     {
+                        _controller.ShowFistFeedback(finger.ScreenPosition);
                         _controller.SendFeedback(-1);
                         //Debug.Log("You SLAPPED " + hit.transform.name); // ensure you picked right object
                     }
                 }
             }
-
-            //Debug.Log("Finger " + finger.Index + " tapped the screen");
-        }
-
-        public void OnFingerSwipe(LeanFinger finger)
-        {
-            //Debug.Log("Finger " + finger.Index + " swiped the screen");
-        }
-
-        public void OnGesture(List<LeanFinger> fingers)
-        {
-            //Debug.Log("Gesture with " + fingers.Count + " finger(s)");
-            //Debug.Log("    pinch scale: " + LeanGesture.GetPinchScale(fingers));
-            //Debug.Log("    twist degrees: " + LeanGesture.GetTwistDegrees(fingers));
-            //Debug.Log("    twist radians: " + LeanGesture.GetTwistRadians(fingers));
-            //Debug.Log("    screen delta: " + LeanGesture.GetScreenDelta(fingers));
         }
     }
 }
