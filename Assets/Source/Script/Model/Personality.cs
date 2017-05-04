@@ -8,6 +8,7 @@ public class Personality {
     public Dictionary<NeedType, Need> Conditions;
 	public Dictionary<int, Activity> BaseActivities;
     public Dictionary<int, Item> Items;
+    public List<Trait> Traits;
 
     [SerializeField]
     private Dictionary<AttributeType, Attribute> Attributes;
@@ -29,6 +30,7 @@ public class Personality {
         Attributes = new Dictionary<AttributeType, Attribute>();
         BaseActivities = new Dictionary<int, Activity>();
         Items = new Dictionary<int, Item>();
+        Traits = new List<Trait>();
         deepnessInParent = 0;
     }
 
@@ -66,6 +68,33 @@ public class Personality {
     public Personality AddBaseActivity(Activity activity)
     {
 		BaseActivities[activity.ID] = activity;
+
+        return this;
+    }
+
+    public Personality AddTrait(Trait trait)
+    {
+        Need need;
+
+        foreach(Trait traitThere in Traits)
+        {
+            if(traitThere.Tag == trait.Tag)
+            {
+                Debug.LogError(traitThere.Identifier + " is already added as Trait in this category! " + trait.Identifier + " will be overwritten!");
+            }
+        }
+        Traits.Add(trait);
+        foreach(KeyValuePair<NeedType, int[]> tr in trait.ThresholdModifiers)
+        {
+            if((need = GetCondition(tr.Key)) != null)
+            {
+                need.Thresholds = tr.Value;
+            }
+            else
+            {
+                Debug.LogError("There is no "+tr.Key+" for modification!");
+            }
+        }
 
         return this;
     }

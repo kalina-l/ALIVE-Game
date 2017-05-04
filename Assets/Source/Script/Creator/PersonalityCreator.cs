@@ -8,8 +8,9 @@ public class PersonalityCreator
 {
     public List<Reward> Rewards;
     public List<Item> ItemList;
+    public List<Trait> TraitList;
 
-    public static readonly string AttributesAndNeedsCSV = "personality";
+    public static readonly string AttributesNeedsTraitsCSV = "personality";
     public static readonly string RewardsCSV = "rewards";
     public static readonly string ActivitiesRewardsCSV = "activities_rewards";
     public static readonly string ItemsCSV = "items";
@@ -19,6 +20,7 @@ public class PersonalityCreator
     public static readonly string AttributeIdentifier = "Attributes";
     public static readonly int MinAttribute = 1;
     public static readonly int MaxAttribute = 20;
+    public static readonly string TraitIdentifier = "TraitModifier";
 
     private Personality _personality;
     public Personality personality
@@ -39,8 +41,8 @@ public class PersonalityCreator
         getRewards(_personalityCSV);
 
         _personality = new Personality();
-        _personalityCSV = CSV.read(personalityCSVPath + AttributesAndNeedsCSV);
-        getAttributesAndNeeds(_personalityCSV);
+        _personalityCSV = CSV.read(personalityCSVPath + AttributesNeedsTraitsCSV);
+        getAttributesNeedsTraits(_personalityCSV);
 
         _personalityCSV = CSV.read(personalityCSVPath + ActivitiesRewardsCSV);
         getBaseActivites(_personalityCSV);
@@ -48,8 +50,6 @@ public class PersonalityCreator
         _personalityCSV = CSV.read(personalityCSVPath + ActivitiesRewardsCSV);
         _itemCSV = CSV.read(personalityCSVPath + ItemsCSV);
         getItems(_itemCSV, _personalityCSV);
-
-
     }
 
     private List<Item> getItems(string[][] ItemsCSV, string[][] personalityCSV)
@@ -229,9 +229,11 @@ public class PersonalityCreator
         }
     }
 
-    private void getAttributesAndNeeds(string[][] personalityCSV)
+    private void getAttributesNeedsTraits(string[][] personalityCSV)
     {
         int[] thresholds;
+        int[] thresholdModifier;
+        TraitList = new List<Trait>();
 
         int start = -1;
         string identifier = null;
@@ -245,6 +247,11 @@ public class PersonalityCreator
             else if(Array.IndexOf(personalityCSV[i], ConditionIdentifier) != -1){
                 start = i;
                 identifier = "condition";
+            }
+            else if(Array.IndexOf(personalityCSV[i], TraitIdentifier) != -1)
+            {
+                start = i;
+                identifier = "trait";
             }
 
             if (start != -1)
@@ -269,6 +276,22 @@ public class PersonalityCreator
                             Need need = new Need(ConditionStart, thresholds);
                             need.Type = needType;
                             _personality.AddCondition(needType, need);
+                            break;
+                        case "trait":
+                            Trait trait = new Trait((TraitType)Enum.Parse(typeof(TraitType), personalityCSV[k-1][1]));
+                            trait.Tag = Int32.Parse(personalityCSV[k - 1][2]);
+                            for(int l = k; (l < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[l][0])); l++)
+                            {
+                                thresholdModifier = new int[personalityCSV[l].Length - 1];
+                                for (int j = 1; j < personalityCSV[l].Length; j++)
+                                {
+                                    thresholdModifier[j - 1] = Int32.Parse(personalityCSV[l][j]);
+                                }
+                                NeedType needTypeMod = (NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[l][0]));
+                                trait.AddThresholdModifier(needTypeMod, thresholdModifier);
+                                k = l;
+                            }
+                            TraitList.Add(trait);
                             break;
                         default:
                             break;

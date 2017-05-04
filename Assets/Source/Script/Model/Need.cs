@@ -23,22 +23,21 @@ public class Need {
 		}
 	}
 
-    [SerializeField]
-    private int[] thresholds;
+    public int[] Thresholds { get; set; }
 
     public Need (int value, int[] thresholds) {
 		this.Value = value;
-		this.thresholds = thresholds;
+		this.Thresholds = thresholds;
 	}
 
     public Need Copy()
     {
-      return new Need(Value, thresholds);
+      return new Need(Value, Thresholds);
     }
 
 	public Evaluation getEvaluation () {
-		for(int i = 0; i < thresholds.Length; i++){
-			if (Value < thresholds [i])
+		for(int i = 0; i < Thresholds.Length; i++){
+			if (Value < Thresholds [i])
 				return (Evaluation)i;
 		}
 		return Evaluation.SUPER_GOOD;
@@ -47,5 +46,15 @@ public class Need {
     public float GetSliderValue()
     {
         return (float)(_value + 100f) / 200f;
+    }
+
+    public void printThresholds()
+    {
+        string threshold = "";
+        for (int i = 0; i < Thresholds.Length; i++)
+        {
+            threshold += "|" + Thresholds[i];
+        }
+        Debug.Log(threshold);
     }
 }
