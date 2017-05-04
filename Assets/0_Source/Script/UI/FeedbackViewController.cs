@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using DigitalRubyShared;
 using KKSpeech;
 
 public class FeedbackViewController : AbstractViewController {
@@ -83,7 +82,8 @@ public class FeedbackViewController : AbstractViewController {
         {
             receiveFeedback = true;
         }
-
+          
+        // TODO: unterscheiden zw voice image und touch (enum?)
         /*if(_animating)
         {
             ApplicationManager.Instance.StopCoroutine(showFeedbackCoroutine);
@@ -143,7 +143,7 @@ public class FeedbackViewController : AbstractViewController {
 
     public void ShowFistFeedback(Vector2 position)
     {
-        fistImage.rectTransform.anchoredPosition = new Vector2(position.x*2, position.y*2);
+        fistImage.rectTransform.anchoredPosition = new Vector2(position.x, position.y);
         fistImage.enabled = true;
         ApplicationManager.Instance.StartCoroutine(ShowFistRoutine(fistImage));
     }
@@ -178,7 +178,7 @@ public class FeedbackViewController : AbstractViewController {
 
     public void ShowPetFeedback(Vector2 position)
     {
-        handImage.rectTransform.anchoredPosition = new Vector2(position.x * 2, position.y * 2);
+        handImage.rectTransform.anchoredPosition = position;
         if(!handImage.enabled) handImage.enabled = true;
     }
 

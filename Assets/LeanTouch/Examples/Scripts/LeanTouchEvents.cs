@@ -102,7 +102,7 @@ namespace Lean.Touch
                 {
                     if (hit.collider == Lemo)
                     {
-                        _controller.ShowFistFeedback(finger.ScreenPosition);
+                        _controller.ShowFistFeedback(finger.ScreenPosition); // TODO: convert screen position to canvas position
                         _controller.SendFeedback(-1);
                         //Debug.Log("You SLAPPED " + hit.transform.name); // ensure you picked right object
                     }

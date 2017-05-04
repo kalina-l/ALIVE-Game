@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using DigitalRubyShared;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
