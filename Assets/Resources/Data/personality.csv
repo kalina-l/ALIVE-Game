@@ -12,4 +12,16 @@ HUNGER;-80;-60;-10;5;20;60;80
 SATISFACTION;-80;-60;-10;0;20;60;80
 SOCIAL;-80;-60;-10;-5;20;60;80
 ENERGY;-80;-60;-20;-10;20;60;80
-
+;;;;;;;
+;;;;;;;
+TraitModifier;INTROVERT;0;;;;;
+SOCIAL;-80;-60;-20;-5;0;30;50
+;;;;;;;
+TraitModifier;EXTROVERT;0;;;;;
+SOCIAL;-80;-60;-10;10;30;60;85
+;;;;;;;
+TraitModifier;GREEDY;1;;;;;
+HUNGER;-65;-40;-10;15;40;75;90
+;;;;;;;
+TraitModifier;FRUGAL;1;;;;;
+HUNGER;-90;-70;-30;-10;30;50;70

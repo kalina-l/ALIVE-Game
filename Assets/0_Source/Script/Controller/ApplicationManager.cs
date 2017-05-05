@@ -35,8 +35,8 @@ public class ApplicationManager : MonoBehaviour {
 
     private Dictionary<int, Item> _items;
     private List<Item> _itemList;
-    private List<Reward> rewardList;
-    
+    private List<Reward> _rewardList;
+    private List<Trait> _traitList;
 
     private Experience _lastExperience;
     private Activity _lastActivity;
@@ -62,6 +62,7 @@ public class ApplicationManager : MonoBehaviour {
     void Start() {
         _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
+        _traitList = new List<Trait>();
 
         loadPersonality(LoadFrom);
         
@@ -135,14 +136,21 @@ public class ApplicationManager : MonoBehaviour {
                 PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
                 _personality = creatorCSV.personality;
                 _itemList = creatorCSV.ItemList;
-                rewardList = creatorCSV.Rewards;
+                _rewardList = creatorCSV.Rewards;
+                _traitList = creatorCSV.TraitList;
+                //_personality.AddTrait(_traitList[0]);
+                //_personality.AddTrait(_traitList[3]);
+                //foreach (Trait trait in _personality.Traits)
+                //{
+                //    Debug.Log(trait.Identifier);
+                //}
                 break;
 
             case LoadStates.SavedState:
-                JSON readJSON = new JSON(_personality, rewardList, _itemList);
+                JSON readJSON = new JSON(_personality, _rewardList, _itemList);
                 readJSON.readJSON(readJSON, LoadFile);
                 _personality = readJSON.personality;
-                rewardList = readJSON.rewardList;
+                _rewardList = readJSON.rewardList;
                 _itemList = readJSON.itemList;
                 break;
             default:
@@ -303,7 +311,7 @@ public class ApplicationManager : MonoBehaviour {
 
             if (saveCounter >= AutomaticSaveAfterActions)
             {
-                JSON writeJSON = new JSON(_personality, rewardList, _itemList);
+                JSON writeJSON = new JSON(_personality, _rewardList, _itemList);
                 writeJSON.writeJSON(writeJSON, SaveFile);
                 //Debug.Log("Status saved!");
                 saveCounter = 1;
