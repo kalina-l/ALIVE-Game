@@ -26,17 +26,25 @@ public class TouchController {
 
     public void ShowFistFeedback(Vector2 position)
     {
-        _feedbackViewController.ShowFistFeedback(position);
+        _feedbackViewController.ShowFistFeedback(ScreenToCanvasPosition(position));
     }
 
     public void ShowPetFeedback(Vector2 position)
     {
-        _feedbackViewController.ShowPetFeedback(position);
+        _feedbackViewController.ShowPetFeedback(ScreenToCanvasPosition(position));
     }
 
     public void EndPetFeedback()
     {
         _feedbackViewController.EndPetFeedback();
+    }
+
+    private Vector2 ScreenToCanvasPosition(Vector2 screenPosition)
+    {
+        float x = screenPosition.x / Screen.width;
+        float y = screenPosition.y / Screen.height;
+
+        return new Vector2(x * 1080, y * 1920);
     }
 
 }
