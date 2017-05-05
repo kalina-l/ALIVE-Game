@@ -140,6 +140,13 @@ public class ApplicationManager : MonoBehaviour {
                 _traitList = creatorCSV.TraitList;
                 //_personality.AddTrait(_traitList[0]);
                 //_personality.AddTrait(_traitList[3]);
+                //for(int i = 0; i < _traitList.Count; i++)
+                //{
+                //    if(Random.value <= 0.33)
+                //    {
+                //        _personality.AddTrait(_traitList[i]);
+                //    }
+                //}
                 //foreach (Trait trait in _personality.Traits)
                 //{
                 //    Debug.Log(trait.Identifier);
