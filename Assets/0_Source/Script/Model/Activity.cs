@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum ActivityTag { OTHERSOCIAL, OWNSOCIAL, PHYSICAL, EATING, NATURAL, UNNATURAL, STANDARD }
+
 public class Activity {
     public int ID { get; set; }
     public string Name { get; set; }
+    public List<ActivityTag> Tags { get; set; }
 
     public List<Reward> RewardList;
     public List<Experience> LearnedExperiences;
@@ -39,6 +42,7 @@ public class Activity {
         this.feedBackString = feedBackString;
         RewardList = new List<Reward>();
         LearnedExperiences = new List<Experience>();
+        Tags = new List<ActivityTag>();
 		//if(item!=null) item.AddActivity (this);
 
         Feedback = new Feedback();

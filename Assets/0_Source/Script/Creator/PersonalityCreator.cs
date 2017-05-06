@@ -116,6 +116,12 @@ public class PersonalityCreator
                     act.useConsume = item.maxUses;
                 }
 
+                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                for(int l = 0; l < activityTags.Length; l++)
+                {
+                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
+                }
+                
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for (int p = 0; p < activityRewards.Length; p++)
@@ -157,7 +163,14 @@ public class PersonalityCreator
                 {
                     continue;
                 }
+
                 act = new Activity(ID, personalityCSV[i][2], null, Int32.Parse(personalityCSV[i][4]), personalityCSV[i][2]);
+                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                for (int l = 0; l < activityTags.Length; l++)
+                {
+                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
+                }
+
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for(int p = 0; p < activityRewards.Length; p++)
