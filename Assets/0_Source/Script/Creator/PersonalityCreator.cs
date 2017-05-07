@@ -65,7 +65,11 @@ public class PersonalityCreator
         {
             if (!ItemsCSV[i][1].Equals("Body"))
             {
-                item = new Item(Int32.Parse(ItemsCSV[i][0]), ItemsCSV[i][1], 0, Int32.Parse(ItemsCSV[i][2]));
+                if (!Int32.TryParse(ItemsCSV[i][0], out ID) || ID < 0)
+                {
+                    continue;
+                }
+                item = new Item(ID, ItemsCSV[i][1], 0, Int32.Parse(ItemsCSV[i][2]));
                 ItemList.Add(item);
             }
         }
@@ -91,8 +95,11 @@ public class PersonalityCreator
                 //    item.maxUses = 100;
                 //    itemCounter++;
                 //}
-                ID = Int32.Parse(personalityCSV[i][0]);
-                foreach(Item ite in ItemList)
+                if(!Int32.TryParse(personalityCSV[i][0], out ID) || ID < 0)
+                {
+                    continue;
+                }
+                foreach (Item ite in ItemList)
                 {
                     if(personalityCSV[i][1].Equals(ite.Name))
                     {
@@ -109,6 +116,12 @@ public class PersonalityCreator
                     act.useConsume = item.maxUses;
                 }
 
+                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                for(int l = 0; l < activityTags.Length; l++)
+                {
+                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
+                }
+                
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for (int p = 0; p < activityRewards.Length; p++)
@@ -146,8 +159,18 @@ public class PersonalityCreator
         {
             if (personalityCSV[i][1].Equals("Body"))
             {
-                ID = Int32.Parse(personalityCSV[i][0]);
+                if (!Int32.TryParse(personalityCSV[i][0], out ID) || ID < 0)
+                {
+                    continue;
+                }
+
                 act = new Activity(ID, personalityCSV[i][2], null, Int32.Parse(personalityCSV[i][4]), personalityCSV[i][2]);
+                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                for (int l = 0; l < activityTags.Length; l++)
+                {
+                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
+                }
+
                 string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
                 int[] activityRewards = new int[actRewards.Length];
                 for(int p = 0; p < activityRewards.Length; p++)
