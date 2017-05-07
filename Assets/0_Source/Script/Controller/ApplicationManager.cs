@@ -41,6 +41,9 @@ public class ApplicationManager : MonoBehaviour {
     private Experience _lastExperience;
     private Activity _lastActivity;
 
+    //Animation
+    private AnimationController _animation;
+
     //UI
     private OutputViewController _output;
     private FeedbackViewController _feedback;
@@ -80,6 +83,8 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _items, _personality);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _personality);
+
+        _animation = new AnimationController();
         
         if (resetButton)
         {
@@ -255,8 +260,15 @@ public class ApplicationManager : MonoBehaviour {
             _lastExperience = _lastActivity.DoActivity(_personality);
 
             //Show Activity
-            _conditionMonitor.UpdateSlider(_personality);
             _output.DisplayMessage(_lastActivity.feedBackString);
+
+            _animation.PlayActivityAnimation(_lastActivity, _personality);
+
+            while (_animation.IsAnimating) {
+                yield return 0;
+            }
+
+            _conditionMonitor.UpdateSlider(_personality);
 
             //Ask for Feedback
             _feedback.ShowFeedback(true);

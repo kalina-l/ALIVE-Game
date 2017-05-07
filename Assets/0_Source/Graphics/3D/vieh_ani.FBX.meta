@@ -1,0 +1,1712 @@
+fileFormatVersion: 2
+guid: 69362b2eb19e512429301177eeca77ed
+timeCreated: 1494166879
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: alive
+    100002: Extra
+    100004: Head
+    100006: LeftArm_01
+    100008: LeftArm_02
+    100010: LeftArmController
+    100012: LeftBottomLid
+    100014: LeftCheekHair_01
+    100016: LeftCheekHair_02
+    100018: LeftCheekHair_03
+    100020: LeftEar_01
+    100022: LeftEar_02
+    100024: LeftEar_03
+    100026: LeftEye
+    100028: LeftFoot
+    100030: LeftHand
+    100032: LeftLeg_01
+    100034: LeftLeg_02
+    100036: LeftLegController
+    100038: LeftMouthCorner
+    100040: LeftUpperLid
+    100042: MainController
+    100044: Mouth
+    100046: Neck
+    100048: Pelvis
+    100050: Ribcage
+    100052: RightArm_01
+    100054: RightArm_02
+    100056: RightArmController
+    100058: RightBottomLid
+    100060: RightCheekHair_01
+    100062: RightCheekHair_02
+    100064: RightCheekHair_03
+    100066: RightEar_01
+    100068: RightEar_02
+    100070: RightEar_03
+    100072: RightEye
+    100074: RightFoot
+    100076: RightHand
+    100078: RightLeg_01
+    100080: RightLeg_02
+    100082: RightLegController
+    100084: RightMouthCorner
+    100086: RightUpperLid
+    100088: Spine_01
+    100090: Spine_02
+    100092: Tail_01
+    100094: Tail_02
+    100096: Tail_03
+    100098: Tail_04
+    100100: Tail_05
+    100102: Tail_06
+    100104: Tongue_01
+    100106: Tongue_02
+    100108: Tongue_03
+    100110: TopHair_01
+    100112: TopHair_02
+    100114: TopHair_03
+    100116: TopHair_04
+    100118: UpperLip
+    100120: //RootNode
+    400000: alive
+    400002: Extra
+    400004: Head
+    400006: LeftArm_01
+    400008: LeftArm_02
+    400010: LeftArmController
+    400012: LeftBottomLid
+    400014: LeftCheekHair_01
+    400016: LeftCheekHair_02
+    400018: LeftCheekHair_03
+    400020: LeftEar_01
+    400022: LeftEar_02
+    400024: LeftEar_03
+    400026: LeftEye
+    400028: LeftFoot
+    400030: LeftHand
+    400032: LeftLeg_01
+    400034: LeftLeg_02
+    400036: LeftLegController
+    400038: LeftMouthCorner
+    400040: LeftUpperLid
+    400042: MainController
+    400044: Mouth
+    400046: Neck
+    400048: Pelvis
+    400050: Ribcage
+    400052: RightArm_01
+    400054: RightArm_02
+    400056: RightArmController
+    400058: RightBottomLid
+    400060: RightCheekHair_01
+    400062: RightCheekHair_02
+    400064: RightCheekHair_03
+    400066: RightEar_01
+    400068: RightEar_02
+    400070: RightEar_03
+    400072: RightEye
+    400074: RightFoot
+    400076: RightHand
+    400078: RightLeg_01
+    400080: RightLeg_02
+    400082: RightLegController
+    400084: RightMouthCorner
+    400086: RightUpperLid
+    400088: Spine_01
+    400090: Spine_02
+    400092: Tail_01
+    400094: Tail_02
+    400096: Tail_03
+    400098: Tail_04
+    400100: Tail_05
+    400102: Tail_06
+    400104: Tongue_01
+    400106: Tongue_02
+    400108: Tongue_03
+    400110: TopHair_01
+    400112: TopHair_02
+    400114: TopHair_03
+    400116: TopHair_04
+    400118: UpperLip
+    400120: //RootNode
+    4300000: alive
+    7400000: Take 001
+    7400002: Idle
+    7400004: Idle_Yawn
+    7400006: FallAsleep
+    7400008: Sleep
+    7400010: WakeUp
+    7400012: Idle_Sneeze
+    7400014: Play
+    7400016: Dance
+    7400018: Idle_Tongue
+    9500000: //RootNode
+    13700000: alive
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 940
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle_Yawn
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: FallAsleep
+      takeName: Take 001
+      firstFrame: 150
+      lastFrame: 270
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Sleep
+      takeName: Take 001
+      firstFrame: 270
+      lastFrame: 389
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: WakeUp
+      takeName: Take 001
+      firstFrame: 390
+      lastFrame: 510
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle_Sneeze
+      takeName: Take 001
+      firstFrame: 510
+      lastFrame: 569
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Play
+      takeName: Take 001
+      firstFrame: 570
+      lastFrame: 720
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Dance
+      takeName: Take 001
+      firstFrame: 730
+      lastFrame: 789
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle_Tongue
+      takeName: Take 001
+      firstFrame: 800
+      lastFrame: 940
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: alive
+        weight: 1
+      - path: Extra
+        weight: 1
+      - path: MainController
+        weight: 1
+      - path: MainController/LeftArmController
+        weight: 1
+      - path: MainController/LeftLegController
+        weight: 1
+      - path: MainController/Pelvis
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02
+        weight: 1
+      - path: MainController/Pelvis/LeftLeg_01/LeftLeg_02/LeftFoot
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02
+        weight: 1
+      - path: MainController/Pelvis/RightLeg_01/RightLeg_02/RightFoot
+        weight: 1
+      - path: MainController/Pelvis/Spine_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/LeftArm_01/LeftArm_02/LeftHand
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEar_01/LeftEar_02/LeftEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/LeftUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Mouth
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightBottomLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightCheekHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEar_01/RightEar_02/RightEar_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightEye
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightMouthCorner
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/RightUpperLid
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/Tongue_01/Tongue_02/Tongue_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_01/TopHair_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_03
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/TopHair_04
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/Neck/Head/UpperLip
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02
+        weight: 1
+      - path: MainController/Pelvis/Spine_01/Spine_02/Ribcage/RightArm_01/RightArm_02/RightHand
+        weight: 1
+      - path: MainController/Pelvis/Tail_01
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05
+        weight: 1
+      - path: MainController/Pelvis/Tail_01/Tail_02/Tail_03/Tail_04/Tail_05/Tail_06
+        weight: 1
+      - path: MainController/RightArmController
+        weight: 1
+      - path: MainController/RightLegController
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 50
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
