@@ -55,6 +55,7 @@ namespace Lean.Touch
                 _controller.ShowPetFeedback(finger.ScreenPosition);
             }
 
+            // raycast checking petting conditions should only be casted every 0.1 seconds
             raycastTimer += Time.deltaTime;
             if (raycastTimer < 0.1f)
             {
