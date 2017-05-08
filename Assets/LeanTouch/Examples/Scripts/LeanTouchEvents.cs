@@ -13,7 +13,9 @@ namespace Lean.Touch
 
         private bool isPetting;
         private bool blockPetting;
-        private float maximumPetDuration = 3;
+        private float maximumPetDuration = 4;
+
+        private float raycastTimer = 0;
 
         private TouchController _controller;
 
@@ -47,30 +49,46 @@ namespace Lean.Touch
 
         public void OnFingerSet(LeanFinger finger)
         {
-            if (!finger.IsOverGui && !blockPetting)
+
+            if(isPetting)
+            {
+                _controller.ShowPetFeedback(finger.ScreenPosition);
+            }
+
+            raycastTimer += Time.deltaTime;
+            if (raycastTimer < 0.1f)
+            {
+                return;
+            }
+            raycastTimer = 0;
+
+            if (!blockPetting && ApplicationManager.Instance.getWaitForFeedback())
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, 100.0f))
                 {
-                    if (hit.collider == Lemo)
+                    if (!isPetting && hit.collider == Lemo)
                     {
-                        Vector2 distanceVector = finger.ScreenPosition - finger.StartScreenPosition;
-                        if (distanceVector.magnitude > 100 && finger.Age > 0.2)
-                        {
-                            isPetting = true;
-                            _controller.ShowPetFeedback(finger.ScreenPosition);
-                        }
-                        if (finger.Age > maximumPetDuration)
-                        {
-                            petSucceded();
-                            blockPetting = true;
-                        }
+                        StartPetting(finger);
                     }
                 }
             }
+            
+            if(isPetting && finger.Age > maximumPetDuration)
+            {
+                petSucceded();
+                blockPetting = true;
+            }
+        }
 
-            //Debug.Log("Finger " + finger.Index + " is still touching the screen");
+        private void StartPetting(LeanFinger finger)
+        {
+            Vector2 distanceVector = finger.ScreenPosition - finger.StartScreenPosition;
+            if (distanceVector.magnitude > 50 && finger.Age > 0.2)
+            {
+                isPetting = true;
+            }
         }
 
         private void petSucceded()
@@ -94,7 +112,7 @@ namespace Lean.Touch
 
         public void OnFingerTap(LeanFinger finger)
         {
-            if (!finger.IsOverGui)
+            if (!finger.IsOverGui && ApplicationManager.Instance.getWaitForFeedback())
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

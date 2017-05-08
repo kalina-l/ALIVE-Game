@@ -15,6 +15,8 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite feedbackNegativeSprite;
     public Sprite feedbackNeutralSprite;
     public Sprite feedbackPositiveSprite;
+    public ParticleSystem positiveFX;
+    public ParticleSystem negativeFX;
 
     public Sprite speakerSprite;
 

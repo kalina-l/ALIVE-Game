@@ -53,9 +53,6 @@ public class ApplicationManager : MonoBehaviour {
 
     private bool waitForFeedback;
 
-    public ParticleSystem positiveFX;
-    public ParticleSystem negativeFX;
-
     void Awake()
     {
         Instance = this;
@@ -263,7 +260,6 @@ public class ApplicationManager : MonoBehaviour {
             _output.DisplayMessage(_lastActivity.feedBackString);
 
             //Ask for Feedback
-            _feedback.ShowFeedback(true);
             waitForFeedback = true;
 
             _animation.PlayActivityAnimation(_lastActivity, _personality);
@@ -296,12 +292,10 @@ public class ApplicationManager : MonoBehaviour {
             
             if(feedback == -1)
             {
-                negativeFX.Play();
-                _feedback.ShowFeedback(false);
+                _feedback.ShowFeedback();
             } else if(feedback == 1)
             {
-                positiveFX.Play();
-                _feedback.ShowFeedback(false);
+                _feedback.ShowFeedback();
             }
 
             waitForFeedback = false;
@@ -342,4 +336,8 @@ public class ApplicationManager : MonoBehaviour {
         }
     }
 
+    public bool getWaitForFeedback()
+    {
+        return waitForFeedback;
+    }
 }

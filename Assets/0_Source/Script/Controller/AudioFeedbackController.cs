@@ -19,7 +19,7 @@ public class AudioFeedbackController {
 
     public void SendFeedback(int feedback)
     {
-        _feedbackViewController.SendFeedBack(feedback);
+        _feedbackViewController.SendFeedBack(feedback, FeedbackType.Audio);
     }
 
     public void StartRecording()

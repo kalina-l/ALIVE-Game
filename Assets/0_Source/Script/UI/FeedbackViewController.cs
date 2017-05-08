@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using KKSpeech;
+
+public enum FeedbackType { Audio, Face, Touch, Button }
 
 public class FeedbackViewController : AbstractViewController {
 
@@ -20,8 +21,10 @@ public class FeedbackViewController : AbstractViewController {
     private AudioFeedbackController _audioFeedbackController;
     private TouchController _touchController;
 
-    private Image fistImage;
-    private Image handImage;    
+    private FeedbackType lastFeedbackType;
+    private int lastFeedback;
+    private ParticleSystem positiveFX;
+    private ParticleSystem negativeFX;
 
     private bool receiveFeedback;
     private bool _buttonsVisible;
@@ -35,14 +38,17 @@ public class FeedbackViewController : AbstractViewController {
         View = Rect.gameObject;
 
         _audioFeedbackController = new AudioFeedbackController(this);
-        _touchController = new TouchController(this);
+        _touchController = new TouchController(this, Rect);
+
+        positiveFX = GraphicsHelper.Instance.positiveFX;
+        negativeFX = GraphicsHelper.Instance.negativeFX;
 
         //Buttons
         _positiveButton = CreateButton(
                                     CreateContainer("PositiveFeedback", Rect,
                                     new Vector2(-256, -300), Vector2.zero,
                                     new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-                                    delegate { SendFeedBack(1); }
+                                    delegate { SendFeedBack(1, FeedbackType.Button); }
                                     );
 
         _positiveButtonImage = AddSprite(_positiveButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackPositiveSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
@@ -51,7 +57,7 @@ public class FeedbackViewController : AbstractViewController {
                                     CreateContainer("NegativeFeedback", Rect,
                                     new Vector2(256, -300), Vector2.zero,
                                     new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-                                    delegate { SendFeedBack(-1); }
+                                    delegate { SendFeedBack(-1, FeedbackType.Button); }
                                     );
 
         _negativeButtonImage = AddSprite(_negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
@@ -64,25 +70,18 @@ public class FeedbackViewController : AbstractViewController {
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
-        fistImage = AddSprite(
-            CreateContainer("FistFeedback", Rect, new Vector2(0, 0), new Vector2(128, 128), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)),
-            GraphicsHelper.Instance.fist, GraphicsHelper.Instance.SpriteColorWhite);
-        fistImage.enabled = false;
-
-        handImage = AddSprite(
-            CreateContainer("HandFeedback", Rect, new Vector2(0, 0), new Vector2(128, 128), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 0f)),
-            GraphicsHelper.Instance.hand, GraphicsHelper.Instance.SpriteColorWhite);
-        handImage.enabled = false;
-
     }
 
-    public void ShowFeedback(bool show)
+    public void ShowFeedback()
     {
-        if (show)
+        if (lastFeedback > 0)
         {
-            receiveFeedback = true;
+            positiveFX.Play();
         }
-          
+        else
+        {
+            negativeFX.Play();
+        }
         // TODO: unterscheiden zw voice image und touch (enum?)
         /*if(_animating)
         {
@@ -141,59 +140,12 @@ public class FeedbackViewController : AbstractViewController {
         _animating = false;
     }
 
-    public void ShowFistFeedback(Vector2 position)
+    public void SendFeedBack(int feedback, FeedbackType feedbackType)
     {
-        fistImage.rectTransform.anchoredPosition = new Vector2(position.x, position.y);
-        fistImage.enabled = true;
-        ApplicationManager.Instance.StartCoroutine(ShowFistRoutine(fistImage));
-    }
-
-    private IEnumerator ShowFistRoutine(Image image)
-    {
-        float timer = 0;
-        GraphicsHelper graphics = GraphicsHelper.Instance;
-        Vector3 currentAngle = fistImage.rectTransform.eulerAngles;
-     
-        while (timer < 1)
-        {
-            timer += Time.deltaTime * 8;
-
-            currentAngle = new Vector3(
-             Mathf.LerpAngle(0, 0, timer),
-             Mathf.LerpAngle(0, 0, timer),
-             Mathf.LerpAngle(0, 45, timer));
-            fistImage.rectTransform.eulerAngles = currentAngle;
-
-            yield return 0;
-        }
-        timer = 0;
-        while (timer < 1)
-        {
-            timer += Time.deltaTime * 4;
-            yield return 0;
-        }
-
-        image.enabled = false;
-    }
-
-    public void ShowPetFeedback(Vector2 position)
-    {
-        handImage.rectTransform.anchoredPosition = position;
-        if(!handImage.enabled) handImage.enabled = true;
-    }
-
-    public void EndPetFeedback()
-    {
-        handImage.enabled = false;
-    }
-
-    public void SendFeedBack(int feedback)
-    {
-        if(receiveFeedback)
-        {
-            ApplicationManager.Instance.GiveFeedback(feedback);
-            receiveFeedback = false;
-        }
+        lastFeedbackType = feedbackType;
+        lastFeedback = feedback;
+        ApplicationManager.Instance.GiveFeedback(feedback);
+        receiveFeedback = false;
     }
 
 }
