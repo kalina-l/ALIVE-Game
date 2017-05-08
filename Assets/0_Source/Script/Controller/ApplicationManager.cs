@@ -262,6 +262,10 @@ public class ApplicationManager : MonoBehaviour {
             //Show Activity
             _output.DisplayMessage(_lastActivity.feedBackString);
 
+            //Ask for Feedback
+            _feedback.ShowFeedback(true);
+            waitForFeedback = true;
+
             _animation.PlayActivityAnimation(_lastActivity, _personality);
 
             while (_animation.IsAnimating) {
@@ -269,10 +273,6 @@ public class ApplicationManager : MonoBehaviour {
             }
 
             _conditionMonitor.UpdateSlider(_personality);
-
-            //Ask for Feedback
-            _feedback.ShowFeedback(true);
-            waitForFeedback = true;
             
         }
         else
