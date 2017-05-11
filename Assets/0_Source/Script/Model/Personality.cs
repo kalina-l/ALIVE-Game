@@ -72,27 +72,74 @@ public class Personality {
         return this;
     }
 
-    public Personality AddTrait(Trait trait)
+    public Personality AddTrait(Trait trait, List<Item> itemList)
     {
         Need need;
 
         foreach(Trait traitThere in Traits)
         {
-            if(traitThere.Tag == trait.Tag)
+            if(traitThere.TraitTag == trait.TraitTag)
             {
-                Debug.LogError(traitThere.Identifier + " is already added as Trait in this category! " + trait.Identifier + " will be overwritten!");
-            }
+                Debug.LogWarning(traitThere.Identifier + " is already added as Trait in this category! " + trait.Identifier + " won't be added!");
+                return this;
+            } 
         }
         Traits.Add(trait);
-        foreach(KeyValuePair<NeedType, int[]> tr in trait.ThresholdModifiers)
+        foreach (KeyValuePair<NeedType, int[]> tr in trait.ThresholdModifiers)
         {
-            if((need = GetCondition(tr.Key)) != null)
+            if ((need = GetCondition(tr.Key)) != null)
             {
                 need.Thresholds = tr.Value;
             }
             else
             {
-                Debug.LogError("There is no "+tr.Key+" for modification!");
+                Debug.LogError("There is no " + tr.Key + " for modification!");
+            }
+        }
+
+        /*Go through every activity in every item to add special-trait-rewards*/
+        foreach (Item item in itemList)
+        {
+            foreach (Activity activity in item.GetAllActivities())
+            {
+                foreach (ActivityTag actTag in activity.Tags)
+                {
+                    foreach (KeyValuePair<ActivityTag, List<Reward>> kvp in trait.ActivityModifiers)
+                    {
+                        //Debug.Log("actTag of "+activity.Name+", " + actTag + ", Tag of "+trait.Identifier+": " + kvp.Key);
+                        if (actTag.Equals(kvp.Key))
+                        {
+                            foreach (Reward reward in kvp.Value)
+                            {
+                                activity.AddReward(reward);
+                            }
+                        }
+                    }
+                }
+                //string test = ""+activity.Name; 
+                //foreach(Reward rewi in activity.RewardList)
+                //{
+                //    test += " "+rewi.ID+": "+rewi.MinSocial+" - "+rewi.MaxSocial+", "+rewi.RewardType+": "+rewi.RewardValue+"\n";
+                //}
+                //Debug.Log(test);
+            }
+        }
+
+        /*Go through every BaseActivity of the personality to add special-trait-rewards*/
+        foreach (KeyValuePair<int, Activity> kvp in BaseActivities)
+        {
+            foreach (ActivityTag actTag in kvp.Value.Tags)
+            {
+                foreach (KeyValuePair<ActivityTag, List<Reward>> kvpi in trait.ActivityModifiers)
+                {
+                    if (actTag.Equals(kvpi.Key))
+                    {
+                        foreach (Reward reward in kvpi.Value)
+                        {
+                            kvp.Value.AddReward(reward);
+                        }
+                    }
+                }
             }
         }
 

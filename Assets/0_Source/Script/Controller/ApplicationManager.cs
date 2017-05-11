@@ -112,12 +112,12 @@ public class ApplicationManager : MonoBehaviour {
             string path = Path.Combine(Application.persistentDataPath, "savestates");
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                LoadFrom = LoadStates.CSV;
             }
             path = Path.Combine(path, SaveFile);
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                //Directory.CreateDirectory(path);
                 LoadFrom = LoadStates.CSV;
             }
             else
@@ -140,19 +140,7 @@ public class ApplicationManager : MonoBehaviour {
                 _itemList = creatorCSV.ItemList;
                 _rewardList = creatorCSV.Rewards;
                 _traitList = creatorCSV.TraitList;
-                //_personality.AddTrait(_traitList[0]);
-                //_personality.AddTrait(_traitList[3]);
-                //for(int i = 0; i < _traitList.Count; i++)
-                //{
-                //    if(Random.value <= 0.33)
-                //    {
-                //        _personality.AddTrait(_traitList[i]);
-                //    }
-                //}
-                //foreach (Trait trait in _personality.Traits)
-                //{
-                //    Debug.Log(trait.Identifier);
-                //}
+                AddTraits();  
                 break;
 
             case LoadStates.SavedState:
@@ -162,10 +150,18 @@ public class ApplicationManager : MonoBehaviour {
                 _rewardList = readJSON.rewardList;
                 _itemList = readJSON.itemList;
                 break;
+
             default:
                 Debug.LogError("No Load State");
                 break;
         }
+        string traits = "Traits in Personality: ";
+        foreach (Trait trait in _personality.Traits)
+        {
+            traits += trait.Identifier + " | ";
+        }
+        Debug.Log(traits);
+
     }
 
     public void reset()
@@ -181,6 +177,19 @@ public class ApplicationManager : MonoBehaviour {
 	public void RemoveItem(){
 		_itemBox.RemoveItemFromSlot ();
 	}
+
+    public void AddTraits()
+    {
+        //_personality.AddTrait(_traitList[0], _itemList);
+        //_personality.AddTrait(_traitList[6], _itemList);
+        //for (int i = 0; i < _traitList.Count; i++)
+        //{
+        //    if (Random.value <= 0.33)
+        //    {
+        //        _personality.AddTrait(_traitList[i], _itemList);
+        //    }
+        //}
+    }
 
     private IEnumerator DoActivityRoutine()
     {

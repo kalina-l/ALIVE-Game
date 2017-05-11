@@ -20,7 +20,7 @@ public static class CSV {
 
             for (int i = 0; i < _lines.Length; i++)
             {
-                _values = _lines[i].Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                _values = _lines[i].Split(new[] { ';' }/*, StringSplitOptions.RemoveEmptyEntries*/);
 
                 if (_values.Length != 0)
                 {

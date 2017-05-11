@@ -1,6 +1,6 @@
 Activity.ID;Item;Activity;Rewards;useConsum;Tags for activities of same categories;Description
 01;Body;Idle;23,24,25,26,27,46;0;STANDARD;
-02;Body;Sleep;13,17,28,29,38;0;STANDARD;
+02;Body;Sleep;13,17,28,29,38;0;STANDARD,SLEEP;
 11;Ball;eat;0,1,2,3,31,48;item.maxUses;OTHERSOCIAL,EATING,UNNATURAL;
 12;Ball;play;5,6,7,8,51,47,34,43,32,45,42;1;OWNSOCIAL,PHYSICAL,NATURAL;
 -21;Doll;eat;9,10,11,12,8,35,52;item.maxUses;OTHERSOCIAL,EATING,UNNATURAL;

@@ -55,7 +55,6 @@ public class JSON {
         //write whole Personality
         serializer.TrySerialize(json.personality, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        //PlayerPrefs.SetString("personality", sb.ToString());
         pathToFile = Path.Combine(path, SaveFile + "_personality.json");
         File.WriteAllText(pathToFile, sb.ToString());
 
@@ -65,7 +64,6 @@ public class JSON {
         //write itemList
         serializer.TrySerialize(json.itemList, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        //PlayerPrefs.SetString("itemList", sb.ToString());
         pathToFile = Path.Combine(path, SaveFile + "_itemList.json");
         File.WriteAllText(pathToFile, sb.ToString());
 
@@ -74,11 +72,9 @@ public class JSON {
         //write rewardList
         serializer.TrySerialize(json.rewardList, out data);
         sb.Append(fsJsonPrinter.CompressedJson(data));
-        //PlayerPrefs.SetString("rewardList", sb.ToString());
         pathToFile = Path.Combine(path, SaveFile + "_rewardList.json");
         File.WriteAllText(pathToFile, sb.ToString());
 
-        //PlayerPrefs.Save();
         Debug.Log("Saved in " + Application.persistentDataPath);
         return true;
     }
@@ -90,18 +86,15 @@ public class JSON {
         json.rewardList = new List<Reward>();
         json.itemList = new List<Item>();
 
-        //if (!PlayerPrefs.HasKey("personality"))
-        //{
-        //    Debug.LogError("Savefile not found, please save a state before trying to load!");
-        //}
-
         string path = Path.Combine(Application.persistentDataPath, "savestates");
         if (!Directory.Exists(path))
         {
+            //Directory.CreateDirectory(path);
             Debug.LogError("The savestates folder does not exist!");
         }
         path = Path.Combine(path, LoadFile);
-        if (!Directory.Exists(path)) { 
+        if (!Directory.Exists(path)) {
+            //Directory.CreateDirectory(path);
             Debug.LogError("There are no saved stats under this name!");
         }
 
@@ -109,7 +102,6 @@ public class JSON {
         string jsonText;
 
         //read rewardList
-        //string jsonText = PlayerPrefs.GetString("rewardList");
         pathToFile = Path.Combine(path, LoadFile + "_rewardList.json");
         if (!File.Exists(pathToFile))
         {
@@ -120,7 +112,6 @@ public class JSON {
         serializer.TryDeserialize(data, ref json.rewardList);
 
         //read itemList
-        //jsonText = PlayerPrefs.GetString("itemList");
         pathToFile = Path.Combine(path, LoadFile + "_itemList.json");
         if (!File.Exists(pathToFile))
         {
@@ -131,7 +122,6 @@ public class JSON {
         serializer.TryDeserialize(data, ref json.itemList);
 
         //read Personality
-        //jsonText = PlayerPrefs.GetString("personality");
         pathToFile = Path.Combine(path, LoadFile + "_personality.json");
         if (!File.Exists(pathToFile))
         {

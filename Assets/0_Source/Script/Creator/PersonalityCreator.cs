@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.IO;
 using System;
 using System.Collections.Generic;
 
@@ -256,6 +254,7 @@ public class PersonalityCreator
     {
         int[] thresholds;
         int[] thresholdModifier;
+        List<Reward> activityModifier;
         TraitList = new List<Trait>();
 
         int start = -1;
@@ -302,16 +301,40 @@ public class PersonalityCreator
                             break;
                         case "trait":
                             Trait trait = new Trait((TraitType)Enum.Parse(typeof(TraitType), personalityCSV[k-1][1]));
-                            trait.Tag = Int32.Parse(personalityCSV[k - 1][2]);
+                            trait.TraitTag = Int32.Parse(personalityCSV[k - 1][2]);
                             for(int l = k; (l < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[l][0])); l++)
                             {
-                                thresholdModifier = new int[personalityCSV[l].Length - 1];
-                                for (int j = 1; j < personalityCSV[l].Length; j++)
+                                NeedType needTypeMod;
+                                if (StaticFunctions.ToEnum<NeedType>(personalityCSV[l][0], out needTypeMod))
                                 {
-                                    thresholdModifier[j - 1] = Int32.Parse(personalityCSV[l][j]);
+                                    thresholdModifier = new int[personalityCSV[l].Length - 1];
+                                    for (int j = 1; j < personalityCSV[l].Length; j++)
+                                    {
+                                        thresholdModifier[j - 1] = Int32.Parse(personalityCSV[l][j]);
+                                    }
+
+                                    trait.AddThresholdModifier(needTypeMod, thresholdModifier);
                                 }
-                                NeedType needTypeMod = (NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[l][0]));
-                                trait.AddThresholdModifier(needTypeMod, thresholdModifier);
+                                ActivityTag actTag;
+                                if(StaticFunctions.ToEnum<ActivityTag>(personalityCSV[l][0], out actTag))
+                                {
+                                    activityModifier = new List<Reward>();
+                                    string[] stringRewardsForActivityMod = personalityCSV[l][1].Split(new[] { ',' });
+                                    int intReward;
+                                    for (int p = 0; p < stringRewardsForActivityMod.Length; p++)
+                                    {
+                                        intReward = Int32.Parse(stringRewardsForActivityMod[p]);
+                                        foreach (Reward reward in Rewards)
+                                        {
+                                            if(reward.ID == intReward)
+                                            {
+                                                activityModifier.Add(reward);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    trait.AddActivityModifier(actTag, activityModifier);
+                                }
                                 k = l;
                             }
                             TraitList.Add(trait);
