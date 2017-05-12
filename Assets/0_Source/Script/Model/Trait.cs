@@ -19,18 +19,18 @@ public class Trait {
         ActivityModifiers = new Dictionary<ActivityTag, List<Reward>>();
     }
 
-    public Trait AddThresholdModifier(NeedType needType, int[] thresholdModifier)
+    public bool AddThresholdModifier(NeedType needType, int[] thresholdModifier)
     {
         if (!ThresholdModifiers.ContainsKey(needType))
         {
             ThresholdModifiers[needType] = thresholdModifier;
+            return true;
         }
         else
         {
             Debug.LogWarning(needType.ToString() + " is already added to this Trait " + Identifier.ToString());
+            return true;
         }
-
-        return this;
     }
 
     public bool AddActivityModifier(ActivityTag actTag, List<Reward> actModifiers)
@@ -47,7 +47,7 @@ public class Trait {
         }
     }
 
-    public void printThresholds()
+    public void PrintThresholds()
     {
         string threshold = "";
         foreach(KeyValuePair<NeedType, int[]> kvp in ThresholdModifiers)

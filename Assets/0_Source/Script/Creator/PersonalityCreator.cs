@@ -6,7 +6,7 @@ public class PersonalityCreator
 {
     public List<Reward> Rewards;
     public List<Item> ItemList;
-    public List<Trait> TraitList;
+    public Dictionary<TraitType, Trait> TraitList;
 
     public static readonly string AttributesNeedsTraitsCSV = "personality";
     public static readonly string RewardsCSV = "rewards";
@@ -21,7 +21,7 @@ public class PersonalityCreator
     public static readonly string TraitIdentifier = "TraitModifier";
 
     private Personality _personality;
-    public Personality personality
+    public Personality Personality
     {
         get
         {
@@ -255,7 +255,7 @@ public class PersonalityCreator
         int[] thresholds;
         int[] thresholdModifier;
         List<Reward> activityModifier;
-        TraitList = new List<Trait>();
+        TraitList = new Dictionary<TraitType, Trait>();
 
         int start = -1;
         string identifier = null;
@@ -337,7 +337,7 @@ public class PersonalityCreator
                                 }
                                 k = l;
                             }
-                            TraitList.Add(trait);
+                            TraitList[trait.Identifier] = trait;
                             break;
                         default:
                             break;

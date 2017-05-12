@@ -36,7 +36,7 @@ public class ApplicationManager : MonoBehaviour {
     private Dictionary<int, Item> _items;
     private List<Item> _itemList;
     private List<Reward> _rewardList;
-    private List<Trait> _traitList;
+    private Dictionary<TraitType, Trait> _traitList;
 
     private Experience _lastExperience;
     private Activity _lastActivity;
@@ -62,7 +62,7 @@ public class ApplicationManager : MonoBehaviour {
     void Start() {
         _itemList = new List<Item>();
         _items = new Dictionary<int, Item>();
-        _traitList = new List<Trait>();
+        _traitList = new Dictionary<TraitType, Trait>();
 
         loadPersonality(LoadFrom);
         
@@ -136,7 +136,7 @@ public class ApplicationManager : MonoBehaviour {
 
             case LoadStates.CSV:
                 PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
-                _personality = creatorCSV.personality;
+                _personality = creatorCSV.Personality;
                 _itemList = creatorCSV.ItemList;
                 _rewardList = creatorCSV.Rewards;
                 _traitList = creatorCSV.TraitList;
@@ -180,15 +180,14 @@ public class ApplicationManager : MonoBehaviour {
 
     public void AddTraits()
     {
-        //_personality.AddTrait(_traitList[0], _itemList);
-        //_personality.AddTrait(_traitList[6], _itemList);
-        //for (int i = 0; i < _traitList.Count; i++)
-        //{
-        //    if (Random.value <= 0.33)
-        //    {
-        //        _personality.AddTrait(_traitList[i], _itemList);
-        //    }
-        //}
+        //_personality.AddTrait(_traitList[TraitType.INTROVERT], _itemList);
+        foreach(KeyValuePair<TraitType, Trait> kvp in _traitList)
+        {
+            if (Random.value <= 0.33)
+            {
+                _personality.AddTrait(kvp.Value, _itemList);
+            }
+        }
     }
 
     private IEnumerator DoActivityRoutine()
