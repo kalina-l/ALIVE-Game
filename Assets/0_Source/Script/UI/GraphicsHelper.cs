@@ -19,6 +19,7 @@ public class GraphicsHelper : MonoBehaviour {
     public ParticleSystem negativeFX;
 
     public Sprite speakerSprite;
+    public Sprite cameraSprite;
 
     public Sprite alertBubbleSprite;
 

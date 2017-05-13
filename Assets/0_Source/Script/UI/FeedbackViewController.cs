@@ -14,12 +14,14 @@ public class FeedbackViewController : AbstractViewController {
     private Button _negativeButton;
     private Image _negativeButtonImage;
 
-    private Button _startRecording;
+    private Button _startRecording; // audio
+    private Button _startStreaming; // video
 
     private Vector2 _buttonSize = new Vector2(256, 256);
     
     private AudioFeedbackController _audioFeedbackController;
     private TouchController _touchController;
+    private VideoFeedbackController _videoFeedbackController;
 
     private FeedbackType lastFeedbackType;
     private int lastFeedback;
@@ -39,6 +41,7 @@ public class FeedbackViewController : AbstractViewController {
 
         _audioFeedbackController = new AudioFeedbackController(this);
         _touchController = new TouchController(this, Rect);
+        _videoFeedbackController = new VideoFeedbackController(this);
 
         positiveFX = GraphicsHelper.Instance.positiveFX;
         negativeFX = GraphicsHelper.Instance.negativeFX;
@@ -69,6 +72,14 @@ public class FeedbackViewController : AbstractViewController {
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
+
+        _startStreaming = CreateButton(
+                                    CreateContainer("StartStreaming", Rect,
+                                    new Vector2(460, -150), _buttonSize * 0.65f,
+                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                                    delegate { _videoFeedbackController.StartRecording(); }
+                                    );
+        AddSprite(_startStreaming.GetComponent<RectTransform>(), GraphicsHelper.Instance.cameraSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
     }
 

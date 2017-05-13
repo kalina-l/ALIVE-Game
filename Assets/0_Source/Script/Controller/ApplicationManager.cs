@@ -211,7 +211,7 @@ public class ApplicationManager : MonoBehaviour {
 
         if (askForItem)
         {
-            Debug.Log("Ask for Item!!!");
+            //Debug.Log("Ask for Item!!!");
             _intelligence.AskForItem(_personality, _itemList);
 
             timer = 0;
