@@ -28,6 +28,7 @@ public class PlayerEmotions : ImageResultsListener
     public override void onFaceLost(float timestamp, int faceId)
     {
         Debug.Log("Lost the face");
+        ApplicationManager.Instance.debugText.text = ("Lost Face");
     }
 
     public override void onImageResults(Dictionary<int, Face> faces)
@@ -54,6 +55,7 @@ public class PlayerEmotions : ImageResultsListener
             emotions["BrowRaise"] += currBrowRaise;
 
             Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
+            ApplicationManager.Instance.debugText.text = ("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
         }
 
         if(!videoInput.getIsRecording())
