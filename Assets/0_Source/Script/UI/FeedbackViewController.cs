@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public enum FeedbackType { Audio, Face, Touch, Button }
+public enum FeedbackType { Audio, Video, Touch, Button }
 
 public class FeedbackViewController : AbstractViewController {
 

@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class PlayerEmotions : ImageResultsListener
 {
-    public float currentSmile;
-    public float currentBrowRaise;
-    public float currentInterocularDistance;
-    public float currentJoy;
-    public float currentSadness;
-    public float currentAnger;
-    public FeaturePoint[] featurePointsList;
+    private Dictionary<string, float> emotions;
+
+    private VideoFeedbackController videoFeedbackController;
+    private VideoInput videoInput;
+
+    public void setup(VideoFeedbackController controller, VideoInput videoInput)
+    {
+        videoFeedbackController = controller;
+        this.videoInput = videoInput;
+
+        emotions = new Dictionary<string, float>();
+        emotions.Add("Smile", 0);
+        emotions.Add("BrowRaise", 0);
+        emotions.Add("Sadness", 0);
+    }
 
     public override void onFaceFound(float timestamp, int faceId)
     {
@@ -33,23 +41,60 @@ public class PlayerEmotions : ImageResultsListener
             Face face = pair.Value;    // Instance of the face class containing emotions, and facial expression values.
 
             //Retrieve the Emotions Scores
-            face.Emotions.TryGetValue(Emotions.Joy, out currentJoy);
-            face.Emotions.TryGetValue(Emotions.Sadness, out currentSadness);
-            face.Emotions.TryGetValue(Emotions.Anger, out currentAnger);
+            float currSadness;
+            face.Emotions.TryGetValue(Emotions.Sadness, out currSadness);
+            emotions["Sadness"] += currSadness;
 
             //Retrieve the Smile Score
-            face.Expressions.TryGetValue(Expressions.Smile, out currentSmile);
-            face.Expressions.TryGetValue(Expressions.BrowRaise, out currentBrowRaise);
+            float currSmile;
+            face.Expressions.TryGetValue(Expressions.Smile, out currSmile);
+            emotions["Smile"] += currSmile;
+            float currBrowRaise;
+            face.Expressions.TryGetValue(Expressions.BrowRaise, out currBrowRaise);
+            emotions["BrowRaise"] += currBrowRaise;
 
-
-            //Retrieve the Interocular distance, the distance between two outer eye corners.
-            currentInterocularDistance = face.Measurements.interOcularDistance;
-
-
-            //Retrieve the coordinates of the facial landmarks (face feature points)
-            featurePointsList = face.FeaturePoints;
-
-            Debug.Log("Joy: " + currentJoy + ", sadness: " + currentSadness + ", anger: " + currentAnger + ", smile: " + currentSmile + ", brow raise: " + currentBrowRaise);
+            Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
         }
+
+        if(!videoInput.getIsRecording())
+        {
+            evaluate();
+        }
+    }
+
+    private void evaluate ()
+    {
+        float biggestValue = 0;
+        string nameOfBiggestValue = "";
+        foreach (KeyValuePair<string, float> entry in emotions)
+        {
+            if(entry.Value > biggestValue)
+            {
+                biggestValue = entry.Value;
+                nameOfBiggestValue = entry.Key;
+            }
+        }
+
+        resetData();
+
+        switch(nameOfBiggestValue)
+        {
+            case "Smile":
+                videoFeedbackController.SendFeedback(1);
+                break;
+            case "BrowRaise":
+                videoFeedbackController.SendFeedback(-1);
+                break;
+            case "Sadness":
+                videoFeedbackController.SendFeedback(-1);
+                break;
+        }    
+    }
+
+    private void resetData ()
+    {
+        emotions["Sadness"] = 0;
+        emotions["Smile"] = 0;
+        emotions["BrowRaise"] = 0;
     }
 }

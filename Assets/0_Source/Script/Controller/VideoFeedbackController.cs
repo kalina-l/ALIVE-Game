@@ -18,6 +18,7 @@ public class VideoFeedbackController
         GameObject videoRecorder = GameObject.Find("VideoRecorder");
         videoInput = videoRecorder.AddComponent<VideoInput>();
         playerEmotions = videoRecorder.AddComponent<PlayerEmotions>();
+        playerEmotions.setup(this, videoInput);
 
         //ApplicationManager.Instance.StartCoroutine(setupDetector());
        
@@ -44,5 +45,10 @@ public class VideoFeedbackController
     public void StartRecording()
     {
         videoInput.startRecording();
+    }
+
+    public void SendFeedback(int feedback)
+    {
+        _feedbackViewController.SendFeedBack(feedback, FeedbackType.Video);
     }
 }

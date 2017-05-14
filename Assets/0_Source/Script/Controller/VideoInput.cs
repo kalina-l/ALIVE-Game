@@ -13,6 +13,8 @@ namespace Affdex
     [RequireComponent(typeof(Detector))]
     public class VideoInput : MonoBehaviour, IDetectorInput
     {
+        private bool isRecording = false;
+
         /// <summary>
         /// Number of frames per second to sample.  Use 0 and call ProcessFrame() manually to run manually.
         /// Enable/Disable to start/stop the sampling
@@ -176,6 +178,7 @@ namespace Affdex
         /// <returns></returns>
         private IEnumerator SampleRoutine()
         {
+            isRecording = true;
             float timer = 0;
             while (timer < 1)
             {
@@ -237,6 +240,7 @@ namespace Affdex
 #if !UNITY_XBOXONE && UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || UNITY_IOS || UNITY_ANDROID
             if (cameraTexture != null)
             {
+                isRecording = false;
                 cameraTexture.Stop();
             }
 #endif
@@ -250,6 +254,12 @@ namespace Affdex
                 cameraTexture.Stop();
             }
 #endif
+        }
+
+
+        public bool getIsRecording()
+        {
+            return isRecording;
         }
 
         void OnDestroy()

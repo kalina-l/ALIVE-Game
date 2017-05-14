@@ -51,7 +51,8 @@ namespace Affdex
             {
                 listener = value;
             }
-        } 
+        }
+ 
         /// <summary>
         /// Expressions for the detector to look for (Contains Unity LayerMask values (pow2)) - dont let people use this programatically
         /// </summary>
@@ -197,6 +198,7 @@ namespace Affdex
         /// </summary>
         public void StopDetector ()
         {
+            Debug.Log("detector stopped");
             switch (state)
             {
                 case State.STOPPED:
