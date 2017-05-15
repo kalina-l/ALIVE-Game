@@ -10,19 +10,14 @@ public class JSON {
     private fsSerializer serializer;
 
     public Personality personality;
-    public List<Reward> rewardList;
     public List<Item> itemList;
 
-    public JSON(Personality personality, List<Reward> rewardList, List<Item> itemList)
+    public JSON(Personality personality, List<Item> itemList)
     {
         serializer = new fsSerializer();
         if(personality != null)
         {
             this.personality = personality;
-        }
-        if (rewardList != null)
-        {
-            this.rewardList = rewardList;
         }
         if (itemList != null)
         {
@@ -68,12 +63,7 @@ public class JSON {
         File.WriteAllText(pathToFile, sb.ToString());
 
         sb.Length = 0;
-
-        //write rewardList
-        serializer.TrySerialize(json.rewardList, out data);
-        sb.Append(fsJsonPrinter.CompressedJson(data));
-        pathToFile = Path.Combine(path, SaveFile + "_rewardList.json");
-        File.WriteAllText(pathToFile, sb.ToString());
+        
 
         Debug.Log("Saved in " + Application.persistentDataPath);
         return true;
@@ -83,7 +73,6 @@ public class JSON {
     public bool readJSON(JSON json, string LoadFile)
     {
         json.personality = new Personality();
-        json.rewardList = new List<Reward>();
         json.itemList = new List<Item>();
 
         string path = Path.Combine(Application.persistentDataPath, "savestates");
@@ -101,16 +90,6 @@ public class JSON {
         string pathToFile;
         string jsonText;
 
-        //read rewardList
-        pathToFile = Path.Combine(path, LoadFile + "_rewardList.json");
-        if (!File.Exists(pathToFile))
-        {
-            Debug.LogError("There is no reward_savefile with that name!");
-        }
-        jsonText = File.ReadAllText(pathToFile);
-        fsData data = fsJsonParser.Parse(jsonText);
-        serializer.TryDeserialize(data, ref json.rewardList);
-
         //read itemList
         pathToFile = Path.Combine(path, LoadFile + "_itemList.json");
         if (!File.Exists(pathToFile))
@@ -118,7 +97,7 @@ public class JSON {
             Debug.LogError("There is no itemList_savefile with that name!");
         }
         jsonText = File.ReadAllText(pathToFile);
-        data = fsJsonParser.Parse(jsonText);
+        fsData data = fsJsonParser.Parse(jsonText);
         serializer.TryDeserialize(data, ref json.itemList);
 
         //read Personality

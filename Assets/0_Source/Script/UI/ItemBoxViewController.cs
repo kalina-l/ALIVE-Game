@@ -18,8 +18,16 @@ public class ItemBoxViewController : AbstractViewController
     private bool _animateSlot;
     private Text _slotText;
 
-	public ItemBoxViewController(Transform parent, Dictionary<int, Item> items, Personality personality)
+
+    public ItemBoxViewController(Transform parent, List<Item> itemList, Personality personality)
     {
+        Dictionary<int, Item> items = new Dictionary<int, Item>();
+
+        foreach (Item item in itemList)
+        {
+            items[item.ID] = item;
+        }
+
         Rect = CreateContainer("ItemBox", parent,
             new Vector2(-20, 20), new Vector2(256, 256),
             new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0));
