@@ -41,10 +41,7 @@ public class JSON {
 
 
         string pathToFile;
-
-
         StringBuilder sb = new StringBuilder();
-
         fsData data;
 
         //write whole Personality
@@ -52,8 +49,7 @@ public class JSON {
         sb.Append(fsJsonPrinter.CompressedJson(data));
         pathToFile = Path.Combine(path, SaveFile + "_personality.json");
         File.WriteAllText(pathToFile, sb.ToString());
-
-
+        
         sb.Length = 0;
 
         //write itemList
