@@ -86,6 +86,11 @@ public class TouchController : AbstractViewController {
         fistImage.enabled = false;
     }
 
+    public void StartPetting()
+    {
+        _feedbackViewController.SetIsRecording(true);
+    }
+
     public void ShowPetFeedback(Vector2 position)
     {
         position = ScreenToCanvasPosition(position);

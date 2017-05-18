@@ -7,12 +7,10 @@ public class PlayerEmotions : ImageResultsListener
     private Dictionary<string, float> emotions;
 
     private VideoFeedbackController videoFeedbackController;
-    private VideoInput videoInput;
 
-    public void setup(VideoFeedbackController controller, VideoInput videoInput)
+    public void setup(VideoFeedbackController controller)
     {
         videoFeedbackController = controller;
-        this.videoInput = videoInput;
 
         emotions = new Dictionary<string, float>();
         emotions.Add("Smile", 0);
@@ -57,14 +55,9 @@ public class PlayerEmotions : ImageResultsListener
             Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
             ApplicationManager.Instance.debugText.text = ("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
         }
-
-        if(!videoInput.getIsRecording())
-        {
-            evaluate();
-        }
     }
 
-    private void evaluate ()
+    public void evaluate ()
     {
         float biggestValue = 0;
         string nameOfBiggestValue = "";

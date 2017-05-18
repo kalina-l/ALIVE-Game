@@ -50,7 +50,7 @@ public class GameLoopController {
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
-            while (timer < _manager.WaitTime || SpeechRecognizer.IsRecording())
+            while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
                 yield return 0;

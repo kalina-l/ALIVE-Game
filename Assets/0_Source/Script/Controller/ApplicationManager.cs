@@ -125,4 +125,9 @@ public class ApplicationManager : MonoBehaviour {
     {
         return _gameLoop.waitForFeedback;
     }
+
+    public FeedbackViewController getFeedbackController()
+    {
+        return _feedback;
+    }
 }

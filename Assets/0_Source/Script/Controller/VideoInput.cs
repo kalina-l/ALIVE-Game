@@ -66,6 +66,13 @@ namespace Affdex
         [HideInInspector]
         private WebCamTexture cameraTexture;
 
+        private PlayerEmotions playerEmotions;
+
+        public void setup(PlayerEmotions pe)
+        {
+            playerEmotions = pe;
+        }
+
         public float videoRotationAngle
         {
             get
@@ -144,20 +151,6 @@ namespace Affdex
 #endif
         }
 
-        /* void OnEnable()
-        {
-            if (!AffdexUnityUtils.ValidPlatform())
-                return;
-
-            //get the selected camera!
-
-            if (sampleRate > 0)
-            {
-                cameraTexture.Play();
-                StartCoroutine(SampleRoutine());
-            }
-        } */
-
         public void startRecording()
         {
             if (!AffdexUnityUtils.ValidPlatform())
@@ -167,6 +160,7 @@ namespace Affdex
 
             if (sampleRate > 0)
             {
+                isRecording = true;
                 cameraTexture.Play();
                 StartCoroutine(SampleRoutine());
             }
@@ -178,22 +172,16 @@ namespace Affdex
         /// <returns></returns>
         private IEnumerator SampleRoutine()
         {
-            isRecording = true;
-            float timer = 0;
-            while (timer < 1)
+            while (isRecording)
             {
-                timer += Time.deltaTime;
-                yield return new WaitForSeconds(1 / sampleRate);
-                timer += 1 / sampleRate;
                 ProcessFrame();
+                yield return 0;
             }
-            stopRecording();
         }
 
-
-        /// <summary>
-        /// Sample an individual frame from the webcam and send to detector for processing.
-        /// </summary>
+            /// <summary>
+            /// Sample an individual frame from the webcam and send to detector for processing.
+            /// </summary>
         public void ProcessFrame()
         {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || UNITY_XBOXONE || UNITY_IOS || UNITY_ANDROID
@@ -241,6 +229,7 @@ namespace Affdex
             if (cameraTexture != null)
             {
                 isRecording = false;
+                playerEmotions.evaluate();
                 cameraTexture.Stop();
             }
 #endif

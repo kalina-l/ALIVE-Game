@@ -24,6 +24,7 @@ public class AudioFeedbackController {
 
     public void StartRecording()
     {
+        _feedbackViewController.SetIsRecording(true);
         _audioFeedbackRecognizer.StartRecording();
     }
 }
