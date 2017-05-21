@@ -9,6 +9,8 @@ public class Activity {
     public string Name { get; set; }
     public List<ActivityTag> Tags { get; set; }
 
+    public bool IsMultiplayer { get; set; }
+
     public List<Reward> RewardList;
     public List<Experience> LearnedExperiences;
 
@@ -64,8 +66,20 @@ public class Activity {
 
 	public Experience DoActivity(Personality parentPersonality)
     {
-        Experience xp = new Experience();
+        Experience xp = null;
+        if (IsMultiplayer)
+            xp = new MultiplayerExperience();
+        else
+            xp = new Experience();
+
         xp.AddBaseNeeds(parentPersonality);
+
+        if (IsMultiplayer)
+        {
+            //TODO: get remotePersonality from MultiplayerController
+            Personality remotePersonality = new Personality();
+            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality);
+        }
 
         Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
 
@@ -126,7 +140,20 @@ public class Activity {
         if (LearnedExperiences.Count == 0)
         {
             //Return Random Experience
-            Experience xp = new Experience();
+
+            Experience xp = null;
+
+            if (IsMultiplayer)
+            {
+                xp = new MultiplayerExperience();
+                //TODO: get remotePersonality from MultiplayerController
+                ((MultiplayerExperience)xp).AddRemoteNeeds(personality.Needs);
+            }
+            else
+            {
+                xp = new Experience();
+            }
+
             xp.AddBaseNeeds(personality.Needs);
             xp.AddRandomRewards();
 
@@ -136,10 +163,24 @@ public class Activity {
         {
             for (int i = 0; i < LearnedExperiences.Count; i++)
             {
-                if (LearnedExperiences[i].CompareStatus(personality.Needs) > bestValue)
+                if (IsMultiplayer)
                 {
-                    bestValue = LearnedExperiences[i].CompareStatus(personality.Needs);
-                    bestExperienceID = i;
+                    MultiplayerExperience mxp = (MultiplayerExperience)LearnedExperiences[i];
+
+                    if (mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs) > bestValue)
+                    {
+                        //TODO: get remotePersonality from MultiplayerController
+                        bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs);
+                        bestExperienceID = i;
+                    }
+                }
+                else
+                {
+                    if (LearnedExperiences[i].CompareStatus(personality.Needs) > bestValue)
+                    {
+                        bestValue = LearnedExperiences[i].CompareStatus(personality.Needs);
+                        bestExperienceID = i;
+                    }
                 }
             }
         }
