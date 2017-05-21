@@ -22,6 +22,8 @@ public class ApplicationManager : MonoBehaviour {
 
     public bool resetButton;
 
+    public bool simulateRemote;
+
     //AI
     private GameData _data;
     private GameLoopController _gameLoop;
@@ -35,7 +37,12 @@ public class ApplicationManager : MonoBehaviour {
     private ItemBoxViewController _itemBox;
     private ConditionViewController _conditionMonitor;
     private AlertViewController _alert;
-    
+
+    //Simulation
+    private RemotePersonalitySimulation _simulation;
+
+    //Multiplayer
+    private MultiplayerController _multiplayer;
 
     void Awake()
     {
@@ -71,6 +78,15 @@ public class ApplicationManager : MonoBehaviour {
         
         //GameLoop
         _gameLoop = new GameLoopController(this, _data);
+
+        //Simulation
+        if (simulateRemote)
+        {
+            _simulation = new RemotePersonalitySimulation(this, _data.Person);
+
+            _multiplayer = new MultiplayerController(_data.Person);
+            _multiplayer.ConnectWithRemote(_simulation.GetPersonality());
+        }
     }
 
     public void reset()
