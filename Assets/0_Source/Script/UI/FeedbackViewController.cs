@@ -29,7 +29,7 @@ public class FeedbackViewController : AbstractViewController {
 
         _audioFeedbackController = new AudioFeedbackController(this);
         _touchController = new TouchController(this, Rect);
-        _videoFeedbackController = new VideoFeedbackController(this);
+        _videoFeedbackController = new VideoFeedbackController(this, Rect);
 
         positiveFX = GraphicsHelper.Instance.positiveFX;
         negativeFX = GraphicsHelper.Instance.negativeFX;

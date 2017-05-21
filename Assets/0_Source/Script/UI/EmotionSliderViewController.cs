@@ -2,12 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class SliderViewController : AbstractViewController {
+public class EmotionSliderViewController : AbstractViewController
+{
 
     private Image _fillImage;
     private RectTransform _backgroundRect;
 
-	public SliderViewController(RectTransform container, string sliderName, string objectName)
+    public EmotionSliderViewController(RectTransform container, string sliderName, string objectName)
     {
         Rect = container;
         View = Rect.gameObject;
@@ -23,7 +24,7 @@ public class SliderViewController : AbstractViewController {
 
         Image background = AddSprite(CreateContainer(objectName, container,
             new Vector2(0, 10), new Vector2(container.sizeDelta.x, 64),
-            Vector2.zero, Vector2.zero, Vector2.zero), 
+            Vector2.zero, Vector2.zero, Vector2.zero),
             GraphicsHelper.Instance.sliderBackgroundSpirte, GraphicsHelper.Instance.SpriteColorWhite);
 
         background.type = Image.Type.Sliced;
@@ -41,7 +42,7 @@ public class SliderViewController : AbstractViewController {
     {
         _fillImage.rectTransform.sizeDelta = new Vector2(_backgroundRect.sizeDelta.x * amount, _backgroundRect.sizeDelta.y);
         _fillImage.enabled = amount > 0.05f;
-            
+
     }
 
     public void SetColor(Color c)

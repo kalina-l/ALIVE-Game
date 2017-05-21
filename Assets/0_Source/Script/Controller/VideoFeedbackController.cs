@@ -11,7 +11,9 @@ public class VideoFeedbackController
     private VideoInput videoInput;
     private PlayerEmotions playerEmotions;
 
-    public VideoFeedbackController(FeedbackViewController feedbackViewConroller)
+    private EmotionSliderViewController slider;
+
+    public VideoFeedbackController(FeedbackViewController feedbackViewConroller, RectTransform rect)
     {
         _feedbackViewController = feedbackViewConroller;
         
@@ -21,7 +23,7 @@ public class VideoFeedbackController
         videoInput.setup(playerEmotions);
         playerEmotions.setup(this);
 
-        //ApplicationManager.Instance.StartCoroutine(setupDetector());
+        slider = new EmotionSliderViewController(rect, "", "VideoFeedbackSlider");
        
     }
 
