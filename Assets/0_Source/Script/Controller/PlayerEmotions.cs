@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerEmotions : ImageResultsListener
 {
     private Dictionary<string, float> emotions;
+    private int frameCount;
+    private float lastQuickEvaluations;
 
     private VideoFeedbackController videoFeedbackController;
 
@@ -52,9 +54,34 @@ public class PlayerEmotions : ImageResultsListener
             face.Expressions.TryGetValue(Expressions.BrowRaise, out currBrowRaise);
             emotions["BrowRaise"] += currBrowRaise;
 
-            Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
+           // Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
             ApplicationManager.Instance.debugText.text = ("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
+
+            lastQuickEvaluations += quickEvaluate();
+            if (Time.frameCount - frameCount > 6)
+            {
+                videoFeedbackController.getSlider().UpdateSlider(lastQuickEvaluations);
+                lastQuickEvaluations = 0;
+                frameCount = Time.frameCount;
+            }
         }
+    }
+
+    public float quickEvaluate ()
+    {
+        float value = 0;
+        foreach (KeyValuePair<string, float> entry in emotions)
+        {
+            if (entry.Key == "Smile")
+            {
+                value += entry.Value;
+            }
+            else
+            {
+                value -= entry.Value;
+            }
+        }
+        return value;
     }
 
     public void evaluate ()

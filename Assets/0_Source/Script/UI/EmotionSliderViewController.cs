@@ -5,7 +5,7 @@ using System.Collections;
 public class EmotionSliderViewController : AbstractViewController
 {
 
-    private Image _fillImage;
+    private Image _pointerImg;
     private RectTransform _backgroundRect;
 
     public EmotionSliderViewController(RectTransform container, string sliderName, string objectName)
@@ -23,30 +23,46 @@ public class EmotionSliderViewController : AbstractViewController
         }
 
         Image background = AddSprite(CreateContainer(objectName, container,
-            new Vector2(0, 10), new Vector2(container.sizeDelta.x, 64),
-            Vector2.zero, Vector2.zero, Vector2.zero),
-            GraphicsHelper.Instance.sliderBackgroundSpirte, GraphicsHelper.Instance.SpriteColorWhite);
+            new Vector2(0, 450), new Vector2(600, 80),
+            new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f)),
+            GraphicsHelper.Instance.emotionSliderBGSpirte, GraphicsHelper.Instance.SpriteColorWhite);
 
         background.type = Image.Type.Sliced;
         _backgroundRect = background.rectTransform;
 
-        _fillImage = AddSprite(CreateContainer("Fill", background.GetComponent<RectTransform>(),
-            Vector2.zero, background.rectTransform.sizeDelta,
-            Vector2.zero, Vector2.zero, Vector2.zero),
-            GraphicsHelper.Instance.sliderFillSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        _pointerImg = AddSprite(CreateContainer("Pointer", background.GetComponent<RectTransform>(),
+            Vector2.zero, new Vector2(48, 134),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+            GraphicsHelper.Instance.emotionSliderPointerSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
-        _fillImage.type = Image.Type.Sliced;
+        SetActive(false);
     }
 
     public void UpdateSlider(float amount)
     {
-        _fillImage.rectTransform.sizeDelta = new Vector2(_backgroundRect.sizeDelta.x * amount, _backgroundRect.sizeDelta.y);
-        _fillImage.enabled = amount > 0.05f;
+
+        amount /= 2500;
+        float newXPosition = _pointerImg.rectTransform.localPosition.x + amount;
+        float halfSliderSize = _backgroundRect.sizeDelta.x / 2;
+        if (newXPosition > halfSliderSize)
+        {
+            newXPosition = halfSliderSize;
+        }
+        else if (newXPosition < -halfSliderSize)
+        {
+            newXPosition = -halfSliderSize;
+        }
+        _pointerImg.rectTransform.localPosition = new Vector3(newXPosition, 0);
 
     }
 
-    public void SetColor(Color c)
+    public void ResetSlider()
     {
-        _fillImage.color = c;
+        _pointerImg.rectTransform.localPosition = Vector3.zero;
+    }
+
+    public void SetActive(bool active)
+    {
+        _backgroundRect.gameObject.SetActive(active);
     }
 }

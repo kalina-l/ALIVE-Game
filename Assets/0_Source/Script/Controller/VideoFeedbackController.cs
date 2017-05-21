@@ -47,17 +47,24 @@ public class VideoFeedbackController
 
     public void StartRecording()
     {
+        slider.SetActive(true);
         _feedbackViewController.SetIsRecording(true);
         videoInput.startRecording();
     }
 
     public void StopRecording()
     {
+        slider.ResetSlider();
+        slider.SetActive(false);
         videoInput.stopRecording();
     }
 
     public void SendFeedback(int feedback)
     {
         _feedbackViewController.SendFeedBack(feedback, FeedbackType.Video);
+    }
+
+    public EmotionSliderViewController getSlider() {
+        return slider;
     }
 }
