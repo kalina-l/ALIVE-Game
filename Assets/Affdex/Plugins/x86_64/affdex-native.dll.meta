@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Affdex/Plugins/x86_64/affdex-native.dll.meta
 guid: 6bf527d59001eb34fb9d82230b805593
 timeCreated: 1495030081
+=======
+guid: c3e68a567f194144d83d1923061686ba
+timeCreated: 1495029258
+>>>>>>> bf3b764c3db57081f9f6da97c6b712b4c82148d4:Assets/Affdex/Plugins/x86_64/affdex-native.dll.meta
 licenseType: Free
 PluginImporter:
   serializedVersion: 2

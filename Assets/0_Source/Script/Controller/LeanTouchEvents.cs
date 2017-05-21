@@ -50,6 +50,8 @@ namespace Lean.Touch
         public void OnFingerSet(LeanFinger finger)
         {
 
+            if (DragItemHandler.itemIsDragged) return;
+
             if(isPetting)
             {
                 _controller.ShowPetFeedback(finger.ScreenPosition);
@@ -88,6 +90,7 @@ namespace Lean.Touch
             Vector2 distanceVector = finger.ScreenPosition - finger.StartScreenPosition;
             if (distanceVector.magnitude > 50 && finger.Age > 0.2)
             {
+                _controller.StartPetting();
                 isPetting = true;
             }
         }

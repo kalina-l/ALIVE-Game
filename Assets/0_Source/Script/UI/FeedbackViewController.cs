@@ -6,16 +6,8 @@ public enum FeedbackType { Audio, Video, Touch, Button }
 
 public class FeedbackViewController : AbstractViewController {
 
-    private bool _animating;
-
-    private Button _positiveButton;
-    private Image _positiveButtonImage;
-
-    private Button _negativeButton;
-    private Image _negativeButtonImage;
-
     private Button _startRecording; // audio
-    private Button _startStreaming; // video
+    private bool _isRecording; // attached to audio AND video
 
     private Vector2 _buttonSize = new Vector2(256, 256);
     
@@ -28,10 +20,6 @@ public class FeedbackViewController : AbstractViewController {
     private ParticleSystem positiveFX;
     private ParticleSystem negativeFX;
 
-    private bool receiveFeedback;
-    private bool _buttonsVisible;
-    private IEnumerator showFeedbackCoroutine;
-
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
@@ -41,31 +29,12 @@ public class FeedbackViewController : AbstractViewController {
 
         _audioFeedbackController = new AudioFeedbackController(this);
         _touchController = new TouchController(this, Rect);
-        _videoFeedbackController = new VideoFeedbackController(this);
+        _videoFeedbackController = new VideoFeedbackController(this, Rect);
 
         positiveFX = GraphicsHelper.Instance.positiveFX;
         negativeFX = GraphicsHelper.Instance.negativeFX;
 
-        //Buttons
-        _positiveButton = CreateButton(
-                                    CreateContainer("PositiveFeedback", Rect,
-                                    new Vector2(-256, -300), Vector2.zero,
-                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-                                    delegate { SendFeedBack(1, FeedbackType.Button); }
-                                    );
-
-        _positiveButtonImage = AddSprite(_positiveButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackPositiveSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
-
-        _negativeButton = CreateButton(
-                                    CreateContainer("NegativeFeedback", Rect,
-                                    new Vector2(256, -300), Vector2.zero,
-                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-                                    delegate { SendFeedBack(-1, FeedbackType.Button); }
-                                    );
-
-        _negativeButtonImage = AddSprite(_negativeButton.GetComponent<RectTransform>(), GraphicsHelper.Instance.feedbackNegativeSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
-
-        _startRecording = CreateButton(
+       _startRecording = CreateButton(
                                     CreateContainer("StartRecording", Rect,
                                     new Vector2(460, 40), _buttonSize*0.65f,
                                     new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
@@ -73,13 +42,14 @@ public class FeedbackViewController : AbstractViewController {
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
-        _startStreaming = CreateButton(
+        RectTransform startStreamingRect =
                                     CreateContainer("StartStreaming", Rect,
                                     new Vector2(460, -150), _buttonSize * 0.65f,
-                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-                                    delegate { _videoFeedbackController.StartRecording(); }
-                                    );
-        AddSprite(_startStreaming.GetComponent<RectTransform>(), GraphicsHelper.Instance.cameraSprite, GraphicsHelper.Instance.SpriteColorWhite);
+                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));                                 
+        PointerListener pl = startStreamingRect.gameObject.AddComponent<PointerListener>();
+        pl.AddOnDownDelegate(_videoFeedbackController.StartRecording);
+        pl.AddOnUpDelegate(_videoFeedbackController.StopRecording);
+        AddSprite(startStreamingRect.GetComponent<RectTransform>(), GraphicsHelper.Instance.cameraSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
     }
 
@@ -93,70 +63,24 @@ public class FeedbackViewController : AbstractViewController {
         {
             negativeFX.Play();
         }
-        // TODO: unterscheiden zw voice image und touch (enum?)
-        /*if(_animating)
-        {
-            ApplicationManager.Instance.StopCoroutine(showFeedbackCoroutine);
-            _animating = false;
-            ShowImmediateFeedback();
-        }
-        else if(_buttonsVisible ^ show)
-        {
-            showFeedbackCoroutine = ShowFeedbackRoutine(show);
-            ApplicationManager.Instance.StartCoroutine(showFeedbackCoroutine);
-        }*/
     }
 
-    private void ShowImmediateFeedback()
+    public void SetIsRecording(bool isRecording)
     {
-        _positiveButtonImage.color = new Color(255f, 255f, 255f, 1);
-        _negativeButtonImage.color = new Color(255f, 255f, 255f, 1);
-        _positiveButtonImage.rectTransform.sizeDelta = _buttonSize;
-        _negativeButtonImage.rectTransform.sizeDelta = _buttonSize;
+        this._isRecording = isRecording;
     }
-
-    private IEnumerator ShowFeedbackRoutine(bool show)
+    public bool IsRecording()
     {
-        float timer = 0;
-        _animating = true;
-
-        GraphicsHelper graphics = GraphicsHelper.Instance;
-
-        while(timer < 1)
-        {
-            timer += Time.deltaTime * 2;
-
-            if(show)
-            {
-                _buttonsVisible = true;
-                _positiveButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhiteHidden, graphics.SpriteColorWhite, timer);
-                _positiveButtonImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, _buttonSize, timer);
-
-                _negativeButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhiteHidden, graphics.SpriteColorWhite, timer);
-                _negativeButtonImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, _buttonSize, timer);
-            }
-            else
-            {
-                _buttonsVisible = false;
-                _positiveButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhite, graphics.SpriteColorWhiteHidden, timer);
-                _positiveButtonImage.rectTransform.sizeDelta = Vector2.Lerp(_buttonSize, Vector2.zero, timer);
-
-                _negativeButtonImage.color = graphics.LerpColor(graphics.SpriteColorWhite, graphics.SpriteColorWhiteHidden, timer);
-                _negativeButtonImage.rectTransform.sizeDelta = Vector2.Lerp(_buttonSize, Vector2.zero, timer);
-            }
-
-            yield return 0;
-        }
-
-        _animating = false;
+        return _isRecording;
     }
 
     public void SendFeedBack(int feedback, FeedbackType feedbackType)
     {
+        SetIsRecording(false);
         lastFeedbackType = feedbackType;
         lastFeedback = feedback;
         ApplicationManager.Instance.GiveFeedback(feedback);
-        receiveFeedback = false;
+
     }
 
 }

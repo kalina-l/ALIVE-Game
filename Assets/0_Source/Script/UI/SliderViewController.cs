@@ -7,18 +7,21 @@ public class SliderViewController : AbstractViewController {
     private Image _fillImage;
     private RectTransform _backgroundRect;
 
-	public SliderViewController(RectTransform container, string name)
+	public SliderViewController(RectTransform container, string sliderName, string objectName)
     {
         Rect = container;
         View = Rect.gameObject;
 
-        Text text = AddText(CreateContainer("Fill", container,
-            new Vector2(0, 54), new Vector2(container.sizeDelta.x, 64),
-            Vector2.zero, Vector2.zero, Vector2.zero), GraphicsHelper.Instance.UIFont, 32, TextAnchor.MiddleCenter);
+        if (!sliderName.Equals(""))
+        {
+            Text text = AddText(CreateContainer(sliderName, container,
+                new Vector2(0, 54), new Vector2(container.sizeDelta.x, 64),
+                Vector2.zero, Vector2.zero, Vector2.zero), GraphicsHelper.Instance.UIFont, 32, TextAnchor.MiddleCenter);
 
-        text.text = name;
+            text.text = sliderName;
+        }
 
-        Image background = AddSprite(CreateContainer("Fill", container,
+        Image background = AddSprite(CreateContainer(objectName, container,
             new Vector2(0, 10), new Vector2(container.sizeDelta.x, 64),
             Vector2.zero, Vector2.zero, Vector2.zero), 
             GraphicsHelper.Instance.sliderBackgroundSpirte, GraphicsHelper.Instance.SpriteColorWhite);
