@@ -5,6 +5,7 @@ using UnityEngine;
 public class MultiplayerExperience : Experience {
 
     public Dictionary<NeedType, Evaluation> RemoteNeeds;
+    public bool IsRequest;
 
     public MultiplayerExperience()
     {

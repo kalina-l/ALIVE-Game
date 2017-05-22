@@ -45,8 +45,6 @@ public class GameLoopController {
     {
         while (true)
         {
-            //yield return new WaitForSeconds(WaitTime);
-
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
             float timer = 0;
@@ -75,7 +73,21 @@ public class GameLoopController {
 
     private IEnumerator DoActivityRoutine()
     {
-        _data.Intelligence.GetNextActivity(_data.Person);
+        Debug.Log("Start of Loop");
+
+        bool removeExtraActivity = false;
+
+        if (_manager.Multiplayer.IsRequestpending())
+        {
+            Debug.Log("Check multiplayer Request");
+
+            _data.Person.AddBaseActivity(_manager.Multiplayer.GetPendingActivity());
+            removeExtraActivity = true;
+        }
+
+        Debug.Log("Calculate Next Activity");
+
+        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
 
         float timer = 0;
 
@@ -94,7 +106,8 @@ public class GameLoopController {
 
         if (askForItem)
         {
-            //Debug.Log("Ask for Item!!!");
+            Debug.Log("Ask for Item");
+
             _data.Intelligence.AskForItem(_data.Person, _data.Items);
 
             timer = 0;
@@ -106,6 +119,8 @@ public class GameLoopController {
             }
 
             askActivityID = _data.Intelligence.GetResult();
+
+            Debug.Log("Item Found");
         }
 
 
@@ -142,7 +157,34 @@ public class GameLoopController {
                 
             }
 
+            Debug.Log("Get Activity");
+
             _lastActivity = _data.Person.GetActivity(activityID);
+
+            Debug.Log("Do Multiplayer");
+
+            if (_lastActivity.IsMultiplayer) {
+                if (_lastActivity.IsRequest) {
+                    _manager.Multiplayer.AcceptRequest();
+                }
+                else {
+                    if (_manager.Multiplayer.IsRequestpending()) {
+                        _manager.Multiplayer.DeclineRequest();
+                    }
+
+                    _manager.Multiplayer.SendActivityRequest(_lastActivity);
+
+                    while (_manager.Multiplayer.IsWaitingForAnswer()) {
+                        yield return 0;
+                    }
+                }
+            }
+            else if(_manager.Multiplayer.IsRequestpending()) {
+                _manager.Multiplayer.DeclineRequest();
+            }
+
+            Debug.Log("Do Activity");
+
             _lastExperience = _lastActivity.DoActivity(_data.Person);
 
             //Show Activity
@@ -153,18 +195,28 @@ public class GameLoopController {
 
             _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
 
+            Debug.Log("Animate");
+
             while (_manager.CharacterAnimation.IsAnimating)
             {
                 yield return 0;
             }
 
+            Debug.Log("UpdateUI");
+
             _manager.UpdateUI();
 
+            //remove multiplayer activity
+            if (removeExtraActivity) {
+                _data.Person.RemovePendingActivity();
+            }
         }
         else
         {
             _lastActivity = null;
         }
+
+        Debug.Log("End of Loop");
     }
 
 

@@ -72,6 +72,15 @@ public class Experience {
         Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f);
     }
 
+    public void AddFavorableRewards()
+    {
+        Rewards[NeedType.HUNGER] = 3;
+        Rewards[NeedType.ENERGY] = 3;
+        Rewards[NeedType.HEALTH] = 3;
+        Rewards[NeedType.SATISFACTION] = 3;
+        Rewards[NeedType.SOCIAL] = 3;
+    }
+
     public Experience(Personality basePersonality, Personality resultPersonality)
     {
         AddBaseNeeds(basePersonality);

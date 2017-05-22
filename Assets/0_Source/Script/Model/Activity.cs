@@ -9,7 +9,10 @@ public class Activity {
     public string Name { get; set; }
     public List<ActivityTag> Tags { get; set; }
 
-    public bool IsMultiplayer { get; set; }
+    public bool IsMultiplayer { get; set; } //set at construction
+
+    public bool IsRequest { get; set; } //set when received by the multiplayerController
+    public bool IsDeclined { get; set; } //set in the multiplayerController when declined
 
     public List<Reward> RewardList;
     public List<Experience> LearnedExperiences;
@@ -76,9 +79,9 @@ public class Activity {
 
         if (IsMultiplayer)
         {
-            //TODO: get remotePersonality from MultiplayerController
-            Personality remotePersonality = new Personality();
+            Personality remotePersonality = ApplicationManager.Instance.Multiplayer.GetRemotePersonality();
             ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality);
+            ((MultiplayerExperience)xp).IsRequest = IsRequest;
         }
 
         Dictionary<NeedType, Need> need = new Dictionary<NeedType, Need>();
@@ -87,10 +90,28 @@ public class Activity {
         {
             need[kvp.Key] = kvp.Value.Copy();
         }
-
-        foreach(Reward reward in RewardList)
+        
+        if (IsMultiplayer)
         {
-            reward.DoReward(parentPersonality, need);
+            if (IsRequest)
+            {
+                GetAcceptReward().DoReward(parentPersonality, need);
+
+                foreach (Reward reward in RewardList)
+                {
+                    reward.DoReward(parentPersonality, need);
+                }
+            }
+            else if (IsDeclined)
+            {
+                GetRejectionReward().DoReward(parentPersonality, need);
+            }
+        }
+        else {
+            foreach (Reward reward in RewardList)
+            {
+                reward.DoReward(parentPersonality, need);
+            }
         }
         
         xp.AddRewards(parentPersonality);
@@ -135,29 +156,11 @@ public class Activity {
     public Experience GetExperience(PersonalityNode personality)
     {
         int bestValue = int.MinValue;
-        int bestExperienceID = 0;
+        int bestExperienceID = -1;
 
         if (LearnedExperiences.Count == 0)
         {
-            //Return Random Experience
-
-            Experience xp = null;
-
-            if (IsMultiplayer)
-            {
-                xp = new MultiplayerExperience();
-                //TODO: get remotePersonality from MultiplayerController
-                ((MultiplayerExperience)xp).AddRemoteNeeds(personality.Needs);
-            }
-            else
-            {
-                xp = new Experience();
-            }
-
-            xp.AddBaseNeeds(personality.Needs);
-            xp.AddRandomRewards();
-
-            return xp;
+            return GetRandomExperience(personality);
         }
         else
         {
@@ -167,11 +170,13 @@ public class Activity {
                 {
                     MultiplayerExperience mxp = (MultiplayerExperience)LearnedExperiences[i];
 
-                    if (mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs) > bestValue)
-                    {
-                        //TODO: get remotePersonality from MultiplayerController
-                        bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs);
-                        bestExperienceID = i;
+                    if (mxp.IsRequest == IsRequest) {
+                        if (mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs) > bestValue)
+                        {
+                            PersonalityNode remotePersonality = new PersonalityNode(ApplicationManager.Instance.Multiplayer.GetRemotePersonality());
+                            bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(remotePersonality.Needs);
+                            bestExperienceID = i;
+                        }
                     }
                 }
                 else
@@ -184,7 +189,65 @@ public class Activity {
                 }
             }
         }
+
+        if(bestExperienceID == -1)
+        {
+            return GetRandomExperience(personality);
+        }
         
         return LearnedExperiences[bestExperienceID];
+    }
+
+    private Experience GetRandomExperience(PersonalityNode personality)
+    {
+        Experience xp = null;
+
+        if (IsMultiplayer)
+        {
+            xp = new MultiplayerExperience();
+            PersonalityNode remotePersonality = new PersonalityNode(ApplicationManager.Instance.Multiplayer.GetRemotePersonality());
+            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality.Needs);
+            ((MultiplayerExperience)xp).IsRequest = IsRequest;
+        }
+        else
+        {
+            xp = new Experience();
+        }
+
+        xp.AddBaseNeeds(personality.Needs);
+
+        if (IsMultiplayer && IsRequest)
+        {
+            //MP: always accept MP Activities you don't know
+            xp.AddFavorableRewards();
+        }
+        else
+        {
+            xp.AddRandomRewards();
+        }
+
+        return xp;
+    }
+
+    public Reward GetAcceptReward()
+    {
+        Reward r = new Reward();
+
+        r.ID = 1010101010;
+        r.RewardType = NeedType.SOCIAL;
+        r.RewardValue = 5;
+
+        return r;
+    }
+
+    public Reward GetRejectionReward()
+    {
+        Reward r = new Reward();
+
+        r.ID = 1010101010;
+        r.RewardType = NeedType.SOCIAL;
+        r.RewardValue = -20;
+
+        return r;
     }
 }

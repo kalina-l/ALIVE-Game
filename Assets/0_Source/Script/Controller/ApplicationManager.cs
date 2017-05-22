@@ -43,6 +43,7 @@ public class ApplicationManager : MonoBehaviour {
 
     //Multiplayer
     private MultiplayerController _multiplayer;
+    public MultiplayerController Multiplayer { get { return _multiplayer; } }
 
     void Awake()
     {
@@ -75,18 +76,21 @@ public class ApplicationManager : MonoBehaviour {
                 _itemBox.AddItemFromPersonality(kvp.Value);
             }
         }
+
+        _multiplayer = new MultiplayerController(_data.Person);
+
         
-        //GameLoop
-        _gameLoop = new GameLoopController(this, _data);
+        
 
         //Simulation
         if (simulateRemote)
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
-
-            _multiplayer = new MultiplayerController(_data.Person);
-            _multiplayer.ConnectWithRemote(_simulation.GetPersonality());
+            _multiplayer.ConnectWithRemote(_simulation.GetController());
         }
+
+        //GameLoop
+        _gameLoop = new GameLoopController(this, _data);
     }
 
     public void reset()

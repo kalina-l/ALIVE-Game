@@ -5,6 +5,8 @@ using FullSerializer;
 
 public class Personality {
 
+    public static int PENDING_ACTIVITY_ID = 9999;
+
     public Dictionary<NeedType, Need> Conditions;
 	public Dictionary<int, Activity> BaseActivities;
     public Dictionary<int, Item> Items;
@@ -70,6 +72,11 @@ public class Personality {
 		BaseActivities[activity.ID] = activity;
 
         return this;
+    }
+
+    public void RemovePendingActivity()
+    {
+        BaseActivities.Remove(PENDING_ACTIVITY_ID);
     }
 
     public Personality AddTrait(Trait trait, List<Item> itemList)

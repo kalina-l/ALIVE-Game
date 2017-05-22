@@ -21,10 +21,18 @@ public class RemotePersonalitySimulation {
         return _personality;
     }
 
+    public MultiplayerController GetController()
+    {
+        return _multiplayer;
+    }
+
     public RemotePersonalitySimulation(ApplicationManager manager, Personality localPersonality)
     {
         PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
         _personality = creatorCSV.Personality;
+
+        //TODO: give the personality a multiplayer activity
+
         _items = creatorCSV.ItemList;
         _intelligence = new ArtificialIntelligence();
 
@@ -32,7 +40,7 @@ public class RemotePersonalitySimulation {
         _manager.StartCoroutine(Simulate());
 
         _multiplayer = new MultiplayerController(_personality);
-        _multiplayer.ConnectWithRemote(localPersonality);
+        _multiplayer.ConnectWithRemote(manager.Multiplayer);
     }
 
 
@@ -61,7 +69,15 @@ public class RemotePersonalitySimulation {
 
     private IEnumerator DoActivityRoutine()
     {
-        _intelligence.GetNextActivity(_personality);
+        bool removeExtraActivity = false;
+
+        if (_multiplayer.IsRequestpending())
+        {
+            _personality.AddBaseActivity(_multiplayer.GetPendingActivity());
+            removeExtraActivity = true;
+        }
+
+        _intelligence.GetNextActivity(_personality, _multiplayer.IsConnected);
 
         float timer = 0;
 
@@ -76,13 +92,43 @@ public class RemotePersonalitySimulation {
         if (activityID != -1)
         {
             _lastActivity = _personality.GetActivity(activityID);
-            _lastExperience = _lastActivity.DoActivity(_personality);
 
-            //TODO: send info to other player
+            if (_lastActivity.IsMultiplayer)
+            {
+                if (_lastActivity.IsRequest)
+                {
+                    _multiplayer.AcceptRequest();
+                }
+                else {
+                    if (_multiplayer.IsRequestpending())
+                    {
+                        _multiplayer.DeclineRequest();
+                    }
+
+                    _multiplayer.SendActivityRequest(_lastActivity);
+
+                    while (_multiplayer.IsWaitingForAnswer())
+                    {
+                        yield return 0;
+                    }
+                }
+            }
+            else if (_multiplayer.IsRequestpending())
+            {
+                _multiplayer.DeclineRequest();
+            }
+
+            _lastExperience = _lastActivity.DoActivity(_personality);
         }
         else
         {
             _lastActivity = null;
+        }
+
+        //remove multiplayer activity
+        if (removeExtraActivity)
+        {
+            _personality.RemovePendingActivity();
         }
     }
 

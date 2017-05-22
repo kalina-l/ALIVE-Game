@@ -18,6 +18,8 @@ public class ArtificialIntelligence
     private int _result;
     private float _resultValue;
     private bool _askForItem;
+
+    private bool _isConnected;
     
     public void AskForItem(Personality personality, List<Item> items)
     {
@@ -30,11 +32,13 @@ public class ArtificialIntelligence
         _thread.Start();
     }
 
-    public void GetNextActivity(Personality personality)
+    public void GetNextActivity(Personality personality, bool isConnected)
     {
         _calculating = true;
         _personality = personality;
         _askForItem = false;
+
+        _isConnected = isConnected;
 
         _thread = new Thread(getBestAction);
         _thread.Start();
@@ -99,34 +103,38 @@ public class ArtificialIntelligence
 
                 Activity activity = _personality.GetActivity(pn.ActivityIDs[i], false);
 
-                if(activity == null && _askForItem)
+                if (!activity.IsMultiplayer || _isConnected)
                 {
-                    foreach(Item boxItem in _items)
+                    if (activity == null && _askForItem)
                     {
-                        if(activity == null)
+                        foreach (Item boxItem in _items)
                         {
-                            activity = boxItem.GetActivity(pn.ActivityIDs[i]);
+                            if (activity == null)
+                            {
+                                activity = boxItem.GetActivity(pn.ActivityIDs[i]);
+                            }
                         }
                     }
+
+                    Item item = null;
+                    if (activity.item != null)
+                    {
+                        item = pn.GetItem(pn.ActivityIDs[i], false);
+                    }
+
+                    Experience experience = activity.GetExperience(pn);
+                    float feedback = activity.Feedback.GetFeedback(pn.Needs);
+
+                    PersonalityNode newPerson = new PersonalityNode(pn,
+                                                    experience,
+                                                    pn.ActivityIDs[i],
+                                                    feedback,
+                                                    item,
+                                                    activity.useConsume);
+
+                    pn.Children.Add(newPerson);
+                    dfs(newPerson, maxDepth);
                 }
-
-				Item item = null;
-				if (activity.item != null) {
-					item = pn.GetItem (pn.ActivityIDs [i], false);
-				}
-
-                Experience experience = activity.GetExperience(pn);
-                float feedback = activity.Feedback.GetFeedback(pn.Needs);
-
-                PersonalityNode newPerson = new PersonalityNode (pn,
-                                                experience, 
-                                                pn.ActivityIDs [i],
-												feedback,
-												item,
-												activity.useConsume);
-                
-                pn.Children.Add (newPerson);
-                dfs (newPerson, maxDepth);
 			}
 			pn.visited = true;
 		}
