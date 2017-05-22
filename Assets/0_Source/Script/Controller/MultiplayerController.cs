@@ -16,10 +16,18 @@ public class MultiplayerController {
     private MultiplayerController _remoteController;
 
     private Activity _currentMultiplayerActivity;
+
     private bool _gettingRequest;
     private bool _sendingRequest;
 
-    public bool IsRequestpending()
+    private bool _gettingFeedbackRequest;
+
+    public bool IsFeedbackRequestPending()
+    {
+        return _gettingFeedbackRequest && IsConnected && !_gettingRequest;
+    }
+
+    public bool IsRequestPending()
     {
         return _gettingRequest && IsConnected;
     }
@@ -56,6 +64,27 @@ public class MultiplayerController {
 
     public Personality GetRemotePersonality() {
         return _remoteController.GetPersonality();
+    }
+
+    public void SendFeedbackRequest(Activity activity)
+    {
+        _remoteController.GetFeedbackRequest(activity);
+    }
+
+    public void GetFeedbackRequest(Activity activity)
+    {
+        _gettingFeedbackRequest = true;
+        _currentMultiplayerActivity = activity;
+    }
+
+    public void SendFeedback(int feedback)
+    {
+        _remoteController.GetFeedback(feedback);
+    }
+
+    public void GetFeedback(int feedback)
+    {
+        ApplicationManager.Instance.GiveFeedback(feedback);
     }
 
     public void SendActivityRequest(Activity activity)

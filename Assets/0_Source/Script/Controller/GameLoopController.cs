@@ -47,10 +47,28 @@ public class GameLoopController {
         {
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
+            if (_manager.Multiplayer.IsConnected)
+            {
+                //TODO: randomize this
+                _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+            }
+
+            bool sentFeedback = false;
+
             float timer = 0;
             while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
+
+                if (!sentFeedback)
+                {
+                    if (_manager.Multiplayer.IsFeedbackRequestPending())
+                    {
+                        //TODO: Calculate Feedback
+                        _manager.Multiplayer.SendFeedback(1);
+                    }
+                }
+
                 yield return 0;
             }
 
@@ -77,7 +95,7 @@ public class GameLoopController {
 
         bool removeExtraActivity = false;
 
-        if (_manager.Multiplayer.IsRequestpending())
+        if (_manager.Multiplayer.IsRequestPending())
         {
             Debug.Log("Check multiplayer Request");
 
@@ -169,7 +187,7 @@ public class GameLoopController {
                     _manager.Multiplayer.AcceptRequest();
                 }
                 else {
-                    if (_manager.Multiplayer.IsRequestpending()) {
+                    if (_manager.Multiplayer.IsRequestPending()) {
                         _manager.Multiplayer.DeclineRequest();
                     }
 
@@ -180,7 +198,7 @@ public class GameLoopController {
                     }
                 }
             }
-            else if(_manager.Multiplayer.IsRequestpending()) {
+            else if(_manager.Multiplayer.IsRequestPending()) {
                 _manager.Multiplayer.DeclineRequest();
             }
 

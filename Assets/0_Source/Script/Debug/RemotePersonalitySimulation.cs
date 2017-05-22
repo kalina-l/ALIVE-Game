@@ -52,8 +52,20 @@ public class RemotePersonalitySimulation {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
+            if (_multiplayer.IsConnected)
+            {
+                //TODO: randomize this
+                _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+            }
+
             //random feedback
             GiveFeedback((int)(Random.value * 3) - 1);
+
+            if (_multiplayer.IsFeedbackRequestPending())
+            {
+                //TODO: Calculate Feedback
+                _manager.Multiplayer.SendFeedback(1);
+            }
 
             _actionCounter++;
 
@@ -71,7 +83,7 @@ public class RemotePersonalitySimulation {
     {
         bool removeExtraActivity = false;
 
-        if (_multiplayer.IsRequestpending())
+        if (_multiplayer.IsRequestPending())
         {
             _personality.AddBaseActivity(_multiplayer.GetPendingActivity());
             removeExtraActivity = true;
@@ -100,7 +112,7 @@ public class RemotePersonalitySimulation {
                     _multiplayer.AcceptRequest();
                 }
                 else {
-                    if (_multiplayer.IsRequestpending())
+                    if (_multiplayer.IsRequestPending())
                     {
                         _multiplayer.DeclineRequest();
                     }
@@ -113,7 +125,7 @@ public class RemotePersonalitySimulation {
                     }
                 }
             }
-            else if (_multiplayer.IsRequestpending())
+            else if (_multiplayer.IsRequestPending())
             {
                 _multiplayer.DeclineRequest();
             }
