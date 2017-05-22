@@ -75,7 +75,7 @@ public class ArtificialIntelligence
         _calculating = false;
     }
 
-	private void getBestAction(){
+	private void getBestAction() {
         
 		PersonalityNode root = new PersonalityNode(_personality);
         
@@ -103,7 +103,17 @@ public class ArtificialIntelligence
 
                 Activity activity = _personality.GetActivity(pn.ActivityIDs[i], false);
 
-                if (!activity.IsMultiplayer || _isConnected)
+                bool blockMultiplayer = false;
+
+                if (activity != null)
+                {
+                    if (activity.IsMultiplayer && !_isConnected)
+                    {
+                        blockMultiplayer = true;
+                    }
+                }
+
+                if (!blockMultiplayer)
                 {
                     if (activity == null && _askForItem)
                     {

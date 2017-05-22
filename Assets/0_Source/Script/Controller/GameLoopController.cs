@@ -100,8 +100,8 @@ public class GameLoopController {
         int activityID = _data.Intelligence.GetResult();
         int askActivityID = -1;
 
-        Debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue());
-
+        Debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID);
+        
         bool askForItem = _data.Intelligence.GetValue() <= 0;
 
         if (askForItem)
@@ -132,6 +132,7 @@ public class GameLoopController {
 
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
+                    Debug.Log("Check " + _data.Items[i].Name);
                     foreach (Activity activity in _data.Items[i].GetAllActivities())
                     {
                         if (activity.ID == askActivityID)
