@@ -154,6 +154,7 @@ public class PersonalityNode {
 
     public float Evaluation()
     {
+        //TODO: change with trait
         float value = FeedBack * 100;
 
         foreach (KeyValuePair<NeedType, Evaluation> need in Needs)

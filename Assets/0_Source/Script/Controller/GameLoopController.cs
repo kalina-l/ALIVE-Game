@@ -120,6 +120,7 @@ public class GameLoopController {
 
         Debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID);
         
+        //TODO: Change threshold with trait
         bool askForItem = _data.Intelligence.GetValue() <= 0;
 
         if (askForItem)
