@@ -1,84 +1,87 @@
-Reward ID;Value;Type;MinHealth;MaxHealth;MinHunger;MaxHunger;MinSatisfaction;MaxSatisfaction;MinSocial;MaxSocial;MinEnergy;MaxEnergy;
-0;-5;Health;;;;;;;;;;;
-1;3;Hunger;;;;;;;;;;;
-2;-3;Satisfaction;;;;;;;;;;;
-3;-3;Social;;;;;;;;;;;
-4;-2;Energy;;;;;;;;;;;
-5;-10;Hunger;;;;;;;;;;;
-6;25;Satisfaction;;;;;;;;;;;
-7;20;Social;;;;;;;;;;;
-8;-10;Energy;;;;;;;;;;;
-9;-7;Health;;;;;;;;;;;
-10;1;Hunger;;;;;;;;;;;
-11;-5;Satisfaction;;;;;;;;;;;
-12;-20;Social;;;;;;;;;;;
-13;-5;Hunger;;;;;;;;;;;
-14;20;Satisfaction;;;;;;;;;;;
-15;25;Social;;;;;;;;;;;
-16;-5;Energy;;;;;;;;;;;
-17;5;Health;;;;;;;;;;;
-18;25;Hunger;;;;;;;;;;;
-19;10;Satisfaction;;;;;;;;;;;
-20;2;Energy;;;;;;;;;;;
-21;-3;Hunger;;;;;;;;;;;
-22;10;Social;;;;;;;;;;;
-23;1;Health;;;;;;;;;;;
-24;-1;Hunger;;;;;;;;;;;
-25;3;Satisfaction;;;;;;;;;;;
-26;1;Social;;;;;;;;;;;
-27;-3;Energy;;;;;;;;;;;
-28;-5;Social;;;;;;;;;;;
-29;50;Energy;;;;;;;;;;;
-30;-1;Energy;;;;;;;;;;;
-31;7;Hunger;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
-32;-3;Energy;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
-33;-6;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
-34;-5;Hunger;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
-35;4;Hunger;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
-36;-12;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
-37;-7;Satisfaction;Health.SUICIDAL;Health.VERY_BAD;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
-38;-4;Satisfaction;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
-39;3;Satisfaction;;;;;Satisfaction.SUICIDAL;Satisfaction.NEUTRAL;;;;;
-40;9;Satisfaction;;;Hunger.SUICIDAL;Hunger.NEUTRAL;;;;;;;
-41;-12;Social;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
-42;-8;Social;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;
-43;-3;Social;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
-44;-3;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;
-45;-2;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;
-46;-1;Social;;;;;;;Social.SUICIDAL;Social.SUICIDAL;;;
-47;3;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;
-48;5;Social;;;;;;;Social.SUICIDAL;Social.VERY_BAD;;;
-49;5;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;
-50;6;Social;;;;;;;Social.SUICIDAL;Social.BAD;;;
-51;7;Social;;;;;;;Social.SUICIDAL;Social.BAD;;;
-52;8;Social;;;;;;;Social.SUICIDAL;Social.VERY_BAD;;;
-53;9;Social;;;;;;;Social.SUICIDAL;Social.BAD;;;
-54;13;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.BAD;;;;;
-55;-3;Social;;;;;Satisfaction.VERY_GOOD;Satisfaction.SUPER_GOOD;;;;;
-56;15;Social;;;;;;;Social.SUICIDAL;Social.GOOD;;;
-57;5;Satisfaction;;;;;;;Social.SUICIDAL;Social.GOOD;;;
-58;-15;Energy;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
-59;-45;Satisfaction;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
-60;-15;Social;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-61;-10;Satisfaction;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-62;-10;Energy;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-63;-15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
-64;-5;Satisfaction;;;;;;;;;;;
-65;-3;Energy;;;;;;;;;;;
-66;-10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
-67;15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
-68;5;Satisfaction;;;;;;;;;;;
-69;2;Energy;;;;;;;;;;;
-70;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
-71;-15;Hunger;;;;;;;;;;;
-72;15;Hunger;;;;;;;;;;;
-73;5;Energy;;;;;;;;;;;
-74;5;Satisfaction;;;;;;;;;;;
-75;-5;Satisfaction;;;;;;;;;;;
-76;10;Energy;;;;;;;;;;;
-77;-5;Energy;;;;;;;;;;;
-78;-5;Satisfaction;;;;;;;;;;;
-79;5;Satisfaction;;;;;;;;;;;
-80;-10;Energy;;;;;;;;;;;
-81;-10;Satisfaction;;;;;;;;;;;
-82;10;Satisfaction;;;;;;;;;;;
+﻿Description Activity;Reward ID;Value;Type;MinHealth;MaxHealth;MinHunger;MaxHunger;MinSatisfaction;MaxSatisfaction;MinSocial;MaxSocial;MinEnergy;MaxEnergy;Description
+Eat: Ball;2101;-15;Health;;;;;;;;;;;
+Eat: Ball;2102;-10;Energy;;;;;;;;;;;
+Eat: Ball;2103;-12;Satisfaction;;;;;;;;;;;
+Eat: Ball;2104;10;Hunger;;;Hunger.SUICIDAL;Hunger.BAD;;;;;;;if Leno very Hungry, he gets more saturation from Bad Food
+Eat: Ball;2105;3;Hunger;;;Hunger.NEUTRAL;Hunger.SUPER_GOOD;;;;;;;
+Eat: Ball;2106;15;Social;;;;;;;Social.SUICIDAL;Social.VERY_BAD;;;if Tama very bad Social, he gets Rewards for beeing Funny
+Eat: Ball;2107;-12;Social;;;;;;;Social.BAD;Social.SUPER_GOOD;;;
+Play with Ball;2201;7;Health;;;;;;;;;;;
+Play with Ball;2202;-20;Hunger;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;if Tama Sick, Playing makes him sad and more hungry und Tiered
+Play with Ball;2203;-12;Hunger;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Play with Ball;2204;-25;Energy;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;if Tama Sick, Playing makes him sad and more hungry und Tiered
+Play with Ball;2205;-15;Energy;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Play with Ball;2206;30;Social;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;;;;;
+Play with Ball;2207;20;Social;Satisfaction.BAD;Satisfaction.GOOD;;;;;;;;;
+Play with Ball;2208;10;Social;Satisfaction.VERY_GOOD;Satisfaction.SUPER_GOOD;;;;;;;;;
+Play with Cake;3201;0;Health;;;;;;;;;;;
+Play with Cake;3202;-8;Hunger;;;;;;;;;;;
+Play with Cake;3203;-13;Energy;;;;;;;;;;;
+Play with Cake;3204;11;Satisfaction;;;;;;;;;;;
+Play with Cake;3205;27;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.BAD;;;;;reward for playing a Clown
+Play with Cake;3206;12;Social;;;;;Satisfaction.NEUTRAL;Satisfaction.SUPER_GOOD;;;;;
+Play with Cake;3207;-17;Satisfaction;;;;;;;Social.SUPER_GOOD;Social.SUPER_GOOD;;;if Lemo acepted, he gets Neg.rewords for Social an Satisf.
+Play with Cake;3208;-19;Social;;;;;;;Social.SUPER_GOOD;Social.SUPER_GOOD;;;if Lemo acepted, he gets Neg.rewords for Social an Satisf.
+Eat Cake;3101;-9;Energy;;;;;;;;;;;
+Eat Cake;3102;0;Social;;;Hunger.SUICIDAL;Hunger.GOOD;;;;;;;
+Eat Cake;3103;-22;Social;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bei keinem hunger bek Lemo neg ansehen (Verfresssen)
+Eat Cake;3104;33;Satisfaction;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
+Eat Cake;3105;21;Satisfaction;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake;3106;12;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+Eat Cake;3107;13;Health;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;bei kleinem hunger + helth sonst neg Helath
+Eat Cake;3108;-7;Health;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake;3109;-23;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bestrafung für überfressen
+Eat Cake;3110;33;Hunger;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;sättigungseffekt nimmt mit steigender sätigung ab
+Eat Cake;3111;17;Hunger;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake;3112;9;Hunger;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+Idle;1101;0;Health;;;;;;;;;;;
+Idle;1102;-8;Hunger;;;;;;;;;;;
+Idle;1103;-9;Energy;;;;;;;;;;;
+Idle;1104;-15;Satisfaction;;;Hunger.SUICIDAL;Hunger.NEUTRAL;;;;;;;
+Idle;1105;11;Satisfaction;Health.GOOD;Health.SUPER_GOOD;Hunger.GOOD;Hunger.SUPER_GOOD;;;;;;;
+Idle;1106;-20;Social;;;;;;;Social.SUICIDAL;Social.VERY_BAD;;;wirkt ignorant
+Idle;1107;-10;Social;;;;;;;Social.BAD;Social.NEUTRAL;;;
+Idle;1108;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
+Sleep;1201;50;Energy;;;;;;;;;Energy.SUICIDAL;Energy.GOOD;
+Sleep;1202;-13;Health;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;To much sleep is bad for health
+Sleep;1203;-20;Satisfaction;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;
+Sleep;1204;16;Satisfaction;;;;;;;;;Energy.SUICIDAL;Energy.GOOD;
+Sleep;1205;-13;Hunger;;;;Hunger.BAD;Hunger.SUPER_GOOD;;;;;;
+Sleep;1206;-26;Hunger;;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;
+Sleep;1207;26;Health;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
+Sleep;1208;17;Health;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Sleep;1209;7;Social;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
+Sleep;1210;-14;Social;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Sleep;1211;-21;Social;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;to much sleep makes Lemo unactractive, because of looking lazy
+Hug;1301;0;Health;;;;;;;;;;;Multiplayer Action, no Influence
+Hug;1302;-12;Energy;;;;;;;;;;;Multiplayer Action, cost some Energy
+Hug;1303;40;Social;;;;;;;;;;;Multiplayer Action, give a high Social Reward
+Hug;1304;25;Satisfaction;;;;;;;;;;;Multiplayer Action, also give a high Sattisfaction
+Hug;1305;-7;Hunger;;;;;;;;;;;Multiplayer Action, makes a little bit of Hunger
+;56;15;Social;;;;;;;Social.SUICIDAL;Social.GOOD;;;
+;57;5;Satisfaction;;;;;;;Social.SUICIDAL;Social.GOOD;;;
+;58;-15;Energy;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
+;59;-45;Satisfaction;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
+;60;-15;Social;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
+;61;-10;Satisfaction;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
+;62;-10;Energy;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
+;63;-15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
+;64;-5;Satisfaction;;;;;;;;;;;
+;65;-3;Energy;;;;;;;;;;;
+;66;-10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
+;67;15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
+;68;5;Satisfaction;;;;;;;;;;;
+;69;2;Energy;;;;;;;;;;;
+;70;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
+;71;-15;Hunger;;;;;;;;;;;
+;72;15;Hunger;;;;;;;;;;;
+;73;5;Energy;;;;;;;;;;;
+;74;5;Satisfaction;;;;;;;;;;;
+;75;-5;Satisfaction;;;;;;;;;;;
+;76;10;Energy;;;;;;;;;;;
+;77;-5;Energy;;;;;;;;;;;
+;78;-5;Satisfaction;;;;;;;;;;;
+;79;5;Satisfaction;;;;;;;;;;;
+;80;-10;Energy;;;;;;;;;;;
+;81;-10;Satisfaction;;;;;;;;;;;
+;82;10;Satisfaction;;;;;;;;;;;

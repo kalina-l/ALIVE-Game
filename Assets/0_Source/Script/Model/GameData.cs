@@ -64,13 +64,13 @@ public class GameData {
                 Dictionary<TraitType, Trait> traitList = creatorCSV.TraitList;
 
                 //_personality.AddTrait(_traitList[TraitType.INTROVERT], _itemList);
-                foreach (KeyValuePair<TraitType, Trait> kvp in traitList)
-                {
-                    if (Random.value <= 0.33)
-                    {
-                        Person.AddTrait(kvp.Value, Items);
-                    }
-                }
+                //foreach (KeyValuePair<TraitType, Trait> kvp in traitList)
+                //{
+                //    if (Random.value <= 0.33)
+                //    {
+                //        Person.AddTrait(kvp.Value, Items);
+                //    }
+                //}
                 break;
 
             case LoadStates.SavedState:

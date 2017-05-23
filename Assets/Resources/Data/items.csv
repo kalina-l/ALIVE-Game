@@ -1,10 +1,7 @@
-ID;Name;maxUses;Description;;
-1;Body;1;Tamas not consumable Unique item;;
-2;Ball;5;;;
--3;Doll;5;;;
-4;Cake;5;;;
-;;;;;
-;;;;;
-;;;;;
-;;;;;
-;;;;;
+﻿ID;Name;maxUses;Description
+1;Body;1;Tamas not consumable Unique item
+2;Ball;5;
+-4;Doll;5;
+3;Cake;5;
+-5;Salat;3;
+-6;ToyCar;1;

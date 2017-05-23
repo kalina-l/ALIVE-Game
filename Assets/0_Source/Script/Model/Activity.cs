@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum ActivityTag { OTHERSOCIAL, OWNSOCIAL, PHYSICAL, EATING, NATURAL, UNNATURAL, STANDARD, SLEEP }
+public enum ActivityTag { OTHERSOCIAL, OWNSOCIAL, PHYSICAL, EATING, NATURAL, UNNATURAL, STANDARD, SLEEP, MULTIPLAYER }
 
 public class Activity {
     public int ID { get; set; }
@@ -48,7 +48,8 @@ public class Activity {
         RewardList = new List<Reward>();
         LearnedExperiences = new List<Experience>();
         Tags = new List<ActivityTag>();
-		//if(item!=null) item.AddActivity (this);
+        //if(item!=null) item.AddActivity (this);
+        IsMultiplayer = false;
 
         Feedback = new Feedback();
     }

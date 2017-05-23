@@ -114,7 +114,11 @@ public class PersonalityCreator
                     act.useConsume = item.maxUses;
                 }
 
-                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                bool isMulti;
+                Boolean.TryParse(personalityCSV[i][5], out isMulti);
+                act.IsMultiplayer = isMulti;
+
+                string[] activityTags = personalityCSV[i][6].Split(new[] { ',' });
                 for(int l = 0; l < activityTags.Length; l++)
                 {
                     act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
@@ -163,7 +167,11 @@ public class PersonalityCreator
                 }
 
                 act = new Activity(ID, personalityCSV[i][2], null, Int32.Parse(personalityCSV[i][4]), personalityCSV[i][2]);
-                string[] activityTags = personalityCSV[i][5].Split(new[] { ',' });
+                bool isMulti;
+                Boolean.TryParse(personalityCSV[i][5], out isMulti);
+                act.IsMultiplayer = isMulti;
+
+                string[] activityTags = personalityCSV[i][6].Split(new[] { ',' });
                 for (int l = 0; l < activityTags.Length; l++)
                 {
                     act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
@@ -195,57 +203,100 @@ public class PersonalityCreator
     {
         Reward rew;
 
-        for (int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
+        for (int i = 1; (i < personalityCSV.GetLength(0))/* && (!String.IsNullOrEmpty(personalityCSV[i][0]))*/; i++)
         {
-            int ID = Int32.Parse(personalityCSV[i][0]);
-
             rew = new Reward();
-            rew.ID = ID;        
-
-            int value = Int32.Parse(personalityCSV[i][1]);
-            rew.RewardValue = value;
-            rew.RewardType = (NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[i][2]), true);
-
-            for(int j = 3; (j < personalityCSV[i].Length); j++)
+            for (int j = 0; (j < personalityCSV[i].Length); j++)
             {
-                if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+
+                switch (personalityCSV[0][j])
                 {
-                    string[] selection = personalityCSV[i][j].Split(new[] { '.' });
-                    switch (personalityCSV[0][j])
-                    {
-                        case "MinHealth":
+                    case "Reward ID":
+                        int ID = Int32.Parse(personalityCSV[i][j]);
+                        rew.ID = ID;
+                        break;
+                    case "Value":
+                        int value = Int32.Parse(personalityCSV[i][j]);
+                        rew.RewardValue = value;
+                        break;
+                    case "Type":
+                        rew.RewardType = (NeedType)Enum.Parse(typeof(NeedType), (personalityCSV[i][j]), true);
+                        break;
+                    case "MinHealth":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MinHealth = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MaxHealth":
+                        }
+                        break;
+                    case "MaxHealth":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MaxHealth = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MinHunger":
+                        }
+                        break;
+                    case "MinHunger":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MinHunger = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MaxHunger":
+                        }
+                        break;
+                    case "MaxHunger":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MaxHunger = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MinSatisfaction":
+                        }
+                        break;
+                    case "MinSatisfaction":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MinSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MaxSatisfaction":
+                        }
+                        break;
+                    case "MaxSatisfaction":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MaxSatisfaction = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MinSocial":
+                        }
+                        break;
+                    case "MinSocial":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MinSocial = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MaxSocial":
+                        }
+                        break;
+                    case "MaxSocial":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MaxSocial = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MinEnergy":
+                        }
+                        break;
+                    case "MinEnergy":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MinEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                        case "MaxEnergy":
+                        }
+                        break;
+                    case "MaxEnergy":
+                        if (!String.IsNullOrEmpty(personalityCSV[i][j]))
+                        {
+                            string[] selection = personalityCSV[i][j].Split(new[] { '.' });
                             rew.MaxEnergy = (Evaluation)Enum.Parse(typeof(Evaluation), selection[1], true);
-                            break;
-                    }
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
+            //Debug.Log(rew.ID + ": " + rew.RewardValue + " " + rew.RewardType);
             Rewards.Add(rew);
         }
     }
