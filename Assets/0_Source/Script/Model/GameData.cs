@@ -89,7 +89,7 @@ public class GameData {
         {
             traits += trait.Identifier + " | ";
         }
-        Debug.Log(traits);
+        DebugController.Instance.Log(traits, DebugController.DebugType.System);
 
     }
 }

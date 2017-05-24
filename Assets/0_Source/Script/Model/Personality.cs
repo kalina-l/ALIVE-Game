@@ -215,6 +215,23 @@ public class Personality {
         return activities;
     }
 
+    public void PrintAllRewards()
+    {
+        DebugController.Instance.Log("-------------------------------------", DebugController.DebugType.Activity);
+
+        List<Activity> activities = GetAllActivities();
+
+        for (int i = 0; i < activities.Count; i++)
+        {
+            if (!activities[i].IsMultiplayer || ApplicationManager.Instance.Multiplayer.IsConnected)
+            {
+                activities[i].PrintExperience(this);
+            }
+        }
+
+        DebugController.Instance.Log("-------------------------------------", DebugController.DebugType.Activity);
+    }
+
 	public Dictionary<int, Item> GetItems() {
 		return Items;
 	}

@@ -125,11 +125,11 @@ public class Activity {
             {
                 if(LearnedExperiences[i].UpdateRewards(xp.Rewards))
                 {
-                    Debug.Log(feedBackString + ": Updated Rewards!");
+                    DebugController.Instance.Log(feedBackString + ": Updated Rewards!", DebugController.DebugType.Activity);
                 }
                 else
                 {
-                    Debug.Log(feedBackString + " (nothing learned...)");
+                    DebugController.Instance.Log(feedBackString + " (nothing learned...)", DebugController.DebugType.Activity);
                 }
                 xp.PrintRewards();
 
@@ -147,7 +147,6 @@ public class Activity {
 			item.uses += useConsume;
 			if (item.uses >= item.maxUses) {
 				ApplicationManager.Instance.RemoveItem ();
-				//parentPersonality.RemoveItem (item.ID);
 			}
 		}
 
@@ -197,6 +196,13 @@ public class Activity {
         }
         
         return LearnedExperiences[bestExperienceID];
+    }
+
+    public void PrintExperience(Personality personality)
+    {
+        DebugController.Instance.Log(Name + " REWARDS:", DebugController.DebugType.Activity);
+        Experience xp = GetExperience(new PersonalityNode(personality));
+        xp.PrintRewards();
     }
 
     private Experience GetRandomExperience(PersonalityNode personality)

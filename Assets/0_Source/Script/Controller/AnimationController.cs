@@ -17,7 +17,7 @@ public class AnimationController {
 
     public void PlayActivityAnimation(Activity activity, Personality personality) {
 
-        Debug.Log("Play animation for " + activity.Name);
+        DebugController.Instance.Log("Play animation for " + activity.Name, DebugController.DebugType.Animation);
 
         switch (activity.Name) {
             case "Sleep":

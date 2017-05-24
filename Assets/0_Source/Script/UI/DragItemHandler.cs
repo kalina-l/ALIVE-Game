@@ -47,6 +47,6 @@ public class DragItemHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         _item.Drop.SetDropZone(false);
 
-        Debug.Log("EndDrag");
+        DebugController.Instance.Log("EndDrag", DebugController.DebugType.UI);
     }
 }

@@ -109,7 +109,7 @@ public class Experience {
             {
                 if(Rewards[reward.Key] == 0)
                 {
-                    Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                    DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                     Rewards[reward.Key] = reward.Value;
                     changedRewards = true;
                 }
@@ -117,7 +117,7 @@ public class Experience {
                 {
                     if (reward.Value < Rewards[reward.Key])
                     {
-                        Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                        DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                         Rewards[reward.Key] = reward.Value;
                         changedRewards = true;
                     }
@@ -126,7 +126,7 @@ public class Experience {
                 {
                     if (reward.Value > Rewards[reward.Key])
                     {
-                        Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                        DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                         Rewards[reward.Key] = reward.Value;
                         changedRewards = true;
                     }
@@ -146,7 +146,7 @@ public class Experience {
             s += reward.Key.ToString() + ": " + reward.Value + " | ";
         }
 
-        Debug.Log(s);
+        DebugController.Instance.Log(s, DebugController.DebugType.Activity);
     }
 
     public override string ToString()

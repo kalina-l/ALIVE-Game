@@ -91,19 +91,23 @@ public class GameLoopController {
 
     private IEnumerator DoActivityRoutine()
     {
-        Debug.Log("Start of Loop");
+        DebugController debug = DebugController.Instance;
+
+        debug.Log("Start of Loop", DebugController.DebugType.GameFlow);
 
         bool removeExtraActivity = false;
 
         if (_manager.Multiplayer.IsRequestPending())
         {
-            Debug.Log("Check multiplayer Request");
+            debug.Log("Check multiplayer Request", DebugController.DebugType.GameFlow);
 
             _data.Person.AddBaseActivity(_manager.Multiplayer.GetPendingActivity());
             removeExtraActivity = true;
         }
 
-        Debug.Log("Calculate Next Activity");
+        debug.Log("Calculate Next Activity", DebugController.DebugType.GameFlow);
+
+        _data.Person.PrintAllRewards();
 
         _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
 
@@ -118,14 +122,14 @@ public class GameLoopController {
         int activityID = _data.Intelligence.GetResult();
         int askActivityID = -1;
 
-        Debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID);
+        debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID, DebugController.DebugType.Activity);
         
         //TODO: Change threshold with trait
         bool askForItem = _data.Intelligence.GetValue() <= 0;
 
         if (askForItem)
         {
-            Debug.Log("Ask for Item");
+            debug.Log("Ask for Item", DebugController.DebugType.GameFlow);
 
             _data.Intelligence.AskForItem(_data.Person, _data.Items);
 
@@ -139,7 +143,7 @@ public class GameLoopController {
 
             askActivityID = _data.Intelligence.GetResult();
 
-            Debug.Log("Item Found");
+            debug.Log("Item Found", DebugController.DebugType.GameFlow);
         }
 
 
@@ -151,7 +155,7 @@ public class GameLoopController {
 
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
-                    Debug.Log("Check " + _data.Items[i].Name);
+                    debug.Log("Check " + _data.Items[i].Name, DebugController.DebugType.GameFlow);
                     foreach (Activity activity in _data.Items[i].GetAllActivities())
                     {
                         if (activity.ID == askActivityID)
@@ -172,16 +176,16 @@ public class GameLoopController {
                 }
                 else
                 {
-                    Debug.Log("NO EXTRA ITEM NEEDED - I want to " + _data.Person.GetActivity(activityID).feedBackString);
+                    debug.Log("NO EXTRA ITEM NEEDED - I want to " + _data.Person.GetActivity(activityID).feedBackString, DebugController.DebugType.GameFlow);
                 }
                 
             }
 
-            Debug.Log("Get Activity");
+            debug.Log("Get Activity", DebugController.DebugType.GameFlow);
 
             _lastActivity = _data.Person.GetActivity(activityID);
 
-            Debug.Log("Do Multiplayer");
+            debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
 
             if (_lastActivity.IsMultiplayer) {
                 if (_lastActivity.IsRequest) {
@@ -203,7 +207,7 @@ public class GameLoopController {
                 _manager.Multiplayer.DeclineRequest();
             }
 
-            Debug.Log("Do Activity");
+            debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
             _lastExperience = _lastActivity.DoActivity(_data.Person);
 
@@ -215,14 +219,14 @@ public class GameLoopController {
 
             _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
 
-            Debug.Log("Animate");
+            debug.Log("Animate", DebugController.DebugType.GameFlow);
 
             while (_manager.CharacterAnimation.IsAnimating)
             {
                 yield return 0;
             }
 
-            Debug.Log("UpdateUI");
+            debug.Log("UpdateUI", DebugController.DebugType.GameFlow);
 
             _manager.UpdateUI();
 
@@ -236,7 +240,7 @@ public class GameLoopController {
             _lastActivity = null;
         }
 
-        Debug.Log("End of Loop");
+        debug.Log("End of Loop", DebugController.DebugType.GameFlow);
     }
 
 
