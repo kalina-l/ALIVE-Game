@@ -8,6 +8,8 @@ public class PersonalityNode {
     public List<int> ActivityIDs;
 	public List<Item> Items;
 
+    public MultiplayerController Multiplayer { get; set; }
+
     public PersonalityNode Parent;
     public List<PersonalityNode> Children;
 
@@ -46,6 +48,8 @@ public class PersonalityNode {
         Depth = 0;
 		SelfEvaluation = 0;
 		BestChildsEvaluation = int.MinValue;
+
+        Multiplayer = basePerson.Multiplayer;
 
         Children = new List<PersonalityNode>();
     }
@@ -91,6 +95,8 @@ public class PersonalityNode {
         SelfEvaluation = 0;
         BestChildsEvaluation = int.MinValue;
 
+        Multiplayer = basePerson.Multiplayer;
+
         Children = new List<PersonalityNode>();
     }
 
@@ -122,6 +128,8 @@ public class PersonalityNode {
 
 		SelfEvaluation = Evaluation ();
 		BestChildsEvaluation = 0;
+
+        Multiplayer = parent.Multiplayer;
 
         if (usedItem != null)
         {

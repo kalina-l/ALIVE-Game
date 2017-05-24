@@ -12,6 +12,8 @@ public class Personality {
     public Dictionary<int, Item> Items;
     public List<Trait> Traits;
 
+    public MultiplayerController Multiplayer { get; set; }
+
     [SerializeField]
     private Dictionary<AttributeType, Attribute> Attributes;
     
@@ -223,7 +225,7 @@ public class Personality {
 
         for (int i = 0; i < activities.Count; i++)
         {
-            if (!activities[i].IsMultiplayer || ApplicationManager.Instance.Multiplayer.IsConnected)
+            if (!activities[i].IsMultiplayer || Multiplayer.IsConnected)
             {
                 activities[i].PrintExperience(this);
             }

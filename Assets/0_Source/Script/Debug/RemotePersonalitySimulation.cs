@@ -39,7 +39,7 @@ public class RemotePersonalitySimulation {
         _manager = manager;
         _manager.StartCoroutine(Simulate());
 
-        _multiplayer = new MultiplayerController(_personality);
+        _multiplayer = new MultiplayerController(_personality, "remote");
         _multiplayer.ConnectWithRemote(manager.Multiplayer);
     }
 
@@ -81,14 +81,25 @@ public class RemotePersonalitySimulation {
 
     private IEnumerator DoActivityRoutine()
     {
+        DebugController.Instance.Log("remote: start activity loop", DebugController.DebugType.Multiplayer);
         bool removeExtraActivity = false;
 
         if (_multiplayer.IsRequestPending())
         {
             _personality.AddBaseActivity(_multiplayer.GetPendingActivity());
+            DebugController.Instance.Log("remote: add activity " + _personality.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
             removeExtraActivity = true;
         }
 
+        List<Activity> activities = _personality.GetAllActivities();
+        string d = "";
+
+        for(int i=0; i<activities.Count; i++)
+        {
+            d += activities[i].Name + ", ";
+        }
+
+        DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
         _intelligence.GetNextActivity(_personality, _multiplayer.IsConnected);
 
         float timer = 0;
@@ -98,6 +109,8 @@ public class RemotePersonalitySimulation {
             timer += Time.deltaTime;
             yield return 0;
         }
+
+        DebugController.Instance.Log("remote: calculation took " + timer, DebugController.DebugType.Multiplayer);
 
         int activityID = _intelligence.GetResult();
 
@@ -130,6 +143,7 @@ public class RemotePersonalitySimulation {
                 _multiplayer.DeclineRequest();
             }
 
+            DebugController.Instance.Log("remote: " + _lastActivity.Name, DebugController.DebugType.Multiplayer);
             _lastExperience = _lastActivity.DoActivity(_personality);
         }
         else
@@ -141,6 +155,8 @@ public class RemotePersonalitySimulation {
         if (removeExtraActivity)
         {
             _personality.RemovePendingActivity();
+
+            DebugController.Instance.Log("remote: remove activity " + _personality.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
         }
     }
 

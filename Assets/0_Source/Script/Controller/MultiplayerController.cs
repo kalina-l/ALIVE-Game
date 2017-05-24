@@ -15,6 +15,8 @@ public class MultiplayerController {
     private Personality _localPersonality;
     private MultiplayerController _remoteController;
 
+    private string _id;
+
     private Activity _currentMultiplayerActivity;
 
     private bool _gettingRequest;
@@ -43,8 +45,10 @@ public class MultiplayerController {
         return _currentMultiplayerActivity;
     }
     
-    public MultiplayerController(Personality localPersonality) {
+    public MultiplayerController(Personality localPersonality, string id) {
         _localPersonality = localPersonality;
+        _id = id;
+        _localPersonality.Multiplayer = this;
     }
 
     public void ConnectWithRemote(MultiplayerController remoteController) {
@@ -84,11 +88,13 @@ public class MultiplayerController {
 
     public void GetFeedback(int feedback)
     {
-        ApplicationManager.Instance.GiveFeedback(feedback);
+        //ApplicationManager.Instance.GiveFeedback(feedback);
     }
 
     public void SendActivityRequest(Activity activity)
     {
+        DebugController.Instance.Log(_id + ": Send Request for " + activity.Name, DebugController.DebugType.Multiplayer);
+
         activity.IsDeclined = false;
 
         _sendingRequest = true;
@@ -98,6 +104,8 @@ public class MultiplayerController {
 
     public void GetActivityRequest(Activity activity)
     {
+        DebugController.Instance.Log(_id + ": Get Request for " + activity.Name, DebugController.DebugType.Multiplayer);
+
         activity.IsRequest = true;
         _currentMultiplayerActivity = activity;
         _gettingRequest = true;
@@ -105,6 +113,8 @@ public class MultiplayerController {
 
     public void AcceptRequest()
     {
+        DebugController.Instance.Log(_id + ": AcceptRequest", DebugController.DebugType.Multiplayer);
+
         if (_gettingRequest)
         {
             _remoteController.AcceptRequest();
@@ -118,6 +128,8 @@ public class MultiplayerController {
 
     public void DeclineRequest()
     {
+        DebugController.Instance.Log(_id + ": DeclineRequest", DebugController.DebugType.Multiplayer);
+
         if(_gettingRequest)
         {
             _remoteController.DeclineRequest();

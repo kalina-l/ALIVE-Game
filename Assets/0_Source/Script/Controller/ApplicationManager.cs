@@ -77,7 +77,7 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        _multiplayer = new MultiplayerController(_data.Person);
+        _multiplayer = new MultiplayerController(_data.Person, "local");
 
         
         
