@@ -14,6 +14,7 @@ public class GameLoopController {
     private Activity _lastActivity;
 
     public bool waitForFeedback;
+    public static int ASK_FOR_ITEM_FACTOR = 0;
 
     public GameLoopController(ApplicationManager manager, GameData data) {
         _manager = manager;
@@ -124,8 +125,7 @@ public class GameLoopController {
 
         debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID, DebugController.DebugType.Activity);
         
-        //TODO: Change threshold with trait
-        bool askForItem = _data.Intelligence.GetValue() <= 0;
+        bool askForItem = _data.Intelligence.GetValue() <= ASK_FOR_ITEM_FACTOR;
 
         if (askForItem)
         {

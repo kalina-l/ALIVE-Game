@@ -8,6 +8,8 @@ public class Trait {
 
     public TraitType Identifier { get; set; }
     public int TraitTag;
+    public int FeedbackModifier;
+    public int AskForItemModifier;
 
     public Dictionary<NeedType, int[]> ThresholdModifiers;
     public Dictionary<ActivityTag, List<Reward>> ActivityModifiers;
@@ -17,6 +19,8 @@ public class Trait {
         Identifier = identifier;
         ThresholdModifiers = new Dictionary<NeedType, int[]>();
         ActivityModifiers = new Dictionary<ActivityTag, List<Reward>>();
+        FeedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+        AskForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
     }
 
     public bool AddThresholdModifier(NeedType needType, int[] thresholdModifier)
@@ -29,7 +33,7 @@ public class Trait {
         else
         {
             Debug.LogWarning(needType.ToString() + " is already added to this Trait " + Identifier.ToString());
-            return true;
+            return false;
         }
     }
 
@@ -45,6 +49,18 @@ public class Trait {
             Debug.LogWarning(actTag.ToString() + " is already added to this Trait " + Identifier.ToString());
             return false;
         }
+    }
+
+    public bool AddFeedbackModifier(int feedbackModifier)
+    {
+        FeedbackModifier = feedbackModifier;
+        return true;
+    }
+
+    public bool AddAskForItemModifier(int askForItemModifier)
+    {
+        AskForItemModifier = askForItemModifier;
+        return true;
     }
 
     public void PrintThresholds()

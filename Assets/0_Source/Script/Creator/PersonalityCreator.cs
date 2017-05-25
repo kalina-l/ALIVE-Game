@@ -386,6 +386,44 @@ public class PersonalityCreator
                                     }
                                     trait.AddActivityModifier(actTag, activityModifier);
                                 }
+                                if (personalityCSV[l][0].Equals("feedback"))
+                                {
+                                    int feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+                                    foreach(char ch in personalityCSV[l][1])
+                                    {
+                                        switch(ch)
+                                        {
+                                            case '+':
+                                                feedbackModifier += 25;
+                                                break;
+                                            case '-':
+                                                feedbackModifier -= 25;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddFeedbackModifier(feedbackModifier);
+                                }
+                                if (personalityCSV[l][0].Equals("askForItem"))
+                                {
+                                    int askForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
+                                    foreach (char ch in personalityCSV[l][1])
+                                    {
+                                        switch (ch)
+                                        {
+                                            case '+':
+                                                askForItemModifier += 50;
+                                                break;
+                                            case '-':
+                                                askForItemModifier -= 50;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddAskForItemModifier(askForItemModifier);
+                                }
                                 k = l;
                             }
                             TraitList[trait.Identifier] = trait;

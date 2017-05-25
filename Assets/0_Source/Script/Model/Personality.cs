@@ -152,6 +152,9 @@ public class Personality {
             }
         }
 
+        PersonalityNode.FEEDBACK_FACTOR = trait.FeedbackModifier;
+        GameLoopController.ASK_FOR_ITEM_FACTOR = trait.AskForItemModifier;
+
         return this;
     }
 

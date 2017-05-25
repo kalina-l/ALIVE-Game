@@ -21,6 +21,7 @@ public class PersonalityNode {
 	public bool visited = false;
 
     public float FeedBack;
+    public static int FEEDBACK_FACTOR = 100;
 
     public float DISCOUNT_FACTOR = 0.91f;
 
@@ -161,9 +162,8 @@ public class PersonalityNode {
 	}
 
     public float Evaluation()
-    {
-        //TODO: change with trait
-        float value = FeedBack * 100;
+    {       
+        float value = FeedBack * FEEDBACK_FACTOR;
 
         foreach (KeyValuePair<NeedType, Evaluation> need in Needs)
         {
