@@ -41,7 +41,6 @@ public class MultiplayerController {
 
     public Activity GetPendingActivity()
     {
-        _currentMultiplayerActivity.ID = Personality.PENDING_ACTIVITY_ID;
         return _currentMultiplayerActivity;
     }
     
@@ -54,6 +53,8 @@ public class MultiplayerController {
     public void ConnectWithRemote(MultiplayerController remoteController) {
         _remoteController = remoteController;
         IsConnected = true;
+
+        DebugController.Instance.Log("CONNECTED", DebugController.DebugType.Multiplayer);
     }
 	
     public void Disconnect() {
@@ -99,15 +100,16 @@ public class MultiplayerController {
 
         _sendingRequest = true;
         _currentMultiplayerActivity = activity;
-        _remoteController.GetActivityRequest(activity);
+        _remoteController.GetActivityRequest(activity.ID);
     }
 
-    public void GetActivityRequest(Activity activity)
+    public void GetActivityRequest(int activityID)
     {
-        DebugController.Instance.Log(_id + ": Get Request for " + activity.Name, DebugController.DebugType.Multiplayer);
+        _currentMultiplayerActivity = _localPersonality.GetActivity(activityID);
+        _currentMultiplayerActivity.IsRequest = true;
 
-        activity.IsRequest = true;
-        _currentMultiplayerActivity = activity;
+        DebugController.Instance.Log(_id + ": Get Request for " + _currentMultiplayerActivity.Name, DebugController.DebugType.Multiplayer);
+
         _gettingRequest = true;
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DebugController : MonoBehaviour {
 
+    public bool debugAI;
+
     public static DebugController Instance;
 
     public DebugType logType1;

@@ -28,8 +28,15 @@ public class ArtificialIntelligence
         _items = items;
         _askForItem = true;
 
-        _thread = new Thread(getBestItem);
-        _thread.Start();
+        if (DebugController.Instance.debugAI)
+        {
+            getBestItem();
+        }
+        else
+        {
+            _thread = new Thread(getBestItem);
+            _thread.Start();
+        }
     }
 
     public void GetNextActivity(Personality personality, bool isConnected)
@@ -40,13 +47,23 @@ public class ArtificialIntelligence
 
         _isConnected = isConnected;
 
-        _thread = new Thread(getBestAction);
-        _thread.Start();
+        if (DebugController.Instance.debugAI)
+        {
+            getBestAction();
+        }
+        else
+        {
+            _thread = new Thread(getBestAction);
+            _thread.Start();
+        }
     }
 
     public int GetResult()
     {
-        _thread.Abort();
+        if (!DebugController.Instance.debugAI)
+        {
+            _thread.Abort();
+        }
         return _result;
     }
 
@@ -125,6 +142,11 @@ public class ArtificialIntelligence
                                 activity = boxItem.GetActivity(pn.ActivityIDs[i]);
                             }
                         }
+                    }
+
+                    if(activity == null)
+                    {
+                        DebugController.Instance.Log("Activity " + pn.ActivityIDs[i] + " is null", DebugController.DebugType.None);
                     }
 
                     Item item = null;

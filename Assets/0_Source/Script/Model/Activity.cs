@@ -48,7 +48,6 @@ public class Activity {
         RewardList = new List<Reward>();
         LearnedExperiences = new List<Experience>();
         Tags = new List<ActivityTag>();
-        //if(item!=null) item.AddActivity (this);
         IsMultiplayer = false;
 
         Feedback = new Feedback();
@@ -149,6 +148,9 @@ public class Activity {
 				ApplicationManager.Instance.RemoveItem ();
 			}
 		}
+
+        IsRequest = false;
+        IsDeclined = false;
 
         return xp;
     }

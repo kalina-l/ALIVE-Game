@@ -82,13 +82,10 @@ public class RemotePersonalitySimulation {
     private IEnumerator DoActivityRoutine()
     {
         DebugController.Instance.Log("remote: start activity loop", DebugController.DebugType.Multiplayer);
-        bool removeExtraActivity = false;
 
         if (_multiplayer.IsRequestPending())
         {
-            _personality.AddBaseActivity(_multiplayer.GetPendingActivity());
             DebugController.Instance.Log("remote: add activity " + _personality.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
-            removeExtraActivity = true;
         }
 
         List<Activity> activities = _personality.GetAllActivities();
@@ -149,14 +146,6 @@ public class RemotePersonalitySimulation {
         else
         {
             _lastActivity = null;
-        }
-
-        //remove multiplayer activity
-        if (removeExtraActivity)
-        {
-            _personality.RemovePendingActivity();
-
-            DebugController.Instance.Log("remote: remove activity " + _personality.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
         }
     }
 

@@ -95,15 +95,11 @@ public class GameLoopController {
         DebugController debug = DebugController.Instance;
 
         debug.Log("Start of Loop", DebugController.DebugType.GameFlow);
-
-        bool removeExtraActivity = false;
+        
 
         if (_manager.Multiplayer.IsRequestPending())
         {
             debug.Log("Check multiplayer Request", DebugController.DebugType.GameFlow);
-
-            _data.Person.AddBaseActivity(_manager.Multiplayer.GetPendingActivity());
-            removeExtraActivity = true;
         }
 
         debug.Log("Calculate Next Activity", DebugController.DebugType.GameFlow);
@@ -229,11 +225,7 @@ public class GameLoopController {
             debug.Log("UpdateUI", DebugController.DebugType.GameFlow);
 
             _manager.UpdateUI();
-
-            //remove multiplayer activity
-            if (removeExtraActivity) {
-                _data.Person.RemovePendingActivity();
-            }
+            
         }
         else
         {
