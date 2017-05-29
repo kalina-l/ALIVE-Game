@@ -24,7 +24,10 @@ public class FeedbackViewController : AbstractViewController {
     {
         Rect = CreateContainer("Feedback", parent,
             Vector2.zero, new Vector2(1080, 1920),
-            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
+            new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f), new Vector2(0.5f, 0.5f));
+
+        Rect.offsetMax = Vector2.zero;
+        Rect.offsetMin = Vector2.zero;
         View = Rect.gameObject;
 
         _audioFeedbackController = new AudioFeedbackController(this);
@@ -36,16 +39,16 @@ public class FeedbackViewController : AbstractViewController {
 
        _startRecording = CreateButton(
                                     CreateContainer("StartRecording", Rect,
-                                    new Vector2(460, 40), _buttonSize*0.65f,
-                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                                    new Vector2(-60, 40), _buttonSize*0.65f,
+                                    new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f)),
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
         AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
         RectTransform startStreamingRect =
                                     CreateContainer("StartStreaming", Rect,
-                                    new Vector2(460, -150), _buttonSize * 0.65f,
-                                    new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));                                 
+                                    new Vector2(-60, -150), _buttonSize * 0.65f,
+                                    new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f));                                 
         PointerListener pl = startStreamingRect.gameObject.AddComponent<PointerListener>();
         pl.AddOnDownDelegate(_videoFeedbackController.StartRecording);
         pl.AddOnUpDelegate(_videoFeedbackController.StopRecording);

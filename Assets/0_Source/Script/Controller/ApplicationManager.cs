@@ -37,6 +37,7 @@ public class ApplicationManager : MonoBehaviour {
     private ItemBoxViewController _itemBox;
     private ConditionViewController _conditionMonitor;
     private AlertViewController _alert;
+    private OptionsMenuController _options;
 
     //Simulation
     private RemotePersonalitySimulation _simulation;
@@ -62,6 +63,8 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _data.Intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
+        _options = new OptionsMenuController(UICanvas.transform);
+
         CharacterAnimation = new AnimationController();
         
         if (resetButton)
@@ -149,5 +152,22 @@ public class ApplicationManager : MonoBehaviour {
     public FeedbackViewController getFeedbackController()
     {
         return _feedback;
+    }
+
+    public void StartMultiplayer()
+    {
+        if (!Multiplayer.IsConnected)
+        {
+            _simulation = new RemotePersonalitySimulation(this, _data.Person);
+            _multiplayer.ConnectWithRemote(_simulation.GetController());
+        }
+    }
+
+    public void StopMultiplayer()
+    {
+        if (Multiplayer.IsConnected)
+        {
+            Multiplayer.Disconnect();
+        }
     }
 }
