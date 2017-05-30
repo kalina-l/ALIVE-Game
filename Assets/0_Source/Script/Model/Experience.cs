@@ -9,8 +9,6 @@ public class Experience {
     public Dictionary<NeedType, Evaluation> BaseNeeds;
     public Dictionary<NeedType, int> Rewards;
 
-    public int Feedback;
-
     public Experience()
     {
         BaseNeeds = new Dictionary<NeedType, Evaluation>();

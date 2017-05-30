@@ -260,4 +260,9 @@ public class Activity {
 
         return r;
     }
+
+    public void DebugWholeFeedbackValue ()
+    {
+        DebugController.Instance.Log("Activity " + Name + " has a total feedback value: " + Feedback.GetWholeFeedbackValue(), DebugController.DebugType.Activity);
+    }
 }

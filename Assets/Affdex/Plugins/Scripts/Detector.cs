@@ -318,8 +318,6 @@ namespace Affdex
 
             rootPath = Path.Combine(rootPath, "Plugins");
 
-            Debug.Log("Detector.Initialize: Starting affdex SDK using (" + Application.platform + ") Platform");
-
             //use Application.platform to determine platform
             if (RuntimePlatform.WindowsEditor == Application.platform || RuntimePlatform.WindowsPlayer == Application.platform)
             {
@@ -358,7 +356,6 @@ namespace Affdex
                 Emotions targetEmotion = (Emotions)i;
                 if (emotions.On(targetEmotion))
                 {
-                    Debug.Log(targetEmotion + " is on");
                     nativePlatform.SetEmotionState(i, true);
                 }
             }
@@ -369,7 +366,6 @@ namespace Affdex
                 Expressions targetExpression = (Expressions)i;
                 if (expressions.On(targetExpression))
                 {
-                    Debug.Log(targetExpression + " is on");
                     nativePlatform.SetExpressionState(i, true);
                 }
             }

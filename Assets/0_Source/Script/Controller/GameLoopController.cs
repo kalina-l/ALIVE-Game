@@ -31,9 +31,16 @@ public class GameLoopController {
         {
             if (_lastActivity != null)
             {
-                //Store Feedback in Activity
-                _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
+                if (feedback != 0)
+                {
+                    //Store Feedback in Activity
+                    _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
 
+                } else
+                {
+                    _lastActivity.Feedback.AddNoFeedbackGiven(_lastExperience.BaseNeeds);
+                }
+                _lastActivity.DebugWholeFeedbackValue();
                 //Show Feedback
                 _manager.ShowFeedback(feedback);
             }
