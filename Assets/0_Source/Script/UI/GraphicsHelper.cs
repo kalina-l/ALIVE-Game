@@ -7,6 +7,7 @@ public class GraphicsHelper : MonoBehaviour {
     public static GraphicsHelper Instance;
 
     public GameObject lemo;
+    public Transform itemAnchor;
 
     public Font UIFont;
 
@@ -57,6 +58,9 @@ public class GraphicsHelper : MonoBehaviour {
     public AnimationCurve SliderAnimation;
     public AnimationCurve AlertAnimation;
 
+    public GameObject cakePrefab;
+    public GameObject ballPrefab;
+
     void Awake()
     {
         Instance = this;
@@ -73,4 +77,16 @@ public class GraphicsHelper : MonoBehaviour {
         return new Color(lerp.x, lerp.y, lerp.z, Mathf.Lerp(c1.a, c2.a, t));
     }
     
+    public GameObject GetItemObject(string itemName)
+    {
+        switch (itemName)
+        {
+            case "Ball":
+                return ballPrefab;
+            case "Cake":
+                return cakePrefab;
+        }
+
+        return null;
+    }
 }

@@ -127,7 +127,6 @@ public class ArtificialIntelligence
                     if (activity.IsMultiplayer && !_isConnected)
                     {
                         blockMultiplayer = true;
-                        Debug.Log("block multiplayer " + activity.Name + " connected: " + _isConnected);
                     }
                 }
 
