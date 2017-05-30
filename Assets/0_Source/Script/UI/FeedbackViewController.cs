@@ -86,4 +86,9 @@ public class FeedbackViewController : AbstractViewController {
 
     }
 
+    public FeedbackType getLastFeedbackType()
+    {
+        return lastFeedbackType;
+    }
+
 }

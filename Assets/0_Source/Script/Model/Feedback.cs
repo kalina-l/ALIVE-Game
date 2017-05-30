@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 public class Feedback {
 
+    private static int globalFeedbackCounter;
+
+    private static int GLOBAL_MAX_FEEDBACK_VALUE = 3;                       // the feedback value lemo gets no actions resulted with any feedback for a long time
+    private static int GLOBAL_MIN_FEEDBACK_VALUE = 0;
+    private static int GLOBAL_ACTIONS_BEFORE_LOWERING = 1;                  // after how many with feedback evaluated actions the feedback value sinks
+    private static int globalFeedbackValue = GLOBAL_MAX_FEEDBACK_VALUE;     // depends on the conditioning schedule, it lowers with continuous positive reinforcement and grows every time no feedback to an action is given
+
     [SerializeField]
     private float[] EnergyFeedback;
     [SerializeField]
@@ -18,13 +25,16 @@ public class Feedback {
     [SerializeField]
     private int feedbackCounter;                         // numbers of evaluated actions in row (set to 0 if action did not got a feedback)
 
-    private static int MAX_FEEDBACK_VALUE = 5;           // the feedback value lemo gets for and action which didn't result with any feedback for a long time
+    private static int MAX_FEEDBACK_VALUE = 5;           // the feedback value lemo gets for an action which didn't result with any feedback for a long time
+    private static int MIN_FEEDBACK_VALUE = 2;
     private static int FORGETTING_VALUE = 2;             // how much lemo forgets every not evaluated action (used same way as feedback variable, but feedback exp goes towards zero)
     private static int ACTIONS_BEFORE_LOWERING = 2;      // after how many with feedback evaluated actions the feedback value sinks
     private int feedbackValue = MAX_FEEDBACK_VALUE;      // depends on the conditioning schedule, it lowers with continuous positive reinforcement and grows every time no feedback to an action is given
     private bool lastTimePositive;                       // if the feedback varies in value from the last time, feedbackValue is set to MAX_FEEDBACK_VALUE and ACTIONS_BEFORE_LOWERING is resetted
 
-    // HOW IT WORKS (P - positive, N - negative, O - none):
+    private Queue<FeedbackType> lastFeedbackTypes = new Queue<FeedbackType>();       // types of last used feedback
+
+    // HOW FEEDBACK WORKS (P - positive, N - negative, O - none):
     //                      P  P  P  P  P  P  P  P  P  P  P  O  O  P  P  P  N  N  N ...
     // FEEDBACK VALUE       5  5  4  4  3  3  2  2  2  2  2  3  4  4  4  3  5  5  4 ...
     // GIVEN FEEDBACK      +5 +5 +4 +4 +3 +3 +2 +2 +2 +2 +2  -  - +4 +4 +3 -5 -5 -4 ...
@@ -48,17 +58,29 @@ public class Feedback {
         }
 
         feedbackCounter = 0;
+        globalFeedbackCounter = 0;
     }
 
     public void AddFeedback(Dictionary<NeedType, Evaluation> Needs, int feedBack)
     {
+        bool rareFeedback = isFeedbackRare(ApplicationManager.Instance.getFeedbackController().getLastFeedbackType());
         bool isPositive = feedBack > 0;
-        if(lastTimePositive != isPositive)
+
+        if(rareFeedback || lastTimePositive != isPositive)
         {
             feedbackValue = MAX_FEEDBACK_VALUE;
             feedbackCounter = 0;
+            globalFeedbackValue = GLOBAL_MAX_FEEDBACK_VALUE;
+            globalFeedbackCounter = 0;
         }
+        
         feedBack *= feedbackValue;
+        if (isPositive)
+            feedBack += globalFeedbackValue;
+        else
+            feedBack -= globalFeedbackValue;
+
+        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Activity);
 
         DebugController.Instance.Log("Given feedback (distributed): " + feedBack, DebugController.DebugType.Activity);
 
@@ -129,12 +151,38 @@ public class Feedback {
         }
 
         feedbackCounter++;
-        if (feedbackCounter >= ACTIONS_BEFORE_LOWERING && feedbackValue >= 3)
+        globalFeedbackCounter++;
+        if (feedbackCounter >= ACTIONS_BEFORE_LOWERING && feedbackValue > MIN_FEEDBACK_VALUE)
         {
             feedbackValue--;
             feedbackCounter = 0;
         }
+        if (globalFeedbackCounter >= GLOBAL_ACTIONS_BEFORE_LOWERING && globalFeedbackValue > GLOBAL_MIN_FEEDBACK_VALUE)
+        {
+            globalFeedbackValue--;
+            globalFeedbackCounter = 0;
+        }
         lastTimePositive = isPositive;
+    }
+
+    private bool isFeedbackRare (FeedbackType feedbackType)
+    {
+        if(lastFeedbackTypes.Count >= 20)
+        {
+            lastFeedbackTypes.Dequeue();
+        }
+        lastFeedbackTypes.Enqueue(feedbackType);
+
+        int counter = 0;
+        foreach(FeedbackType ft in lastFeedbackTypes)
+        {
+            if(ft.Equals(feedbackType))
+            {
+                counter++;
+            }
+        }
+        if (counter/lastFeedbackTypes.Count * 100 <= 15) return true; // only if the given feedback type was max. 15% times used in the last 20 feedbacks
+        else return false;
     }
 
     public void AddNoFeedbackGiven (Dictionary<NeedType, Evaluation> Needs)
@@ -143,6 +191,12 @@ public class Feedback {
         if(feedbackValue < MAX_FEEDBACK_VALUE)
         {
             feedbackValue++;
+        }
+
+        globalFeedbackCounter = 0;
+        if(globalFeedbackValue < GLOBAL_MAX_FEEDBACK_VALUE)
+        {
+            globalFeedbackValue++;
         }
 
         int valueIndex;
@@ -210,6 +264,7 @@ public class Feedback {
                     break;
             }
         }
+        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Activity);
     }
 
     public float bringTowardsZero(float num, float value)
