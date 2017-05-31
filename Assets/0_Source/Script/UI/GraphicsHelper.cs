@@ -35,6 +35,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite emotionSliderBGSpirte;
     public Sprite emotionSliderPointerSprite;
 
+    public Sprite radialBackground;
     public Sprite radialSliderSprite;
     public Sprite iconEnergy;
     public Sprite iconHealth;
@@ -54,6 +55,12 @@ public class GraphicsHelper : MonoBehaviour {
     public Color SpriteColorWhiteHidden { get { Color temp = SpriteColorWhite; temp.a = 0; return temp; } }
     public Color SpriteColorBlack;
     public Color SpriteColorBlackHidden { get { Color temp = SpriteColorBlack; temp.a = 0; return temp; } }
+
+    public Sprite UIContainer;
+    public Sprite UIButton;
+    public Sprite UIButton_pressed;
+    public Color UIColor1;
+    public Color UIColor2;
 
     public AnimationCurve SliderAnimation;
     public AnimationCurve AlertAnimation;
