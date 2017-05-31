@@ -12,11 +12,10 @@ public class ItemBoxViewController : AbstractViewController
 
     private bool _animating;
     private DropItemHandler _dropZone;
-
-    private Image _itemSlotImage;
+    
     private DragItemContainer _itemInSlot;
-    private bool _animateSlot;
-    private Text _slotText;
+
+    private GameObject _itemObject;
 
 
     public ItemBoxViewController(Transform parent, List<Item> itemList, Personality personality)
@@ -33,34 +32,11 @@ public class ItemBoxViewController : AbstractViewController
             new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0));
 
         View = Rect.gameObject;
-
-        //ItemSlot
-        Image slot = AddSprite(
-            CreateContainer("ItemSlot", parent,
-                new Vector2(-20, -20), new Vector2(256, 256),
-                new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)),
-            GraphicsHelper.Instance.itemSlotSprite,
-            GraphicsHelper.Instance.SpriteColorWhite);
-
-        CreateButton(slot.rectTransform, delegate { RemoveItemFromSlot(); });
-
-        _itemSlotImage = AddSprite(
-            CreateContainer("ItemInSlotIcon", slot.rectTransform,
-                new Vector2(0, 0), new Vector2(128, 128),
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-            GraphicsHelper.Instance.itemSlotSprite,
-            GraphicsHelper.Instance.SpriteColorWhiteHidden);
-        _itemSlotImage.raycastTarget = false;
-
-        _slotText = AddText(
-            CreateContainer("SlotText", slot.rectTransform,
-            new Vector2(0, 0), new Vector2(920, 256),
-            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-            GraphicsHelper.Instance.UIFont, 30, TextAnchor.LowerCenter);
+        
 
         _dropZone = CreateContainer("ItemDrop", parent,
-            new Vector2(-20, -20), new Vector2(1040, 1300),
-            new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)).gameObject.AddComponent<DropItemHandler>();
+            new Vector2(0, 0), new Vector2(1040, 1300),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)).gameObject.AddComponent<DropItemHandler>();
 
         _boxImage = AddSprite(Rect, GraphicsHelper.Instance.itemboxClosedSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
@@ -157,17 +133,13 @@ public class ItemBoxViewController : AbstractViewController
         if(_itemInSlot != null)
         {
             _itemInSlot.RemoveItem();
+            GameObject.Destroy(_itemObject);
         }
 
         _itemInSlot = itemInSlot;
 
+        ShowItemObject();
         
-
-        _itemSlotImage.sprite = icon;
-        _itemSlotImage.color = GraphicsHelper.Instance.SpriteColorWhiteHidden;
-        _itemSlotImage.rectTransform.sizeDelta = Vector2.zero;
-
-        ApplicationManager.Instance.StartCoroutine(ShowSlotItem(true));
     }
 
     public void RemoveItemFromSlot()
@@ -176,55 +148,22 @@ public class ItemBoxViewController : AbstractViewController
         {
             _itemInSlot.RemoveItem();
 
-            ApplicationManager.Instance.StartCoroutine(ShowSlotItem(false));
+            GameObject.Destroy(_itemObject);
+            
         }
     }
 
-    private IEnumerator ShowSlotItem(bool show)
+    private void ShowItemObject()
     {
-        float timer = 0;
+        DebugController.Instance.Log("Add item to slot", DebugController.DebugType.UI);
 
-        while (_animateSlot)
-            yield return 0;
+        Transform parent = GraphicsHelper.Instance.itemAnchor;
 
-        _animateSlot = true;
+        _itemObject = GameObject.Instantiate(GraphicsHelper.Instance.GetItemObject(_itemInSlot.ItemName), parent);
 
-        if(show)
-        {
-            _slotText.text = _itemInSlot.ItemName;
-        }
-
-        while(timer < 1)
-        {
-            timer += Time.deltaTime * 2;
-            if (show)
-            {
-                _itemSlotImage.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, timer);
-                _itemSlotImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, Vector2.one * 128, timer);
-                _slotText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, timer);
-            }
-            else
-            {
-                _itemSlotImage.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, timer);
-                _itemSlotImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.one * 128, Vector2.zero, timer);
-                _slotText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColor, GraphicsHelper.Instance.TextColorHidden, timer);
-            }
-
-
-            yield return 0;
-        }
-
-        if(!show)
-        {
-            if (_isOpen)
-                _itemInSlot.ShowItem(true, 1);
-
-            _itemInSlot = null;
-            _slotText.text = "";
-        }
-
-        _animateSlot = false;
+        _itemObject.GetComponent<ItemBoxObject>().Setup(this);
     }
+    
 
     private IEnumerator ShowItems(bool show)
     {

@@ -67,7 +67,7 @@ namespace Affdex
             h3 = GCHandle.Alloc(imageResults, GCHandleType.Pinned);
 
             int status = affdexRegisterListeners(nativeHandle, imageResults, faceFound, faceLost);
-            Debug.Log("Registered listeners: " + status);
+           // Debug.Log("Registered listeners: " + status);
             yield break;
         }
 
@@ -95,19 +95,16 @@ namespace Affdex
         {
             int intState = (state) ? 1 : 0;
             affdexSetExpressionState(nativeHandle, expression, intState);
-            Debug.Log("Expression " + expression + " set to " + state);
         }
 
         public override void SetEmotionState(int emotion, bool state)
         {
             int intState = (state) ? 1 : 0;
             affdexSetEmotionState(nativeHandle, emotion, intState);
-            Debug.Log("Emotion " + emotion + " set to " + state);
         }
 
         public override int StartDetector()
         {
-            Debug.Log("WindowsNativePlatform.StartDetector");
             int result = affdexStart(nativeHandle);
             if (result != 1)
             {

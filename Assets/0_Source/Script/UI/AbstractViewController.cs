@@ -65,6 +65,30 @@ public class AbstractViewController {
         return button;
     }
 
+    public Button CreateStandardButton(RectTransform container, UnityEngine.Events.UnityAction call)
+    {
+        Button button = container.gameObject.AddComponent<Button>();
+
+        button.onClick.AddListener(call);
+
+        Image img = container.gameObject.AddComponent<Image>();
+        img.sprite = GraphicsHelper.Instance.UIButton;
+        img.type = Image.Type.Sliced;
+
+        button.transition = Selectable.Transition.SpriteSwap;
+
+        SpriteState spriteState = new SpriteState();
+
+        spriteState.highlightedSprite = GraphicsHelper.Instance.UIButton;
+        spriteState.pressedSprite = GraphicsHelper.Instance.UIButton_pressed;
+        spriteState.disabledSprite = GraphicsHelper.Instance.UIButton;
+
+        button.spriteState = spriteState;
+
+        button.targetGraphic = img;
+
+        return button;
+    }
 
     public Color LerpColor(Color c1, Color c2, float t)
     {

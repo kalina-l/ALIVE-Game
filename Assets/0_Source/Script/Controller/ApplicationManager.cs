@@ -154,18 +154,14 @@ public class ApplicationManager : MonoBehaviour {
         return _feedback;
     }
 
-    public void StartMultiplayer()
+    public void ToggleMultiplayer()
     {
         if (!Multiplayer.IsConnected)
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
             _multiplayer.ConnectWithRemote(_simulation.GetController());
         }
-    }
-
-    public void StopMultiplayer()
-    {
-        if (Multiplayer.IsConnected)
+        else
         {
             Multiplayer.Disconnect();
         }
