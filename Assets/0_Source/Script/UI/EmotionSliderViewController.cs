@@ -41,7 +41,7 @@ public class EmotionSliderViewController : AbstractViewController
     public void UpdateSlider(float amount)
     {
 
-        amount /= 2500;
+        amount /= 20;
         float newXPosition = _pointerImg.rectTransform.localPosition.x + amount;
         float halfSliderSize = _backgroundRect.sizeDelta.x / 2;
         if (newXPosition > halfSliderSize)
