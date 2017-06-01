@@ -157,7 +157,10 @@ public class Activity {
 
     public Experience GetExperience(PersonalityNode personality)
     {
-        int bestValue = int.MinValue;
+        //TODO: change value with trait
+        //if value is 0, only perfectly fitting experiences will be returned. when there are none return a random experience
+        //if value is int.MinValue, return the closest xperience that was gathered, no matter how close it is
+        int bestValue = -15;
         int bestExperienceID = -1;
 
         if (LearnedExperiences.Count == 0)

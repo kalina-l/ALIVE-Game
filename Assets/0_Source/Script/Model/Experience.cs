@@ -63,11 +63,11 @@ public class Experience {
     {
         System.Random r = new System.Random();
 
-        Rewards[NeedType.HUNGER] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.ENERGY] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.HEALTH] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.SATISFACTION] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.HUNGER] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.ENERGY] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.HEALTH] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.SATISFACTION] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f) + 1;
     }
 
     public void AddFavorableRewards()
@@ -91,7 +91,7 @@ public class Experience {
 
         foreach(KeyValuePair<NeedType, Evaluation> kvp in compareWith)
         {
-            value -= Mathf.Abs((int)kvp.Value - (int)BaseNeeds[kvp.Key]);
+            value -= (int)Mathf.Pow(Mathf.Abs((int)kvp.Value - (int)BaseNeeds[kvp.Key]), 2);
         }
 
         return value;
