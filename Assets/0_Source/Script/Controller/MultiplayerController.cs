@@ -18,6 +18,7 @@ public class MultiplayerController {
     private string _id;
 
     private Activity _currentMultiplayerActivity;
+    private Activity _currentFeedbackActivity;
 
     private bool _gettingRequest;
     private bool _sendingRequest;
@@ -42,6 +43,11 @@ public class MultiplayerController {
     public Activity GetPendingActivity()
     {
         return _currentMultiplayerActivity;
+    }
+
+    public Activity GetFeedbackActivity()
+    {
+        return _currentFeedbackActivity;
     }
     
     public MultiplayerController(Personality localPersonality, string id) {
@@ -79,7 +85,7 @@ public class MultiplayerController {
     public void GetFeedbackRequest(Activity activity)
     {
         _gettingFeedbackRequest = true;
-        _currentMultiplayerActivity = activity;
+        _currentFeedbackActivity = activity;
     }
 
     public void SendFeedback(int feedback)
@@ -106,6 +112,12 @@ public class MultiplayerController {
     public void GetActivityRequest(int activityID)
     {
         _currentMultiplayerActivity = _localPersonality.GetActivity(activityID);
+
+        if(_currentMultiplayerActivity == null)
+        {
+            //TODO getactivity from itembox
+        }
+
         _currentMultiplayerActivity.IsRequest = true;
 
         DebugController.Instance.Log(_id + ": Get Request for " + _currentMultiplayerActivity.Name, DebugController.DebugType.Multiplayer);
