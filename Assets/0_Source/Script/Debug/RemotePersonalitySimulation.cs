@@ -17,6 +17,8 @@ public class RemotePersonalitySimulation : GameLoop {
 
     private int _actionCounter;
 
+    private bool isRunning;
+
     public Personality GetPersonality()
     {
         return _personality;
@@ -37,18 +39,22 @@ public class RemotePersonalitySimulation : GameLoop {
         _items = creatorCSV.ItemList;
         _intelligence = new ArtificialIntelligence();
 
+        isRunning = true;
+
         _manager = manager;
         _manager.StartCoroutine(Simulate());
 
         _multiplayer = new MultiplayerController(_personality, "remote");
         _multiplayer.setGameLoop(this);
         _multiplayer.ConnectWithRemote(manager.Multiplayer);
+
+        
     }
 
 
     private IEnumerator Simulate()
     {
-        while (true)
+        while (isRunning)
         {
             yield return new WaitForSeconds(2);
 
@@ -84,6 +90,11 @@ public class RemotePersonalitySimulation : GameLoop {
                 _personality.AddItem(_items[randomItem].ID, _items[randomItem]);
             }
         }
+    }
+
+    public void StopSimulation()
+    {
+        isRunning = false;
     }
 
     private IEnumerator DoActivityRoutine()

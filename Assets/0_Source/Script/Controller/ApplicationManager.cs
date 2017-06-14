@@ -158,4 +158,18 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.Disconnect();
         }
     }
+
+    void Update() {
+        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !Multiplayer.IsConnected)
+        {
+            _simulation = new RemotePersonalitySimulation(this, _data.Person);
+            Multiplayer.ConnectWithRemote(_simulation.GetController());
+        }
+
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.IsConnected)
+        {
+            Multiplayer.Disconnect();
+            _simulation.StopSimulation();
+        }
+    }
 }

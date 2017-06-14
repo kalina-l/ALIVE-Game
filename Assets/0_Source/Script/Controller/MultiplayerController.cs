@@ -51,6 +51,11 @@ public class MultiplayerController {
     {
         return _currentMultiplayerActivity;
     }
+
+    public Activity GetFeedbackActivity()
+    {
+        return _currentFeedbackActivity;
+    }
     
     public MultiplayerController(Personality localPersonality, string id) {
         _localPersonality = localPersonality;
@@ -95,11 +100,6 @@ public class MultiplayerController {
         _currentFeedbackActivity = activity;
     }
 
-    public Activity GetFeedbackActivity()
-    {
-        return _currentFeedbackActivity;
-    }
-
     public void SendFeedback(int feedback)
     {
         _gettingFeedbackRequest = false;
@@ -127,6 +127,12 @@ public class MultiplayerController {
     public void GetActivityRequest(int activityID)
     {
         _currentMultiplayerActivity = _localPersonality.GetActivity(activityID);
+
+        if(_currentMultiplayerActivity == null)
+        {
+            //TODO getactivity from itembox
+        }
+
         _currentMultiplayerActivity.IsRequest = true;
 
         DebugController.Instance.Log(_id + ": Get Request for " + _currentMultiplayerActivity.Name, DebugController.DebugType.Multiplayer);
