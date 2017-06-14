@@ -7,4 +7,5 @@ Sneeze 510 - 569
 Play 570 - 719
 Dance 730 - 789
 Tongue 800 - 940
+Eat 940 - 1000
 
