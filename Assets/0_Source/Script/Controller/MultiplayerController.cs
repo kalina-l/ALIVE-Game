@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface GameLoop
+{
+    void GiveFeedback(int feedback);
+}
+
 /// <summary>
 /// This class provides access to a remote personality. 
 /// It allows for two personalities to perform actions together, 
@@ -12,12 +17,15 @@ public class MultiplayerController {
 
     public bool IsConnected { get; private set; }
 
+    private GameLoop _gameLoop;
+
     private Personality _localPersonality;
     private MultiplayerController _remoteController;
 
     private string _id;
 
     private Activity _currentMultiplayerActivity;
+    private Activity _currentFeedbackActivity;
 
     private bool _gettingRequest;
     private bool _sendingRequest;
@@ -50,6 +58,11 @@ public class MultiplayerController {
         _localPersonality.Multiplayer = this;
     }
 
+    public void setGameLoop(GameLoop gameLoop)
+    {
+        _gameLoop = gameLoop;
+    }
+
     public void ConnectWithRemote(MultiplayerController remoteController) {
         _remoteController = remoteController;
         IsConnected = true;
@@ -79,17 +92,25 @@ public class MultiplayerController {
     public void GetFeedbackRequest(Activity activity)
     {
         _gettingFeedbackRequest = true;
-        _currentMultiplayerActivity = activity;
+        _currentFeedbackActivity = activity;
+    }
+
+    public Activity GetFeedbackActivity()
+    {
+        return _currentFeedbackActivity;
     }
 
     public void SendFeedback(int feedback)
     {
+        _gettingFeedbackRequest = false;
         _remoteController.GetFeedback(feedback);
     }
 
     public void GetFeedback(int feedback)
     {
-        //ApplicationManager.Instance.GiveFeedback(feedback);
+        // TODO: woanders auslagern
+        ApplicationManager.Instance.getFeedbackController().setLastFeedbackType(FeedbackType.Multiplayer);
+        _gameLoop.GiveFeedback(feedback);
     }
 
     public void SendActivityRequest(Activity activity)

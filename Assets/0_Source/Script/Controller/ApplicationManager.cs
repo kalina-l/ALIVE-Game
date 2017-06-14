@@ -82,8 +82,6 @@ public class ApplicationManager : MonoBehaviour {
 
         _multiplayer = new MultiplayerController(_data.Person, "local");
 
-        
-        
 
         //Simulation
         if (simulateRemote)
@@ -94,6 +92,8 @@ public class ApplicationManager : MonoBehaviour {
 
         //GameLoop
         _gameLoop = new GameLoopController(this, _data);
+
+        _multiplayer.setGameLoop(_gameLoop);
     }
 
     public void reset()
@@ -118,15 +118,7 @@ public class ApplicationManager : MonoBehaviour {
     public void ShowFeedback(int feedback)
     {
         _output.ShowFeedback(feedback);
-
-        if (feedback == -1)
-        {
-            _feedback.ShowFeedback();
-        }
-        else if (feedback == 1)
-        {
-            _feedback.ShowFeedback();
-        }
+        _feedback.ShowFeedback(feedback);
     }
 
     public void ShowItemAlert(Item item)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KKSpeech;
 
-public class GameLoopController {
+public class GameLoopController : GameLoop {
 
     private ApplicationManager _manager;
     private GameData _data;
@@ -63,17 +63,41 @@ public class GameLoopController {
 
             bool sentFeedback = false;
 
+            System.Random rand = new System.Random();
+            //random feedback (25%)
+            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
+
             float timer = 0;
             while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
 
-                if (!sentFeedback)
+                if (!sentFeedback && givingFeedback)
                 {
                     if (_manager.Multiplayer.IsFeedbackRequestPending())
                     {
-                        //TODO: Calculate Feedback
-                        _manager.Multiplayer.SendFeedback(1);
+
+                        // SEND FEEDBACK TO ANOTHER LEMO
+                        Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
+                        PersonalityNode personality = new PersonalityNode(_data.Person);
+                        personality.changeNeeds(new PersonalityNode(_manager.Multiplayer.GetRemotePersonality()).Needs);
+                        Experience experience = feedbackActivity.GetExperience(personality);
+                        float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
+                        PersonalityNode newPerson = new PersonalityNode(personality,
+                                                    experience,
+                                                    feedback);
+                        float evaluation = newPerson.SelfEvaluation;
+                        DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
+                        if (evaluation > 0)
+                        {
+                            _manager.Multiplayer.SendFeedback(1);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO: 1", DebugController.DebugType.Multiplayer);
+                        }
+                        else
+                        {
+                            _manager.Multiplayer.SendFeedback(-1);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO: -1", DebugController.DebugType.Multiplayer);
+                        }
                     }
                 }
 

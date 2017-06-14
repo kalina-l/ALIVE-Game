@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemotePersonalitySimulation {
+public class RemotePersonalitySimulation : GameLoop {
 
     private ApplicationManager _manager;
     private Personality _personality;
@@ -40,6 +41,7 @@ public class RemotePersonalitySimulation {
         _manager.StartCoroutine(Simulate());
 
         _multiplayer = new MultiplayerController(_personality, "remote");
+        _multiplayer.setGameLoop(this);
         _multiplayer.ConnectWithRemote(manager.Multiplayer);
     }
 
@@ -55,24 +57,29 @@ public class RemotePersonalitySimulation {
             if (_multiplayer.IsConnected)
             {
                 //TODO: randomize this
-                _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                _multiplayer.SendFeedbackRequest(_lastActivity);
+                //_manager.Multiplayer.SendFeedbackRequest(_lastActivity);
             }
 
-            //random feedback
-            GiveFeedback((int)(Random.value * 3) - 1);
+            System.Random rand = new System.Random();
+            //random feedback (25%)
+            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
 
-            if (_multiplayer.IsFeedbackRequestPending())
+            if (_multiplayer.IsFeedbackRequestPending() && givingFeedback)
             {
                 //TODO: Calculate Feedback
-                _manager.Multiplayer.SendFeedback(1);
+                int feedback = rand.NextDouble() > 0.5 ? 1 : -1;
+                DebugController.Instance.Log("Send feedback to the local LEMO: " + feedback, DebugController.DebugType.Multiplayer);
+                _multiplayer.SendFeedback(feedback);
+                //_manager.Multiplayer.SendFeedback(1);
             }
 
             _actionCounter++;
 
-            if(_actionCounter > Random.value * 20)
+            if(_actionCounter > UnityEngine.Random.value * 20)
             {
                 //give random item
-                int randomItem = (int)(_items.Count * Random.value);
+                int randomItem = (int)(_items.Count * UnityEngine.Random.value);
 
                 _personality.AddItem(_items[randomItem].ID, _items[randomItem]);
             }
@@ -149,7 +156,7 @@ public class RemotePersonalitySimulation {
         }
     }
 
-    private void GiveFeedback(int feedback)
+    public void GiveFeedback(int feedback)
     {
         if (_lastActivity != null)
         {
@@ -157,5 +164,4 @@ public class RemotePersonalitySimulation {
             _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
         }
     }
-
 }

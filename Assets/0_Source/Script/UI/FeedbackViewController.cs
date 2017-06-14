@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public enum FeedbackType { Audio, Video, Touch, Button }
+public enum FeedbackType { Audio, Video, Touch, Button, Multiplayer }
 
 public class FeedbackViewController : AbstractViewController {
 
@@ -16,7 +16,6 @@ public class FeedbackViewController : AbstractViewController {
     private VideoFeedbackController _videoFeedbackController;
 
     private FeedbackType lastFeedbackType;
-    private int lastFeedback;
     private ParticleSystem positiveFX;
     private ParticleSystem negativeFX;
 
@@ -56,13 +55,13 @@ public class FeedbackViewController : AbstractViewController {
 
     }
 
-    public void ShowFeedback()
+    public void ShowFeedback(int feedback)
     {
-        if (lastFeedback > 0)
+        if (feedback == 1)
         {
             positiveFX.Play();
         }
-        else
+        else if (feedback == -1)
         {
             negativeFX.Play();
         }
@@ -81,7 +80,6 @@ public class FeedbackViewController : AbstractViewController {
     {
         SetIsRecording(false);
         lastFeedbackType = feedbackType;
-        lastFeedback = feedback;
         ApplicationManager.Instance.GiveFeedback(feedback);
 
     }
@@ -89,6 +87,11 @@ public class FeedbackViewController : AbstractViewController {
     public FeedbackType getLastFeedbackType()
     {
         return lastFeedbackType;
+    }
+
+    public void setLastFeedbackType(FeedbackType lastFeedbackType)
+    {
+        this.lastFeedbackType = lastFeedbackType;
     }
 
 }
