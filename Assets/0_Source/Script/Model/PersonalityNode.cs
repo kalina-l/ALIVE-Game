@@ -147,7 +147,21 @@ public class PersonalityNode {
         }
     }
 
-	public Item GetItem(int activityID, bool showLog = true)
+    public PersonalityNode(PersonalityNode parent, Experience xp, float feedback)
+    {
+        Parent = parent;
+        FeedBack = feedback;
+
+        Needs = new Dictionary<NeedType, Evaluation>();
+        foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
+        {
+            Needs[need.Key] = (Evaluation)Mathf.Clamp((int)need.Value + xp.Rewards[need.Key], 0, 7);
+        }
+
+        SelfEvaluation = Evaluation();
+    }
+
+    public Item GetItem(int activityID, bool showLog = true)
 	{
 		foreach (Item item in Items) {
 			if (item.Activities.ContainsKey (activityID)) {
@@ -218,4 +232,9 @@ public class PersonalityNode {
 			}
 		}
 	}
+
+    public void changeNeeds(Dictionary<NeedType, Evaluation> needs)
+    {
+        Needs = needs;
+    }
 }
