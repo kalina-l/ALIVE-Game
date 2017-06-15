@@ -148,6 +148,7 @@ public class Personality {
 
         PersonalityNode.FEEDBACK_FACTOR = trait.FeedbackModifier;
         GameLoopController.ASK_FOR_ITEM_FACTOR = trait.AskForItemModifier;
+        Activity.SIMILAR_EXPERIENCE_DIFFERENCE = trait.SimilarExperienceDifferenceModifier;
 
         return this;
     }

@@ -21,7 +21,7 @@ public class PersonalityNode {
 	public bool visited = false;
 
     public float FeedBack;
-    public static int FEEDBACK_FACTOR = 100;
+    public static float FEEDBACK_FACTOR = 30;
 
     public float DISCOUNT_FACTOR = 0.91f;
 
@@ -162,7 +162,7 @@ public class PersonalityNode {
 	}
 
     public float Evaluation()
-    {       
+    {
         float value = FeedBack * FEEDBACK_FACTOR;
 
         foreach (KeyValuePair<NeedType, Evaluation> need in Needs)
