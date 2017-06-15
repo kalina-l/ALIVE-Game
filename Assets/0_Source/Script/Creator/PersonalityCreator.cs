@@ -376,7 +376,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("feedback"))
                                 {
-                                    int feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+                                    float feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
                                     foreach(char ch in personalityCSV[l][1])
                                     {
                                         switch(ch)
@@ -411,6 +411,29 @@ public class PersonalityCreator
                                         };
                                     }
                                     trait.AddAskForItemModifier(askForItemModifier);
+                                }
+                                if (personalityCSV[l][0].Equals("similarExperienceDifference"))
+                                {
+                                    int similarExperienceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
+                                    foreach (char ch in personalityCSV[l][1])
+                                    {
+                                        switch (ch)
+                                        {
+                                            //every + means that the similarExperienceDifference will increase so the Lemo will not try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
+                                            //->ANXIOUS
+                                            case '+':
+                                                similarExperienceModifier -= 5;
+                                                break;
+                                            //every - means that the similarExperienceDifference will decrease so the Lemo will try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
+                                            //->BRAVE
+                                            case '-':
+                                                similarExperienceModifier += 5;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddSimilarExperienceDifferenceModifier(similarExperienceModifier);
                                 }
                                 k = l;
                             }

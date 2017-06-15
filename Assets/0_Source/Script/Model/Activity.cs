@@ -19,8 +19,21 @@ public class Activity {
 
     public Feedback Feedback;
 
-	public Item item;
-	public int useConsume;
+    public Item item;
+    public int useConsume;
+
+    private static int _similar_experience_difference = -15;
+    public static int SIMILAR_EXPERIENCE_DIFFERENCE
+    {
+        get
+        {
+            return _similar_experience_difference;
+        }
+        set
+        {
+            _similar_experience_difference = Mathf.Clamp(value, int.MinValue, 0);
+        }
+    }
 
     public bool IsKnown { get { return LearnedExperiences.Count > 0; } }
 
@@ -37,6 +50,8 @@ public class Activity {
             _feedBackString = value;
         }
     }
+
+    public Activity() { }
 
 	public Activity(int ID, string Name, Item item, int useConsume, string feedBackString)
     {
@@ -157,10 +172,9 @@ public class Activity {
 
     public Experience GetExperience(PersonalityNode personality)
     {
-        //TODO: change value with trait
         //if value is 0, only perfectly fitting experiences will be returned. when there are none return a random experience
-        //if value is int.MinValue, return the closest xperience that was gathered, no matter how close it is
-        int bestValue = -15;
+        //if value is int.MinValue, return the closest experience that was gathered, no matter how close it is
+        int bestValue = SIMILAR_EXPERIENCE_DIFFERENCE;
         int bestExperienceID = -1;
 
         if (LearnedExperiences.Count == 0)

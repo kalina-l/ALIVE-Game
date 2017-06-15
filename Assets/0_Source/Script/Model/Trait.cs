@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TraitType { INTROVERT, EXTROVERT, GREEDY, FRUGAL, DISCIPLINED, WILD, ENERGETIC, LETHARGIC }
+public enum TraitType { INTROVERT, EXTROVERT, GREEDY, FRUGAL, DISCIPLINED, WILD, ENERGETIC, LETHARGIC, ANXIOUS, BRAVE }
 
 public class Trait {
 
     public TraitType Identifier { get; set; }
     public int TraitTag;
-    public int FeedbackModifier;
+    public float FeedbackModifier;
     public int AskForItemModifier;
+    public int SimilarExperienceDifferenceModifier;
 
     public Dictionary<NeedType, int[]> ThresholdModifiers;
     public Dictionary<ActivityTag, List<Reward>> ActivityModifiers;
@@ -21,6 +22,7 @@ public class Trait {
         ActivityModifiers = new Dictionary<ActivityTag, List<Reward>>();
         FeedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
         AskForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
+        SimilarExperienceDifferenceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
     }
 
     public bool AddThresholdModifier(NeedType needType, int[] thresholdModifier)
@@ -51,7 +53,7 @@ public class Trait {
         }
     }
 
-    public bool AddFeedbackModifier(int feedbackModifier)
+    public bool AddFeedbackModifier(float feedbackModifier)
     {
         FeedbackModifier = feedbackModifier;
         return true;
@@ -60,6 +62,12 @@ public class Trait {
     public bool AddAskForItemModifier(int askForItemModifier)
     {
         AskForItemModifier = askForItemModifier;
+        return true;
+    }
+
+    public bool AddSimilarExperienceDifferenceModifier(int similarExperienceModifier)
+    {
+        SimilarExperienceDifferenceModifier = similarExperienceModifier;
         return true;
     }
 
