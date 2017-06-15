@@ -253,6 +253,8 @@ public class Personality {
     //Actions
     public void AddItem(int id, Item item)
     {
+        DebugController.Instance.Log("---------- Add Item " + item.Name + " -------------", DebugController.DebugType.Activity);
+
         Items[id] = item;
 		item.uses = 0;
     }
@@ -261,6 +263,8 @@ public class Personality {
     {
         if (Items.ContainsKey(id))
         {
+            DebugController.Instance.Log("---------- Remove Item " + Items[id].Name + " -------------", DebugController.DebugType.Activity);
+
             Items[id].uses = 0;
             Items.Remove(id);
         }
