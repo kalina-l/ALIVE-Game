@@ -16,6 +16,7 @@ public class DebugController : MonoBehaviour {
     {
         GameFlow,
         Activity,
+        Feedback,
         UI,
         Animation,
         System,

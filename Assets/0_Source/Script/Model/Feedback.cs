@@ -9,6 +9,7 @@ public class Feedback {
     private static int GLOBAL_MAX_FEEDBACK_VALUE = 3;                       // the feedback value lemo gets no actions resulted with any feedback for a long time
     private static int GLOBAL_MIN_FEEDBACK_VALUE = 0;
     private static int GLOBAL_ACTIONS_BEFORE_LOWERING = 1;                  // after how many with feedback evaluated actions the feedback value sinks
+    [SerializeField]
     private static int globalFeedbackValue = GLOBAL_MAX_FEEDBACK_VALUE;     // depends on the conditioning schedule, it lowers with continuous positive reinforcement and grows every time no feedback to an action is given
 
     [SerializeField]
@@ -29,9 +30,12 @@ public class Feedback {
     private static int MIN_FEEDBACK_VALUE = 2;
     private static int FORGETTING_VALUE = 2;             // how much lemo forgets every not evaluated action (used same way as feedback variable, but feedback exp goes towards zero)
     private static int ACTIONS_BEFORE_LOWERING = 2;      // after how many with feedback evaluated actions the feedback value sinks
+    [SerializeField]
     private int feedbackValue = MAX_FEEDBACK_VALUE;      // depends on the conditioning schedule, it lowers with continuous positive reinforcement and grows every time no feedback to an action is given
+    [SerializeField]
     private bool lastTimePositive;                       // if the feedback varies in value from the last time, feedbackValue is set to MAX_FEEDBACK_VALUE and ACTIONS_BEFORE_LOWERING is resetted
 
+    [SerializeField]
     private Queue<FeedbackType> lastFeedbackTypes = new Queue<FeedbackType>();       // types of last used feedback
 
     // HOW FEEDBACK WORKS (P - positive, N - negative, O - none):
@@ -80,9 +84,9 @@ public class Feedback {
         else
             feedBack -= globalFeedbackValue;
 
-        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Activity);
+        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Feedback);
 
-        DebugController.Instance.Log("Given feedback (distributed): " + feedBack, DebugController.DebugType.Activity);
+        DebugController.Instance.Log("Given feedback (distributed): " + feedBack, DebugController.DebugType.Feedback);
 
         int valueIndex = 0;
 
@@ -264,7 +268,7 @@ public class Feedback {
                     break;
             }
         }
-        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Activity);
+        DebugController.Instance.Log("Global feedback value: " + globalFeedbackValue, DebugController.DebugType.Feedback);
     }
 
     public float bringTowardsZero(float num, float value)
