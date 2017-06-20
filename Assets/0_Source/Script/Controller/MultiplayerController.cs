@@ -73,6 +73,7 @@ public class MultiplayerController {
         IsConnected = true;
 
         DebugController.Instance.Log("CONNECTED", DebugController.DebugType.Multiplayer);
+
     }
 	
     public void Disconnect() {
