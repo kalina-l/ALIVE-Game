@@ -167,7 +167,6 @@ public class ApplicationManager : MonoBehaviour {
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
             Multiplayer.ConnectWithRemote(_simulation.GetController());
-            MultiplayerViewController.showRemote();
             MultiplayerViewController.startMultiplayerView();
         }
 
@@ -175,6 +174,7 @@ public class ApplicationManager : MonoBehaviour {
         {
             Multiplayer.Disconnect();
             _simulation.StopSimulation();
+            MultiplayerViewController.endMultiplayerView();
         }
     }
 }

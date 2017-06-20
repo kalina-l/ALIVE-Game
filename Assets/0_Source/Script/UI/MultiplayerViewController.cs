@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MultiplayerViewController : AbstractViewController {
 
-    private float _switchTime = 3;
+    public bool multiplayerViewOn;
+
+    private float _switchTime = 2;
 
     private GameObject _remoteLemo;
     public AnimationController remoteAnimationController;
@@ -21,18 +23,20 @@ public class MultiplayerViewController : AbstractViewController {
     //switch camera between singlePlayer and multiplayer view
     public void startMultiplayerView()
     {
+        multiplayerViewOn = true;
         showRemote();
         RemoteCharacterAnimation = new AnimationController(_remoteLemo);
-        ApplicationManager.Instance.StartCoroutine(moveCamera(GraphicsHelper.Instance.singleplayerCameraAnchor.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime));
+        ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.multiplayerCameraAnchor.rotation);
         ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, angle, 0), _switchTime));
     }
 
     public void endMultiplayerView()
-    {   
-        ApplicationManager.Instance.StartCoroutine(moveCamera(GraphicsHelper.Instance.multiplayerCameraAnchor.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime));
+    {
+        multiplayerViewOn = false;
+        ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.singleplayerCameraAnchor.rotation);
-        ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, angle, 0), _switchTime));
+        ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, -angle, 0), _switchTime));
         UnityEngine.Object.Destroy(_remoteLemo);
     }
     
