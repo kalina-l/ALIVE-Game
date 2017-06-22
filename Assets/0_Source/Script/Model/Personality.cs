@@ -5,12 +5,12 @@ using FullSerializer;
 
 public class Personality {
 
-    public static int PENDING_ACTIVITY_ID = 9999;
-
     public Dictionary<NeedType, Need> Conditions;
 	public Dictionary<int, Activity> BaseActivities;
     public Dictionary<int, Item> Items;
     public List<Trait> Traits;
+
+    public MultiplayerController Multiplayer { get; set; }
 
     [SerializeField]
     private Dictionary<AttributeType, Attribute> Attributes;
@@ -73,11 +73,7 @@ public class Personality {
 
         return this;
     }
-
-    public void RemovePendingActivity()
-    {
-        BaseActivities.Remove(PENDING_ACTIVITY_ID);
-    }
+    
 
     public Personality AddTrait(Trait trait, List<Item> itemList)
     {
@@ -150,6 +146,10 @@ public class Personality {
             }
         }
 
+        PersonalityNode.FEEDBACK_FACTOR = trait.FeedbackModifier;
+        GameLoopController.ASK_FOR_ITEM_FACTOR = trait.AskForItemModifier;
+        Activity.SIMILAR_EXPERIENCE_DIFFERENCE = trait.SimilarExperienceDifferenceModifier;
+
         return this;
     }
 
@@ -215,6 +215,23 @@ public class Personality {
         return activities;
     }
 
+    public void PrintAllRewards()
+    {
+        DebugController.Instance.Log("-------------------------------------", DebugController.DebugType.Activity);
+
+        List<Activity> activities = GetAllActivities();
+
+        for (int i = 0; i < activities.Count; i++)
+        {
+            if (!activities[i].IsMultiplayer || Multiplayer.IsConnected)
+            {
+                activities[i].PrintExperience(this);
+            }
+        }
+
+        DebugController.Instance.Log("-------------------------------------", DebugController.DebugType.Activity);
+    }
+
 	public Dictionary<int, Item> GetItems() {
 		return Items;
 	}
@@ -237,6 +254,8 @@ public class Personality {
     //Actions
     public void AddItem(int id, Item item)
     {
+        DebugController.Instance.Log("---------- Add Item " + item.Name + " -------------", DebugController.DebugType.Activity);
+
         Items[id] = item;
 		item.uses = 0;
     }
@@ -245,6 +264,8 @@ public class Personality {
     {
         if (Items.ContainsKey(id))
         {
+            DebugController.Instance.Log("---------- Remove Item " + Items[id].Name + " -------------", DebugController.DebugType.Activity);
+
             Items[id].uses = 0;
             Items.Remove(id);
         }

@@ -37,6 +37,7 @@ public class ApplicationManager : MonoBehaviour {
     private ItemBoxViewController _itemBox;
     private ConditionViewController _conditionMonitor;
     private AlertViewController _alert;
+    private OptionsMenuController _options;
 
     //Simulation
     private RemotePersonalitySimulation _simulation;
@@ -44,6 +45,7 @@ public class ApplicationManager : MonoBehaviour {
     //Multiplayer
     private MultiplayerController _multiplayer;
     public MultiplayerController Multiplayer { get { return _multiplayer; } }
+    public MultiplayerViewController MultiplayerViewController { get; set; }
 
     void Awake()
     {
@@ -62,7 +64,9 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _data.Intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
-        CharacterAnimation = new AnimationController();
+        _options = new OptionsMenuController(UICanvas.transform);
+
+        CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
         
         if (resetButton)
         {
@@ -77,20 +81,22 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        _multiplayer = new MultiplayerController(_data.Person);
+        _multiplayer = new MultiplayerController(_data.Person, "local");
+        MultiplayerViewController = new MultiplayerViewController();
 
-        
-        
 
         //Simulation
         if (simulateRemote)
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
             _multiplayer.ConnectWithRemote(_simulation.GetController());
+            MultiplayerViewController.startMultiplayerView();
         }
 
         //GameLoop
         _gameLoop = new GameLoopController(this, _data);
+
+        _multiplayer.setGameLoop(_gameLoop);
     }
 
     public void reset()
@@ -115,15 +121,7 @@ public class ApplicationManager : MonoBehaviour {
     public void ShowFeedback(int feedback)
     {
         _output.ShowFeedback(feedback);
-
-        if (feedback == -1)
-        {
-            _feedback.ShowFeedback();
-        }
-        else if (feedback == 1)
-        {
-            _feedback.ShowFeedback();
-        }
+        _feedback.ShowFeedback(feedback);
     }
 
     public void ShowItemAlert(Item item)
@@ -149,5 +147,34 @@ public class ApplicationManager : MonoBehaviour {
     public FeedbackViewController getFeedbackController()
     {
         return _feedback;
+    }
+
+    public void ToggleMultiplayer()
+    {
+        if (!Multiplayer.IsConnected)
+        {
+            _simulation = new RemotePersonalitySimulation(this, _data.Person);
+            _multiplayer.ConnectWithRemote(_simulation.GetController());
+        }
+        else
+        {
+            Multiplayer.Disconnect();
+        }
+    }
+
+    void Update() {
+        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !Multiplayer.IsConnected)
+        {
+            _simulation = new RemotePersonalitySimulation(this, _data.Person);
+            Multiplayer.ConnectWithRemote(_simulation.GetController());
+            MultiplayerViewController.startMultiplayerView();
+        }
+
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.IsConnected)
+        {
+            Multiplayer.Disconnect();
+            _simulation.StopSimulation();
+            MultiplayerViewController.endMultiplayerView();
+        }
     }
 }

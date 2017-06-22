@@ -6,7 +6,13 @@ public class GraphicsHelper : MonoBehaviour {
 
     public static GraphicsHelper Instance;
 
+    public Transform camera;
+
     public GameObject lemo;
+    public Transform itemAnchor;
+    public Transform multiplayerLemoAnchor;
+    public Transform multiplayerCameraAnchor;
+    public Transform singleplayerCameraAnchor;
 
     public Font UIFont;
 
@@ -34,6 +40,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite emotionSliderBGSpirte;
     public Sprite emotionSliderPointerSprite;
 
+    public Sprite radialBackground;
     public Sprite radialSliderSprite;
     public Sprite iconEnergy;
     public Sprite iconHealth;
@@ -54,8 +61,17 @@ public class GraphicsHelper : MonoBehaviour {
     public Color SpriteColorBlack;
     public Color SpriteColorBlackHidden { get { Color temp = SpriteColorBlack; temp.a = 0; return temp; } }
 
+    public Sprite UIContainer;
+    public Sprite UIButton;
+    public Sprite UIButton_pressed;
+    public Color UIColor1;
+    public Color UIColor2;
+
     public AnimationCurve SliderAnimation;
     public AnimationCurve AlertAnimation;
+
+    public GameObject cakePrefab;
+    public GameObject ballPrefab;
 
     void Awake()
     {
@@ -73,4 +89,16 @@ public class GraphicsHelper : MonoBehaviour {
         return new Color(lerp.x, lerp.y, lerp.z, Mathf.Lerp(c1.a, c2.a, t));
     }
     
+    public GameObject GetItemObject(string itemName)
+    {
+        switch (itemName)
+        {
+            case "Ball":
+                return ballPrefab;
+            case "Cake":
+                return cakePrefab;
+        }
+
+        return null;
+    }
 }

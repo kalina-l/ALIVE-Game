@@ -61,7 +61,7 @@ public class JSON {
         sb.Length = 0;
         
 
-        Debug.Log("Saved in " + Application.persistentDataPath);
+        DebugController.Instance.Log("Saved in " + Application.persistentDataPath, DebugController.DebugType.System);
         return true;
     }
 

@@ -44,7 +44,7 @@ public class PlayerEmotions : ImageResultsListener
             //Retrieve the Emotions Scores
             float currSadness;
             face.Emotions.TryGetValue(Emotions.Sadness, out currSadness);
-            emotions["Sadness"] += currSadness;
+            emotions["Sadness"] += 1.5f*currSadness;
 
             //Retrieve the Smile Score
             float currSmile;
@@ -52,36 +52,15 @@ public class PlayerEmotions : ImageResultsListener
             emotions["Smile"] += currSmile;
             float currBrowRaise;
             face.Expressions.TryGetValue(Expressions.BrowRaise, out currBrowRaise);
-            emotions["BrowRaise"] += currBrowRaise;
+            emotions["BrowRaise"] += 1.5f*currBrowRaise;
 
            // Debug.Log("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
             ApplicationManager.Instance.debugText.text = ("Sadness: " + emotions["Sadness"] + ", smile: " + emotions["Smile"] + ", brow raise: " + emotions["BrowRaise"]);
-
-            lastQuickEvaluations += quickEvaluate();
-            if (Time.frameCount - frameCount > 6)
-            {
-                videoFeedbackController.getSlider().UpdateSlider(lastQuickEvaluations);
-                lastQuickEvaluations = 0;
-                frameCount = Time.frameCount;
-            }
+            
+            lastQuickEvaluations = currSmile - 1.5f*currSadness - 1.5f*currBrowRaise;
+            videoFeedbackController.getSlider().UpdateSlider(lastQuickEvaluations);
+            frameCount = Time.frameCount;
         }
-    }
-
-    public float quickEvaluate ()
-    {
-        float value = 0;
-        foreach (KeyValuePair<string, float> entry in emotions)
-        {
-            if (entry.Key == "Smile")
-            {
-                value += entry.Value;
-            }
-            else
-            {
-                value -= entry.Value;
-            }
-        }
-        return value;
     }
 
     public void evaluate ()

@@ -43,160 +43,148 @@ public class PersonalityCreator
         getAttributesNeedsTraits(_personalityCSV);
 
         _personalityCSV = CSV.read(personalityCSVPath + ActivitiesRewardsCSV);
-        getBaseActivites(_personalityCSV);
-
-        _personalityCSV = CSV.read(personalityCSVPath + ActivitiesRewardsCSV);
         _itemCSV = CSV.read(personalityCSVPath + ItemsCSV);
-        getItems(_itemCSV, _personalityCSV);
+        getItemsAndAddBaseActivities(_itemCSV, _personalityCSV);
     }
 
-    private List<Item> getItems(string[][] ItemsCSV, string[][] personalityCSV)
+    private List<Item> getItemsAndAddBaseActivities(string[][] ItemsCSV, string[][] personalityCSV)
     {
         ItemList = new List<Item>();
-        Activity act;
+        Activity act = null;
         Item item = null;
-        //Boolean itemExists = false;
-        //int itemCounter = 0;
-        int ID;
+        int ID = 0;
+        string Name = null;
+        int maxUses = 0;
+        bool baseActivity = false;
 
-        for(int i = 1; (i<ItemsCSV.GetLength(0)) && (!String.IsNullOrEmpty(ItemsCSV[i][0])); i++)
+        //first create Items from ItemsCSV
+        for (int i = 1; (i < ItemsCSV.GetLength(0))/* && (!String.IsNullOrEmpty(ItemsCSV[i][0]))*/; i++)
         {
-            if (!ItemsCSV[i][1].Equals("Body"))
+
+            for (int j = 0; (j < ItemsCSV[i].Length); j++)
             {
-                if (!Int32.TryParse(ItemsCSV[i][0], out ID) || ID < 0)
-                {
-                    continue;
-                }
-                item = new Item(ID, ItemsCSV[i][1], 0, Int32.Parse(ItemsCSV[i][2]));
-                ItemList.Add(item);
-            }
-        }
-        item = null;
 
-        for (int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
-        {
-            if (!personalityCSV[i][1].Equals("Body"))
-            {
-                //foreach(Item ite in ItemList)
-                //{
-                //    if (ite.Name.Equals(personalityCSV[i][1]))
-                //    {
-                //        item = ite;
-                //        itemExists = true;
-                //    }
-                //}
-                //if (!itemExists)
-                //{
-                //    item = new Item();
-                //    item.Name = personalityCSV[i][1];
-                //    item.ID = itemCounter;
-                //    item.maxUses = 100;
-                //    itemCounter++;
-                //}
-                if(!Int32.TryParse(personalityCSV[i][0], out ID) || ID < 0)
+                switch (ItemsCSV[0][j])
                 {
-                    continue;
-                }
-                foreach (Item ite in ItemList)
-                {
-                    if(personalityCSV[i][1].Equals(ite.Name))
-                    {
-                        item = ite;
-                    }
-                }
-                act = new Activity(ID, item.Name + "." + personalityCSV[i][2], item, 0, personalityCSV[i][2] + " " + item.Name);
-                if(Int32.TryParse(personalityCSV[i][4], out act.useConsume))
-                {
-
-                }
-                else
-                {
-                    act.useConsume = item.maxUses;
-                }
-
-                bool isMulti;
-                Boolean.TryParse(personalityCSV[i][5], out isMulti);
-                act.IsMultiplayer = isMulti;
-
-                string[] activityTags = personalityCSV[i][6].Split(new[] { ',' });
-                for(int l = 0; l < activityTags.Length; l++)
-                {
-                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
-                }
-                
-                string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
-                int[] activityRewards = new int[actRewards.Length];
-                for (int p = 0; p < activityRewards.Length; p++)
-                {
-                    activityRewards[p] = Int32.Parse(actRewards[p]);
-                }
-                foreach (Reward rewa in Rewards)
-                {
-                    for (int q = 0; q < activityRewards.Length; q++)
-                    {
-                        int rewaID = activityRewards[q];
-                        if (rewa.ID == rewaID)
+                    case "ID":
+                        if (!int.TryParse(ItemsCSV[i][j], out ID) || ID < 0)
                         {
-                            act.AddReward(rewa);
+                            goto skip;
                         }
-                    }
-                }
-                item.AddActivity(act);
-                //if (!itemExists)
-                //{
-                //    ItemList.Add(item);
-                //}
-                //itemExists = false;
-            }
-        }
-        return ItemList;
-    }
-
-    private void getBaseActivites(string[][] personalityCSV)
-    {
-        Activity act;
-        int ID;
-
-        for(int i = 1; (i < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[i][0])); i++)
-        {
-            if (personalityCSV[i][1].Equals("Body"))
-            {
-                if (!Int32.TryParse(personalityCSV[i][0], out ID) || ID < 0)
-                {
-                    continue;
-                }
-
-                act = new Activity(ID, personalityCSV[i][2], null, Int32.Parse(personalityCSV[i][4]), personalityCSV[i][2]);
-                bool isMulti;
-                Boolean.TryParse(personalityCSV[i][5], out isMulti);
-                act.IsMultiplayer = isMulti;
-
-                string[] activityTags = personalityCSV[i][6].Split(new[] { ',' });
-                for (int l = 0; l < activityTags.Length; l++)
-                {
-                    act.Tags.Add((ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true));
-                }
-
-                string[] actRewards = personalityCSV[i][3].Split(new[] { ',' });
-                int[] activityRewards = new int[actRewards.Length];
-                for(int p = 0; p < activityRewards.Length; p++)
-                {
-                    activityRewards[p] = Int32.Parse(actRewards[p]);
-                }
-                foreach (Reward rewa in Rewards)
-                {
-                    for (int q = 0; q < activityRewards.Length; q++)
-                    {
-                        int rewaID = activityRewards[q];
-                        if(rewa.ID == rewaID)
+                        break;
+                    case "Name":
+                        if (ItemsCSV[i][j].Equals("Body"))
                         {
-                            act.AddReward(rewa);
-                        } 
-                    }
+                            goto skip;
+                        }
+                        Name = ItemsCSV[i][j];
+                        break;
+                    case "maxUses":
+                        if (!int.TryParse(ItemsCSV[i][j], out maxUses))
+                        {
+                            goto skip;
+                        }
+                        break;
+                    default:
+                        break;
                 }
+            }
+            item = new Item(ID, Name, 0, maxUses);
+            ItemList.Add(item);
+            skip:;
+        }
+
+           
+        //second add activities from activities_rewardsCSV & add BaseActivities
+        for (int i = 1; (i < personalityCSV.GetLength(0)) /*&& (!String.IsNullOrEmpty(personalityCSV[i][0]))*/; i++)
+        {
+            item = null;
+            for (int j = 0; (j < personalityCSV[i].Length); j++)
+            {
+
+                switch (personalityCSV[0][j])
+                {
+                    case "Activity.ID":
+                        if (!int.TryParse(personalityCSV[i][j], out ID) || ID < 0)
+                        {
+                            goto skipping;
+                        }
+                        break;
+                    case "Item":
+                        if (personalityCSV[i][j].Equals("Body"))
+                        {
+                            baseActivity = true;
+                            continue;
+                        }
+                        foreach (Item ite in ItemList)
+                        {
+                            if (personalityCSV[i][j].Equals(ite.Name))
+                            {
+                                item = ite;
+                                break;
+                            }
+                        }
+                        break;
+                    case "Activity":
+                        act = new Activity(ID, personalityCSV[i][j], item, 0, personalityCSV[i][j]);
+                        if (!baseActivity)
+                        {
+                            act.Name = item.Name + "." + personalityCSV[i][j];
+                            act.feedBackString = personalityCSV[i][j] + " " + item.Name;
+                        }
+                        break;
+                    case "Rewards":
+                        int rewaID;
+                        string[] actRewards = personalityCSV[i][j].Split(new[] { ',' });
+                        foreach (Reward rewa in Rewards)
+                        {
+                            for (int q = 0; q < actRewards.Length; q++)
+                            {
+                                if (!int.TryParse(actRewards[q], out rewaID))
+                                {
+                                    Debug.Log("ERROR in READING REWARDS, " + actRewards[q] + " was not in correct format!");
+                                }
+                                if (rewa.ID == rewaID)
+                                {
+                                    act.AddReward(rewa);
+                                }
+                            }
+                        }
+                        break;
+                    case "useConsum":
+                        if (!int.TryParse(personalityCSV[i][j], out act.useConsume))
+                        {
+                            act.useConsume = item.maxUses;
+                        }
+                        break;
+                    case "Tags for activities of same categories":
+                        string[] activityTags = personalityCSV[i][j].Split(new[] { ',' });
+                        for (int l = 0; l < activityTags.Length; l++)
+                        {
+                            ActivityTag tag = (ActivityTag)Enum.Parse(typeof(ActivityTag), activityTags[l], true);
+                            act.Tags.Add(tag);
+                            if (tag.Equals(ActivityTag.MULTIPLAYER))
+                            {
+                                act.IsMultiplayer = true;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (baseActivity)
+            {
                 _personality.AddBaseActivity(act);
             }
+            else
+            {
+                item.AddActivity(act);
+            }
+            baseActivity = false;
+            skipping:;
         }
+        return ItemList;
     }
 
     private void getRewards(string[][] personalityCSV)
@@ -385,6 +373,67 @@ public class PersonalityCreator
                                         }
                                     }
                                     trait.AddActivityModifier(actTag, activityModifier);
+                                }
+                                if (personalityCSV[l][0].Equals("feedback"))
+                                {
+                                    float feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+                                    foreach(char ch in personalityCSV[l][1])
+                                    {
+                                        switch(ch)
+                                        {
+                                            case '+':
+                                                feedbackModifier += 25;
+                                                break;
+                                            case '-':
+                                                feedbackModifier -= 25;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddFeedbackModifier(feedbackModifier);
+                                }
+                                if (personalityCSV[l][0].Equals("askForItem"))
+                                {
+                                    int askForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
+                                    foreach (char ch in personalityCSV[l][1])
+                                    {
+                                        switch (ch)
+                                        {
+                                            case '+':
+                                                askForItemModifier += 50;
+                                                break;
+                                            case '-':
+                                                askForItemModifier -= 50;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddAskForItemModifier(askForItemModifier);
+                                }
+                                if (personalityCSV[l][0].Equals("similarExperienceDifference"))
+                                {
+                                    int similarExperienceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
+                                    foreach (char ch in personalityCSV[l][1])
+                                    {
+                                        switch (ch)
+                                        {
+                                            //every + means that the similarExperienceDifference will increase so the Lemo will not try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
+                                            //->ANXIOUS
+                                            case '+':
+                                                similarExperienceModifier -= 5;
+                                                break;
+                                            //every - means that the similarExperienceDifference will decrease so the Lemo will try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
+                                            //->BRAVE
+                                            case '-':
+                                                similarExperienceModifier += 5;
+                                                break;
+                                            default:
+                                                break;
+                                        };
+                                    }
+                                    trait.AddSimilarExperienceDifferenceModifier(similarExperienceModifier);
                                 }
                                 k = l;
                             }

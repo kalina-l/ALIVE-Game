@@ -74,7 +74,7 @@ public class DragItemContainer : AbstractViewController {
 
     public void GiveItem()
     {
-        Debug.Log("Give Item!");
+        DebugController.Instance.Log("Give Item!", DebugController.DebugType.UI);
 
         _personality.AddItem(_item.ID, _item);
 

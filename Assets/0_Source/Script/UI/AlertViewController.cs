@@ -18,8 +18,8 @@ public class AlertViewController : AbstractViewController {
         _iconSize = new Vector2(110, 110);
 
         Rect = CreateContainer("Alert", parent,
-            new Vector2(-510, 1146), _bubbleSize,
-            new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0));
+            new Vector2(0, 186), _bubbleSize,
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(1, 0));
         View = Rect.gameObject;
 
         AddSprite(Rect, GraphicsHelper.Instance.alertBubbleSprite, GraphicsHelper.Instance.SpriteColorWhite);

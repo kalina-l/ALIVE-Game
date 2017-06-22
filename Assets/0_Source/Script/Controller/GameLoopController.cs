@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KKSpeech;
 
-public class GameLoopController {
+public class GameLoopController : GameLoop {
 
     private ApplicationManager _manager;
     private GameData _data;
@@ -14,6 +14,7 @@ public class GameLoopController {
     private Activity _lastActivity;
 
     public bool waitForFeedback;
+    public static int ASK_FOR_ITEM_FACTOR = 0;
 
     public GameLoopController(ApplicationManager manager, GameData data) {
         _manager = manager;
@@ -30,9 +31,16 @@ public class GameLoopController {
         {
             if (_lastActivity != null)
             {
-                //Store Feedback in Activity
-                _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
+                if (feedback != 0)
+                {
+                    //Store Feedback in Activity
+                    _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
 
+                } else
+                {
+                    _lastActivity.Feedback.AddNoFeedbackGiven(_lastExperience.BaseNeeds);
+                }
+                _lastActivity.DebugWholeFeedbackValue();
                 //Show Feedback
                 _manager.ShowFeedback(feedback);
             }
@@ -55,17 +63,41 @@ public class GameLoopController {
 
             bool sentFeedback = false;
 
+            System.Random rand = new System.Random();
+            //random feedback (25%)
+            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
+
             float timer = 0;
             while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
 
-                if (!sentFeedback)
+                if (!sentFeedback && givingFeedback)
                 {
                     if (_manager.Multiplayer.IsFeedbackRequestPending())
                     {
-                        //TODO: Calculate Feedback
-                        _manager.Multiplayer.SendFeedback(1);
+
+                        // SEND FEEDBACK TO ANOTHER LEMO
+                        Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
+                        PersonalityNode personality = new PersonalityNode(_data.Person);
+                        personality.changeNeeds(new PersonalityNode(_manager.Multiplayer.GetRemotePersonality()).Needs);
+                        Experience experience = feedbackActivity.GetExperience(personality);
+                        float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
+                        PersonalityNode newPerson = new PersonalityNode(personality,
+                                                    experience,
+                                                    feedback);
+                        float evaluation = newPerson.SelfEvaluation;
+                        DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
+                        if (evaluation > 0)
+                        {
+                            _manager.Multiplayer.SendFeedback(1);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO: 1", DebugController.DebugType.Multiplayer);
+                        }
+                        else
+                        {
+                            _manager.Multiplayer.SendFeedback(-1);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO: -1", DebugController.DebugType.Multiplayer);
+                        }
                     }
                 }
 
@@ -91,19 +123,19 @@ public class GameLoopController {
 
     private IEnumerator DoActivityRoutine()
     {
-        Debug.Log("Start of Loop");
+        DebugController debug = DebugController.Instance;
 
-        bool removeExtraActivity = false;
+        debug.Log("Start of Loop", DebugController.DebugType.GameFlow);
+        
 
         if (_manager.Multiplayer.IsRequestPending())
         {
-            Debug.Log("Check multiplayer Request");
-
-            _data.Person.AddBaseActivity(_manager.Multiplayer.GetPendingActivity());
-            removeExtraActivity = true;
+            debug.Log("Check multiplayer Request", DebugController.DebugType.GameFlow);
         }
 
-        Debug.Log("Calculate Next Activity");
+        debug.Log("Calculate Next Activity", DebugController.DebugType.GameFlow);
+
+        _data.Person.PrintAllRewards();
 
         _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
 
@@ -118,13 +150,13 @@ public class GameLoopController {
         int activityID = _data.Intelligence.GetResult();
         int askActivityID = -1;
 
-        Debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID);
+        debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID, DebugController.DebugType.Activity);
         
-        bool askForItem = _data.Intelligence.GetValue() <= 0;
+        bool askForItem = _data.Intelligence.GetValue() <= ASK_FOR_ITEM_FACTOR;
 
         if (askForItem)
         {
-            Debug.Log("Ask for Item");
+            debug.Log("Ask for Item", DebugController.DebugType.GameFlow);
 
             _data.Intelligence.AskForItem(_data.Person, _data.Items);
 
@@ -138,7 +170,7 @@ public class GameLoopController {
 
             askActivityID = _data.Intelligence.GetResult();
 
-            Debug.Log("Item Found");
+            debug.Log("Item Found", DebugController.DebugType.GameFlow);
         }
 
 
@@ -150,7 +182,7 @@ public class GameLoopController {
 
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
-                    Debug.Log("Check " + _data.Items[i].Name);
+                    debug.Log("Check " + _data.Items[i].Name, DebugController.DebugType.GameFlow);
                     foreach (Activity activity in _data.Items[i].GetAllActivities())
                     {
                         if (activity.ID == askActivityID)
@@ -171,16 +203,16 @@ public class GameLoopController {
                 }
                 else
                 {
-                    Debug.Log("NO EXTRA ITEM NEEDED - I want to " + _data.Person.GetActivity(activityID).feedBackString);
+                    debug.Log("NO EXTRA ITEM NEEDED - I want to " + _data.Person.GetActivity(activityID).feedBackString, DebugController.DebugType.GameFlow);
                 }
                 
             }
 
-            Debug.Log("Get Activity");
+            debug.Log("Get Activity", DebugController.DebugType.GameFlow);
 
             _lastActivity = _data.Person.GetActivity(activityID);
 
-            Debug.Log("Do Multiplayer");
+            debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
 
             if (_lastActivity.IsMultiplayer) {
                 if (_lastActivity.IsRequest) {
@@ -202,7 +234,7 @@ public class GameLoopController {
                 _manager.Multiplayer.DeclineRequest();
             }
 
-            Debug.Log("Do Activity");
+            debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
             _lastExperience = _lastActivity.DoActivity(_data.Person);
 
@@ -214,28 +246,24 @@ public class GameLoopController {
 
             _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
 
-            Debug.Log("Animate");
+            debug.Log("Animate", DebugController.DebugType.GameFlow);
 
             while (_manager.CharacterAnimation.IsAnimating)
             {
                 yield return 0;
             }
 
-            Debug.Log("UpdateUI");
+            debug.Log("UpdateUI", DebugController.DebugType.GameFlow);
 
             _manager.UpdateUI();
-
-            //remove multiplayer activity
-            if (removeExtraActivity) {
-                _data.Person.RemovePendingActivity();
-            }
+            
         }
         else
         {
             _lastActivity = null;
         }
 
-        Debug.Log("End of Loop");
+        debug.Log("End of Loop", DebugController.DebugType.GameFlow);
     }
 
 

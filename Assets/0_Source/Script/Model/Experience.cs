@@ -9,8 +9,6 @@ public class Experience {
     public Dictionary<NeedType, Evaluation> BaseNeeds;
     public Dictionary<NeedType, int> Rewards;
 
-    public int Feedback;
-
     public Experience()
     {
         BaseNeeds = new Dictionary<NeedType, Evaluation>();
@@ -65,11 +63,11 @@ public class Experience {
     {
         System.Random r = new System.Random();
 
-        Rewards[NeedType.HUNGER] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.ENERGY] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.HEALTH] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.SATISFACTION] = (int)((r.NextDouble() * 4f) - 2f);
-        Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f);
+        Rewards[NeedType.HUNGER] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.ENERGY] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.HEALTH] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.SATISFACTION] = (int)((r.NextDouble() * 4f) - 2f) + 1;
+        Rewards[NeedType.SOCIAL] = (int)((r.NextDouble() * 4f) - 2f) + 1;
     }
 
     public void AddFavorableRewards()
@@ -93,7 +91,7 @@ public class Experience {
 
         foreach(KeyValuePair<NeedType, Evaluation> kvp in compareWith)
         {
-            value -= Mathf.Abs((int)kvp.Value - (int)BaseNeeds[kvp.Key]);
+            value -= (int)Mathf.Pow(Mathf.Abs((int)kvp.Value - (int)BaseNeeds[kvp.Key]), 2);
         }
 
         return value;
@@ -109,7 +107,7 @@ public class Experience {
             {
                 if(Rewards[reward.Key] == 0)
                 {
-                    Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                    DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                     Rewards[reward.Key] = reward.Value;
                     changedRewards = true;
                 }
@@ -117,7 +115,7 @@ public class Experience {
                 {
                     if (reward.Value < Rewards[reward.Key])
                     {
-                        Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                        DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                         Rewards[reward.Key] = reward.Value;
                         changedRewards = true;
                     }
@@ -126,7 +124,7 @@ public class Experience {
                 {
                     if (reward.Value > Rewards[reward.Key])
                     {
-                        Debug.Log("Change " + Rewards[reward.Key] + " to " + reward.Value);
+                        DebugController.Instance.Log("Change " + reward.Key.ToString() + " from " + Rewards[reward.Key] + " to " + reward.Value, DebugController.DebugType.Activity);
                         Rewards[reward.Key] = reward.Value;
                         changedRewards = true;
                     }
@@ -146,7 +144,7 @@ public class Experience {
             s += reward.Key.ToString() + ": " + reward.Value + " | ";
         }
 
-        Debug.Log(s);
+        DebugController.Instance.Log(s, DebugController.DebugType.Activity);
     }
 
     public override string ToString()

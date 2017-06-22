@@ -63,7 +63,7 @@ public class GameData {
 
                 Dictionary<TraitType, Trait> traitList = creatorCSV.TraitList;
 
-                //_personality.AddTrait(_traitList[TraitType.INTROVERT], _itemList);
+                //Person.AddTrait(traitList[TraitType.WILD], Items);
                 //foreach (KeyValuePair<TraitType, Trait> kvp in traitList)
                 //{
                 //    if (Random.value <= 0.33)
@@ -89,7 +89,7 @@ public class GameData {
         {
             traits += trait.Identifier + " | ";
         }
-        Debug.Log(traits);
+        DebugController.Instance.Log(traits, DebugController.DebugType.System);
 
     }
 }

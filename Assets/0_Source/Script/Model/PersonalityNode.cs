@@ -8,6 +8,8 @@ public class PersonalityNode {
     public List<int> ActivityIDs;
 	public List<Item> Items;
 
+    public MultiplayerController Multiplayer { get; set; }
+
     public PersonalityNode Parent;
     public List<PersonalityNode> Children;
 
@@ -19,6 +21,7 @@ public class PersonalityNode {
 	public bool visited = false;
 
     public float FeedBack;
+    public static float FEEDBACK_FACTOR = 30;
 
     public float DISCOUNT_FACTOR = 0.91f;
 
@@ -46,6 +49,8 @@ public class PersonalityNode {
         Depth = 0;
 		SelfEvaluation = 0;
 		BestChildsEvaluation = int.MinValue;
+
+        Multiplayer = basePerson.Multiplayer;
 
         Children = new List<PersonalityNode>();
     }
@@ -91,6 +96,8 @@ public class PersonalityNode {
         SelfEvaluation = 0;
         BestChildsEvaluation = int.MinValue;
 
+        Multiplayer = basePerson.Multiplayer;
+
         Children = new List<PersonalityNode>();
     }
 
@@ -123,6 +130,8 @@ public class PersonalityNode {
 		SelfEvaluation = Evaluation ();
 		BestChildsEvaluation = 0;
 
+        Multiplayer = parent.Multiplayer;
+
         if (usedItem != null)
         {
 			usedItem = usedItem.deepCopy ();
@@ -138,7 +147,21 @@ public class PersonalityNode {
         }
     }
 
-	public Item GetItem(int activityID, bool showLog = true)
+    public PersonalityNode(PersonalityNode parent, Experience xp, float feedback)
+    {
+        Parent = parent;
+        FeedBack = feedback;
+
+        Needs = new Dictionary<NeedType, Evaluation>();
+        foreach (KeyValuePair<NeedType, Evaluation> need in parent.Needs)
+        {
+            Needs[need.Key] = (Evaluation)Mathf.Clamp((int)need.Value + xp.Rewards[need.Key], 0, 7);
+        }
+
+        SelfEvaluation = Evaluation();
+    }
+
+    public Item GetItem(int activityID, bool showLog = true)
 	{
 		foreach (Item item in Items) {
 			if (item.Activities.ContainsKey (activityID)) {
@@ -154,7 +177,7 @@ public class PersonalityNode {
 
     public float Evaluation()
     {
-        float value = FeedBack * 100;
+        float value = FeedBack * FEEDBACK_FACTOR;
 
         foreach (KeyValuePair<NeedType, Evaluation> need in Needs)
         {
@@ -209,4 +232,9 @@ public class PersonalityNode {
 			}
 		}
 	}
+
+    public void changeNeeds(Dictionary<NeedType, Evaluation> needs)
+    {
+        Needs = needs;
+    }
 }
