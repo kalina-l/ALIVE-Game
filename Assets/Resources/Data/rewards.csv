@@ -42,14 +42,14 @@ Idle;1105;11;Satisfaction;Health.GOOD;Health.SUPER_GOOD;Hunger.GOOD;Hunger.SUPER
 Idle;1106;-20;Social;;;;;;;Social.SUICIDAL;Social.VERY_BAD;;;wirkt ignorant
 Idle;1107;-10;Social;;;;;;;Social.BAD;Social.NEUTRAL;;;
 Idle;1108;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
-Sleep;1201;50;Energy;;;;;;;;;Energy.SUICIDAL;Energy.GOOD;
+Sleep;1201;70;Energy;;;;;;;;;Energy.SUICIDAL;Energy.NEUTRAL;
 Sleep;1202;-13;Health;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;To much sleep is bad for health
 Sleep;1203;-20;Satisfaction;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;
-Sleep;1204;16;Satisfaction;;;;;;;;;Energy.SUICIDAL;Energy.GOOD;
+Sleep;1204;16;Satisfaction;;;;;;;;;Energy.SUICIDAL;Energy.BAD;
 Sleep;1205;-13;Hunger;;;;Hunger.BAD;Hunger.SUPER_GOOD;;;;;;
 Sleep;1206;-26;Hunger;;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;
 Sleep;1207;26;Health;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
-Sleep;1208;17;Health;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Sleep;1208;17;Health;Health.BAD;Health.NEUTRAL;;;;;;;;;
 Sleep;1209;7;Social;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;
 Sleep;1210;-14;Social;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
 Sleep;1211;-21;Social;;;;;;;;;Energy.VERY_GOOD;Energy.SUPER_GOOD;to much sleep makes Lemo unactractive, because of looking lazy
