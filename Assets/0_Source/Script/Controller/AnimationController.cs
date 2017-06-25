@@ -10,9 +10,9 @@ public class AnimationController {
 
     private float _animationTime;
 
-	public AnimationController()
+	public AnimationController(GameObject lemo)
     {
-        _animation = GraphicsHelper.Instance.lemo.GetComponent<Animator>();
+        _animation = lemo.GetComponent<Animator>();
     }
 
     public void PlayActivityAnimation(Activity activity, Personality personality) {
@@ -23,7 +23,7 @@ public class AnimationController {
             case "Sleep":
                 ApplicationManager.Instance.StartCoroutine(SleepRoutine());
                 break;
-            case "Idle":
+            default:
                 PlayIdleAnimation(personality);
                 break;
         }

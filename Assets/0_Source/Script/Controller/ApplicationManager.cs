@@ -45,6 +45,7 @@ public class ApplicationManager : MonoBehaviour {
     //Multiplayer
     private MultiplayerController _multiplayer;
     public MultiplayerController Multiplayer { get { return _multiplayer; } }
+    public MultiplayerViewController MultiplayerViewController { get; set; }
 
     void Awake()
     {
@@ -65,7 +66,7 @@ public class ApplicationManager : MonoBehaviour {
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
         _options = new OptionsMenuController(UICanvas.transform);
 
-        CharacterAnimation = new AnimationController();
+        CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
         
         if (resetButton)
         {
@@ -81,6 +82,7 @@ public class ApplicationManager : MonoBehaviour {
         }
 
         _multiplayer = new MultiplayerController(_data.Person, "local");
+        MultiplayerViewController = new MultiplayerViewController();
 
 
         //Simulation
@@ -88,6 +90,7 @@ public class ApplicationManager : MonoBehaviour {
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
             _multiplayer.ConnectWithRemote(_simulation.GetController());
+            MultiplayerViewController.startMultiplayerView();
         }
 
         //GameLoop
@@ -164,12 +167,14 @@ public class ApplicationManager : MonoBehaviour {
         {
             _simulation = new RemotePersonalitySimulation(this, _data.Person);
             Multiplayer.ConnectWithRemote(_simulation.GetController());
+            MultiplayerViewController.startMultiplayerView();
         }
 
         if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.IsConnected)
         {
             Multiplayer.Disconnect();
             _simulation.StopSimulation();
+            MultiplayerViewController.endMultiplayerView();
         }
     }
 }

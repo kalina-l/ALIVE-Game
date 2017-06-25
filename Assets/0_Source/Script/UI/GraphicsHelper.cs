@@ -6,8 +6,13 @@ public class GraphicsHelper : MonoBehaviour {
 
     public static GraphicsHelper Instance;
 
+    public Transform camera;
+
     public GameObject lemo;
     public Transform itemAnchor;
+    public Transform multiplayerLemoAnchor;
+    public Transform multiplayerCameraAnchor;
+    public Transform singleplayerCameraAnchor;
 
     public Font UIFont;
 

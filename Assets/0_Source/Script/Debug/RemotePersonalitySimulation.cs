@@ -160,6 +160,12 @@ public class RemotePersonalitySimulation : GameLoop {
 
             DebugController.Instance.Log("remote: " + _lastActivity.Name, DebugController.DebugType.Multiplayer);
             _lastExperience = _lastActivity.DoActivity(_personality);
+
+            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity, _personality);
+            while (_manager.MultiplayerViewController.RemoteCharacterAnimation.IsAnimating)
+            {
+                yield return 0;
+            }
         }
         else
         {
