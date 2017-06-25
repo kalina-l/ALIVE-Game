@@ -11,6 +11,8 @@ public class Personality {
     public List<Trait> Traits;
     public Dictionary<EmotionType, Emotion> Emotions;          //possible Emotions
     public int emotionCounter;
+    [SerializeField]
+    private int lastEmotionCounter;
     public EmotionType executedEmotion;
 
     public MultiplayerController Multiplayer { get; set; }
@@ -40,6 +42,7 @@ public class Personality {
         Emotions = new Dictionary<EmotionType, Emotion>();
         emotionCounter = 0;
         executedEmotion = EmotionType.NORMAL;
+        lastEmotionCounter = -1;
     }
 
 	public Personality(Personality parent, int parentActionID){
@@ -366,6 +369,7 @@ public class Personality {
     {
         DebugController.Instance.Log("Emotion executed", DebugController.DebugType.Emotion);
         AddTrait(emotion.TemporaryTrait, emotion.Items);
+        emotionCounter = emotion.Trigger;
         executedEmotion = emotion.EmotionType;
         return true;
     }
@@ -396,6 +400,11 @@ public class Personality {
                     ActivateEmotion(emotion);
                 }
             }
+
+            if(lastEmotionCounter == emotionCounter)
+            {
+                emotionCounter = emotionCounter < 0 ? emotionCounter + 1 : emotionCounter - 1;
+            }
         }
         else
         {
@@ -405,6 +414,7 @@ public class Personality {
                 DeactivateEmotion(Emotions[executedEmotion]);
             }
         }
+        lastEmotionCounter = emotionCounter;
     }
 
     public void printConditions() {

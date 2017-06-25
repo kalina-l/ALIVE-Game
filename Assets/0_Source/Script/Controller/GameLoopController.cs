@@ -161,6 +161,10 @@ public class GameLoopController : GameLoop {
             {
                 _data.Person.emotionCounter += 1;
             }
+            if(askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
+            {
+                _data.Person.emotionCounter -= 1;
+            }
         }
 
 
