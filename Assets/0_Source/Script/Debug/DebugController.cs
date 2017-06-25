@@ -21,6 +21,7 @@ public class DebugController : MonoBehaviour {
         Animation,
         System,
         Multiplayer,
+        Emotion,
         None
     }
 

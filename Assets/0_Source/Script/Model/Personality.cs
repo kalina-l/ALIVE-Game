@@ -9,6 +9,9 @@ public class Personality {
 	public Dictionary<int, Activity> BaseActivities;
     public Dictionary<int, Item> Items;
     public List<Trait> Traits;
+    public Dictionary<EmotionType, Emotion> Emotions;          //possible Emotions
+    public int emotionCounter;
+    public EmotionType executedEmotion;
 
     public MultiplayerController Multiplayer { get; set; }
 
@@ -34,6 +37,9 @@ public class Personality {
         Items = new Dictionary<int, Item>();
         Traits = new List<Trait>();
         deepnessInParent = 0;
+        Emotions = new Dictionary<EmotionType, Emotion>();
+        emotionCounter = 0;
+        executedEmotion = EmotionType.NORMAL;
     }
 
 	public Personality(Personality parent, int parentActionID){
@@ -92,13 +98,18 @@ public class Personality {
         {
             if ((need = GetCondition(tr.Key)) != null)
             {
-                need.Thresholds = tr.Value;
+                for (int i = 0; i < tr.Value.Length; i++)
+                {
+                    need.Thresholds[i] += tr.Value[i];
+                }
             }
             else
             {
                 Debug.LogError("There is no " + tr.Key + " for modification!");
             }
         }
+
+
 
         /*Go through every activity in every item to add special-trait-rewards*/
         foreach (Item item in itemList)
@@ -146,10 +157,86 @@ public class Personality {
             }
         }
 
-        PersonalityNode.FEEDBACK_FACTOR = trait.FeedbackModifier;
-        GameLoopController.ASK_FOR_ITEM_FACTOR = trait.AskForItemModifier;
-        Activity.SIMILAR_EXPERIENCE_DIFFERENCE = trait.SimilarExperienceDifferenceModifier;
+        PersonalityNode.FEEDBACK_FACTOR += trait.FeedbackModifier;
+        GameLoopController.ASK_FOR_ITEM_FACTOR += trait.AskForItemModifier;
+        Activity.SIMILAR_EXPERIENCE_DIFFERENCE += trait.SimilarExperienceDifferenceModifier;
 
+        return this;
+    }
+
+    public Personality RemoveTrait(Trait trait, List<Item> itemList)
+    {
+        Need need;
+
+        if (!Traits.Remove(trait))
+        {
+            Debug.LogWarning(trait.Identifier+" can't be removed because it was not added to the personality!");
+        }
+
+        foreach (KeyValuePair<NeedType, int[]> tr in trait.ThresholdModifiers)
+        {
+            if ((need = GetCondition(tr.Key)) != null)
+            {
+                for (int i = 0; i < tr.Value.Length; i++)
+                {
+                    need.Thresholds[i] -= tr.Value[i];
+                }
+            }
+            else
+            {
+                Debug.LogError("There is no " + tr.Key + " for modification!");
+            }
+        }
+
+        /*Go through every activity in every item to delete special-trait-rewards*/
+        foreach (Item item in itemList)
+        {
+            foreach (Activity activity in item.GetAllActivities())
+            {
+                foreach (ActivityTag actTag in activity.Tags)
+                {
+                    foreach (KeyValuePair<ActivityTag, List<Reward>> kvp in trait.ActivityModifiers)
+                    {
+                        if (actTag.Equals(kvp.Key))
+                        {
+                            foreach (Reward reward in kvp.Value)
+                            {
+                                activity.RemoveReward(reward);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*Go through every BaseActivity of the personality to delete special-trait-rewards*/
+        foreach (KeyValuePair<int, Activity> kvp in BaseActivities)
+        {
+            foreach (ActivityTag actTag in kvp.Value.Tags)
+            {
+                foreach (KeyValuePair<ActivityTag, List<Reward>> kvpi in trait.ActivityModifiers)
+                {
+                    if (actTag.Equals(kvpi.Key))
+                    {
+                        foreach (Reward reward in kvpi.Value)
+                        {
+                            kvp.Value.RemoveReward(reward);
+                        }
+                    }
+                }
+            }
+        }
+
+        PersonalityNode.FEEDBACK_FACTOR -= trait.FeedbackModifier;
+        GameLoopController.ASK_FOR_ITEM_FACTOR -= trait.AskForItemModifier;
+        Activity.SIMILAR_EXPERIENCE_DIFFERENCE -= trait.SimilarExperienceDifferenceModifier;
+
+        return this;
+    }
+
+    public Personality AddEmotion(Emotion emotion)
+    {
+        Emotions[emotion.EmotionType] = emotion;
         return this;
     }
 
@@ -272,6 +359,51 @@ public class Personality {
         else
         {
             Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionairy.");
+        }
+    }
+
+    public bool ActivateEmotion(Emotion emotion)
+    {
+        DebugController.Instance.Log("Emotion executed", DebugController.DebugType.Emotion);
+        AddTrait(emotion.TemporaryTrait, emotion.Items);
+        executedEmotion = emotion.EmotionType;
+        return true;
+    }
+
+    public bool DeactivateEmotion(Emotion emotion)
+    {
+        DebugController.Instance.Log("Emotion dissolved", DebugController.DebugType.Emotion);
+        RemoveTrait(emotion.TemporaryTrait, emotion.Items);
+        executedEmotion = EmotionType.NORMAL;
+        return true;
+    }
+
+    public void checkEmotion()
+    {
+        DebugController.Instance.Log("EmotionCounter: " + emotionCounter, DebugController.DebugType.Emotion);
+
+        if (executedEmotion == EmotionType.NORMAL)
+        {
+            foreach (KeyValuePair<EmotionType, Emotion> kvp in Emotions)
+            {
+                Emotion emotion = kvp.Value;
+                if ((emotion.Trigger < 0) && (emotionCounter <= emotion.Trigger))
+                {
+                    ActivateEmotion(emotion);
+                }
+                if ((emotion.Trigger > 0) && (emotionCounter >= emotion.Trigger))
+                {
+                    ActivateEmotion(emotion);
+                }
+            }
+        }
+        else
+        {
+            emotionCounter = emotionCounter < 0 ? emotionCounter+1 : emotionCounter-1;
+            if(emotionCounter == 0)
+            {
+                DeactivateEmotion(Emotions[executedEmotion]);
+            }
         }
     }
 

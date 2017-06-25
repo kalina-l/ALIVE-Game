@@ -82,6 +82,19 @@ public class Activity {
         return this;
     }
 
+    public Activity RemoveReward(Reward reward)
+    {
+        if (RewardList.Contains(reward))
+        {
+            RewardList.Remove(reward);
+        }
+        else
+        {
+            Debug.LogWarning(reward.ID + " is not in the RewardList -> can't be removed");
+        }
+        return this;
+    }
+
 	public Experience DoActivity(Personality parentPersonality)
     {
         Experience xp = null;
@@ -110,6 +123,10 @@ public class Activity {
         {
             if (IsRequest)
             {
+                if (parentPersonality.executedEmotion == EmotionType.NORMAL)
+                {
+                    parentPersonality.emotionCounter += 1;
+                }
                 GetAcceptReward().DoReward(parentPersonality, need);
 
                 foreach (Reward reward in RewardList)
@@ -119,6 +136,11 @@ public class Activity {
             }
             else if (IsDeclined)
             {
+                if (parentPersonality.executedEmotion == EmotionType.NORMAL)
+                {
+                    parentPersonality.emotionCounter -= 1;
+                }
+
                 GetRejectionReward().DoReward(parentPersonality, need);
             }
         }

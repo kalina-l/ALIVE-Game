@@ -340,8 +340,8 @@ public class PersonalityCreator
                             break;
                         case "trait":
                             Trait trait = new Trait((TraitType)Enum.Parse(typeof(TraitType), personalityCSV[k-1][1]));
-                            trait.TraitTag = Int32.Parse(personalityCSV[k - 1][2]);
-                            for(int l = k; (l < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[l][0])); l++)
+                            trait.TraitTag = int.Parse(personalityCSV[k - 1][2]);
+                            for(int l = k; (l < personalityCSV.GetLength(0)) && (!string.IsNullOrEmpty(personalityCSV[l][0])); l++)
                             {
                                 NeedType needTypeMod;
                                 if (StaticFunctions.ToEnum<NeedType>(personalityCSV[l][0], out needTypeMod))
@@ -349,9 +349,8 @@ public class PersonalityCreator
                                     thresholdModifier = new int[personalityCSV[l].Length - 1];
                                     for (int j = 1; j < personalityCSV[l].Length; j++)
                                     {
-                                        thresholdModifier[j - 1] = Int32.Parse(personalityCSV[l][j]);
+                                        thresholdModifier[j - 1] = int.Parse(personalityCSV[l][j]) - _personality.Conditions[needTypeMod].Thresholds[j - 1];
                                     }
-
                                     trait.AddThresholdModifier(needTypeMod, thresholdModifier);
                                 }
                                 ActivityTag actTag;
@@ -362,7 +361,7 @@ public class PersonalityCreator
                                     int intReward;
                                     for (int p = 0; p < stringRewardsForActivityMod.Length; p++)
                                     {
-                                        intReward = Int32.Parse(stringRewardsForActivityMod[p]);
+                                        intReward = int.Parse(stringRewardsForActivityMod[p]);
                                         foreach (Reward reward in Rewards)
                                         {
                                             if(reward.ID == intReward)
@@ -376,7 +375,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("feedback"))
                                 {
-                                    float feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+                                    float feedbackModifier = 0;
                                     foreach(char ch in personalityCSV[l][1])
                                     {
                                         switch(ch)
@@ -395,7 +394,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("askForItem"))
                                 {
-                                    int askForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
+                                    int askForItemModifier = 0;
                                     foreach (char ch in personalityCSV[l][1])
                                     {
                                         switch (ch)
@@ -414,7 +413,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("similarExperienceDifference"))
                                 {
-                                    int similarExperienceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
+                                    int similarExperienceModifier = 0;
                                     foreach (char ch in personalityCSV[l][1])
                                     {
                                         switch (ch)
@@ -447,5 +446,33 @@ public class PersonalityCreator
             }
             start = -1;
         }
+
+        //test Emotion
+        Emotion badEmotion = new Emotion(EmotionType.BAD, -5);
+        Trait temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
+        List<Reward> rewalist = new List<Reward>();
+        Reward rew = new Reward();
+        rew.ID = 1000;
+        rew.RewardType = NeedType.HUNGER;
+        rew.RewardValue = 1000;
+        rewalist.Add(rew);
+        temporaryTait.AddActivityModifier(ActivityTag.EATING, rewalist);
+        badEmotion.AddTemporaryTrait(temporaryTait);
+
+        _personality.AddEmotion(badEmotion);
+
+
+        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 5);
+        temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
+        rewalist = new List<Reward>();
+        rew = new Reward();
+        rew.ID = 2000;
+        rew.RewardType = NeedType.SOCIAL;
+        rew.RewardValue = 1000;
+        rewalist.Add(rew);
+        temporaryTait.AddActivityModifier(ActivityTag.OWNSOCIAL, rewalist);
+        goodEmotion.AddTemporaryTrait(temporaryTait);
+
+        _personality.AddEmotion(goodEmotion);
     }
 }

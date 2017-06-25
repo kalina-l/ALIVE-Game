@@ -15,6 +15,8 @@ public class GameLoopController : GameLoop {
 
     public bool waitForFeedback;
     public static int ASK_FOR_ITEM_FACTOR = 0;
+    private Item askItem;
+    private bool askForItemShown = false;
 
     public GameLoopController(ApplicationManager manager, GameData data) {
         _manager = manager;
@@ -35,7 +37,17 @@ public class GameLoopController : GameLoop {
                 {
                     //Store Feedback in Activity
                     _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
-
+                    if(_data.Person.executedEmotion == EmotionType.NORMAL)
+                    {
+                        if(feedback < 0)
+                        {
+                            _data.Person.emotionCounter -= 1;
+                        }
+                        else
+                        {
+                            _data.Person.emotionCounter += 1;
+                        }
+                    }
                 } else
                 {
                     _lastActivity.Feedback.AddNoFeedbackGiven(_lastExperience.BaseNeeds);
@@ -109,6 +121,8 @@ public class GameLoopController : GameLoop {
                 GiveFeedback(0);
             }
 
+            _data.Person.checkEmotion();
+
             if (saveCounter >= _manager.AutomaticSaveAfterActions)
             {
                 _data.SaveData();
@@ -137,6 +151,19 @@ public class GameLoopController : GameLoop {
 
         _data.Person.PrintAllRewards();
 
+
+        //add point to happy emotion when Lemo gets Item it wants
+        if(askItem != null)
+        debug.Log("AskItem: " + askItem.Name, DebugController.DebugType.Emotion);
+        if (_data.Person.executedEmotion == EmotionType.NORMAL)
+        {
+            if (askForItemShown && (askItem != null) && (_data.Person.GetItems().ContainsValue(askItem)))
+            {
+                _data.Person.emotionCounter += 1;
+            }
+        }
+
+
         _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
 
         float timer = 0;
@@ -151,7 +178,9 @@ public class GameLoopController : GameLoop {
         int askActivityID = -1;
 
         debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID, DebugController.DebugType.Activity);
-        
+
+        askItem = null;
+        askForItemShown = false;
         bool askForItem = _data.Intelligence.GetValue() <= ASK_FOR_ITEM_FACTOR;
 
         if (askForItem)
@@ -173,12 +202,11 @@ public class GameLoopController : GameLoop {
             debug.Log("Item Found", DebugController.DebugType.GameFlow);
         }
 
-
         if (activityID != -1)
         {
             if (askForItem)
             {
-                Item askItem = null;
+                askItem = null;
 
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
@@ -197,6 +225,7 @@ public class GameLoopController : GameLoop {
                     if (_data.Person.GetItem(askItem.ID, false) == null)
                     {
                         _manager.ShowItemAlert(askItem);
+                        askForItemShown = true;
 
                         yield return new WaitForSeconds(2);
                     }
