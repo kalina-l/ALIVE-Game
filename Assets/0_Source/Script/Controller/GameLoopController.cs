@@ -35,8 +35,9 @@ public class GameLoopController : GameLoop {
             {
                 if (feedback != 0)
                 {
-                    //Store Feedback in Activity
+                    //Store Feedback in Activity               
                     _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
+
                     if(_data.Person.executedEmotion == EmotionType.NORMAL)
                     {
                         if(feedback < 0)

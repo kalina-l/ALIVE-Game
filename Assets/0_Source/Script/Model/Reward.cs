@@ -60,4 +60,28 @@ public class Reward {
             }
         }
     }
+
+    public Reward Copy()
+    {
+        Reward reward = new Reward();
+        reward.ID = ID;
+        reward.RewardType = RewardType;
+        reward.RewardValue = RewardValue;
+        reward.MinHealth = MinHealth;
+        reward.MaxHealth = MaxHealth;
+
+        reward.MinHunger = MinHunger;
+        reward.MaxHunger = MaxHunger;
+
+        reward.MinSocial = MinSocial;
+        reward.MaxSocial = MaxSocial;
+
+        reward.MinEnergy = MinEnergy;
+        reward.MaxEnergy = MaxEnergy;
+
+        reward.MinSatisfaction = MinSatisfaction;
+        reward.MaxSatisfaction = MaxSatisfaction;
+
+        return reward;
+    }
 }

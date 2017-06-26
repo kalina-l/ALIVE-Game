@@ -447,32 +447,42 @@ public class PersonalityCreator
             start = -1;
         }
 
-        //test Emotion
-        Emotion badEmotion = new Emotion(EmotionType.BAD, -5);
+
+        //Emotions
+
+        //good Emotion -> Aktivitäten mit Satisfaction: wenn fröhlich und das gemacht wird, was sowieso schon glücklich macht (-> positive Rewards werden ver-1.5-facht, negative Rewards werden halbiert)
+        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 5, 1);
         Trait temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
-        List<Reward> rewalist = new List<Reward>();
-        Reward rew = new Reward();
-        rew.ID = 1000;
-        rew.RewardType = NeedType.HUNGER;
-        rew.RewardValue = 1000;
-        rewalist.Add(rew);
-        temporaryTait.AddActivityModifier(ActivityTag.EATING, rewalist);
-        badEmotion.AddTemporaryTrait(temporaryTait);
 
-        _personality.AddEmotion(badEmotion);
+        //Health-Thresholds all -15 (wird nicht so schnell “krank”)
+        int[] healthThresholdModifier = new int[] { -15, -15, -15, -15, -15, -15, -15 };
+        temporaryTait.AddThresholdModifier(NeedType.HEALTH, healthThresholdModifier);
 
+        //Energy-Thresholds all -15 (ist energievoller)
+        int[] energyThresholdModifier = new int[] { -15, -15, -15, -15, -15, -15, -15 };
+        temporaryTait.AddThresholdModifier(NeedType.ENERGY, energyThresholdModifier);
 
-        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 5);
-        temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
-        rewalist = new List<Reward>();
-        rew = new Reward();
-        rew.ID = 2000;
-        rew.RewardType = NeedType.SOCIAL;
-        rew.RewardValue = 1000;
-        rewalist.Add(rew);
-        temporaryTait.AddActivityModifier(ActivityTag.OWNSOCIAL, rewalist);
         goodEmotion.AddTemporaryTrait(temporaryTait);
-
         _personality.AddEmotion(goodEmotion);
+
+
+
+        //bad Emotion
+        Emotion badEmotion = new Emotion(EmotionType.BAD, -5, -1);
+        temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
+
+        //macht genau Gegenteil vom Feedback was er gelernt hat?!?
+        temporaryTait.AddFeedbackModifier(-100);
+
+        //Health-Thresholds all +15 (wird schneller “krank”)
+        healthThresholdModifier = new int[] { 15, 15, 15, 15, 15, 15, 15 };
+        temporaryTait.AddThresholdModifier(NeedType.HEALTH, healthThresholdModifier);
+
+        //Social-Thresholds all +15 (fühlt sich unsozialer)
+        int[] socialThresholdModifier = new int[] { 15, 15, 15, 15, 15, 15, 15 };
+        temporaryTait.AddThresholdModifier(NeedType.SOCIAL, socialThresholdModifier);
+
+        badEmotion.AddTemporaryTrait(temporaryTait);
+        _personality.AddEmotion(badEmotion);
     }
 }

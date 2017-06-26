@@ -368,7 +368,7 @@ public class Personality {
     public bool ActivateEmotion(Emotion emotion)
     {
         DebugController.Instance.Log("Emotion executed", DebugController.DebugType.Emotion);
-        AddTrait(emotion.TemporaryTrait, emotion.Items);
+        emotion.ActivateEmotion(this);
         emotionCounter = emotion.Trigger;
         executedEmotion = emotion.EmotionType;
         return true;
@@ -377,7 +377,7 @@ public class Personality {
     public bool DeactivateEmotion(Emotion emotion)
     {
         DebugController.Instance.Log("Emotion dissolved", DebugController.DebugType.Emotion);
-        RemoveTrait(emotion.TemporaryTrait, emotion.Items);
+        emotion.DeactivateEmotion(this);
         executedEmotion = EmotionType.NORMAL;
         return true;
     }
