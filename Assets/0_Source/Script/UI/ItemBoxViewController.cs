@@ -133,6 +133,11 @@ public class ItemBoxViewController : AbstractViewController
         if(_itemInSlot != null)
         {
             GameObject.Destroy(_itemObject);
+
+            if(_itemInSlot.ItemID != itemInSlot.ItemID)
+            {
+                _itemInSlot.RemoveItem();
+            }
         }
 
         _itemInSlot = itemInSlot;
