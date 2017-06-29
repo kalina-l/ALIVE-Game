@@ -42,9 +42,17 @@ public class AnimationController {
         } else if (personality.GetCondition(NeedType.HUNGER).getEvaluation() < Evaluation.BAD) {
             //Play tongue Idle
             _animation.Play("Idle_Tongue");
-        } else {
-            //Play tongue Idle
+        } else if (personality.GetCondition(NeedType.SATISFACTION).getEvaluation() < Evaluation.BAD){
+            //TODO: Play sad Idle
             _animation.Play("Idle_Tongue");
+        } else if (personality.GetCondition(NeedType.SOCIAL).getEvaluation() < Evaluation.BAD){
+            //TODO: Play lonely Idle
+            _animation.Play("Idle_Tongue");
+        } else {
+            //Play dance Idle
+            _animation.Play("Idle_Dance");
+
+            //TODO: play cry idle
         }
 
         ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
