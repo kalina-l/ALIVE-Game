@@ -157,6 +157,19 @@ public class ItemBoxViewController : AbstractViewController
         }
     }
 
+    public void UpdateBox(Personality personality)
+    {
+        if (_itemInSlot != null)
+        {
+            Item item = personality.GetItem(_itemInSlot.ItemID);
+
+            if (item.uses >= item.maxUses)
+            {
+                RemoveItemFromSlot();
+            }
+        }
+    }
+
     private void ShowItemObject()
     {
         DebugController.Instance.Log("Add item to slot", DebugController.DebugType.UI);

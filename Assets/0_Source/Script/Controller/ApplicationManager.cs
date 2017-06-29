@@ -132,6 +132,7 @@ public class ApplicationManager : MonoBehaviour {
     public void UpdateUI()
     {
         _conditionMonitor.UpdateSlider(_data.Person);
+        _itemBox.UpdateBox(_data.Person);
     }
 
     public void ShowMessage(string message)
