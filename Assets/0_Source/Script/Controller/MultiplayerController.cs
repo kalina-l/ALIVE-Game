@@ -19,6 +19,7 @@ public class MultiplayerController {
 
     private GameLoop _gameLoop;
 
+    private GameData _gameData;
     private Personality _localPersonality;
     private MultiplayerController _remoteController;
 
@@ -52,13 +53,19 @@ public class MultiplayerController {
         return _currentMultiplayerActivity;
     }
 
+    public void ClearActivity()
+    {
+        _currentMultiplayerActivity = null;
+    }
+
     public Activity GetFeedbackActivity()
     {
         return _currentFeedbackActivity;
     }
     
-    public MultiplayerController(Personality localPersonality, string id) {
-        _localPersonality = localPersonality;
+    public MultiplayerController(GameData gameData, string id) {
+        _localPersonality = gameData.Person;
+        _gameData = gameData;
         _id = id;
         _localPersonality.Multiplayer = this;
     }
@@ -132,6 +139,13 @@ public class MultiplayerController {
         if(_currentMultiplayerActivity == null)
         {
             //TODO getactivity from itembox
+            foreach(Item item in _gameData.Items)
+            {
+                if(item.GetActivity(activityID) != null)
+                {
+                    _currentMultiplayerActivity = item.GetActivity(activityID);
+                }
+            }
         }
 
         _currentMultiplayerActivity.IsRequest = true;

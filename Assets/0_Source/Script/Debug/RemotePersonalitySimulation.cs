@@ -6,10 +6,8 @@ using UnityEngine;
 public class RemotePersonalitySimulation : GameLoop {
 
     private ApplicationManager _manager;
-    private Personality _personality;
-    private ArtificialIntelligence _intelligence;
-    private List<Item> _items;
-    private string personalityCSVPath = "Data\\";
+
+    private GameData _data;
     private MultiplayerController _multiplayer;
 
     private Experience _lastExperience;
@@ -21,7 +19,7 @@ public class RemotePersonalitySimulation : GameLoop {
 
     public Personality GetPersonality()
     {
-        return _personality;
+        return _data.Person;
     }
 
     public MultiplayerController GetController()
@@ -31,20 +29,16 @@ public class RemotePersonalitySimulation : GameLoop {
 
     public RemotePersonalitySimulation(ApplicationManager manager, Personality localPersonality)
     {
-        PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
-        _personality = creatorCSV.Personality;
-
-        //TODO: give the personality a multiplayer activity
-
-        _items = creatorCSV.ItemList;
-        _intelligence = new ArtificialIntelligence();
+        _data = new GameData(LoadStates.CSV);
+        
+        
 
         isRunning = true;
 
         _manager = manager;
         _manager.StartCoroutine(Simulate());
 
-        _multiplayer = new MultiplayerController(_personality, "remote");
+        _multiplayer = new MultiplayerController(_data, "remote");
         _multiplayer.setGameLoop(this);
         _multiplayer.ConnectWithRemote(manager.Multiplayer);
 
@@ -85,9 +79,9 @@ public class RemotePersonalitySimulation : GameLoop {
             if(_actionCounter > UnityEngine.Random.value * 20)
             {
                 //give random item
-                int randomItem = (int)(_items.Count * UnityEngine.Random.value);
+                int randomItem = (int)(_data.Items.Count * UnityEngine.Random.value);
 
-                _personality.AddItem(_items[randomItem].ID, _items[randomItem]);
+                _data.Person.AddItem(_data.Items[randomItem].ID, _data.Items[randomItem]);
             }
         }
     }
@@ -103,10 +97,10 @@ public class RemotePersonalitySimulation : GameLoop {
 
         if (_multiplayer.IsRequestPending())
         {
-            DebugController.Instance.Log("remote: add activity " + _personality.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
+            DebugController.Instance.Log("remote: add activity " + _data.Person.GetAllActivities().Count, DebugController.DebugType.Multiplayer);
         }
 
-        List<Activity> activities = _personality.GetAllActivities();
+        List<Activity> activities = _data.Person.GetAllActivities();
         string d = "";
 
         for(int i=0; i<activities.Count; i++)
@@ -115,11 +109,11 @@ public class RemotePersonalitySimulation : GameLoop {
         }
 
         DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
-        _intelligence.GetNextActivity(_personality, _multiplayer.IsConnected);
+        _data.Intelligence.GetNextActivity(_data.Person, _multiplayer.IsConnected, _multiplayer.GetPendingActivity());
 
         float timer = 0;
 
-        while (!_intelligence.IsDone)
+        while (!_data.Intelligence.IsDone)
         {
             timer += Time.deltaTime;
             yield return 0;
@@ -127,11 +121,16 @@ public class RemotePersonalitySimulation : GameLoop {
 
         DebugController.Instance.Log("remote: calculation took " + timer, DebugController.DebugType.Multiplayer);
 
-        int activityID = _intelligence.GetResult();
+        int activityID = _data.Intelligence.GetResult();
 
         if (activityID != -1)
         {
-            _lastActivity = _personality.GetActivity(activityID);
+            _lastActivity = _data.Person.GetActivity(activityID);
+
+            if (_lastActivity == null)
+            {
+                _lastActivity = _multiplayer.GetPendingActivity();
+            }
 
             if (_lastActivity.IsMultiplayer)
             {
@@ -159,9 +158,11 @@ public class RemotePersonalitySimulation : GameLoop {
             }
 
             DebugController.Instance.Log("remote: " + _lastActivity.Name, DebugController.DebugType.Multiplayer);
-            _lastExperience = _lastActivity.DoActivity(_personality);
+            _lastExperience = _lastActivity.DoActivity(_data.Person);
 
-            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity, _personality);
+            _multiplayer.ClearActivity();
+
+            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
             while (_manager.MultiplayerViewController.RemoteCharacterAnimation.IsAnimating)
             {
                 yield return 0;
