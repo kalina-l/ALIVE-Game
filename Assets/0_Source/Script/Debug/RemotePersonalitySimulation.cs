@@ -44,9 +44,9 @@ public class RemotePersonalitySimulation : GameLoop {
         _manager = manager;
         _manager.StartCoroutine(Simulate());
 
-        _multiplayer = new MultiplayerController(_personality, "remote");
+        //_multiplayer = new MultiplayerController(_personality, "remote");
         _multiplayer.setGameLoop(this);
-        _multiplayer.ConnectWithRemote(manager.Multiplayer);
+        //_multiplayer.ConnectWithRemote(manager.Multiplayer);
 
         
     }
@@ -60,10 +60,10 @@ public class RemotePersonalitySimulation : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            if (_multiplayer.IsConnected)
+            if (_multiplayer.MultiplayerOn)
             {
                 //TODO: randomize this
-                _multiplayer.SendFeedbackRequest(_lastActivity);
+                //_multiplayer.SendFeedbackRequest(_lastActivity);
                 //_manager.Multiplayer.SendFeedbackRequest(_lastActivity);
             }
 
@@ -115,7 +115,7 @@ public class RemotePersonalitySimulation : GameLoop {
         }
 
         DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
-        _intelligence.GetNextActivity(_personality, _multiplayer.IsConnected);
+        _intelligence.GetNextActivity(_personality, _multiplayer.MultiplayerOn);
 
         float timer = 0;
 

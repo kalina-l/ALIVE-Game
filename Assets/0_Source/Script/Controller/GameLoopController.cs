@@ -68,10 +68,10 @@ public class GameLoopController : GameLoop {
         {
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            if (_manager.Multiplayer.IsConnected)
+            if (_manager.Multiplayer.MultiplayerOn)
             {
                 //TODO: randomize this
-                _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                _manager.Multiplayer.SendFeedbackRequest(_lastActivity, new PersonalityNode(_data.Person).Needs);
             }
 
             bool sentFeedback = false;
@@ -93,7 +93,7 @@ public class GameLoopController : GameLoop {
                         // SEND FEEDBACK TO ANOTHER LEMO
                         Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
                         PersonalityNode personality = new PersonalityNode(_data.Person);
-                        personality.changeNeeds(new PersonalityNode(_manager.Multiplayer.GetRemotePersonality()).Needs);
+                        personality.changeNeeds(_manager.Multiplayer.RemoteNeeds);
                         Experience experience = feedbackActivity.GetExperience(personality);
                         float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
                         PersonalityNode newPerson = new PersonalityNode(personality,
@@ -169,7 +169,7 @@ public class GameLoopController : GameLoop {
         }
 
 
-        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
+        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.MultiplayerOn);
 
         float timer = 0;
 

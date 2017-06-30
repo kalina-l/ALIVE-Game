@@ -15,17 +15,20 @@ public interface GameLoop
 /// </summary>
 public class MultiplayerController {
 
-    public bool IsConnected { get; private set; }
+    public bool MultiplayerOn { get; private set; }
+    private HappeningController _happeningController;
 
     private GameLoop _gameLoop;
 
     private Personality _localPersonality;
-    private MultiplayerController _remoteController;
+    //private MultiplayerController _remoteController;
 
     private string _id;
 
     private Activity _currentMultiplayerActivity;
     private Activity _currentFeedbackActivity;
+
+    public Dictionary<NeedType, Evaluation> RemoteNeeds { get; private set; }
 
     private bool _gettingRequest;
     private bool _sendingRequest;
@@ -34,22 +37,17 @@ public class MultiplayerController {
 
     public bool IsFeedbackRequestPending()
     {
-        return _gettingFeedbackRequest && IsConnected && !_gettingRequest;
+        return _gettingFeedbackRequest && MultiplayerOn && !_gettingRequest;
     }
 
     public bool IsRequestPending()
     {
-        return _gettingRequest && IsConnected;
+        return _gettingRequest && MultiplayerOn;
     }
 
     public bool IsWaitingForAnswer()
     {
-        return _sendingRequest && IsConnected;
-    }
-
-    public Activity GetPendingActivity()
-    {
-        return _currentMultiplayerActivity;
+        return _sendingRequest && MultiplayerOn;
     }
 
     public Activity GetFeedbackActivity()
@@ -57,9 +55,9 @@ public class MultiplayerController {
         return _currentFeedbackActivity;
     }
     
-    public MultiplayerController(Personality localPersonality, string id) {
+    public MultiplayerController(Personality localPersonality, HappeningController happeningController) {
         _localPersonality = localPersonality;
-        _id = id;
+        _happeningController = happeningController;
         _localPersonality.Multiplayer = this;
     }
 
@@ -68,17 +66,16 @@ public class MultiplayerController {
         _gameLoop = gameLoop;
     }
 
-    public void ConnectWithRemote(MultiplayerController remoteController) {
-        _remoteController = remoteController;
-        IsConnected = true;
+    public void StartMultiplayer() {
+        //_remoteController = remoteController;
+        MultiplayerOn = true;
 
-        DebugController.Instance.Log("CONNECTED", DebugController.DebugType.Multiplayer);
-
+        DebugController.Instance.Log("MULTIPLAYER ON", DebugController.DebugType.Multiplayer);
     }
 	
-    public void Disconnect() {
-        _remoteController = null;
-        IsConnected = false;
+    public void EndMultiplayer() {
+        //_remoteController = null;
+        MultiplayerOn = false;
     }
 
     public Personality GetPersonality()
@@ -86,13 +83,16 @@ public class MultiplayerController {
         return _localPersonality;
     }
 
-    public Personality GetRemotePersonality() {
-        return _remoteController.GetPersonality();
+    public void SendFeedbackRequest(Activity activity, Dictionary<NeedType, Evaluation> needs)
+    {
+        _happeningController.sendMessage("needs", needs);
+        _happeningController.sendMessage("feedbackRequest", activity);
+       // _remoteController.GetFeedbackRequest(activity);
     }
 
-    public void SendFeedbackRequest(Activity activity)
+    public void GetRemoteNeeds(Dictionary<NeedType, Evaluation> needs)
     {
-        _remoteController.GetFeedbackRequest(activity);
+        RemoteNeeds = needs;
     }
 
     public void GetFeedbackRequest(Activity activity)
@@ -104,12 +104,12 @@ public class MultiplayerController {
     public void SendFeedback(int feedback)
     {
         _gettingFeedbackRequest = false;
-        _remoteController.GetFeedback(feedback);
+        _happeningController.sendMessage("feedback", feedback);
+        // _remoteController.GetFeedback(feedback);
     }
 
     public void GetFeedback(int feedback)
     {
-        // TODO: woanders auslagern
         ApplicationManager.Instance.getFeedbackController().setLastFeedbackType(FeedbackType.Multiplayer);
         _gameLoop.GiveFeedback(feedback);
     }
@@ -122,7 +122,8 @@ public class MultiplayerController {
 
         _sendingRequest = true;
         _currentMultiplayerActivity = activity;
-        _remoteController.GetActivityRequest(activity.ID);
+        _happeningController.sendMessage("activityRequest", activity.ID);
+        // _remoteController.GetActivityRequest(activity.ID);
     }
 
     public void GetActivityRequest(int activityID)
@@ -131,7 +132,7 @@ public class MultiplayerController {
 
         if(_currentMultiplayerActivity == null)
         {
-            //TODO getactivity from itembox
+            //TODO getactivity from sbox
         }
 
         _currentMultiplayerActivity.IsRequest = true;
@@ -147,7 +148,8 @@ public class MultiplayerController {
 
         if (_gettingRequest)
         {
-            _remoteController.AcceptRequest();
+            _happeningController.sendMessage("accept", true);
+            //_remoteController.AcceptRequest();
             _gettingRequest = false;
         }
         else
@@ -162,7 +164,8 @@ public class MultiplayerController {
 
         if(_gettingRequest)
         {
-            _remoteController.DeclineRequest();
+            _happeningController.sendMessage("decline", false);
+            //_remoteController.DeclineRequest();
             _gettingRequest = false;
         }
         else
