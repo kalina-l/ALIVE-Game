@@ -23,10 +23,53 @@ public class AnimationController {
             case "Sleep":
                 ApplicationManager.Instance.StartCoroutine(SleepRoutine());
                 break;
+            case "Cake.eat":
+                EatAnimation(true);
+                break;
+            case "Cake.play":
+                PlayAnimation(false);
+                break;
+            case "Ball.eat":
+                EatAnimation(false);
+                break;
             default:
                 PlayIdleAnimation(personality);
                 break;
         }
+    }
+
+    private void EatAnimation(bool isGood)
+    {
+        
+
+        if (isGood)
+        {
+            _animationTime = 1.5f;
+            _animation.Play("Eat");
+        } else
+        {
+            _animationTime = 0.5f;
+            _animation.Play("EatBall");
+        }
+
+        ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
+    }
+
+    private void PlayAnimation(bool isBall)
+    {
+        _animationTime = 2.5f;
+
+        if (isBall)
+        {
+            //TODO
+        }
+        else
+        {
+            //TODO: add fx
+            _animation.Play("PlayCake");
+        }
+
+        ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
     }
 
     private void PlayIdleAnimation(Personality personality) {

@@ -169,7 +169,7 @@ public class GameLoopController : GameLoop {
         }
 
 
-        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
+        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected, _manager.Multiplayer.GetPendingActivity());
 
         float timer = 0;
 
@@ -246,6 +246,20 @@ public class GameLoopController : GameLoop {
 
             _lastActivity = _data.Person.GetActivity(activityID);
 
+            if(_lastActivity == null)
+            {
+                for (int i = 0; i < _data.Items.Count; i++)
+                {
+                    foreach (Activity activity in _data.Items[i].GetAllActivities())
+                    {
+                        if (activity.ID == activityID)
+                        {
+                            _lastActivity = activity;
+                        }
+                    }
+                }
+            }
+
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
 
             if (_lastActivity.IsMultiplayer) {
@@ -271,6 +285,10 @@ public class GameLoopController : GameLoop {
             debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
             _lastExperience = _lastActivity.DoActivity(_data.Person);
+
+            
+            _manager.Multiplayer.ClearActivity();
+            
 
             //Show Activity
             _manager.ShowMessage(_lastActivity.feedBackString);

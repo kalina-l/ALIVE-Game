@@ -20,6 +20,8 @@ public class ArtificialIntelligence
     private bool _askForItem;
 
     private bool _isConnected;
+
+    private Activity _multiplayerActivity;
     
     public void AskForItem(Personality personality, List<Item> items)
     {
@@ -39,13 +41,14 @@ public class ArtificialIntelligence
         }
     }
 
-    public void GetNextActivity(Personality personality, bool isConnected)
+    public void GetNextActivity(Personality personality, bool isConnected, Activity multiplayerActivity)
     {
         _calculating = true;
         _personality = personality;
         _askForItem = false;
 
         _isConnected = isConnected;
+        _multiplayerActivity = multiplayerActivity;
 
         if (DebugController.Instance.debugAI)
         {
@@ -96,6 +99,14 @@ public class ArtificialIntelligence
         
 		PersonalityNode root = new PersonalityNode(_personality);
         
+        if(_multiplayerActivity != null)
+        {
+            if (!root.ActivityIDs.Contains(_multiplayerActivity.ID))
+            {
+                root.ActivityIDs.Add(_multiplayerActivity.ID);
+            }
+        }
+        
         dfs (root, DFS_DEPTH_LEVEL);
 
         if (root.Children.Count != 0)
@@ -119,6 +130,14 @@ public class ArtificialIntelligence
 			for (int i = 0; i < pn.ActivityIDs.Count; i++) {
 
                 Activity activity = _personality.GetActivity(pn.ActivityIDs[i], false);
+
+                if (_multiplayerActivity != null)
+                {
+                    if (pn.ActivityIDs[i] == _multiplayerActivity.ID)
+                    {
+                        activity = _multiplayerActivity;
+                    }
+                }
 
                 bool blockMultiplayer = false;
 

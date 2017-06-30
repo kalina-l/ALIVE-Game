@@ -28,29 +28,36 @@ public class ConditionViewController : AbstractViewController {
         foreach (KeyValuePair<NeedType, Need> kvp in personality.Conditions)
         {
             Sprite s = null;
+            string tooltip = "";
+
             switch(kvp.Key)
             {
                 case NeedType.ENERGY:
                     s = GraphicsHelper.Instance.iconEnergy;
+                    tooltip = "Energy";
                     break;
                 case NeedType.HEALTH:
                     s = GraphicsHelper.Instance.iconHealth;
+                    tooltip = "Health";
                     break;
                 case NeedType.HUNGER:
                     s = GraphicsHelper.Instance.iconHunger;
+                    tooltip = "Hunger";
                     break;
                 case NeedType.SATISFACTION:
                     s = GraphicsHelper.Instance.iconSatisfaction;
+                    tooltip = "Satisfaction";
                     break;
                 case NeedType.SOCIAL:
                     s = GraphicsHelper.Instance.iconSocial;
+                    tooltip = "Social";
                     break;
             }
 
             RadialSliderViewController slider = new RadialSliderViewController(
                 CreateContainer("Slider_" + kvp.Key, Rect,
                                 Vector2.zero, _grid.cellSize,
-                                Vector2.zero, Vector2.zero, Vector2.zero), s);
+                                Vector2.zero, Vector2.zero, Vector2.zero), s, tooltip);
 
             _sliders[kvp.Key] = slider;
         }

@@ -81,7 +81,7 @@ public class ApplicationManager : MonoBehaviour {
             }
         }
 
-        _multiplayer = new MultiplayerController(_data.Person, "local");
+        _multiplayer = new MultiplayerController(_data, "local");
         MultiplayerViewController = new MultiplayerViewController();
 
 
@@ -132,6 +132,7 @@ public class ApplicationManager : MonoBehaviour {
     public void UpdateUI()
     {
         _conditionMonitor.UpdateSlider(_data.Person);
+        _itemBox.UpdateBox(_data.Person);
     }
 
     public void ShowMessage(string message)
