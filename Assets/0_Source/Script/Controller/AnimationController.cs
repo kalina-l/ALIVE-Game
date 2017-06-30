@@ -23,10 +23,51 @@ public class AnimationController {
             case "Sleep":
                 ApplicationManager.Instance.StartCoroutine(SleepRoutine());
                 break;
+            case "Cake.eat":
+                EatAnimation(true);
+                break;
+            case "Cake.play":
+                PlayAnimation(false);
+                break;
+            case "Ball.eat":
+                EatAnimation(false);
+                break;
             default:
                 PlayIdleAnimation(personality);
                 break;
         }
+    }
+
+    private void EatAnimation(bool isGood)
+    {
+        _animationTime = 1.5f;
+
+        if (isGood)
+        {
+            _animation.Play("Eat");
+        } else
+        {
+            _animation.Play("EatBall");
+        }
+
+        ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
+    }
+
+    private void PlayAnimation(bool isBall)
+    {
+        _animationTime = 2.5f;
+
+        if (isBall)
+        {
+            //TODO
+        }
+        else
+        {
+            //TODO: add fx
+            _animation.Play("PlayCake");
+        }
+
+        ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
     }
 
     private void PlayIdleAnimation(Personality personality) {
@@ -42,9 +83,17 @@ public class AnimationController {
         } else if (personality.GetCondition(NeedType.HUNGER).getEvaluation() < Evaluation.BAD) {
             //Play tongue Idle
             _animation.Play("Idle_Tongue");
-        } else {
-            //Play tongue Idle
+        } else if (personality.GetCondition(NeedType.SATISFACTION).getEvaluation() < Evaluation.BAD){
+            //TODO: Play sad Idle
             _animation.Play("Idle_Tongue");
+        } else if (personality.GetCondition(NeedType.SOCIAL).getEvaluation() < Evaluation.BAD){
+            //TODO: Play lonely Idle
+            _animation.Play("Idle_Tongue");
+        } else {
+            //Play dance Idle
+            _animation.Play("Idle_Dance");
+
+            //TODO: play cry idle
         }
 
         ApplicationManager.Instance.StartCoroutine(AnimationRoutine());

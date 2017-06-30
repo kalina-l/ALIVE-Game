@@ -81,9 +81,9 @@ public class ApplicationManager : MonoBehaviour {
                 _itemBox.AddItemFromPersonality(kvp.Value);
             }
         }
-
+        
         _happeningController = GameObject.Find("Happening").GetComponent<HappeningController>();
-        _multiplayer = new MultiplayerController(_data.Person, _happeningController);
+        _multiplayer = new MultiplayerController(_data, _happeningController);
         MultiplayerViewController = new MultiplayerViewController();
 
 
@@ -134,6 +134,7 @@ public class ApplicationManager : MonoBehaviour {
     public void UpdateUI()
     {
         _conditionMonitor.UpdateSlider(_data.Person);
+        _itemBox.UpdateBox(_data.Person);
     }
 
     public void ShowMessage(string message)

@@ -60,14 +60,14 @@ public class DragItemContainer : AbstractViewController {
         {
             _given = false;
             _itemImage.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, showColor, t);
-            _itemImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, Vector2.one * 64, t);
+            _itemImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.zero, Vector2.one * 128, t);
         }
         else
         {
             if (!_given)
             {
                 _itemImage.color = GraphicsHelper.Instance.LerpColor(showColor, GraphicsHelper.Instance.SpriteColorWhiteHidden, t);
-                _itemImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.one * 64, Vector2.zero, t);
+                _itemImage.rectTransform.sizeDelta = Vector2.Lerp(Vector2.one * 128, Vector2.zero, t);
             }
         }
     }
@@ -94,11 +94,11 @@ public class DragItemContainer : AbstractViewController {
 
     public void Dragging()
     {
-        _itemImage.rectTransform.sizeDelta = Vector2.Lerp(_itemImage.rectTransform.sizeDelta, Vector2.one * 128, 0.3f);
+        _itemImage.rectTransform.sizeDelta = Vector2.Lerp(_itemImage.rectTransform.sizeDelta, Vector2.one * 158, 0.3f);
     }
 
     public void DropItem()
     {
-        _itemImage.rectTransform.sizeDelta = Vector2.one * 64;
+        _itemImage.rectTransform.sizeDelta = Vector2.one * 128;
     }
 }
