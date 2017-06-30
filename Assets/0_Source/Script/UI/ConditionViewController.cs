@@ -50,7 +50,7 @@ public class ConditionViewController : AbstractViewController {
             RadialSliderViewController slider = new RadialSliderViewController(
                 CreateContainer("Slider_" + kvp.Key, Rect,
                                 Vector2.zero, _grid.cellSize,
-                                Vector2.zero, Vector2.zero, Vector2.zero), s);
+                                Vector2.zero, Vector2.zero, Vector2.zero), s, "test");
 
             _sliders[kvp.Key] = slider;
         }

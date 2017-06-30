@@ -154,9 +154,17 @@ public class ItemBoxViewController : AbstractViewController
         {
             Item item = personality.GetItem(_itemInSlot.ItemID);
 
-            if (item.uses >= item.maxUses)
+            if (item == null)
             {
-                RemoveItemFromSlot();
+                _itemInSlot.RemoveItem();
+                _itemInSlot = null;
+            }
+            else
+            {
+                if (item.uses >= item.maxUses)
+                {
+                    RemoveItemFromSlot();
+                }
             }
         }
     }

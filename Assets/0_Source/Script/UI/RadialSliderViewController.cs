@@ -8,7 +8,10 @@ public class RadialSliderViewController : AbstractViewController {
     private RectTransform _backgroundRect;
     private bool stopRoutine;
 
-    public RadialSliderViewController(RectTransform container, Sprite icon)
+    private Image _toolTipBackground;
+    private Text _toolTipText;
+
+    public RadialSliderViewController(RectTransform container, Sprite icon, string toolTip)
     {
         Rect = container;
         View = Rect.gameObject;
@@ -27,6 +30,13 @@ public class RadialSliderViewController : AbstractViewController {
             Vector2.zero, _fillImage.rectTransform.sizeDelta,
             Vector2.zero, Vector2.zero, Vector2.zero),
             icon, GraphicsHelper.Instance.SpriteColorWhite);
+
+        _toolTipBackground = AddSprite(CreateContainer("Tooltip", _fillImage.rectTransform,
+            new Vector2(250, 0), new Vector2(320, 90),
+            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+            null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+
+        //_toolTipText = AddText
     }
 
     public void UpdateSlider(float amount, Color c)
