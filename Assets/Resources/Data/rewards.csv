@@ -1,4 +1,4 @@
-ï»¿Description Activity;Reward ID;Value;Type;MinHealth;MaxHealth;MinHunger;MaxHunger;MinSatisfaction;MaxSatisfaction;MinSocial;MaxSocial;MinEnergy;MaxEnergy;Description
+Description Activity;Reward ID;Value;Type;MinHealth;MaxHealth;MinHunger;MaxHunger;MinSatisfaction;MaxSatisfaction;MinSocial;MaxSocial;MinEnergy;MaxEnergy;Description
 Eat: Ball;2101;-15;Health;;;;;;;;;;;
 Eat: Ball;2102;-10;Energy;;;;;;;;;;;
 Eat: Ball;2103;-12;Satisfaction;;;;;;;;;;;
@@ -14,6 +14,7 @@ Play with Ball;2205;-15;Energy;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
 Play with Ball;2206;30;Social;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;;;;;
 Play with Ball;2207;20;Social;Satisfaction.BAD;Satisfaction.GOOD;;;;;;;;;
 Play with Ball;2208;10;Social;Satisfaction.VERY_GOOD;Satisfaction.SUPER_GOOD;;;;;;;;;
+Play with Ball;2209;10;Satisfaction;;;;;;;;;;;
 Play with Cake;3201;0;Health;;;;;;;;;;;
 Play with Cake;3202;-8;Hunger;;;;;;;;;;;
 Play with Cake;3203;-13;Energy;;;;;;;;;;;
@@ -30,8 +31,8 @@ Eat Cake;3105;21;Satisfaction;;;Hunger.BAD;Hunger.GOOD;;;;;;;
 Eat Cake;3106;12;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
 Eat Cake;3107;13;Health;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;bei kleinem hunger + helth sonst neg Helath
 Eat Cake;3108;-7;Health;;;Hunger.BAD;Hunger.GOOD;;;;;;;
-Eat Cake;3109;-23;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bestrafung fÃ¼r Ã¼berfressen
-Eat Cake;3110;33;Hunger;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;sÃ¤ttigungseffekt nimmt mit steigender sÃ¤tigung ab
+Eat Cake;3109;-23;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bestrafung für überfressen
+Eat Cake;3110;33;Hunger;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;sättigungseffekt nimmt mit steigender sätigung ab
 Eat Cake;3111;17;Hunger;;;Hunger.BAD;Hunger.GOOD;;;;;;;
 Eat Cake;3112;9;Hunger;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
 Idle;1101;0;Health;;;;;;;;;;;
@@ -58,32 +59,61 @@ Hug;1302;-12;Energy;;;;;;;;;;;Multiplayer Action, cost some Energy
 Hug;1303;40;Social;;;;;;;;;;;Multiplayer Action, give a high Social Reward
 Hug;1304;25;Satisfaction;;;;;;;;;;;Multiplayer Action, also give a high Sattisfaction
 Hug;1305;-7;Hunger;;;;;;;;;;;Multiplayer Action, makes a little bit of Hunger
-Personality Trait: INTROVERT;101;15;Social;;;;;;;Social.SUICIDAL;Social.GOOD;;;
-Personality Trait: INTROVERT;102;5;Satisfaction;;;;;;;Social.SUICIDAL;Social.GOOD;;;
-Personality Trait: INTROVERT;103;-15;Energy;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
-Personality Trait: INTROVERT;104;-45;Satisfaction;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;
-Personality Trait: INTROVERT;105;-15;Social;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-Personality Trait: INTROVERT;106;-10;Satisfaction;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-Personality Trait: INTROVERT;107;-10;Energy;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;
-Personality Trait: EXTROVERT;111;-15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
-Personality Trait: EXTROVERT;112;-5;Satisfaction;;;;;;;;;;;
-Personality Trait: EXTROVERT;113;-3;Energy;;;;;;;;;;;
-Personality Trait: EXTROVERT;114;-10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
-Personality Trait: EXTROVERT;115;15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;
-Personality Trait: EXTROVERT;116;5;Satisfaction;;;;;;;;;;;
-Personality Trait: EXTROVERT;117;2;Energy;;;;;;;;;;;
-Personality Trait: EXTROVERT;118;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;
-Personality Traits: GREEDY;301;-15;Hunger;;;;;;;;;;;
-Personality Traits: GREEDY;302;10;Satisfaction;;;;;;;;;;;
-Personality Traits: FRUGAL;311;15;Hunger;;;;;;;;;;;
-Personality Traits: FRUGAL;312;-10;Satisfaction;;;;;;;;;;;
-Personality Traits: ENERGETIC;401;5;Energy;;;;;;;;;;;
-Personality Traits: ENERGETIC;402;5;Satisfaction;;;;;;;;;;;
-Personality Traits: ENERGETIC;403;-5;Satisfaction;;;;;;;;;;;
-Personality Traits: ENERGETIC;404;10;Energy;;;;;;;;;;;
-Personality Traits: LETHARGIC;411;-5;Energy;;;;;;;;;;;
-Personality Traits: LETHARGIC;412;-5;Satisfaction;;;;;;;;;;;
-Personality Traits: LETHARGIC;413;5;Satisfaction;;;;;;;;;;;
-Personality Traits: LETHARGIC;414;-10;Energy;;;;;;;;;;;
-Personality Traits: DISCIPLINED/WILD;201;-10;Satisfaction;;;;;;;;;;;
-Personality Traits: DISCIPLINED/WILD;202;10;Satisfaction;;;;;;;;;;;
+Play with Ball Together;2301;7;Health;;;;;;;;;;;
+Play with Ball Together;2302;-20;Hunger;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;if Tama Sick, Playing makes him sad and more hungry und Tiered
+Play with Ball Together;2303;-12;Hunger;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Play with Ball Together;2304;-25;Energy;Health.SUICIDAL;Health.VERY_BAD;;;;;;;;;if Tama Sick, Playing makes him sad and more hungry und Tiered
+Play with Ball Together;2305;-15;Energy;Health.BAD;Health.SUPER_GOOD;;;;;;;;;
+Play with Ball Together;2306;40;Social;Satisfaction.SUICIDAL;Satisfaction.SUPER_BAD;;;;;;;;;
+Play with Ball Together;2307;30;Social;Satisfaction.BAD;Satisfaction.GOOD;;;;;;;;;
+Play with Ball Together;2308;20;Social;Satisfaction.VERY_GOOD;Satisfaction.SUPER_GOOD;;;;;;;;;
+Play with Ball Together;2309;30;Satisfaction;;;;;;;;;;;
+Eat Cake Together;3301;-9;Energy;;;;;;;;;;;
+Eat Cake Together;3302;10;Social;;;Hunger.SUICIDAL;Hunger.GOOD;;;;;;;
+Eat Cake Together;3303;-11;Social;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bei keinem hunger bek Lemo neg ansehen (Verfresssen)
+Eat Cake Together;3304;43;Satisfaction;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;
+Eat Cake Together;3305;31;Satisfaction;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake Together;3306;22;Satisfaction;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+Eat Cake Together;3307;13;Health;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;bei kleinem hunger + helth sonst neg Helath
+Eat Cake Together;3308;-7;Health;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake Together;3309;-23;Health;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;bestrafung für überfressen
+Eat Cake Together;3310;28;Hunger;;;Hunger.SUICIDAL;Hunger.VERY_BAD;;;;;;;sättigungseffekt nimmt mit steigender sätigung ab
+Eat Cake Together;3311;12;Hunger;;;Hunger.BAD;Hunger.GOOD;;;;;;;
+Eat Cake Together;3312;4;Hunger;;;Hunger.VERY_GOOD;Hunger.SUPER_GOOD;;;;;;;
+Play with Cake Together;3401;0;Health;;;;;;;;;;;
+Play with Cake Together;3402;-8;Hunger;;;;;;;;;;;
+Play with Cake Together;3403;-17;Energy;;;;;;;;;;;
+Play with Cake Together;3404;31;Satisfaction;;;;;;;;;;;
+Play with Cake Together;3405;47;Social;;;;;Satisfaction.SUICIDAL;Satisfaction.BAD;;;;;reward for playing a Clown
+Play with Cake Together;3406;32;Social;;;;;Satisfaction.NEUTRAL;Satisfaction.SUPER_GOOD;;;;;
+Play with Cake Together;3407;-9;Satisfaction;;;;;;;Social.SUPER_GOOD;Social.SUPER_GOOD;;;if Lemo acepted, he gets Neg.rewords for Social an Satisf.
+Play with Cake Together;3408;-4;Social;;;;;;;Social.SUPER_GOOD;Social.SUPER_GOOD;;;if Lemo acepted, he gets Neg.rewords for Social an Satisf.
+Personality Trait: INTROVERT;101;15;Social;;;;;;;Social.SUICIDAL;Social.GOOD;;;INTROVERT, higher social reward when doing activities with itself
+Personality Trait: INTROVERT;102;5;Satisfaction;;;;;;;Social.SUICIDAL;Social.GOOD;;;INTROVERT, higher satisfaction reward when doing activities with itself
+Personality Trait: INTROVERT;103;-15;Energy;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;INTROVERT, when high social, then activities with itself cost more energy
+Personality Trait: INTROVERT;104;-45;Satisfaction;;;;;;;Social.VERY_GOOD;Social.SUPER_GOOD;;;INTROVERT, when high social, then activities with itself don't bring that much satisfaction
+Personality Trait: INTROVERT;105;-15;Social;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;INTROVERT, activities which are funny to others don't bring much social
+Personality Trait: INTROVERT;106;-10;Satisfaction;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;INTROVERT, activities which are funny to others don't bring much satisfaction
+Personality Trait: INTROVERT;107;-10;Energy;;;;;;;Social.NEUTRAL;Social.SUPER_GOOD;;;INTROVERT, activities which are funny to others cost more energy
+Personality Trait: EXTROVERT;111;-15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;EXTROVERT, lower social reward when doing activities with itself
+Personality Trait: EXTROVERT;112;-5;Satisfaction;;;;;;;;;;;EXTROVERT, lower satisfaction reward when doing activities with itself
+Personality Trait: EXTROVERT;113;-3;Energy;;;;;;;;;;;EXTROVERT, activities with itself cost more energy
+Personality Trait: EXTROVERT;114;-10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;EXTROVERT, when high social, then activities with itself gives a little less social
+Personality Trait: EXTROVERT;115;15;Social;;;;;;;Social.SUICIDAL;Social.NEUTRAL;;;EXTROVERT, when low social, then activities which are funny to others give more social
+Personality Trait: EXTROVERT;116;5;Satisfaction;;;;;;;;;;;EXTROVERT, activities which are funny to others give more satisfaction
+Personality Trait: EXTROVERT;117;2;Energy;;;;;;;;;;;EXTROVERT, activities which are funny to others don't use much energy
+Personality Trait: EXTROVERT;118;10;Social;;;;;;;Social.GOOD;Social.SUPER_GOOD;;;EXTROVERT, when high social, activities which are funny to others give a little more social
+Personality Traits: GREEDY;301;-15;Hunger;;;;;;;;;;;GREEDY, eating doesn't fill belly that much
+Personality Traits: GREEDY;302;10;Satisfaction;;;;;;;;;;;GREEDY, gets Satisfaction when eating
+Personality Traits: FRUGAL;311;15;Hunger;;;;;;;;;;;FRUGAL, eating fills belly more
+Personality Traits: FRUGAL;312;-10;Satisfaction;;;;;;;;;;;FRUGAL, doesn't get much Satisfaction when eating
+Personality Traits: ENERGETIC;401;5;Energy;;;;;;;;;;;ENERGETIC, PHYSICAL activities don't use much energy
+Personality Traits: ENERGETIC;402;5;Satisfaction;;;;;;;;;;;ENERGETIC, PHYSICAL activities give more satisfaction
+Personality Traits: ENERGETIC;403;-5;Satisfaction;;;;;;;;;;;ENERGETIC, sleep gives less satisfaction
+Personality Traits: ENERGETIC;404;10;Energy;;;;;;;;;;;ENERGETIC, sleep gives more energy
+Personality Traits: LETHARGIC;411;-5;Energy;;;;;;;;;;;LETHARGIC, PHYSICAL activities use more energy
+Personality Traits: LETHARGIC;412;-5;Satisfaction;;;;;;;;;;;LETHARGIC, PHYSICAL activities give less satisfaction
+Personality Traits: LETHARGIC;413;5;Satisfaction;;;;;;;;;;;ENERGETIC, sleep gives more satisfaction
+Personality Traits: LETHARGIC;414;-10;Energy;;;;;;;;;;;ENERGETIC, sleep gives less energy
+Personality Traits: DISCIPLINED/WILD;201;-10;Satisfaction;;;;;;;;;;;DISCIPLINED/WILD, NATURAL activities give more/less satisfaction, UNNATURAL activities give less/more satisfaction
+Personality Traits: DISCIPLINED/WILD;202;10;Satisfaction;;;;;;;;;;;DISCIPLINED/WILD, NATURAL activities give more/less satisfaction, UNNATURAL activities give less/more satisfaction
