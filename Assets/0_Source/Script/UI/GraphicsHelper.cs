@@ -37,6 +37,8 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite sliderBackgroundSpirte;
     public Sprite sliderFillSprite;
 
+    public Sprite tooltipBackgroundSprite;
+
     public Sprite emotionSliderBGSpirte;
     public Sprite emotionSliderPointerSprite;
 

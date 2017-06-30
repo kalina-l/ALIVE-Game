@@ -29,7 +29,7 @@ public class ItemBoxViewController : AbstractViewController
         }
 
         Rect = CreateContainer("ItemBox", parent,
-            new Vector2(-190, 190), new Vector2(380, 380),
+            new Vector2(-190, 190), new Vector2(340, 340),
             new Vector2(1, 0), new Vector2(1, 0), new Vector2(0.5f, 0.5f));
 
         View = Rect.gameObject;
@@ -154,9 +154,17 @@ public class ItemBoxViewController : AbstractViewController
         {
             Item item = personality.GetItem(_itemInSlot.ItemID);
 
-            if (item.uses >= item.maxUses)
+            if (item == null)
             {
-                RemoveItemFromSlot();
+                _itemInSlot.RemoveItem();
+                _itemInSlot = null;
+            }
+            else
+            {
+                if (item.uses >= item.maxUses)
+                {
+                    RemoveItemFromSlot();
+                }
             }
         }
     }
@@ -178,11 +186,11 @@ public class ItemBoxViewController : AbstractViewController
 
         float timer = 0;
 
-        Vector2 fullSize = new Vector2(380, 380);
-        Vector2 smallSize = new Vector2(350, 350);
+        Vector2 fullSize = new Vector2(340, 340);
+        Vector2 smallSize = new Vector2(310, 310);
 
         Vector2 bgPositionIn = new Vector2(-200, 190);
-        Vector2 bgPositionOut = new Vector2(-720, 190);
+        Vector2 bgPositionOut = new Vector2(-710, 190);
 
         Vector2 bgFullSize = new Vector2(640, 170);
 

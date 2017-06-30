@@ -256,7 +256,16 @@ public class GameLoopController : GameLoop {
             // TODO könnte falsch sein
             if(_lastActivity == null)
             {
-                _lastActivity = _manager.Multiplayer.GetPendingActivity();
+                for (int i = 0; i < _data.Items.Count; i++)
+                {
+                    foreach (Activity activity in _data.Items[i].GetAllActivities())
+                    {
+                        if (activity.ID == activityID)
+                        {
+                            _lastActivity = activity;
+                        }
+                    }
+                }
             }
 
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
