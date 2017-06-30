@@ -11,6 +11,8 @@ public class RadialSliderViewController : AbstractViewController {
     private Image _toolTipBackground;
     private Text _toolTipText;
 
+    private bool _animating;
+
     public RadialSliderViewController(RectTransform container, Sprite icon, string toolTip)
     {
         Rect = container;
@@ -34,9 +36,20 @@ public class RadialSliderViewController : AbstractViewController {
         _toolTipBackground = AddSprite(CreateContainer("Tooltip", _fillImage.rectTransform,
             new Vector2(250, 0), new Vector2(320, 90),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
-            null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+            GraphicsHelper.Instance.tooltipBackgroundSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
-        //_toolTipText = AddText
+        _toolTipBackground.raycastTarget = false;
+
+        RectTransform textRect = CreateContainer("Text", _toolTipBackground.transform,
+                                                    Vector2.zero, Vector2.zero,
+                                                    Vector2.zero, Vector2.one, Vector2.one * 0.5f);
+
+        _toolTipText = AddText(textRect, GraphicsHelper.Instance.UIFont, 45, TextAnchor.MiddleCenter);
+        _toolTipText.text = toolTip;
+        _toolTipText.color = GraphicsHelper.Instance.SpriteColorWhiteHidden;
+        _toolTipText.raycastTarget = false;
+
+        CreateButton(Rect, delegate { ShowTooltip(); });
     }
 
     public void UpdateSlider(float amount, Color c)
@@ -69,5 +82,62 @@ public class RadialSliderViewController : AbstractViewController {
 
             yield return 0;
         }
+    }
+
+    public void ShowTooltip()
+    {
+        if (!_animating)
+        {
+            ApplicationManager.Instance.StartCoroutine(ShowTooltipRoutine());
+        }
+    }
+
+    private IEnumerator ShowTooltipRoutine()
+    {
+        _animating = true;
+
+        float timer = 0;
+        
+
+        Vector2 bgPositionIn = new Vector2(0, 0);
+        Vector2 bgPositionOut = new Vector2(250, 0);
+
+        Vector2 bgFullSize = new Vector2(320, 90);
+
+        RectTransform bgRect = _toolTipBackground.GetComponent<RectTransform>();
+
+        AnimationCurve curve = GraphicsHelper.Instance.AlertAnimation;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 4;
+            yield return 0;
+            
+            bgRect.anchoredPosition = Vector2.Lerp(bgPositionIn, bgPositionOut, curve.Evaluate(timer));
+            bgRect.sizeDelta = Vector2.Lerp(Vector2.zero, bgFullSize, curve.Evaluate(timer));
+
+            _toolTipBackground.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, Mathf.Clamp(timer, 0, 1));
+            _toolTipText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, Mathf.Clamp(timer, 0, 1));
+
+        }
+
+        yield return new WaitForSeconds(2);
+
+        timer = 0;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 8;
+            yield return 0;
+            
+            bgRect.anchoredPosition = Vector2.Lerp(bgPositionOut, bgPositionIn, curve.Evaluate(timer));
+            bgRect.sizeDelta = Vector2.Lerp(bgFullSize, Vector2.zero, curve.Evaluate(timer));
+
+            _toolTipBackground.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, Mathf.Clamp(timer, 0, 1));
+            _toolTipText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, Mathf.Clamp(timer, 0, 1));
+
+        }
+
+        _animating = false;
     }
 }
