@@ -40,13 +40,15 @@ public class AnimationController {
 
     private void EatAnimation(bool isGood)
     {
-        _animationTime = 1.5f;
+        
 
         if (isGood)
         {
+            _animationTime = 1.5f;
             _animation.Play("Eat");
         } else
         {
+            _animationTime = 0.5f;
             _animation.Play("EatBall");
         }
 
