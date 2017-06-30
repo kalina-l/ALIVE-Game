@@ -174,6 +174,8 @@ public class ItemBoxViewController : AbstractViewController
 
     private IEnumerator AnimateBox(bool show)
     {
+        _animating = true;
+
         float timer = 0;
 
         Vector2 fullSize = new Vector2(380, 380);
@@ -242,5 +244,7 @@ public class ItemBoxViewController : AbstractViewController
                 }
             }
         }
+
+        _animating = false;
     }
 }
