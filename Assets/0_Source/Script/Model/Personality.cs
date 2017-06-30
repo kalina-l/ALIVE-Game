@@ -313,7 +313,7 @@ public class Personality {
 
         for (int i = 0; i < activities.Count; i++)
         {
-            if (!activities[i].IsMultiplayer || Multiplayer.MultiplayerOn)
+            if (!activities[i].IsMultiplayer || Multiplayer.IsConnected)
             {
                 activities[i].PrintExperience(this);
             }

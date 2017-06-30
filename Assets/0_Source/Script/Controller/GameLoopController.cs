@@ -66,26 +66,33 @@ public class GameLoopController : GameLoop {
     {
         while (true)
         {
+            // actualize the others lemos' knowledge about your needs
+            if(_manager.Multiplayer.IsConnected)
+            {
+                _manager.Multiplayer.SendNeeds(new PersonalityNode(_data.Person).Needs);
+            }
+
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            if (_manager.Multiplayer.MultiplayerOn)
+            System.Random rand = new System.Random();
+            if (_manager.Multiplayer.IsConnected)
             {
-                //TODO: randomize this
-                _manager.Multiplayer.SendFeedbackRequest(_lastActivity, new PersonalityNode(_data.Person).Needs);
+                //random feedback request (25%)
+                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                if (receivingFeedback)
+                {
+                    _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                }
             }
 
             bool sentFeedback = false;
-
-            System.Random rand = new System.Random();
-            //random feedback (25%)
-            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
 
             float timer = 0;
             while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
 
-                if (!sentFeedback && givingFeedback)
+                if (!sentFeedback)
                 {
                     if (_manager.Multiplayer.IsFeedbackRequestPending())
                     {
@@ -169,7 +176,7 @@ public class GameLoopController : GameLoop {
         }
 
         
-        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.MultiplayerOn, _manager.Multiplayer.GetPendingActivity());
+        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected, _manager.Multiplayer.GetPendingActivity());
 
         float timer = 0;
 

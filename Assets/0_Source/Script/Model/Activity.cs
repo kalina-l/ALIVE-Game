@@ -107,8 +107,7 @@ public class Activity {
 
         if (IsMultiplayer)
         {
-            Personality remotePersonality = parentPersonality.Multiplayer.GetRemotePersonality();
-            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality);
+            ((MultiplayerExperience)xp).AddRemoteNeeds(parentPersonality.Multiplayer.RemoteNeeds);
             ((MultiplayerExperience)xp).IsRequest = IsRequest;
         }
 
@@ -217,8 +216,7 @@ public class Activity {
                     if (mxp.IsRequest == IsRequest) {
                         if (mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs) > bestValue)
                         {
-                            PersonalityNode remotePersonality = new PersonalityNode(personality.Multiplayer.GetRemotePersonality());
-                            bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(remotePersonality.Needs);
+                            bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Multiplayer.RemoteNeeds);
                             bestExperienceID = i;
                         }
                     }
@@ -257,8 +255,7 @@ public class Activity {
         {
             xp = new MultiplayerExperience();
             
-            PersonalityNode remotePersonality = new PersonalityNode(personality.Multiplayer.GetRemotePersonality());
-            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality.Needs);
+            ((MultiplayerExperience)xp).AddRemoteNeeds(personality.Multiplayer.RemoteNeeds);
             ((MultiplayerExperience)xp).IsRequest = IsRequest;
         }
         else

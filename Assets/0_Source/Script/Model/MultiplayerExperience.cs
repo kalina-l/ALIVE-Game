@@ -14,33 +14,28 @@ public class MultiplayerExperience : Experience {
         Rewards = new Dictionary<NeedType, int>();
     }
 
-    public MultiplayerExperience(Personality basePersonality, Personality resultPersonality, Personality remotePersonality)
+    public MultiplayerExperience(Personality basePersonality, Personality resultPersonality, Dictionary<NeedType, Evaluation> needs)
     {
         AddBaseNeeds(basePersonality);
         AddRewards(resultPersonality);
-        AddRemoteNeeds(remotePersonality);
+        AddRemoteNeeds(needs);
     }
 
-    public void AddRemoteNeeds(Personality basePersonality)
+    public void AddRemoteNeeds(Dictionary<NeedType, Evaluation> needs)
     {
         RemoteNeeds = new Dictionary<NeedType, Evaluation>();
 
-        RemoteNeeds[NeedType.HUNGER] = basePersonality.Conditions[NeedType.HUNGER].getEvaluation();
-        RemoteNeeds[NeedType.ENERGY] = basePersonality.Conditions[NeedType.ENERGY].getEvaluation();
-        RemoteNeeds[NeedType.HEALTH] = basePersonality.Conditions[NeedType.HEALTH].getEvaluation();
-        RemoteNeeds[NeedType.SATISFACTION] = basePersonality.Conditions[NeedType.SATISFACTION].getEvaluation();
-        RemoteNeeds[NeedType.SOCIAL] = basePersonality.Conditions[NeedType.SOCIAL].getEvaluation();
-    }
+        foreach (var item in RemoteNeeds)
+        {
+            RemoteNeeds[item.Key] = needs[item.Key];
+        }
 
-    public void AddRemoteNeeds(Dictionary<NeedType, Evaluation> basePersonality)
-    {
-        RemoteNeeds = new Dictionary<NeedType, Evaluation>();
-
-        RemoteNeeds[NeedType.HUNGER] = basePersonality[NeedType.HUNGER];
+        /*RemoteNeeds[NeedType.HUNGER] = basePersonality[NeedType.HUNGER];
         RemoteNeeds[NeedType.ENERGY] = basePersonality[NeedType.ENERGY];
         RemoteNeeds[NeedType.HEALTH] = basePersonality[NeedType.HEALTH];
         RemoteNeeds[NeedType.SATISFACTION] = basePersonality[NeedType.SATISFACTION];
         RemoteNeeds[NeedType.SOCIAL] = basePersonality[NeedType.SOCIAL];
+        */
     }
 
     public int CompareRemoteStatus(Dictionary<NeedType, Evaluation> compareWith)

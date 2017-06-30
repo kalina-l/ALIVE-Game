@@ -4,6 +4,14 @@ using System.Collections.Generic;
 using System.Collections;
 using FullSerializer;
 
+public interface MultiplayerConnection
+{
+    MultiplayerController SecondLemo { get; set; }
+    bool Connected { get; set; }
+    bool WaitForReconnect { get; set; }
+    void sendMessage(String messageType, System.Object content);
+}
+
 [Serializable]
 public struct DataContainer
 {
@@ -17,15 +25,15 @@ public struct DataContainer
     }
 }
 
-public class HappeningController : MonoBehaviour {
+public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
 	HappeningPlugin Plugin;
-    MultiplayerController _multiplayerController;
+    public MultiplayerController SecondLemo { get; set; }
 
-    private bool _connected;
+    public bool Connected { get; set; }
     private HappeningClients.HappeningClient _remote;
 
-    private bool _waitForReconnect;
+    public bool WaitForReconnect { get; set; }
     private float _timeToWait = 2;
 
     private fsSerializer _serializer;
@@ -55,11 +63,11 @@ public class HappeningController : MonoBehaviour {
         _serializer.TrySerialize(data, out fsData);
         String s = fsJsonPrinter.CompressedJson(fsData);
 
-        if(_connected)
+        if(Connected)
         {
             Plugin.sendData(_remote, s);
         }
-        else if (_waitForReconnect)
+        else if (WaitForReconnect)
         {
             StartCoroutine(waitWithSendingMsg(s));
         }
@@ -67,11 +75,11 @@ public class HappeningController : MonoBehaviour {
 
     IEnumerator waitWithSendingMsg (String data)
     {
-        while(_waitForReconnect)
+        while(WaitForReconnect)
         {
             yield return null;
         }
-        if(_connected)
+        if(Connected)
         {
             Plugin.sendData(_remote, data);
         }
@@ -85,24 +93,24 @@ public class HappeningController : MonoBehaviour {
         {
             if(_remote.uuid != "")
             {
-                _waitForReconnect = false;
+                WaitForReconnect = false;
                 yield break;
             }
             secondsLeft -= Time.deltaTime;
             yield return null;
         }
 
-        _waitForReconnect = false;
+        WaitForReconnect = false;
     }
 
     // Callbacks
 
     void onClientAdded(String json) {
 		HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
-        if(!_connected && _multiplayerController.MultiplayerOn)
+        if(!Connected && SecondLemo.IsConnected)
         {
             _remote = client;
-            _connected = true;
+            Connected = true;
         }
 		print("onClientAdded: " + client.uuid);
 	}
@@ -117,8 +125,8 @@ public class HappeningController : MonoBehaviour {
         if(_remote.uuid == client.uuid)
         {
             _remote.uuid = "";
-            _waitForReconnect = true;
-            _connected = false;
+            WaitForReconnect = true;
+            Connected = false;
             StartCoroutine(waitForReconnect());
         }
 
@@ -135,25 +143,25 @@ public class HappeningController : MonoBehaviour {
         {
             case "feedbackRequest":
                 Activity activity = (Activity)dataContainer.content;
-                _multiplayerController.GetFeedbackRequest(activity);
+                SecondLemo.GetFeedbackRequest(activity);
                 break;
             case "feedback":
                 int feedback = (int)dataContainer.content;
-                _multiplayerController.GetFeedback(feedback);
+                SecondLemo.GetFeedback(feedback);
                 break;
             case "activityRequest":
                 int activityId = (int)dataContainer.content;
-                _multiplayerController.GetActivityRequest(activityId);
+                SecondLemo.GetActivityRequest(activityId);
                 break;
             case "accept":
-                _multiplayerController.AcceptRequest();
+                SecondLemo.AcceptRequest();
                 break;
             case "decline":
-                _multiplayerController.DeclineRequest();
+                SecondLemo.DeclineRequest();
                 break;
             case "needs":
                 Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)dataContainer.content;
-                _multiplayerController.GetRemoteNeeds(needs);
+                SecondLemo.GetRemoteNeeds(needs);
                 break;
 
         }

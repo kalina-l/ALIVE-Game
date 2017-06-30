@@ -2,6 +2,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FullSerializer;
+
+public class SimulationController : MultiplayerConnection
+{
+    public MultiplayerController SecondLemo { get; set; }
+    public bool Connected { get; set; }
+    public bool WaitForReconnect { get; set; }
+
+    private Personality secondLemo;
+
+    public SimulationController ()
+    {
+        Connected = true;
+    }
+
+    public void SetMultiplayerController(MultiplayerController multiplayerController)
+    {
+        SecondLemo = multiplayerController;
+    }
+
+    public void sendMessage(string messageType, object content)
+    {
+        switch (messageType)
+        {
+            case "feedbackRequest":
+                Activity activity = (Activity)content;
+                SecondLemo.GetFeedbackRequest(activity);
+                break;
+            case "feedback":
+                int feedback = (int)content;
+                SecondLemo.GetFeedback(feedback);
+                break;
+            case "activityRequest":
+                int activityId = (int)content;
+                SecondLemo.GetActivityRequest(activityId);
+                break;
+            case "accept":
+                SecondLemo.AcceptRequest();
+                break;
+            case "decline":
+                SecondLemo.DeclineRequest();
+                break;
+            case "needs":
+                Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)content;
+                SecondLemo.GetRemoteNeeds(needs);
+                break;
+
+        }
+    }
+}
 
 public class RemotePersonalitySimulation : GameLoop {
 
@@ -27,22 +77,17 @@ public class RemotePersonalitySimulation : GameLoop {
         return _multiplayer;
     }
 
-    public RemotePersonalitySimulation(ApplicationManager manager, Personality localPersonality)
+    public RemotePersonalitySimulation(ApplicationManager manager, MultiplayerController mc)
     {
         _data = new GameData(LoadStates.CSV);
-        
-        
 
         isRunning = true;
 
         _manager = manager;
         _manager.StartCoroutine(Simulate());
 
-        // _multiplayer = new MultiplayerController(_data, "remote");
+        _multiplayer = mc;
         _multiplayer.setGameLoop(this);
-        //_multiplayer.ConnectWithRemote(manager.Multiplayer);
-
-        
     }
 
 
@@ -54,24 +99,23 @@ public class RemotePersonalitySimulation : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            if (_multiplayer.MultiplayerOn)
+            System.Random rand = new System.Random();
+            if (_multiplayer.IsConnected)
             {
                 //TODO: randomize this
-                //_multiplayer.SendFeedbackRequest(_lastActivity);
-                //_manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                if (receivingFeedback)
+                {
+                    _multiplayer.SendFeedbackRequest(_lastActivity);
+                }
             }
 
-            System.Random rand = new System.Random();
-            //random feedback (25%)
-            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
-
-            if (_multiplayer.IsFeedbackRequestPending() && givingFeedback)
+            if (_multiplayer.IsFeedbackRequestPending())
             {
                 //TODO: Calculate Feedback
                 int feedback = rand.NextDouble() > 0.5 ? 1 : -1;
                 DebugController.Instance.Log("Send feedback to the local LEMO: " + feedback, DebugController.DebugType.Multiplayer);
                 _multiplayer.SendFeedback(feedback);
-                //_manager.Multiplayer.SendFeedback(1);
             }
 
             _actionCounter++;

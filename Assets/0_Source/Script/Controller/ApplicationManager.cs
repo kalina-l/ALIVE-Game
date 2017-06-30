@@ -40,7 +40,7 @@ public class ApplicationManager : MonoBehaviour {
     private OptionsMenuController _options;
 
     //Simulation
-    //private RemotePersonalitySimulation _simulation;
+    private RemotePersonalitySimulation _simulation;
 
     //Multiplayer
     private HappeningController _happeningController;
@@ -84,6 +84,7 @@ public class ApplicationManager : MonoBehaviour {
         
         _happeningController = GameObject.Find("Happening").GetComponent<HappeningController>();
         _multiplayer = new MultiplayerController(_data, _happeningController);
+        _happeningController.SecondLemo = Multiplayer;
         MultiplayerViewController = new MultiplayerViewController();
 
 
@@ -154,7 +155,7 @@ public class ApplicationManager : MonoBehaviour {
 
     public void ToggleMultiplayer()
     {
-        if (!Multiplayer.MultiplayerOn)
+        if (!Multiplayer.IsConnected)
         {
             //_simulation = new RemotePersonalitySimulation(this);
             //_multiplayer.ConnectWithRemote(_simulation.GetController());
@@ -166,17 +167,41 @@ public class ApplicationManager : MonoBehaviour {
     }
 
     void Update() {
-        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !Multiplayer.MultiplayerOn)
+        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !Multiplayer.IsConnected)
         {
-            //_simulation = new RemotePersonalitySimulation(this, _data.Person);
+            Multiplayer.SetConnectionController(_happeningController);
             Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
         }
 
-        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.MultiplayerOn)
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.IsConnected)
         {
             Multiplayer.EndMultiplayer();
-            //_simulation.StopSimulation();
+            MultiplayerViewController.endMultiplayerView();
+        }
+
+        // Editor Multiplayer Simulation
+        if(!Multiplayer.IsConnected && simulateRemote)
+        {
+            // Remote
+            SimulationController remoteSimulationContoller = new SimulationController();
+            MultiplayerController remoteMultiplayerController = new MultiplayerController(_data, remoteSimulationContoller);
+            remoteSimulationContoller.SetMultiplayerController(Multiplayer);
+
+            // Local
+            SimulationController localSimulationContoller = new SimulationController();
+            Multiplayer.SetConnectionController(localSimulationContoller);
+            localSimulationContoller.SetMultiplayerController(remoteMultiplayerController);
+
+            _simulation = new RemotePersonalitySimulation(this, remoteMultiplayerController);
+            Multiplayer.StartMultiplayer();
+            MultiplayerViewController.startMultiplayerView();
+        }
+        if (Multiplayer.IsConnected && !simulateRemote)
+        {
+            _simulation.StopSimulation();
+            _simulation = null;
+            Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
     }
