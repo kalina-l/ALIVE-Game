@@ -129,7 +129,16 @@ public class RemotePersonalitySimulation : GameLoop {
 
             if (_lastActivity == null)
             {
-                _lastActivity = _multiplayer.GetPendingActivity();
+                for (int i = 0; i < _data.Items.Count; i++)
+                {
+                    foreach (Activity activity in _data.Items[i].GetAllActivities())
+                    {
+                        if (activity.ID == activityID)
+                        {
+                            _lastActivity = activity;
+                        }
+                    }
+                }
             }
 
             if (_lastActivity.IsMultiplayer)
