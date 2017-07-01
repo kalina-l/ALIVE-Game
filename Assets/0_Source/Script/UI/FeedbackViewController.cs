@@ -19,6 +19,10 @@ public class FeedbackViewController : AbstractViewController {
     private ParticleSystem positiveFX;
     private ParticleSystem negativeFX;
 
+    private RectTransform _feedbackMenu;
+    private bool _showMenu;
+    private bool _animating;
+
     public FeedbackViewController(Transform parent, ArtificialIntelligence intelligence)
     {
         Rect = CreateContainer("Feedback", parent,
@@ -36,23 +40,87 @@ public class FeedbackViewController : AbstractViewController {
         positiveFX = GraphicsHelper.Instance.positiveFX;
         negativeFX = GraphicsHelper.Instance.negativeFX;
 
-       _startRecording = CreateButton(
-                                    CreateContainer("StartRecording", Rect,
-                                    new Vector2(-60, 40), _buttonSize*0.65f,
+        _feedbackMenu = CreateContainer("FeedbackMenu", Rect,
+                                    new Vector2(140, 0), new Vector2(186, 298),
+                                    new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(1, 0.5f));
+
+        _showMenu = false;
+
+        Image menuImage = AddSprite(_feedbackMenu, GraphicsHelper.Instance.feedbackMenu, GraphicsHelper.Instance.SpriteColorWhite);
+        menuImage.raycastTarget = false;
+
+        _startRecording = CreateButton(
+                                    CreateContainer("StartRecording", _feedbackMenu,
+                                    new Vector2(0, 77), new Vector2(150, 150),
                                     new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f)),
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
-        AddSprite(_startRecording.GetComponent<RectTransform>(), GraphicsHelper.Instance.speakerSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        AddSprite(_startRecording.GetComponent<RectTransform>(), null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         RectTransform startStreamingRect =
-                                    CreateContainer("StartStreaming", Rect,
-                                    new Vector2(-60, -150), _buttonSize * 0.65f,
+                                    CreateContainer("StartStreaming", _feedbackMenu,
+                                    new Vector2(0, -77), new Vector2(150, 150),
                                     new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f));                                 
         PointerListener pl = startStreamingRect.gameObject.AddComponent<PointerListener>();
         pl.AddOnDownDelegate(_videoFeedbackController.StartRecording);
         pl.AddOnUpDelegate(_videoFeedbackController.StopRecording);
-        AddSprite(startStreamingRect.GetComponent<RectTransform>(), GraphicsHelper.Instance.cameraSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        AddSprite(startStreamingRect.GetComponent<RectTransform>(), null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
+        RectTransform buttonRect = CreateContainer("MenuButton", _feedbackMenu,
+                            new Vector2(-140, 0), new Vector2(60, 100),
+                            new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(1, 0.5f));
+
+        AddSprite(buttonRect, null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+
+        CreateButton(buttonRect, delegate { ToggleMenu(); });
+    }
+
+    public void ToggleMenu()
+    {
+        if (!_animating)
+        {
+            ApplicationManager.Instance.StartCoroutine(AnimateMenuRoutine());
+        }
+    }
+
+    private IEnumerator AnimateMenuRoutine()
+    {
+        _animating = true;
+
+        _showMenu = !_showMenu;
+
+        float timer = 0;
+
+        Vector2 bgPositionIn = new Vector2(140, 0);
+        Vector2 bgPositionOut = Vector2.zero;
+
+        Vector2 bgFullSize = new Vector2(320, 90);
+
+        AnimationCurve curve = GraphicsHelper.Instance.AlertAnimation;
+
+        if (_showMenu)
+        {
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * 8;
+                yield return 0;
+
+                _feedbackMenu.anchoredPosition = Vector2.Lerp(bgPositionIn, bgPositionOut, curve.Evaluate(timer));
+            }
+
+        }
+        else
+        {
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * 4;
+                yield return 0;
+
+                _feedbackMenu.anchoredPosition = Vector2.Lerp(bgPositionOut, bgPositionIn, curve.Evaluate(timer));
+            }
+        }
+
+        _animating = false;
     }
 
     public void ShowFeedback(int feedback)

@@ -110,7 +110,7 @@ public class RadialSliderViewController : AbstractViewController {
 
         while (timer < 1)
         {
-            timer += Time.deltaTime * 4;
+            timer += Time.deltaTime * 8;
             yield return 0;
             
             bgRect.anchoredPosition = Vector2.Lerp(bgPositionIn, bgPositionOut, curve.Evaluate(timer));
@@ -127,7 +127,7 @@ public class RadialSliderViewController : AbstractViewController {
 
         while (timer < 1)
         {
-            timer += Time.deltaTime * 8;
+            timer += Time.deltaTime * 4;
             yield return 0;
             
             bgRect.anchoredPosition = Vector2.Lerp(bgPositionOut, bgPositionIn, curve.Evaluate(timer));

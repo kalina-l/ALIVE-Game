@@ -28,6 +28,8 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite speakerSprite;
     public Sprite cameraSprite;
 
+    public Sprite feedbackMenu;
+
     public Sprite alertBubbleSprite;
 
     public Sprite itemboxOpenSprite;
