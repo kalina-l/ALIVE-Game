@@ -6,7 +6,7 @@ using FullSerializer;
 
 public interface MultiplayerConnection
 {
-    MultiplayerController SecondLemo { get; set; }
+    MultiplayerController Lemo { get; set; }
     bool Connected { get; set; }
     bool WaitForReconnect { get; set; }
     void sendMessage(String messageType, System.Object content);
@@ -28,7 +28,7 @@ public struct DataContainer
 public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
 	HappeningPlugin Plugin;
-    public MultiplayerController SecondLemo { get; set; }
+    public MultiplayerController Lemo { get; set; }
 
     public bool Connected { get; set; }
     private HappeningClients.HappeningClient _remote;
@@ -101,16 +101,18 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
         }
 
         WaitForReconnect = false;
+        Lemo.SetRemoteTexture("no_texture");
     }
 
     // Callbacks
 
     void onClientAdded(String json) {
 		HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
-        if(!Connected && SecondLemo.IsConnected)
+        if(!Connected)
         {
             _remote = client;
             Connected = true;
+            sendMessage("texture", GraphicsHelper.Instance.lemo.GetComponentInChildren<Renderer>().material.name);
         }
 		print("onClientAdded: " + client.uuid);
 	}
@@ -143,27 +145,30 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
         {
             case "feedbackRequest":
                 Activity activity = (Activity)dataContainer.content;
-                SecondLemo.GetFeedbackRequest(activity);
+                Lemo.GetFeedbackRequest(activity);
                 break;
             case "feedback":
                 int feedback = (int)dataContainer.content;
-                SecondLemo.GetFeedback(feedback);
+                Lemo.GetFeedback(feedback);
                 break;
             case "activityRequest":
                 int activityId = (int)dataContainer.content;
-                SecondLemo.GetActivityRequest(activityId);
+                Lemo.GetActivityRequest(activityId);
                 break;
             case "accept":
-                SecondLemo.AcceptRequest();
+                Lemo.AcceptRequest();
                 break;
             case "decline":
-                SecondLemo.DeclineRequest();
+                Lemo.DeclineRequest();
                 break;
             case "needs":
                 Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)dataContainer.content;
-                SecondLemo.GetRemoteNeeds(needs);
+                Lemo.GetRemoteNeeds(needs);
                 break;
-
+            case "texture":
+                String texture = (String)dataContainer.content;
+                Lemo.SetRemoteTexture(texture);
+                break;
         }
 
 		Package pkg = JsonUtility.FromJson<Package>(json);

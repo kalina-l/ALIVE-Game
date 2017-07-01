@@ -9,6 +9,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Transform camera;
 
     public GameObject lemo;
+    public Material[] materials;
     public Transform itemAnchor;
     public Transform multiplayerLemoAnchor;
     public Transform multiplayerCameraAnchor;

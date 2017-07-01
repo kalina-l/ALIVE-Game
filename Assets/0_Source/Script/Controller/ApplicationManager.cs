@@ -87,7 +87,7 @@ public class ApplicationManager : MonoBehaviour {
         
         _happeningController = GameObject.Find("Happening").GetComponent<HappeningController>();
         _multiplayer = new MultiplayerController(_data, _happeningController, "local");
-        _happeningController.SecondLemo = Multiplayer;
+        _happeningController.Lemo = Multiplayer;
         MultiplayerViewController = new MultiplayerViewController();
 
 
@@ -130,6 +130,23 @@ public class ApplicationManager : MonoBehaviour {
     public void ShowItemAlert(Item item)
     {
         _alert.ShowAlert(_itemBox.GetItemIcon(item));
+    }
+
+    public void MoveItemAlert(bool multiplayer)
+    {
+        if(multiplayer)
+        {
+            _alert.setMultiplayer();
+        }
+        else
+        {
+            _alert.setSingleplayer();
+        }
+    }
+
+    public void SetupRemoteTexture(Material material)
+    {
+        MultiplayerViewController.setupTexture(material);
     }
 
     public void UpdateUI()
@@ -181,22 +198,14 @@ public class ApplicationManager : MonoBehaviour {
         }
 
         // Editor Multiplayer Simulation
-        if (!Multiplayer.IsConnected && simulateRemote)
+        if (!Multiplayer._multiplayerOn && simulateRemote)
         {
-            // Remote
-            _remoteSimulationContoller.SetMultiplayerController(Multiplayer);
-
-            // Local
-            SimulationController localSimulationContoller = new SimulationController();
-            localSimulationContoller.SetMultiplayerController(_remoteMultiplayerController);
-            Multiplayer.SetConnectionController(localSimulationContoller);
-
-            _simulation = new RemotePersonalitySimulation(_remoteData, this, _remoteMultiplayerController);
-            _remoteMultiplayerController.StartMultiplayer();
             Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
+
+            StartCoroutine(ConnectRemoteSimulation());
         }
-        if (Multiplayer.IsConnected && !simulateRemote)
+        if (Multiplayer._multiplayerOn && !simulateRemote)
         {
             _simulation.StopSimulation();
             _simulation = null;
@@ -204,5 +213,21 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
+    }
+
+    IEnumerator ConnectRemoteSimulation ()
+    {
+        yield return new WaitForSeconds(2);
+
+        // Remote
+        _remoteSimulationContoller.SetMultiplayerController(Multiplayer);
+
+        // Local
+        SimulationController localSimulationContoller = new SimulationController();
+        localSimulationContoller.SetMultiplayerController(_remoteMultiplayerController);
+        Multiplayer.SetConnectionController(localSimulationContoller);
+
+        _simulation = new RemotePersonalitySimulation(_remoteData, this, _remoteMultiplayerController);
+        _remoteMultiplayerController.StartMultiplayer();
     }
 }

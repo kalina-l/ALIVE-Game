@@ -15,7 +15,7 @@ public interface GameLoop
 /// </summary>
 public class MultiplayerController {
 
-    private bool _multiplayerOn;
+    public bool _multiplayerOn;
     public bool IsConnected {
         get { return _multiplayerOn && (_happeningController.Connected || _happeningController.WaitForReconnect); }
         private set { IsConnected = value; } }
@@ -38,6 +38,21 @@ public class MultiplayerController {
     private bool _sendingRequest;
 
     private bool _gettingFeedbackRequest;
+
+    public void SetRemoteTexture(string textureName)
+    {
+        Material[] materials = GraphicsHelper.Instance.materials;
+        Material remoteTexture = materials[0];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if(textureName.Contains(materials[i].name))
+            {
+                remoteTexture = materials[i];
+                break;
+            }
+        }
+        ApplicationManager.Instance.SetupRemoteTexture(remoteTexture);
+    }
 
     public Activity GetPendingActivity()
     {
@@ -151,6 +166,8 @@ public class MultiplayerController {
         DebugController.Instance.Log(_id + ": Send Request for " + activity.Name, DebugController.DebugType.Multiplayer);
 
         activity.IsDeclined = false;
+       // DebugController.Instance.Log(_id + " SEND ACTIVITY REQUEST: " + activity.Name + ", Object: " + activity.GetHashCode(), DebugController.DebugType.Multiplayer);
+
 
         _sendingRequest = true;
         _currentMultiplayerActivity = activity;
@@ -162,7 +179,8 @@ public class MultiplayerController {
     {
         _currentMultiplayerActivity = _localPersonality.GetActivity(activityID);
 
-        if(_currentMultiplayerActivity == null)
+
+        if (_currentMultiplayerActivity == null)
         {
             //TODO getactivity from itembox
             foreach(Item item in _gameData.Items)
@@ -173,6 +191,7 @@ public class MultiplayerController {
                 }
             }
         }
+//        DebugController.Instance.Log(_id + " GET ACTIVITY REQUEST: " + _currentMultiplayerActivity.Name + ", Object: " + _currentMultiplayerActivity.GetHashCode(), DebugController.DebugType.Multiplayer);
 
         _currentMultiplayerActivity.IsRequest = true;
 
@@ -206,6 +225,8 @@ public class MultiplayerController {
             _happeningController.sendMessage("decline", null);
             //_remoteController.DeclineRequest();
             _gettingRequest = false;
+            if(_currentMultiplayerActivity != null)
+                _currentMultiplayerActivity.IsRequest = false;
         }
         else
         {

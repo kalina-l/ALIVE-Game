@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MultiplayerViewController : AbstractViewController {
-
-    public bool multiplayerViewOn;
-
+    
     private float _switchTime = 2;
 
     private GameObject _remoteLemo;
@@ -19,12 +17,13 @@ public class MultiplayerViewController : AbstractViewController {
     {
         _camera = GraphicsHelper.Instance.camera;
     }
-
+    
     //switch camera between singlePlayer and multiplayer view
+
     public void startMultiplayerView()
     {
-        multiplayerViewOn = true;
         showRemote();
+        ApplicationManager.Instance.MoveItemAlert(true);
         RemoteCharacterAnimation = new AnimationController(_remoteLemo);
         ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.multiplayerCameraAnchor.rotation);
@@ -33,7 +32,7 @@ public class MultiplayerViewController : AbstractViewController {
 
     public void endMultiplayerView()
     {
-        multiplayerViewOn = false;
+        ApplicationManager.Instance.MoveItemAlert(false);
         ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.singleplayerCameraAnchor.rotation);
         ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, -angle, 0), _switchTime));
@@ -66,7 +65,13 @@ public class MultiplayerViewController : AbstractViewController {
     public void showRemote()
     {
         _remoteLemo = GameObject.Instantiate(GraphicsHelper.Instance.lemo, GraphicsHelper.Instance.multiplayerLemoAnchor);
+        _remoteLemo.GetComponentInChildren<Renderer>().material = GraphicsHelper.Instance.materials[0];
         _remoteLemo.transform.localPosition = Vector3.zero;
+    }
+
+    public void setupTexture(Material material)
+    {
+        _remoteLemo.GetComponentInChildren<Renderer>().material = material;
     }
 
 }

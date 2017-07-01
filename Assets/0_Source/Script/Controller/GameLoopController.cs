@@ -107,7 +107,7 @@ public class GameLoopController : GameLoop {
                                                     experience,
                                                     feedback);
                         float evaluation = newPerson.SelfEvaluation;
-                        DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
+                        //DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
                         if (evaluation > 0)
                         {
                             _manager.Multiplayer.SendFeedback(1);
@@ -268,6 +268,7 @@ public class GameLoopController : GameLoop {
             }
 
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
+            //DebugController.Instance.Log("Locals activity " + _lastActivity.Name + ", Object: " + _lastActivity.GetHashCode(), DebugController.DebugType.Multiplayer);
 
             if (_lastActivity.IsMultiplayer) {
                 if (_lastActivity.IsRequest) {
@@ -291,13 +292,19 @@ public class GameLoopController : GameLoop {
 
             debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
+            if (_lastActivity.IsDeclined)
+            {
+                _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+            }
+            else
+            {
+                //Show Activity
+                _manager.ShowMessage(_lastActivity.feedBackString);
+            }
+
             _lastExperience = _lastActivity.DoActivity(_data.Person);
             
             _manager.Multiplayer.ClearActivity();
-            
-
-            //Show Activity
-            _manager.ShowMessage(_lastActivity.feedBackString);
 
             //Ask for Feedback
             waitForFeedback = true;

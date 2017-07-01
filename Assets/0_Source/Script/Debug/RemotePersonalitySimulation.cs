@@ -6,47 +6,62 @@ using FullSerializer;
 
 public class SimulationController : MultiplayerConnection
 {
-    public MultiplayerController SecondLemo { get; set; }
+    public MultiplayerController Lemo { get; set; }
     public bool Connected { get; set; }
     public bool WaitForReconnect { get; set; }
+    private fsSerializer _serializer;
 
     public SimulationController ()
     {
         Connected = true;
+        _serializer = new fsSerializer();
     }
 
     public void SetMultiplayerController(MultiplayerController multiplayerController)
     {
-        SecondLemo = multiplayerController;
+        Lemo = multiplayerController;
+        sendMessage("texture", GraphicsHelper.Instance.materials[2].name);
     }
 
     public void sendMessage(string messageType, object content)
     {
+        DataContainer data = new DataContainer(messageType, content);
+        fsData fsData;
+        _serializer.TrySerialize(data, out fsData);
+        String s = fsJsonPrinter.CompressedJson(fsData);
+
+        DataContainer newData = new DataContainer();
+        fsData newFsData = fsJsonParser.Parse(s);
+        _serializer.TryDeserialize(newFsData, ref newData);
+
         switch (messageType)
         {
             case "feedbackRequest":
-                Activity activity = (Activity)content;
-                SecondLemo.GetFeedbackRequest(activity);
+                Activity activity = (Activity)newData.content;
+                Lemo.GetFeedbackRequest(activity);
                 break;
             case "feedback":
-                int feedback = (int)content;
-                SecondLemo.GetFeedback(feedback);
+                int feedback = (int)newData.content;
+                Lemo.GetFeedback(feedback);
                 break;
             case "activityRequest":
-                int activityId = (int)content;
-                SecondLemo.GetActivityRequest(activityId);
+                int activityId = (int)newData.content;
+                Lemo.GetActivityRequest(activityId);
                 break;
             case "accept":
-                SecondLemo.AcceptRequest();
+                Lemo.AcceptRequest();
                 break;
             case "decline":
-                SecondLemo.DeclineRequest();
+                Lemo.DeclineRequest();
                 break;
             case "needs":
-                Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)content;
-                SecondLemo.GetRemoteNeeds(needs);
+                Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)newData.content;
+                Lemo.GetRemoteNeeds(needs);
                 break;
-
+            case "texture":
+                String texture = (String)newData.content;
+                Lemo.SetRemoteTexture(texture);
+                break;
         }
     }
 }
@@ -139,7 +154,7 @@ public class RemotePersonalitySimulation : GameLoop {
 
     private IEnumerator DoActivityRoutine()
     {
-        DebugController.Instance.Log("remote: start activity loop", DebugController.DebugType.Multiplayer);
+        //DebugController.Instance.Log("remote: start activity loop", DebugController.DebugType.Multiplayer);
 
         if (_multiplayer.IsRequestPending())
         {
@@ -154,7 +169,7 @@ public class RemotePersonalitySimulation : GameLoop {
             d += activities[i].Name + ", ";
         }
 
-        DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
+        //DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
 
         _data.Intelligence.GetNextActivity(_data.Person, _multiplayer.IsConnected, _multiplayer.GetPendingActivity());
 
@@ -166,7 +181,7 @@ public class RemotePersonalitySimulation : GameLoop {
             yield return 0;
         }
 
-        DebugController.Instance.Log("remote: calculation took " + timer, DebugController.DebugType.Multiplayer);
+        //DebugController.Instance.Log("remote: calculation took " + timer, DebugController.DebugType.Multiplayer);
 
         int activityID = _data.Intelligence.GetResult();
 
@@ -213,7 +228,14 @@ public class RemotePersonalitySimulation : GameLoop {
                 _multiplayer.DeclineRequest();
             }
 
-            DebugController.Instance.Log("remote: " + _lastActivity.Name, DebugController.DebugType.Multiplayer);
+            if (_lastActivity.IsDeclined)
+            {
+                DebugController.Instance.Log("remote wanted to do: " + _lastActivity.Name + ", but only got rejection reward", DebugController.DebugType.Multiplayer);
+            }
+            else
+            {
+                DebugController.Instance.Log("remote: " + _lastActivity.Name, DebugController.DebugType.Multiplayer);
+            }
             _lastExperience = _lastActivity.DoActivity(_data.Person);
 
             _multiplayer.ClearActivity();

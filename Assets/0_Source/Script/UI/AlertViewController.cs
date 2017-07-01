@@ -8,6 +8,9 @@ public class AlertViewController : AbstractViewController {
     private Vector2 _bubbleSize;
     private Vector2 _iconSize;
 
+    private Vector2 _singleplayerPosition = new Vector2(0, 186);
+    private Vector2 _multiplayerPosition = new Vector2(-750, 186);
+
     private Image _icon;
 
     private bool _animating;
@@ -18,7 +21,7 @@ public class AlertViewController : AbstractViewController {
         _iconSize = new Vector2(110, 110);
 
         Rect = CreateContainer("Alert", parent,
-            new Vector2(0, 186), _bubbleSize,
+            _singleplayerPosition, _bubbleSize,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(1, 0));
         View = Rect.gameObject;
 
@@ -31,6 +34,16 @@ public class AlertViewController : AbstractViewController {
         _icon = AddSprite(iconRect, null, GraphicsHelper.Instance.SpriteColorBlack);
 
         HideAlert(true);
+    }
+
+    public void setSingleplayer()
+    {
+        Rect.anchoredPosition = _singleplayerPosition;
+    }
+
+    public void setMultiplayer ()
+    {
+        Rect.anchoredPosition = _multiplayerPosition;
     }
 
     public void ShowAlert(Sprite icon)
