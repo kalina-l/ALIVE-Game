@@ -252,8 +252,7 @@ public class GameLoopController : GameLoop {
             debug.Log("Get Activity", DebugController.DebugType.GameFlow);
 
             _lastActivity = _data.Person.GetActivity(activityID);
-
-            // TODO könnte falsch sein
+            
             if(_lastActivity == null)
             {
                 for (int i = 0; i < _data.Items.Count; i++)
@@ -293,7 +292,6 @@ public class GameLoopController : GameLoop {
             debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
             _lastExperience = _lastActivity.DoActivity(_data.Person);
-
             
             _manager.Multiplayer.ClearActivity();
             

@@ -10,8 +10,6 @@ public class SimulationController : MultiplayerConnection
     public bool Connected { get; set; }
     public bool WaitForReconnect { get; set; }
 
-    private Personality secondLemo;
-
     public SimulationController ()
     {
         Connected = true;
@@ -77,9 +75,9 @@ public class RemotePersonalitySimulation : GameLoop {
         return _multiplayer;
     }
 
-    public RemotePersonalitySimulation(ApplicationManager manager, MultiplayerController mc)
+    public RemotePersonalitySimulation(GameData data, ApplicationManager manager, MultiplayerController mc)
     {
-        _data = new GameData(LoadStates.CSV);
+        _data = data;
 
         isRunning = true;
 
@@ -87,6 +85,7 @@ public class RemotePersonalitySimulation : GameLoop {
         _manager.StartCoroutine(Simulate());
 
         _multiplayer = mc;
+        _data.Person.Multiplayer = _multiplayer;
         _multiplayer.setGameLoop(this);
     }
 
@@ -96,6 +95,9 @@ public class RemotePersonalitySimulation : GameLoop {
         while (isRunning)
         {
             yield return new WaitForSeconds(2);
+
+            // actualize the others lemos' knowledge about your needs
+            _multiplayer.SendNeeds(new PersonalityNode(_data.Person).Needs);
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
@@ -154,7 +156,7 @@ public class RemotePersonalitySimulation : GameLoop {
 
         DebugController.Instance.Log("remote: calculate (" + d + ")", DebugController.DebugType.Multiplayer);
 
-        //_data.Intelligence.GetNextActivity(_data.Person, _multiplayer.MultiplayerOn, _multiplayer.GetPendingActivity());
+        _data.Intelligence.GetNextActivity(_data.Person, _multiplayer.IsConnected, _multiplayer.GetPendingActivity());
 
         float timer = 0;
 
@@ -185,7 +187,7 @@ public class RemotePersonalitySimulation : GameLoop {
                     }
                 }
             }
-
+            
             if (_lastActivity.IsMultiplayer)
             {
                 if (_lastActivity.IsRequest)

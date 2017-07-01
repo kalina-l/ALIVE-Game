@@ -25,17 +25,17 @@ public class MultiplayerExperience : Experience {
     {
         RemoteNeeds = new Dictionary<NeedType, Evaluation>();
 
-        foreach (var item in RemoteNeeds)
+        /*foreach (var item in RemoteNeeds)
         {
             RemoteNeeds[item.Key] = needs[item.Key];
         }
-
-        /*RemoteNeeds[NeedType.HUNGER] = basePersonality[NeedType.HUNGER];
-        RemoteNeeds[NeedType.ENERGY] = basePersonality[NeedType.ENERGY];
-        RemoteNeeds[NeedType.HEALTH] = basePersonality[NeedType.HEALTH];
-        RemoteNeeds[NeedType.SATISFACTION] = basePersonality[NeedType.SATISFACTION];
-        RemoteNeeds[NeedType.SOCIAL] = basePersonality[NeedType.SOCIAL];
         */
+        RemoteNeeds[NeedType.HUNGER] = needs[NeedType.HUNGER];
+        RemoteNeeds[NeedType.ENERGY] = needs[NeedType.ENERGY];
+        RemoteNeeds[NeedType.HEALTH] = needs[NeedType.HEALTH];
+        RemoteNeeds[NeedType.SATISFACTION] = needs[NeedType.SATISFACTION];
+        RemoteNeeds[NeedType.SOCIAL] = needs[NeedType.SOCIAL];
+        
     }
 
     public int CompareRemoteStatus(Dictionary<NeedType, Evaluation> compareWith)

@@ -69,11 +69,19 @@ public class MultiplayerController {
         return _currentFeedbackActivity;
     }
     
-    public MultiplayerController(GameData gameData, MultiplayerConnection happeningController) {
+    public MultiplayerController(GameData gameData, MultiplayerConnection happeningController, string id) {
         _localPersonality = gameData.Person;
         _gameData = gameData;
         _happeningController = happeningController;
         _localPersonality.Multiplayer = this;
+        _id = id;
+
+        RemoteNeeds = new Dictionary<NeedType, Evaluation>();
+        RemoteNeeds[NeedType.HUNGER] = Evaluation.NEUTRAL;
+        RemoteNeeds[NeedType.ENERGY] = Evaluation.NEUTRAL;
+        RemoteNeeds[NeedType.HEALTH] = Evaluation.NEUTRAL;
+        RemoteNeeds[NeedType.SATISFACTION] = Evaluation.NEUTRAL;
+        RemoteNeeds[NeedType.SOCIAL] = Evaluation.NEUTRAL;
     }
 
     public void SetConnectionController (MultiplayerConnection connectionController)
@@ -179,7 +187,7 @@ public class MultiplayerController {
 
         if (_gettingRequest)
         {
-            _happeningController.sendMessage("accept", true);
+            _happeningController.sendMessage("accept", null);
             //_remoteController.AcceptRequest();
             _gettingRequest = false;
         }
@@ -195,7 +203,7 @@ public class MultiplayerController {
 
         if(_gettingRequest)
         {
-            _happeningController.sendMessage("decline", false);
+            _happeningController.sendMessage("decline", null);
             //_remoteController.DeclineRequest();
             _gettingRequest = false;
         }
