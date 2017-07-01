@@ -1,27 +1,30 @@
-﻿Activity.ID;Item;Activity;Rewards;useConsum;IsMultiplayer;Tags for activities of same categories;Description
-11;Body;Idle;1101,1102,1103,1104,1105,1106,1107,1108;0;;STANDARD;
-12;Body;Sleep;1201,1202,1203,1204,1205,1206,1207,1208,1209,1210,1211;0;;STANDARD,SLEEP;
-21;Ball;eat;2101,2102,2103,2104,2105,2106,2107;item.maxUses;;OTHERSOCIAL,EATING,UNNATURAL;
-22;Ball;play;2201,2202,2203,2204,2205,2206,2207,2208;1;;OWNSOCIAL,PHYSICAL,NATURAL;
--41;Doll;eat;;item.maxUses;;OTHERSOCIAL,EATING,UNNATURAL;
--42;Doll;play;;1;;OWNSOCIAL,NATURAL;
-31;Cake;eat;3101,3102,3103,3104,3105,3106,3107,3108,3109,3110,3111,3112;1;;EATING,NATURAL;
-32;Cake;play;3201,3202,3203,3204,3205,3206,3207,3208;item.maxUses;;OTHERSOCIAL,UNNATURAL;
--14;Body;dance;;0;;OTHERSOCIAL,PHYSICAL;
-13;Body;Hug;1301,1302,1303,1304,1305;0;true;MULTIPLAYER;
-;Body;tackle;;;;;
-;Ball;throw;;;;;
-;Doll;throw;;;;;
-;Cake;throw;;;;;
-;Doll;talk to;;;;;
-;Book;eat;;;;;
-;Book;throw;;;;;
-;Book;read;;;;;
-;Stone;eat;;;;;
-;Stone;play;;;;;
-;Stone;throw;;;;;
-;Cape;play;;;;;
-;Cape;eat;;;;;
-;Cape;hide;;;;;show someone that he is Angry about him
-;Body;angry;;;;;show someone that he likes him
-;Body;loveley;;;;;
+Activity.ID;Item;Activity;Rewards;useConsum;Tags for activities of same categories;Description
+11;Body;Idle;1101,1102,1103,1104,1105,1106,1107,1108;0;STANDARD;
+12;Body;Sleep;1201,1202,1203,1204,1205,1206,1207,1208,1209,1210,1211;0;STANDARD,SLEEP;
+21;Ball;eat;2101,2102,2103,2104,2105,2106,2107;item.maxUses;OTHERSOCIAL,EATING,UNNATURAL;
+22;Ball;play;2201,2202,2203,2204,2205,2206,2207,2208;1;OWNSOCIAL,PHYSICAL,NATURAL;
+-41;Doll;eat;;item.maxUses;OTHERSOCIAL,EATING,UNNATURAL;
+-42;Doll;play;;1;OWNSOCIAL,NATURAL;
+31;Cake;eat;3101,3102,3103,3104,3105,3106,3107,3108,3109,3110,3111,3112;1;EATING,NATURAL;
+32;Cake;play;3201,3202,3203,3204,3205,3206,3207,3208;item.maxUses;OTHERSOCIAL,UNNATURAL;
+-14;Body;dance;;0;OTHERSOCIAL,PHYSICAL;
+13;Body;Hug;1301,1302,1303,1304,1305;0;MULTIPLAYER;
+23;Ball;play_together;2301,2302,2303,2304,2305,2306,2307,2308,2309;1;MULTIPLAYER;
+33;Cake;eat_together;3301,3302,3303,3304,3305,3306,3307,3308,3309,3310,3311,3312;item.maxUses;MULTIPLAYER;
+34;Cake;play_together;3401,3402,3403,3404,3405,3406,3407,3408;item.maxUses;MULTIPLAYER;
+;Body;tackle;;;;
+;Ball;throw;;;;
+;Doll;throw;;;;
+;Cake;throw;;;;
+;Doll;talk to;;;;
+;Book;eat;;;;
+;Book;throw;;;;
+;Book;read;;;;
+;Stone;eat;;;;
+;Stone;play;;;;
+;Stone;throw;;;;
+;Cape;play;;;;
+;Cape;eat;;;;
+;Cape;hide;;;;show someone that he is Angry about him
+;Body;angry;;;;show someone that he likes him
+;Body;loveley;;;;
