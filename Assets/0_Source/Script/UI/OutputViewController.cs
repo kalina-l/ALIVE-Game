@@ -8,20 +8,38 @@ public class OutputViewController : AbstractViewController {
 
     private int messages;
 
+    private bool _waitForFeedback;
+    private int _feedback;
+    private Image _background;
+    private Image _fillImage;
+
     public OutputViewController(Transform parent)
     {
         Rect = CreateContainer("Output", parent,
-            new Vector2(0, 0), new Vector2(1000, 500),
-            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
+            new Vector2(540, -310), new Vector2(640, 170),
+            new Vector2(0, 1f), new Vector2(0, 1f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
 
-        //AddImage(Rect, null, GraphicsHelper.Instance.ContainerColor);
+        RectTransform backgroundImage = CreateContainer("Background", Rect,
+            new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
+
+        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.itemBackgroundSprite, GraphicsHelper.Instance.SpriteColorWhite);
+
+        RectTransform fillImage = CreateContainer("Fill", Rect,
+            new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
+
+        fillImage.offsetMax = new Vector2(-10.7f, -10.7f);
+        fillImage.offsetMin = new Vector2(10.7f, 10.7f);
+
+        _fillImage = AddSprite(fillImage, GraphicsHelper.Instance.outputFillSprite, new Color(0, 0, 0, 1));
 
         OutputText = AddText(
             CreateContainer("OutputText", Rect,
-            new Vector2(0, 300), new Vector2(920, 420),
-            new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1)),
-            GraphicsHelper.Instance.UIFont, 80, TextAnchor.UpperCenter);
+            new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f)),
+            GraphicsHelper.Instance.UIFont, 80, TextAnchor.MiddleCenter);
     }
 
     public void DisplayMessage(string msg)
@@ -32,34 +50,88 @@ public class OutputViewController : AbstractViewController {
 
     public void ShowFeedback(int feedback)
     {
-        if(feedback != 0)
-        {
-            if(feedback > 0)
-            {
-                OutputText.color = new Color32(0, 250, 50, 155);
-            }
-            else
-            {
-                OutputText.color = new Color32(200, 0, 0, 155);
-            }
-        }
+        _feedback = feedback;
+        _waitForFeedback = false;
     }
 
     private IEnumerator AnimateText(string msg)
     {
         float timer = 0;
+        AnimationCurve curve = GraphicsHelper.Instance.AlertAnimation;
 
         OutputText.text = msg;
 
+        _waitForFeedback = true;
+
+        Color fillNeutralColor = new Color(0, 0, 0, 1);
+        Color fillHiddenColor = new Color(0, 0, 0, 0);
+
+        Color finalColor = fillNeutralColor;
+
         while (timer < 1)
         {
-            timer += Time.deltaTime * 2;
+            timer += Time.deltaTime * 8;
 
-            OutputText.fontSize = (int)Mathf.Lerp(0, 80, timer);
-            OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, timer);
+            Rect.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, curve.Evaluate(timer));
+
+            OutputText.fontSize = (int)Mathf.Lerp(0, 80, curve.Evaluate(timer));
+            OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, curve.Evaluate(timer));
+            _background.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, curve.Evaluate(timer));
+            _fillImage.color = GraphicsHelper.Instance.LerpColor(fillHiddenColor, fillNeutralColor, curve.Evaluate(timer));
 
             yield return 0;
         }
+
+        //Animating Feedback
         
+        while (_waitForFeedback)
+        {
+            yield return 0;
+        }
+
+        if(_feedback != 0)
+        {
+            timer = 0;
+
+            if (_feedback == -1)
+            {
+                finalColor =  new Color(1, 0, 0, 1);
+            }
+            else
+            {
+                finalColor = new Color(0, 1, 0, 1);
+            }
+
+            while (timer < 1)
+            {
+                timer += Time.deltaTime * 2;
+
+                _fillImage.color = GraphicsHelper.Instance.LerpColor(fillNeutralColor, finalColor, curve.Evaluate(timer));
+
+                yield return 0;
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        Color finalHidden = finalColor;
+        finalHidden.a = 0;
+
+        timer = 0;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 4;
+
+            Rect.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, curve.Evaluate(timer));
+
+            OutputText.fontSize = (int)Mathf.Lerp(80, 0, curve.Evaluate(timer));
+            OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColor, GraphicsHelper.Instance.TextColorHidden, curve.Evaluate(timer));
+            _background.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, curve.Evaluate(timer));
+            _fillImage.color = GraphicsHelper.Instance.LerpColor(finalColor, finalHidden, curve.Evaluate(timer));
+
+            yield return 0;
+        }
+
     }
 }

@@ -129,6 +129,7 @@ public class GameLoopController : GameLoop {
                 GiveFeedback(0);
             }
 
+
             _data.Person.checkEmotion();
 
             if (saveCounter >= _manager.AutomaticSaveAfterActions)
@@ -140,6 +141,8 @@ public class GameLoopController : GameLoop {
             {
                 saveCounter++;
             }
+
+            yield return new WaitForSeconds(2);
         }
     }
 

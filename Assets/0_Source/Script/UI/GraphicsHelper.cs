@@ -29,6 +29,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite cameraSprite;
 
     public Sprite feedbackMenu;
+    public Sprite outputFillSprite;
 
     public Sprite alertBubbleSprite;
 
