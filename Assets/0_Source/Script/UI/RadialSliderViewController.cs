@@ -121,7 +121,7 @@ public class RadialSliderViewController : AbstractViewController {
 
         }
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
 
         timer = 0;
 
