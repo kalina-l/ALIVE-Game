@@ -16,7 +16,7 @@ public class OutputViewController : AbstractViewController {
     public OutputViewController(Transform parent)
     {
         Rect = CreateContainer("Output", parent,
-            new Vector2(540, -310), new Vector2(640, 170),
+            new Vector2(540, -155), new Vector2(320, 100),
             new Vector2(0, 1f), new Vector2(0, 1f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
 
@@ -24,14 +24,11 @@ public class OutputViewController : AbstractViewController {
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
 
-        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.itemBackgroundSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.outputFrameSprite, GraphicsHelper.Instance.SpriteColorWhite);
 
         RectTransform fillImage = CreateContainer("Fill", Rect,
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
-
-        fillImage.offsetMax = new Vector2(-10.7f, -10.7f);
-        fillImage.offsetMin = new Vector2(10.7f, 10.7f);
 
         _fillImage = AddSprite(fillImage, GraphicsHelper.Instance.outputFillSprite, new Color(0, 0, 0, 1));
 
@@ -63,7 +60,7 @@ public class OutputViewController : AbstractViewController {
 
         _waitForFeedback = true;
 
-        Color fillNeutralColor = new Color(0, 0, 0, 1);
+        Color fillNeutralColor = new Color(0, 0, 0, 0.3f);
         Color fillHiddenColor = new Color(0, 0, 0, 0);
 
         Color finalColor = fillNeutralColor;
@@ -74,7 +71,7 @@ public class OutputViewController : AbstractViewController {
 
             Rect.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, curve.Evaluate(timer));
 
-            OutputText.fontSize = (int)Mathf.Lerp(0, 80, curve.Evaluate(timer));
+            OutputText.fontSize = (int)Mathf.Lerp(0, 50, curve.Evaluate(timer));
             OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, curve.Evaluate(timer));
             _background.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, curve.Evaluate(timer));
             _fillImage.color = GraphicsHelper.Instance.LerpColor(fillHiddenColor, fillNeutralColor, curve.Evaluate(timer));
@@ -125,7 +122,7 @@ public class OutputViewController : AbstractViewController {
 
             Rect.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, curve.Evaluate(timer));
 
-            OutputText.fontSize = (int)Mathf.Lerp(80, 0, curve.Evaluate(timer));
+            OutputText.fontSize = (int)Mathf.Lerp(50, 0, curve.Evaluate(timer));
             OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColor, GraphicsHelper.Instance.TextColorHidden, curve.Evaluate(timer));
             _background.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhite, GraphicsHelper.Instance.SpriteColorWhiteHidden, curve.Evaluate(timer));
             _fillImage.color = GraphicsHelper.Instance.LerpColor(finalColor, finalHidden, curve.Evaluate(timer));

@@ -29,6 +29,7 @@ public class ConditionViewController : AbstractViewController {
         {
             Sprite s = null;
             string tooltip = "";
+            float toolTipWidth = 220;
 
             switch(kvp.Key)
             {
@@ -47,6 +48,7 @@ public class ConditionViewController : AbstractViewController {
                 case NeedType.SATISFACTION:
                     s = GraphicsHelper.Instance.iconSatisfaction;
                     tooltip = "Satisfaction";
+                    toolTipWidth = 320;
                     break;
                 case NeedType.SOCIAL:
                     s = GraphicsHelper.Instance.iconSocial;
@@ -57,7 +59,7 @@ public class ConditionViewController : AbstractViewController {
             RadialSliderViewController slider = new RadialSliderViewController(
                 CreateContainer("Slider_" + kvp.Key, Rect,
                                 Vector2.zero, _grid.cellSize,
-                                Vector2.zero, Vector2.zero, Vector2.zero), s, tooltip);
+                                Vector2.zero, Vector2.zero, Vector2.zero), s, tooltip, toolTipWidth);
 
             _sliders[kvp.Key] = slider;
         }

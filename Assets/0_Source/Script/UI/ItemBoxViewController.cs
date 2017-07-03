@@ -36,8 +36,8 @@ public class ItemBoxViewController : AbstractViewController
         
 
         _dropZone = CreateContainer("ItemDrop", parent,
-            new Vector2(0, 0), new Vector2(1040, 1300),
-            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)).gameObject.AddComponent<DropItemHandler>();
+            new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(0.5f, 0.5f)).gameObject.AddComponent<DropItemHandler>();
 
         _boxImage = AddSprite(Rect, GraphicsHelper.Instance.itemboxClosedSprite, GraphicsHelper.Instance.SpriteColorWhite);
 

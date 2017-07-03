@@ -9,7 +9,7 @@ public class AlertViewController : AbstractViewController {
     private Vector2 _iconSize;
 
     private Vector2 _singleplayerPosition = new Vector2(0, 186);
-    private Vector2 _multiplayerPosition = new Vector2(-750, 186);
+    private Vector2 _multiplayerPosition = new Vector2(-400, 50);
 
     private Image _icon;
 
@@ -31,7 +31,7 @@ public class AlertViewController : AbstractViewController {
             new Vector2(0, 30), _iconSize,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
 
-        _icon = AddSprite(iconRect, null, GraphicsHelper.Instance.SpriteColorBlack);
+        _icon = AddSprite(iconRect, null, GraphicsHelper.Instance.SpriteColorWhite);
 
         HideAlert(true);
     }

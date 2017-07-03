@@ -13,10 +13,14 @@ public class RadialSliderViewController : AbstractViewController {
 
     private bool _animating;
 
-    public RadialSliderViewController(RectTransform container, Sprite icon, string toolTip)
+    private float _toolTipWidth;
+
+    public RadialSliderViewController(RectTransform container, Sprite icon, string toolTip, float toolTipWidth)
     {
         Rect = container;
         View = Rect.gameObject;
+
+        _toolTipWidth = toolTipWidth;
 
         AddSprite(container, GraphicsHelper.Instance.radialSliderSprite, new Color(1, 1, 1, 0.3f));
 
@@ -34,9 +38,11 @@ public class RadialSliderViewController : AbstractViewController {
             icon, GraphicsHelper.Instance.SpriteColorWhite);
 
         _toolTipBackground = AddSprite(CreateContainer("Tooltip", _fillImage.rectTransform,
-            new Vector2(250, 0), new Vector2(320, 90),
+            new Vector2(250, 0), new Vector2(toolTipWidth, 90),
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
             GraphicsHelper.Instance.tooltipBackgroundSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+
+        _toolTipBackground.type = Image.Type.Sliced;
 
         _toolTipBackground.raycastTarget = false;
 
@@ -100,9 +106,9 @@ public class RadialSliderViewController : AbstractViewController {
         
 
         Vector2 bgPositionIn = new Vector2(0, 0);
-        Vector2 bgPositionOut = new Vector2(250, 0);
+        Vector2 bgPositionOut = new Vector2((_toolTipWidth*0.5f) + 90, 0);
 
-        Vector2 bgFullSize = new Vector2(320, 90);
+        Vector2 bgFullSize = new Vector2(_toolTipWidth, 90);
 
         RectTransform bgRect = _toolTipBackground.GetComponent<RectTransform>();
 

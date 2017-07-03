@@ -23,6 +23,7 @@ public class ApplicationManager : MonoBehaviour {
     public bool resetButton;
 
     public bool simulateRemote;
+    public bool connectRemote;
 
     //AI
     private GameData _data;
@@ -203,7 +204,10 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
 
-            StartCoroutine(ConnectRemoteSimulation());
+            if (connectRemote)
+            {
+                StartCoroutine(ConnectRemoteSimulation());
+            }
         }
         if (Multiplayer._multiplayerOn && !simulateRemote)
         {
