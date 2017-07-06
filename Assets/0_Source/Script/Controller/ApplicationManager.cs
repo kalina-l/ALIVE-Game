@@ -89,7 +89,7 @@ public class ApplicationManager : MonoBehaviour {
         _happeningController = GameObject.Find("Happening").GetComponent<HappeningController>();
         _multiplayer = new MultiplayerController(_data, _happeningController, "local");
         _happeningController.Lemo = Multiplayer;
-        MultiplayerViewController = new MultiplayerViewController();
+        MultiplayerViewController = new MultiplayerViewController(UICanvas.transform);
 
 
         //Simulation
