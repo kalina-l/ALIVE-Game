@@ -361,7 +361,7 @@ public class Personality {
         }
         else
         {
-            Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionairy.");
+            Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionary.");
         }
     }
 

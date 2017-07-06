@@ -187,7 +187,7 @@ public class RemotePersonalitySimulation : GameLoop {
 
         if (activityID != -1)
         {
-            _lastActivity = _data.Person.GetActivity(activityID);
+            _lastActivity = _data.Person.GetActivity(activityID, false);
 
             if (_lastActivity == null)
             {
