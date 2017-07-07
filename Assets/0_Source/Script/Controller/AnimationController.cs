@@ -23,13 +23,13 @@ public class AnimationController {
             case "Sleep":
                 ApplicationManager.Instance.StartCoroutine(SleepRoutine());
                 break;
-            case "Cake.eat":
+            case "Cake.Eat":
                 EatAnimation(true);
                 break;
-            case "Cake.play":
+            case "Cake.Play with":
                 PlayAnimation(false);
                 break;
-            case "Ball.eat":
+            case "Ball.Eat":
                 EatAnimation(false);
                 break;
             default:
