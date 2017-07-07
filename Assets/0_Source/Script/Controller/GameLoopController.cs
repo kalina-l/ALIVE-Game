@@ -64,10 +64,10 @@ public class GameLoopController : GameLoop {
 
     private IEnumerator Run()
     {
-        while (true)
+        while (_data.Person.IsAlive)
         {
             // actualize the others lemos' knowledge about your needs
-            if(_manager.Multiplayer.IsConnected)
+            if (_manager.Multiplayer.IsConnected)
             {
                 _manager.Multiplayer.SendNeeds(new PersonalityNode(_data.Person).Needs);
             }
@@ -144,6 +144,13 @@ public class GameLoopController : GameLoop {
 
             yield return new WaitForSeconds(2);
         }
+
+        //GAME OVER
+
+        //TODO: use a menu here to restart
+
+        Debug.Log("!!!!!!!!!!!!!!!!!!!!Game Over!!!!!!!!!!!!!!!!!!!!!!");
+        ApplicationManager.Instance.reset();
     }
 
     private IEnumerator DoActivityRoutine()

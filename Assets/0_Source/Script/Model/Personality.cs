@@ -31,6 +31,8 @@ public class Personality {
 
     public float storedEvaluation;
 
+    public bool IsAlive { get; set; }
+
     public Personality()
     {
         Conditions = new Dictionary<NeedType, Need>();
@@ -43,6 +45,8 @@ public class Personality {
         emotionCounter = 0;
         executedEmotion = EmotionType.NORMAL;
         lastEmotionCounter = -1;
+
+        IsAlive = true;
     }
 
 	public Personality(Personality parent, int parentActionID){

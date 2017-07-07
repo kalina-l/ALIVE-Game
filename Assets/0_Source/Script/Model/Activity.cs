@@ -118,6 +118,7 @@ public class Activity {
             need[kvp.Key] = kvp.Value.Copy();
         }
         
+        //Do rewards
         if (IsMultiplayer)
         {
             if (IsRequest)
@@ -149,7 +150,45 @@ public class Activity {
                 reward.DoReward(parentPersonality, need);
             }
         }
+
+        //Check if any stat is at minimum
+
+        int fatalCount = 0;
         
+        foreach(KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+        {
+            if(n.Value.Value == -100)
+            {
+                fatalCount++;
+            }
+        }
+
+        if (fatalCount > 0)
+        {
+            DebugController.Instance.Log(fatalCount + " Fatal Stats!!!!!!!!", DebugController.DebugType.Activity);
+
+            foreach (KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+            {
+                n.Value.Value -= fatalCount * 20;
+            }
+        }
+
+        fatalCount = 0;
+
+        foreach (KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+        {
+            if (n.Value.Value == -100)
+            {
+                fatalCount++;
+            }
+        }
+
+        if (fatalCount >= 4)
+        {
+            parentPersonality.IsAlive = false;
+        }
+
+
         xp.AddRewards(parentPersonality);
 
         bool newXP = true;
