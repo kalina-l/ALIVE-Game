@@ -23,6 +23,12 @@ public class OptionsMenuController : AbstractViewController {
         View = Rect.gameObject;
 
         //Create a Button
+        RectTransform menuButton = CreateContainer("MenuButton", Rect,
+            new Vector2(-40, -40), new Vector2(150, 150),
+            Vector2.one, Vector2.one, Vector2.one);
+
+        AddSprite(menuButton, GraphicsHelper.Instance.optionsButtonSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        CreateButton(menuButton, delegate { ToggleMenu(); });
 
         //Create a Menu
         _menu = CreateContainer("Menu", Rect, 
@@ -46,7 +52,7 @@ public class OptionsMenuController : AbstractViewController {
         _menu.gameObject.SetActive(false);
     }
 
-    public void ShowMenu(bool show)
+    public void ToggleMenu()
     {
         //
     }

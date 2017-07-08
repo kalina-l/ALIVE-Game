@@ -147,10 +147,7 @@ public class GameLoopController : GameLoop {
 
         //GAME OVER
 
-        //TODO: use a menu here to restart
-
-        Debug.Log("!!!!!!!!!!!!!!!!!!!!Game Over!!!!!!!!!!!!!!!!!!!!!!");
-        ApplicationManager.Instance.reset();
+        ApplicationManager.Instance.GameOver();
     }
 
     private IEnumerator DoActivityRoutine()

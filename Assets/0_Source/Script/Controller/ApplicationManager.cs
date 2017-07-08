@@ -39,6 +39,7 @@ public class ApplicationManager : MonoBehaviour {
     private ConditionViewController _conditionMonitor;
     private AlertViewController _alert;
     private OptionsMenuController _options;
+    private GameOverViewController _gameOver;
 
     //Simulation
     private GameData _remoteData;
@@ -101,6 +102,13 @@ public class ApplicationManager : MonoBehaviour {
         _gameLoop = new GameLoopController(this, _data);
 
         _multiplayer.setGameLoop(_gameLoop);
+
+        _gameOver = new GameOverViewController(UICanvas.transform);
+    }
+
+    public void GameOver()
+    {
+        _gameOver.GameOver();
     }
 
     public void reset()
