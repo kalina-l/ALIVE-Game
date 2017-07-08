@@ -178,6 +178,7 @@ public class MultiplayerController {
     {
         _gettingFeedbackRequest = false;
         _happeningController.sendMessage("feedback", feedback);
+        ApplicationManager.Instance.ShowRemoteFeedback(feedback);
         // _remoteController.GetFeedback(feedback);
     }
 

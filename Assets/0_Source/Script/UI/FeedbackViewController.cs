@@ -19,6 +19,9 @@ public class FeedbackViewController : AbstractViewController {
     private ParticleSystem positiveFX;
     private ParticleSystem negativeFX;
 
+    private ParticleSystem remotePositiveFX;
+    private ParticleSystem remoteNegativeFX;
+
     private RectTransform _feedbackMenu;
     private bool _showMenu;
     private bool _animating;
@@ -39,6 +42,9 @@ public class FeedbackViewController : AbstractViewController {
 
         positiveFX = GraphicsHelper.Instance.positiveFX;
         negativeFX = GraphicsHelper.Instance.negativeFX;
+
+        remotePositiveFX = GraphicsHelper.Instance.remotePositiveFX;
+        remoteNegativeFX = GraphicsHelper.Instance.remoteNegativeFX;
 
         _feedbackMenu = CreateContainer("FeedbackMenu", Rect,
                                     new Vector2(140, 0), new Vector2(186, 298),
@@ -132,6 +138,18 @@ public class FeedbackViewController : AbstractViewController {
         else if (feedback == -1)
         {
             negativeFX.Play();
+        }
+    }
+
+    public void ShowRemoteFeedback(int feedback)
+    {
+        if (feedback == 1)
+        {
+            remotePositiveFX.Play();
+        }
+        else if (feedback == -1)
+        {
+            remoteNegativeFX.Play();
         }
     }
 

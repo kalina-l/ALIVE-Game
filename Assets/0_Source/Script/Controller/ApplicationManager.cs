@@ -137,6 +137,11 @@ public class ApplicationManager : MonoBehaviour {
         _feedback.ShowFeedback(feedback);
     }
 
+    public void ShowRemoteFeedback(int feedback)
+    {
+        _feedback.ShowRemoteFeedback(feedback);
+    }
+
     public void ShowItemAlert(Item item)
     {
         _alert.ShowAlert(_itemBox.GetItemIcon(item));
