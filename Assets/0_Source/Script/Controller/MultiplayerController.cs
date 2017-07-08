@@ -203,7 +203,7 @@ public class MultiplayerController {
 
     public void GetActivityRequest(int activityID)
     {
-        _currentMultiplayerActivity = _localPersonality.GetActivity(activityID);
+        _currentMultiplayerActivity = _localPersonality.GetActivity(activityID, false);
 
 
         if (_currentMultiplayerActivity == null)

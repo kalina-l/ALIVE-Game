@@ -39,6 +39,7 @@ public class ApplicationManager : MonoBehaviour {
     private ConditionViewController _conditionMonitor;
     private AlertViewController _alert;
     private OptionsMenuController _options;
+    private GameOverViewController _gameOver;
 
     //Simulation
     private GameData _remoteData;
@@ -70,7 +71,7 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _data.Intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
-        _options = new OptionsMenuController(UICanvas.transform);
+        _options = new OptionsMenuController(UICanvas.transform, _data.Person);
 
         CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
         
@@ -90,7 +91,7 @@ public class ApplicationManager : MonoBehaviour {
         _happeningController = GameObject.Find("Happening").GetComponent<HappeningController>();
         _multiplayer = new MultiplayerController(_data, _happeningController, "local");
         _happeningController.Lemo = Multiplayer;
-        MultiplayerViewController = new MultiplayerViewController();
+        MultiplayerViewController = new MultiplayerViewController(UICanvas.transform);
 
 
         //Simulation
@@ -102,6 +103,13 @@ public class ApplicationManager : MonoBehaviour {
         _gameLoop = new GameLoopController(this, _data);
 
         _multiplayer.setGameLoop(_gameLoop);
+
+        _gameOver = new GameOverViewController(UICanvas.transform);
+    }
+
+    public void GameOver()
+    {
+        _gameOver.GameOver();
     }
 
     public void reset()

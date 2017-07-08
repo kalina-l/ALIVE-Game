@@ -31,6 +31,8 @@ public class Personality {
 
     public float storedEvaluation;
 
+    public bool IsAlive { get; set; }
+
     public Personality()
     {
         Conditions = new Dictionary<NeedType, Need>();
@@ -43,6 +45,8 @@ public class Personality {
         emotionCounter = 0;
         executedEmotion = EmotionType.NORMAL;
         lastEmotionCounter = -1;
+
+        IsAlive = true;
     }
 
 	public Personality(Personality parent, int parentActionID){
@@ -361,7 +365,7 @@ public class Personality {
         }
         else
         {
-            Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionairy.");
+            Debug.LogWarning("Item " + id + " couldn't be removed, because it's not in the dictionary.");
         }
     }
 
