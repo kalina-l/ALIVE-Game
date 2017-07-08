@@ -15,9 +15,9 @@ public interface GameLoop
 /// </summary>
 public class MultiplayerController {
 
-    public bool _multiplayerOn;
+    public bool MultiplayerOn;
     public bool IsConnected {
-        get { return _multiplayerOn && (_happeningController.Connected || _happeningController.WaitForReconnect); }
+        get { return MultiplayerOn && (_happeningController.Connected); }
         private set { IsConnected = value; } }
     private MultiplayerConnection _happeningController;
 
@@ -111,14 +111,16 @@ public class MultiplayerController {
 
     public void StartMultiplayer() {
         //_remoteController = remoteController;
-        _multiplayerOn = true;
+        MultiplayerOn = true;
+        _happeningController.connect();
 
         DebugController.Instance.Log("MULTIPLAYER ON", DebugController.DebugType.Multiplayer);
     }
 	
     public void EndMultiplayer() {
         //_remoteController = null;
-        _multiplayerOn = false;
+        _happeningController.disconnect();
+        MultiplayerOn = false;
     }
 
     public Personality GetPersonality()
@@ -126,7 +128,17 @@ public class MultiplayerController {
         return _localPersonality;
     }
 
-    public void GetRemoteNeeds(Dictionary<NeedType, Evaluation> needs)
+    public void SendCurrentActivity(string activityName)
+    {
+        _happeningController.sendMessage("activity", activityName);
+    }
+
+    public void GetCurrentActivity(string activityName)
+    {
+        ApplicationManager.Instance.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(activityName, RemoteNeeds);
+    }
+
+    public void SetRemoteNeeds(Dictionary<NeedType, Evaluation> needs)
     {
         RemoteNeeds = needs;
     }
@@ -136,16 +148,30 @@ public class MultiplayerController {
         _happeningController.sendMessage("needs", needs);
     }
 
-    public void SendFeedbackRequest(Activity activity)
+    public void SendFeedbackRequest(int activityID)
     {
-        _happeningController.sendMessage("feedbackRequest", activity);
+        _happeningController.sendMessage("feedbackRequest", activityID);
        // _remoteController.GetFeedbackRequest(activity);
     }
     
-    public void GetFeedbackRequest(Activity activity)
+    public void GetFeedbackRequest(int activityID)
     {
         _gettingFeedbackRequest = true;
-        _currentFeedbackActivity = activity;
+
+        _currentFeedbackActivity = _localPersonality.GetActivity(activityID);
+
+
+        if (_currentFeedbackActivity == null)
+        {
+            //TODO getactivity from itembox
+            foreach (Item item in _gameData.Items)
+            {
+                if (item.GetActivity(activityID) != null)
+                {
+                    _currentFeedbackActivity = item.GetActivity(activityID);
+                }
+            }
+        }
     }
 
     public void SendFeedback(int feedback)

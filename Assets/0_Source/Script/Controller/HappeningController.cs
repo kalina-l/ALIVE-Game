@@ -7,9 +7,10 @@ using FullSerializer;
 public interface MultiplayerConnection
 {
     MultiplayerController Lemo { get; set; }
-    bool Connected { get; set; }
-    bool WaitForReconnect { get; set; }
+    bool Connected { get; }
     void sendMessage(String messageType, System.Object content);
+    void connect();
+    void disconnect();
 }
 
 [Serializable]
@@ -27,20 +28,23 @@ public struct DataContainer
 
 public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
-	HappeningPlugin Plugin;
+	public HappeningPlugin Plugin;
     public MultiplayerController Lemo { get; set; }
 
-    public bool Connected { get; set; }
-    private HappeningClients.HappeningClient _remote;
+    //private HappeningClients clients;
 
-    public bool WaitForReconnect { get; set; }
-    private float _timeToWait = 2;
+    private ConnectionController connectionController;
+    
+    private float _timeToWait = 10;
 
     private fsSerializer _serializer;
 
-	void Start() {
+    public bool Connected { get { if (connectionController == null) return false;  return connectionController.IsConnected; } }
+
+	void Awake() {
         _serializer = new fsSerializer();
 		Plugin = new HappeningPlugin();
+        connectionController = new ConnectionController(this);
 		sendBroadcastMessage();
 	}
 
@@ -65,9 +69,9 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
         if(Connected)
         {
-            Plugin.sendData(_remote, s);
+            Plugin.sendData(connectionController.Remote, s);
         }
-        else if (WaitForReconnect)
+        else
         {
             StartCoroutine(waitWithSendingMsg(s));
         }
@@ -75,61 +79,51 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
     IEnumerator waitWithSendingMsg (String data)
     {
-        while(WaitForReconnect)
+        while(!Connected)
         {
             yield return null;
         }
-        if(Connected)
+        if (connectionController.IsConnectionRestored)
         {
-            Plugin.sendData(_remote, data);
+            Plugin.sendData(connectionController.Remote, data);
         }
     }
 
-    IEnumerator waitForReconnect()
+    public void connect()
     {
-        float secondsLeft = _timeToWait;
-
-        while (secondsLeft > 0f)
-        {
-            if(_remote.uuid != "")
-            {
-                WaitForReconnect = false;
-                yield break;
-            }
-            secondsLeft -= Time.deltaTime;
-            yield return null;
-        }
-
-        WaitForReconnect = false;
-        Lemo.SetRemoteTexture("no_texture");
+        connectionController.StartConnection();
     }
 
+    public void disconnect ()
+    {
+        Lemo.SetRemoteTexture("no_texture");
+        Plugin.sendData(connectionController.Remote, "closeConnection");
+    }
     // Callbacks
 
     void onClientAdded(String json) {
 		HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
-        if(!Connected)
-        {
-            _remote = client;
-            Connected = true;
-            sendMessage("texture", GraphicsHelper.Instance.lemo.GetComponentInChildren<Renderer>().material.name);
-        }
 		print("onClientAdded: " + client.uuid);
+        if(!connectionController.IsConnected && connectionController.Remote.uuid == client.uuid)
+        {
+            connectionController.GetConnectionRequest(client);
+        }
 	}
 
 	void onClientUpdated(String json) {
-		HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
-		print("onClientUpdated: " + client.uuid);
-	}
+        HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
+        if(client.uuid == connectionController.Remote.uuid)
+        {
+            connectionController.Remote = client;
+        }
+            //print("onClientUpdated: " + client.uuid);
+    }
 
 	void onClientRemoved(String json) {
 		HappeningClients.HappeningClient client = JsonUtility.FromJson<HappeningClients.HappeningClient>(json);
-        if(_remote.uuid == client.uuid)
+        if(connectionController.Remote.uuid == client.uuid)
         {
-            _remote.uuid = "";
-            WaitForReconnect = true;
-            Connected = false;
-            StartCoroutine(waitForReconnect());
+            connectionController.LostConnection();
         }
 
 		print("onClientRemoved: " + client.uuid);
@@ -137,42 +131,82 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
 	void onMessageReceived(String json) {
 
-        DataContainer dataContainer = new DataContainer();
-        fsData fsData = fsJsonParser.Parse(json);
-        _serializer.TryDeserialize(fsData, ref dataContainer);
-
-        switch(dataContainer.messageType)
+        if(!Lemo.MultiplayerOn)
         {
-            case "feedbackRequest":
-                Activity activity = (Activity)dataContainer.content;
-                Lemo.GetFeedbackRequest(activity);
+            return;
+        }
+
+        Package pkg = JsonUtility.FromJson<Package>(json);
+
+        Plugin.Toast(pkg.data + " from " + pkg.source.uuid);
+
+        print("msg received: " + pkg.data);
+
+        bool isDataContainer = false;
+
+        switch (pkg.data)
+        {
+            case "HI, I AM LEMO":
+                connectionController.GetConnectionRequest(pkg.source);
                 break;
-            case "feedback":
-                int feedback = (int)dataContainer.content;
-                Lemo.GetFeedback(feedback);
+            case "request accepted":
+                connectionController.GetConnectionAccept(pkg.source);
                 break;
-            case "activityRequest":
-                int activityId = (int)dataContainer.content;
-                Lemo.GetActivityRequest(activityId);
+            case "request denied":
+                connectionController.GetConnectionDecline();
                 break;
-            case "accept":
-                Lemo.AcceptRequest();
-                break;
-            case "decline":
-                Lemo.DeclineRequest();
-                break;
-            case "needs":
-                Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)dataContainer.content;
-                Lemo.GetRemoteNeeds(needs);
-                break;
-            case "texture":
-                String texture = (String)dataContainer.content;
-                Lemo.SetRemoteTexture(texture);
+            case "closeConnection":
+                connectionController.LostConnection();
+                break; 
+            default:
+                isDataContainer = true;
                 break;
         }
 
-		Package pkg = JsonUtility.FromJson<Package>(json);
-		Plugin.Toast(pkg.data + " from " + pkg.source.uuid);
+        if (isDataContainer && connectionController.IsConnected)
+        {
+           
+                //DataContainer dataContainer = JsonUtility.FromJson<DataContainer>(pkg.data);
+                DataContainer dataContainer = new DataContainer();
+                fsData fsDataContainer = fsJsonParser.Parse(pkg.data);
+                _serializer.TryDeserialize(fsDataContainer, ref dataContainer);
+               
+                switch (dataContainer.messageType)
+                {
+                    case "feedbackRequest":
+                        int activity = (int)dataContainer.content;
+                        Lemo.GetFeedbackRequest(activity);
+                        break;
+                    case "feedback":
+                        int feedback = (int)dataContainer.content;
+                        Lemo.GetFeedback(feedback);
+                        break;
+                    case "activityRequest":
+                        int activityId = (int)dataContainer.content;
+                        Lemo.GetActivityRequest(activityId);
+                        break;
+                    case "accept":
+                        Lemo.AcceptRequest();
+                        break;
+                    case "decline":
+                        Lemo.DeclineRequest();
+                        break;
+                    case "needs":
+                        Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)dataContainer.content;
+                        Lemo.SetRemoteNeeds(needs);
+                        break;
+                    case "texture":
+                        String texture = (String)dataContainer.content;
+                        Lemo.SetRemoteTexture(texture);
+                        break;
+                    case "activity":
+                        String activityName = (String)dataContainer.content;
+                        Lemo.GetCurrentActivity(activityName);
+                        break;
+                }
+            
+
+        }
 	}
 
 }

@@ -15,11 +15,11 @@ public class AnimationController {
         _animation = lemo.GetComponent<Animator>();
     }
 
-    public void PlayActivityAnimation(Activity activity, Personality personality) {
+    public void PlayActivityAnimation(string activityName, Dictionary<NeedType, Evaluation> needs) {
 
-        DebugController.Instance.Log("Play animation for " + activity.Name, DebugController.DebugType.Animation);
+        DebugController.Instance.Log("Play animation for " + activityName, DebugController.DebugType.Animation);
 
-        switch (activity.Name) {
+        switch (activityName) {
             case "Sleep":
                 ApplicationManager.Instance.StartCoroutine(SleepRoutine());
                 break;
@@ -33,7 +33,7 @@ public class AnimationController {
                 EatAnimation(false);
                 break;
             default:
-                PlayIdleAnimation(personality);
+                PlayIdleAnimation(needs);
                 break;
         }
     }
@@ -72,23 +72,23 @@ public class AnimationController {
         ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
     }
 
-    private void PlayIdleAnimation(Personality personality) {
+    private void PlayIdleAnimation(Dictionary<NeedType, Evaluation> needs) {
 
         _animationTime = 1.5f;
 
-        if(personality.GetCondition(NeedType.ENERGY).getEvaluation() < Evaluation.BAD) {
+        if(needs[NeedType.ENERGY] < Evaluation.BAD) {
             //Play sleepy Idle
             _animation.Play("Idle_Yawn");
-        } else if(personality.GetCondition(NeedType.HEALTH).getEvaluation() < Evaluation.BAD) {
+        } else if(needs[NeedType.HEALTH] < Evaluation.BAD) {
             //Play sneeze Idle
             _animation.Play("Idle_Sneeze");
-        } else if (personality.GetCondition(NeedType.HUNGER).getEvaluation() < Evaluation.BAD) {
+        } else if (needs[NeedType.HUNGER] < Evaluation.BAD) {
             //Play tongue Idle
             _animation.Play("Idle_Tongue");
-        } else if (personality.GetCondition(NeedType.SATISFACTION).getEvaluation() < Evaluation.BAD){
+        } else if (needs[NeedType.SATISFACTION] < Evaluation.BAD){
             //TODO: Play sad Idle
             _animation.Play("Idle_Tongue");
-        } else if (personality.GetCondition(NeedType.SOCIAL).getEvaluation() < Evaluation.BAD){
+        } else if (needs[NeedType.SOCIAL] < Evaluation.BAD){
             //TODO: Play lonely Idle
             _animation.Play("Idle_Tongue");
         } else {
