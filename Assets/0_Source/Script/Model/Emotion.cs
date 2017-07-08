@@ -95,10 +95,10 @@ public class Emotion {
 
         foreach (KeyValuePair<int, Activity> kvp in personality.BaseActivities)
         {
-            Debug.Log(kvp.Value.Name + ": ");
+            DebugController.Instance.Log(kvp.Value.Name + ": ", DebugController.DebugType.Emotion);
             foreach (Reward reward in kvp.Value.RewardList)
             {
-                Debug.Log(reward.ID + ": " + reward.RewardType + " " + reward.RewardValue);
+                DebugController.Instance.Log(reward.ID + ": " + reward.RewardType + " " + reward.RewardValue, DebugController.DebugType.Emotion);
             }
         }
 

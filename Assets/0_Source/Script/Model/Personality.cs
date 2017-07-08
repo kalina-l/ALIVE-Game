@@ -420,12 +420,5 @@ public class Personality {
         }
         lastEmotionCounter = emotionCounter;
     }
-
-    public void printConditions() {
-        string conditions = "";
-        foreach (KeyValuePair<NeedType, Need> condition in Conditions) {
-            conditions += condition.Key + ": " + condition.Value.Value + ", ";
-        }
-        Debug.Log(conditions);
-    }
+    
 }

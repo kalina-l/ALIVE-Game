@@ -70,19 +70,4 @@ public class Trait {
         SimilarExperienceDifferenceModifier = similarExperienceModifier;
         return true;
     }
-
-    public void PrintThresholds()
-    {
-        string threshold = "";
-        foreach(KeyValuePair<NeedType, int[]> kvp in ThresholdModifiers)
-        {
-            threshold = "";
-            threshold += "|" + kvp.Key + ": ";
-            for(int i = 0; i < kvp.Value.Length; i++)
-            {
-                threshold += "|" + kvp.Value[i];
-            }
-        }      
-        Debug.Log(threshold);
-    }
 }
