@@ -13,8 +13,17 @@ public class SimulationController : MultiplayerConnection
 
     public SimulationController ()
     {
-        Connected = true;
         _serializer = new fsSerializer();
+    }
+
+    public void connect()
+    {
+        Connected = true;
+    }
+
+    public void disconnect ()
+    {
+        Connected = false;
     }
 
     public void SetMultiplayerController(MultiplayerController multiplayerController)
@@ -37,7 +46,7 @@ public class SimulationController : MultiplayerConnection
         switch (messageType)
         {
             case "feedbackRequest":
-                Activity activity = (Activity)newData.content;
+                int activity = (int)newData.content;
                 Lemo.GetFeedbackRequest(activity);
                 break;
             case "feedback":
@@ -56,7 +65,7 @@ public class SimulationController : MultiplayerConnection
                 break;
             case "needs":
                 Dictionary<NeedType, Evaluation> needs = (Dictionary<NeedType, Evaluation>)newData.content;
-                Lemo.GetRemoteNeeds(needs);
+                Lemo.SetRemoteNeeds(needs);
                 break;
             case "texture":
                 String texture = (String)newData.content;
@@ -123,7 +132,7 @@ public class RemotePersonalitySimulation : GameLoop {
                 bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
                 if (receivingFeedback)
                 {
-                    _multiplayer.SendFeedbackRequest(_lastActivity);
+                    _multiplayer.SendFeedbackRequest(_lastActivity.ID);
                 }
             }
 
@@ -240,7 +249,8 @@ public class RemotePersonalitySimulation : GameLoop {
 
             _multiplayer.ClearActivity();
 
-            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
+            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+            _multiplayer.SendCurrentActivity(_lastActivity.Name);
             while (_manager.MultiplayerViewController.RemoteCharacterAnimation.IsAnimating)
             {
                 yield return 0;

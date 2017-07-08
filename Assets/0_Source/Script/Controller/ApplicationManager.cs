@@ -47,6 +47,7 @@ public class ApplicationManager : MonoBehaviour {
     private MultiplayerController _remoteMultiplayerController;
 
     //Multiplayer
+    private bool rotated;
     private HappeningController _happeningController;
     private MultiplayerController _multiplayer;
     public MultiplayerController Multiplayer { get { return _multiplayer; } }
@@ -185,21 +186,23 @@ public class ApplicationManager : MonoBehaviour {
     }
 
     void Update() {
-        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !Multiplayer.IsConnected)
+        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !rotated)
         {
+            rotated = true;
             Multiplayer.SetConnectionController(_happeningController);
             Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
         }
 
-        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && Multiplayer.IsConnected)
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && rotated)
         {
+            rotated = false;
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
 
         // Editor Multiplayer Simulation
-        if (!Multiplayer._multiplayerOn && simulateRemote)
+       /* if (!Multiplayer._multiplayerOn && simulateRemote)
         {
             Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
@@ -216,7 +219,7 @@ public class ApplicationManager : MonoBehaviour {
             _remoteMultiplayerController.EndMultiplayer();
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
-        }
+        }*/
     }
 
     IEnumerator ConnectRemoteSimulation ()

@@ -140,7 +140,10 @@ public class TouchController : AbstractViewController {
 
     public void EndPetFeedback()
     {
-        ApplicationManager.Instance.StopCoroutine(showHandRoutine);
+        if (showHandRoutine != null)
+        {
+            ApplicationManager.Instance.StopCoroutine(showHandRoutine);
+        }
         handIsAnimating = false;
         handImage.enabled = false;
     }

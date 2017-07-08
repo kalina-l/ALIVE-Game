@@ -75,13 +75,13 @@ public class GameLoopController : GameLoop {
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
             System.Random rand = new System.Random();
-            if (_manager.Multiplayer.IsConnected)
+            if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
             {
                 //random feedback request (25%)
                 bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
                 if (receivingFeedback)
                 {
-                    _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                   _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
                 }
             }
 
@@ -312,7 +312,11 @@ public class GameLoopController : GameLoop {
             //Ask for Feedback
             waitForFeedback = true;
 
-            _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
+            _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+            if (_manager.Multiplayer.IsConnected)
+            {
+                _manager.Multiplayer.SendCurrentActivity(_lastActivity.Name);
+            }
 
             debug.Log("Animate", DebugController.DebugType.GameFlow);
 
