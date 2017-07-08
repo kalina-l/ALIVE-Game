@@ -28,6 +28,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite outputFillSprite;
 
     public Sprite optionsButtonSprite;
+    public Sprite menuBackgroundSprite;
 
     public Sprite alertBubbleSprite;
     public Sprite searchSprite;

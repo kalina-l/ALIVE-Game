@@ -70,7 +70,7 @@ public class ApplicationManager : MonoBehaviour {
         _feedback = new FeedbackViewController(UICanvas.transform, _data.Intelligence);
         _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
-        _options = new OptionsMenuController(UICanvas.transform);
+        _options = new OptionsMenuController(UICanvas.transform, _data.Person);
 
         CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
         
