@@ -215,9 +215,11 @@ public class ApplicationManager : MonoBehaviour {
         }
 
         // Editor Multiplayer Simulation
-       /* if (!Multiplayer._multiplayerOn && simulateRemote)
+        if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)
         {
-            Multiplayer.StartMultiplayer();
+            rotated = true;
+
+            //Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
 
             if (connectRemote)
@@ -225,14 +227,14 @@ public class ApplicationManager : MonoBehaviour {
                 StartCoroutine(ConnectRemoteSimulation());
             }
         }
-        if (Multiplayer._multiplayerOn && !simulateRemote)
+        if (Multiplayer.MultiplayerOn && !simulateRemote)
         {
             _simulation.StopSimulation();
             _simulation = null;
             _remoteMultiplayerController.EndMultiplayer();
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
-        }*/
+        }
     }
 
     IEnumerator ConnectRemoteSimulation ()

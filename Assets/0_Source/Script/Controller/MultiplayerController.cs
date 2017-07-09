@@ -180,12 +180,16 @@ public class MultiplayerController {
         _happeningController.sendMessage("feedback", feedback);
         ApplicationManager.Instance.ShowRemoteFeedback(feedback);
         // _remoteController.GetFeedback(feedback);
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, true);
     }
 
     public void GetFeedback(int feedback)
     {
         ApplicationManager.Instance.getFeedbackController().setLastFeedbackType(FeedbackType.Multiplayer);
         _gameLoop.GiveFeedback(feedback);
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, false);
     }
 
     public void SendActivityRequest(Activity activity)
@@ -200,6 +204,8 @@ public class MultiplayerController {
         _currentMultiplayerActivity = activity;
         _happeningController.sendMessage("activityRequest", activity.ID);
         // _remoteController.GetActivityRequest(activity.ID);
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activity.ID, true);
     }
 
     public void GetActivityRequest(int activityID)
@@ -225,6 +231,8 @@ public class MultiplayerController {
         DebugController.Instance.Log(_id + ": Get Request for " + _currentMultiplayerActivity.Name, DebugController.DebugType.Multiplayer);
 
         _gettingRequest = true;
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activityID, false);
     }
 
     public void AcceptRequest()
@@ -241,6 +249,8 @@ public class MultiplayerController {
         {
             _sendingRequest = false;
         }
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(true, _gettingRequest);
     }
 
     public void DeclineRequest()
@@ -254,12 +264,16 @@ public class MultiplayerController {
             _gettingRequest = false;
             if(_currentMultiplayerActivity != null)
                 _currentMultiplayerActivity.IsRequest = false;
+
+            
         }
         else
         {
             _sendingRequest = false;
             _currentMultiplayerActivity.IsDeclined = true;
         }
+
+        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(false, _gettingRequest);
     }
 
     
