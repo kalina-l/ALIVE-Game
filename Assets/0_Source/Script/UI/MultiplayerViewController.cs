@@ -17,7 +17,6 @@ public class MultiplayerViewController : AbstractViewController {
     private Transform _camera;
 
     private bool _isMultiplayerOn;
-    private bool _isConnected;
 
     private Image _localAlert;
     private Image _localAlertIcon;
@@ -106,17 +105,7 @@ public class MultiplayerViewController : AbstractViewController {
         ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, -angle, 0), _switchTime));
         UnityEngine.Object.Destroy(_remoteLemo);
     }
-
-    public void Connect()
-    {
-        _isConnected = true;
-    }
-
-    public void Disconnect()
-    {
-        _isConnected = false;
-    }
-    
+        
     private IEnumerator moveCamera(Vector3 source, Vector3 target, float overTime)
     {
         float startTime = Time.time;
@@ -170,8 +159,8 @@ public class MultiplayerViewController : AbstractViewController {
             _searchRect.sizeDelta = Vector2.zero;
             _searchRect.anchoredPosition = animationCenter;
             targetIndex = 0;
-
-            while(!_isMultiplayerOn || _isConnected)
+            
+            while (ApplicationManager.Instance.Multiplayer.IsConnected)
             {
                 yield return 0;
             }
@@ -192,16 +181,16 @@ public class MultiplayerViewController : AbstractViewController {
             }
 
             lastPosition = _searchRect.anchoredPosition;
-
-            while (_isMultiplayerOn && !_isConnected)
+            
+            while (_isMultiplayerOn && !ApplicationManager.Instance.Multiplayer.IsConnected)
             {
                 timer = 0;
 
                 //animate
 
                 targetPosition = animationCenter + (targetCorners[targetIndex] * range);
-
-                while (timer < 1 && (_isMultiplayerOn && !_isConnected))
+                
+                while (timer < 1 && (_isMultiplayerOn && !ApplicationManager.Instance.Multiplayer.IsConnected))
                 {
                     timer += Time.deltaTime * 2;
 
@@ -212,7 +201,7 @@ public class MultiplayerViewController : AbstractViewController {
 
                 timer = 0;
 
-                while(timer < 1 && (_isMultiplayerOn && !_isConnected))
+                while(timer < 1 && (_isMultiplayerOn && !ApplicationManager.Instance.Multiplayer.IsConnected))
                 {
                     timer += Time.deltaTime * 2;
                     yield return 0;
@@ -336,6 +325,29 @@ public class MultiplayerViewController : AbstractViewController {
         }
 
         yield return new WaitForSeconds(0.5f);
+        if (isLocal)
+        {
+            if (!ApplicationManager.Instance.Multiplayer.getLocalAlert()) yield return new WaitForSeconds(1f);
+            else
+            {
+                while (ApplicationManager.Instance.Multiplayer.getLocalAlert())
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+        }
+        else
+        {
+            if (!ApplicationManager.Instance.Multiplayer.getRemoteAlert()) yield return new WaitForSeconds(1f);
+            else
+            {
+                while (ApplicationManager.Instance.Multiplayer.getRemoteAlert())
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+        }
+
 
         timer = 0;
 

@@ -218,17 +218,16 @@ public class ApplicationManager : MonoBehaviour {
         if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)
         {
             rotated = true;
-
-            //Multiplayer.StartMultiplayer();
             MultiplayerViewController.startMultiplayerView();
-
-            if (connectRemote)
-            {
-                StartCoroutine(ConnectRemoteSimulation());
-            }
         }
-        if (Multiplayer.MultiplayerOn && !simulateRemote)
+        if (simulateRemote && connectRemote)
         {
+            connectRemote = false;
+            StartCoroutine(ConnectRemoteSimulation());
+        }
+        if (Multiplayer.MultiplayerOn && !simulateRemote && rotated)
+        {
+            rotated = false;
             _simulation.StopSimulation();
             _simulation = null;
             _remoteMultiplayerController.EndMultiplayer();
@@ -251,5 +250,6 @@ public class ApplicationManager : MonoBehaviour {
 
         _simulation = new RemotePersonalitySimulation(_remoteData, this, _remoteMultiplayerController);
         _remoteMultiplayerController.StartMultiplayer();
+        Multiplayer.StartMultiplayer();
     }
 }

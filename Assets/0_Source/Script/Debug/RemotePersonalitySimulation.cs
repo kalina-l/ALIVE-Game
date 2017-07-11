@@ -126,7 +126,7 @@ public class RemotePersonalitySimulation : GameLoop {
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
             System.Random rand = new System.Random();
-            if (_multiplayer.IsConnected)
+            if (_multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
             {
                 //TODO: randomize this
                 bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
@@ -140,7 +140,7 @@ public class RemotePersonalitySimulation : GameLoop {
             {
                 //TODO: Calculate Feedback
                 int feedback = rand.NextDouble() > 0.5 ? 1 : -1;
-                DebugController.Instance.Log("Send feedback to the local LEMO: " + feedback, DebugController.DebugType.Multiplayer);
+                DebugController.Instance.Log("Send feedback to the local LEMO for " + _lastActivity.Name + ": " + feedback, DebugController.DebugType.Multiplayer);
                 _multiplayer.SendFeedback(feedback);
             }
 
@@ -223,7 +223,7 @@ public class RemotePersonalitySimulation : GameLoop {
                     {
                         _multiplayer.DeclineRequest();
                     }
-
+                    
                     _multiplayer.SendActivityRequest(_lastActivity);
 
                     while (_multiplayer.IsWaitingForAnswer())

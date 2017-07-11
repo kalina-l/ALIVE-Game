@@ -28,6 +28,7 @@ public class ConnectionController {
             _happeningController.Plugin.sendData(client, "HI, I AM LEMO");
         }
         IsConnected = false;
+        _happeningController.Lemo.setRemoteAlert(false);
         _isWaitingForClient = true;
     }
 

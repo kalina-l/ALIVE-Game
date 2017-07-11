@@ -111,12 +111,12 @@ public class GameLoopController : GameLoop {
                         if (evaluation > 0)
                         {
                             _manager.Multiplayer.SendFeedback(1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO: 1", DebugController.DebugType.Multiplayer);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": 1", DebugController.DebugType.Multiplayer);
                         }
                         else
                         {
                             _manager.Multiplayer.SendFeedback(-1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO: -1", DebugController.DebugType.Multiplayer);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": -1", DebugController.DebugType.Multiplayer);
                         }
                     }
                 }
@@ -286,11 +286,14 @@ public class GameLoopController : GameLoop {
                         _manager.Multiplayer.DeclineRequest();
                     }
 
+                    _manager.Multiplayer.setLocalAlert(true);
+
                     _manager.Multiplayer.SendActivityRequest(_lastActivity);
 
                     while (_manager.Multiplayer.IsWaitingForAnswer()) {
                         yield return 0;
                     }
+                    _manager.Multiplayer.setLocalAlert(false);
                 }
             }
             else if(_manager.Multiplayer.IsRequestPending()) {

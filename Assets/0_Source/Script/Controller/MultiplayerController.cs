@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public interface GameLoop
 {
@@ -22,6 +23,9 @@ public class MultiplayerController {
     private MultiplayerConnection _happeningController;
 
     private GameLoop _gameLoop;
+
+    private bool showLocalAlert;
+    private bool showRemoteAlert;
 
     private GameData _gameData;
     private Personality _localPersonality;
@@ -181,7 +185,7 @@ public class MultiplayerController {
         ApplicationManager.Instance.ShowRemoteFeedback(feedback);
         // _remoteController.GetFeedback(feedback);
 
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, true);
+        if(_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, true);
     }
 
     public void GetFeedback(int feedback)
@@ -189,7 +193,7 @@ public class MultiplayerController {
         ApplicationManager.Instance.getFeedbackController().setLastFeedbackType(FeedbackType.Multiplayer);
         _gameLoop.GiveFeedback(feedback);
 
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, false);
+        if (_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, false);
     }
 
     public void SendActivityRequest(Activity activity)
@@ -205,7 +209,7 @@ public class MultiplayerController {
         _happeningController.sendMessage("activityRequest", activity.ID);
         // _remoteController.GetActivityRequest(activity.ID);
 
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activity.ID, true);
+        if(_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activity.ID, true);
     }
 
     public void GetActivityRequest(int activityID)
@@ -232,17 +236,19 @@ public class MultiplayerController {
 
         _gettingRequest = true;
 
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activityID, false);
+        showRemoteAlert = true;
+        if (_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activityID, false);
     }
 
     public void AcceptRequest()
     {
         DebugController.Instance.Log(_id + ": AcceptRequest", DebugController.DebugType.Multiplayer);
 
+        if (_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(true, _gettingRequest);
         if (_gettingRequest)
         {
+
             _happeningController.sendMessage("accept", null);
-            //_remoteController.AcceptRequest();
             _gettingRequest = false;
         }
         else
@@ -250,31 +256,47 @@ public class MultiplayerController {
             _sendingRequest = false;
         }
 
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(true, _gettingRequest);
+        showRemoteAlert = false;
     }
 
     public void DeclineRequest()
     {
         DebugController.Instance.Log(_id + ": DeclineRequest", DebugController.DebugType.Multiplayer);
 
+        if (_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(false, _gettingRequest);
         if(_gettingRequest)
         {
+                    
             _happeningController.sendMessage("decline", null);
-            //_remoteController.DeclineRequest();
             _gettingRequest = false;
             if(_currentMultiplayerActivity != null)
                 _currentMultiplayerActivity.IsRequest = false;
-
-            
         }
         else
         {
             _sendingRequest = false;
             _currentMultiplayerActivity.IsDeclined = true;
         }
-
-        ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(false, _gettingRequest);
+        showRemoteAlert = false;   
     }
 
-    
+    public void setRemoteAlert (bool show)
+    {
+        showRemoteAlert = show;
+    }
+
+    public bool getRemoteAlert ()
+    {
+        return showRemoteAlert;
+    }
+
+    public void setLocalAlert(bool show)
+    {
+        showLocalAlert = show;
+    }
+
+    public bool getLocalAlert()
+    {
+        return showLocalAlert;
+    }
 }

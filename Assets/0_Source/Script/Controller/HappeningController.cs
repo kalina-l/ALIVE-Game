@@ -39,7 +39,7 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
 
     private fsSerializer _serializer;
 
-    public bool Connected { get { if (connectionController == null) return false;  return connectionController.IsConnected; } }
+    public bool Connected { get { if (connectionController == null) return false;  return connectionController.IsConnected; }  }
 
 	void Awake() {
         _serializer = new fsSerializer();
