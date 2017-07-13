@@ -15,7 +15,10 @@ class Test1 : EditorWindow
 
     // Data
     Rect buttonpos = new Rect(2,40,80,40);  // Pos des ItemSelectButtons
+    Rect buttonpos2 = new Rect(82, 40, 80, 40);
     int buttonValue = 0;                    // Value of the Button, first selection
+    bool okbutton = false;
+    GUIContent ButtonText = new GUIContent();
     Rect[] textAreaPos = new Rect[13];      // Position of the LabelArea
 
     // Holder
@@ -49,6 +52,15 @@ class Test1 : EditorWindow
         GUILayout.Label("Select Item", EditorStyles.boldLabel);
         buttonValue = EditorGUI.Popup(buttonpos, buttonValue, itemList);
         // todo: itemchange need to reload new item probs and save the old
+
+        // OK Button
+        ButtonText.text = "OK";
+        okbutton = EditorGUI.DropdownButton(buttonpos2, ButtonText, FocusType.Passive);
+        //GUILayout.Button("OK");
+        if (okbutton == true)
+        {
+            Debug.Log("okbutton gedrückt");
+        }
 
         // Erzeugt die Überschriften der Rewards
         textAreaLine(80);
