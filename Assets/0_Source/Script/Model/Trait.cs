@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TraitType { INTROVERT, EXTROVERT, GREEDY, FRUGAL, DISCIPLINED, WILD, ENERGETIC, LETHARGIC, ANXIOUS, BRAVE }
+public enum TraitType { INTROVERT, EXTROVERT, GREEDY, FRUGAL, DISCIPLINED, WILD, ENERGETIC, LETHARGIC, ANXIOUS, BRAVE, TEMPORARY_TRAIT }
 
 public class Trait {
 
@@ -20,9 +20,9 @@ public class Trait {
         Identifier = identifier;
         ThresholdModifiers = new Dictionary<NeedType, int[]>();
         ActivityModifiers = new Dictionary<ActivityTag, List<Reward>>();
-        FeedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
-        AskForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
-        SimilarExperienceDifferenceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
+        FeedbackModifier = 0;
+        AskForItemModifier = 0;
+        SimilarExperienceDifferenceModifier = 0;
     }
 
     public bool AddThresholdModifier(NeedType needType, int[] thresholdModifier)
@@ -69,20 +69,5 @@ public class Trait {
     {
         SimilarExperienceDifferenceModifier = similarExperienceModifier;
         return true;
-    }
-
-    public void PrintThresholds()
-    {
-        string threshold = "";
-        foreach(KeyValuePair<NeedType, int[]> kvp in ThresholdModifiers)
-        {
-            threshold = "";
-            threshold += "|" + kvp.Key + ": ";
-            for(int i = 0; i < kvp.Value.Length; i++)
-            {
-                threshold += "|" + kvp.Value[i];
-            }
-        }      
-        Debug.Log(threshold);
     }
 }

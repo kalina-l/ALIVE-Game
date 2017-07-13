@@ -60,10 +60,13 @@ public class GameData {
                 PersonalityCreator creatorCSV = new PersonalityCreator(personalityCSVPath);
                 Person = creatorCSV.Personality;
                 Items = creatorCSV.ItemList;
-
+                foreach(KeyValuePair<EmotionType, Emotion> kvp in Person.Emotions)
+                {
+                    kvp.Value.Items = Items;
+                }
                 Dictionary<TraitType, Trait> traitList = creatorCSV.TraitList;
 
-                //Person.AddTrait(traitList[TraitType.WILD], Items);
+                //Person.AddTrait(traitList[TraitType.ENERGETIC], Items);
                 //foreach (KeyValuePair<TraitType, Trait> kvp in traitList)
                 //{
                 //    if (Random.value <= 0.33)

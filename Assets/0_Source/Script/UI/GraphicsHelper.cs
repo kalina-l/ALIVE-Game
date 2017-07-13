@@ -9,6 +9,7 @@ public class GraphicsHelper : MonoBehaviour {
     public Transform camera;
 
     public GameObject lemo;
+    public Material[] materials;
     public Transform itemAnchor;
     public Transform multiplayerLemoAnchor;
     public Transform multiplayerCameraAnchor;
@@ -17,30 +18,34 @@ public class GraphicsHelper : MonoBehaviour {
     public Font UIFont;
 
     public Color[] evaluationColor;
-
-    public Sprite feedbackNegativeSprite;
-    public Sprite feedbackNeutralSprite;
-    public Sprite feedbackPositiveSprite;
+    
     public ParticleSystem positiveFX;
     public ParticleSystem negativeFX;
 
-    public Sprite speakerSprite;
-    public Sprite cameraSprite;
+    public ParticleSystem remotePositiveFX;
+    public ParticleSystem remoteNegativeFX;
+
+    public Sprite feedbackMenu;
+
+    public Sprite outputFrameSprite;
+    public Sprite outputFillSprite;
+
+    public Sprite optionsButtonSprite;
+    public Sprite menuBackgroundSprite;
 
     public Sprite alertBubbleSprite;
+    public Sprite searchSprite;
 
     public Sprite itemboxOpenSprite;
     public Sprite itemboxClosedSprite;
-    public Sprite itemSlotSprite;
+    public Sprite itemBackgroundSprite;
     public Sprite resetSprite;
 
-    public Sprite sliderBackgroundSpirte;
-    public Sprite sliderFillSprite;
+    public Sprite tooltipBackgroundSprite;
 
     public Sprite emotionSliderBGSpirte;
     public Sprite emotionSliderPointerSprite;
-
-    public Sprite radialBackground;
+    
     public Sprite radialSliderSprite;
     public Sprite iconEnergy;
     public Sprite iconHealth;

@@ -47,14 +47,4 @@ public class Need {
     {
         return (float)(_value + 100f) / 200f;
     }
-
-    public void printThresholds()
-    {
-        string threshold = "";
-        for (int i = 0; i < Thresholds.Length; i++)
-        {
-            threshold += "|" + Thresholds[i];
-        }
-        Debug.Log(threshold);
-    }
 }

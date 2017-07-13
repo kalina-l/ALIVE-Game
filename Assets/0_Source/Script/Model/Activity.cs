@@ -82,6 +82,19 @@ public class Activity {
         return this;
     }
 
+    public Activity RemoveReward(Reward reward)
+    {
+        if (RewardList.Contains(reward))
+        {
+            RewardList.Remove(reward);
+        }
+        else
+        {
+            Debug.LogWarning(reward.ID + " is not in the RewardList -> can't be removed");
+        }
+        return this;
+    }
+
 	public Experience DoActivity(Personality parentPersonality)
     {
         Experience xp = null;
@@ -94,8 +107,7 @@ public class Activity {
 
         if (IsMultiplayer)
         {
-            Personality remotePersonality = parentPersonality.Multiplayer.GetRemotePersonality();
-            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality);
+            ((MultiplayerExperience)xp).AddRemoteNeeds(parentPersonality.Multiplayer.RemoteNeeds);
             ((MultiplayerExperience)xp).IsRequest = IsRequest;
         }
 
@@ -106,10 +118,15 @@ public class Activity {
             need[kvp.Key] = kvp.Value.Copy();
         }
         
+        //Do rewards
         if (IsMultiplayer)
         {
             if (IsRequest)
             {
+                if (parentPersonality.executedEmotion == EmotionType.NORMAL)
+                {
+                    parentPersonality.emotionCounter += 1;
+                }
                 GetAcceptReward().DoReward(parentPersonality, need);
 
                 foreach (Reward reward in RewardList)
@@ -119,6 +136,11 @@ public class Activity {
             }
             else if (IsDeclined)
             {
+                if (parentPersonality.executedEmotion == EmotionType.NORMAL)
+                {
+                    parentPersonality.emotionCounter -= 1;
+                }
+
                 GetRejectionReward().DoReward(parentPersonality, need);
             }
         }
@@ -128,7 +150,45 @@ public class Activity {
                 reward.DoReward(parentPersonality, need);
             }
         }
+
+        //Check if any stat is at minimum
+
+        int fatalCount = 0;
         
+        foreach(KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+        {
+            if(n.Value.Value == -100)
+            {
+                fatalCount++;
+            }
+        }
+
+        if (fatalCount > 0)
+        {
+            DebugController.Instance.Log(fatalCount + " Fatal Stats!!!!!!!!", DebugController.DebugType.Activity);
+
+            foreach (KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+            {
+                n.Value.Value -= fatalCount * 20;
+            }
+        }
+
+        fatalCount = 0;
+
+        foreach (KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
+        {
+            if (n.Value.Value == -100)
+            {
+                fatalCount++;
+            }
+        }
+
+        if (fatalCount >= 4)
+        {
+            parentPersonality.IsAlive = false;
+        }
+
+
         xp.AddRewards(parentPersonality);
 
         bool newXP = true;
@@ -159,9 +219,12 @@ public class Activity {
 
 		if (item != null) {
 			item.uses += useConsume;
+
+            /*
 			if (item.uses >= item.maxUses) {
 				ApplicationManager.Instance.RemoveItem ();
 			}
+            */
 		}
 
         IsRequest = false;
@@ -192,8 +255,7 @@ public class Activity {
                     if (mxp.IsRequest == IsRequest) {
                         if (mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Needs) > bestValue)
                         {
-                            PersonalityNode remotePersonality = new PersonalityNode(personality.Multiplayer.GetRemotePersonality());
-                            bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(remotePersonality.Needs);
+                            bestValue = mxp.CompareStatus(personality.Needs) + mxp.CompareRemoteStatus(personality.Multiplayer.RemoteNeeds);
                             bestExperienceID = i;
                         }
                     }
@@ -232,8 +294,7 @@ public class Activity {
         {
             xp = new MultiplayerExperience();
             
-            PersonalityNode remotePersonality = new PersonalityNode(personality.Multiplayer.GetRemotePersonality());
-            ((MultiplayerExperience)xp).AddRemoteNeeds(remotePersonality.Needs);
+            ((MultiplayerExperience)xp).AddRemoteNeeds(personality.Multiplayer.RemoteNeeds);
             ((MultiplayerExperience)xp).IsRequest = IsRequest;
         }
         else

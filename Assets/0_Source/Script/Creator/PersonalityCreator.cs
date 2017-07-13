@@ -340,8 +340,8 @@ public class PersonalityCreator
                             break;
                         case "trait":
                             Trait trait = new Trait((TraitType)Enum.Parse(typeof(TraitType), personalityCSV[k-1][1]));
-                            trait.TraitTag = Int32.Parse(personalityCSV[k - 1][2]);
-                            for(int l = k; (l < personalityCSV.GetLength(0)) && (!String.IsNullOrEmpty(personalityCSV[l][0])); l++)
+                            trait.TraitTag = int.Parse(personalityCSV[k - 1][2]);
+                            for(int l = k; (l < personalityCSV.GetLength(0)) && (!string.IsNullOrEmpty(personalityCSV[l][0])); l++)
                             {
                                 NeedType needTypeMod;
                                 if (StaticFunctions.ToEnum<NeedType>(personalityCSV[l][0], out needTypeMod))
@@ -349,9 +349,8 @@ public class PersonalityCreator
                                     thresholdModifier = new int[personalityCSV[l].Length - 1];
                                     for (int j = 1; j < personalityCSV[l].Length; j++)
                                     {
-                                        thresholdModifier[j - 1] = Int32.Parse(personalityCSV[l][j]);
+                                        thresholdModifier[j - 1] = int.Parse(personalityCSV[l][j]) - _personality.Conditions[needTypeMod].Thresholds[j - 1];
                                     }
-
                                     trait.AddThresholdModifier(needTypeMod, thresholdModifier);
                                 }
                                 ActivityTag actTag;
@@ -362,7 +361,7 @@ public class PersonalityCreator
                                     int intReward;
                                     for (int p = 0; p < stringRewardsForActivityMod.Length; p++)
                                     {
-                                        intReward = Int32.Parse(stringRewardsForActivityMod[p]);
+                                        intReward = int.Parse(stringRewardsForActivityMod[p]);
                                         foreach (Reward reward in Rewards)
                                         {
                                             if(reward.ID == intReward)
@@ -376,7 +375,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("feedback"))
                                 {
-                                    float feedbackModifier = PersonalityNode.FEEDBACK_FACTOR;
+                                    float feedbackModifier = 0;
                                     foreach(char ch in personalityCSV[l][1])
                                     {
                                         switch(ch)
@@ -395,7 +394,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("askForItem"))
                                 {
-                                    int askForItemModifier = GameLoopController.ASK_FOR_ITEM_FACTOR;
+                                    int askForItemModifier = 0;
                                     foreach (char ch in personalityCSV[l][1])
                                     {
                                         switch (ch)
@@ -414,7 +413,7 @@ public class PersonalityCreator
                                 }
                                 if (personalityCSV[l][0].Equals("similarExperienceDifference"))
                                 {
-                                    int similarExperienceModifier = Activity.SIMILAR_EXPERIENCE_DIFFERENCE;
+                                    int similarExperienceModifier = 0;
                                     foreach (char ch in personalityCSV[l][1])
                                     {
                                         switch (ch)
@@ -447,5 +446,43 @@ public class PersonalityCreator
             }
             start = -1;
         }
+
+
+        //Emotions
+
+        //good Emotion -> Aktivitäten mit Satisfaction: wenn fröhlich und das gemacht wird, was sowieso schon glücklich macht (-> positive Rewards werden ver-1.5-facht, negative Rewards werden halbiert)
+        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 5, 1);
+        Trait temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
+
+        //Health-Thresholds all -15 (wird nicht so schnell “krank”)
+        int[] healthThresholdModifier = new int[] { -15, -15, -15, -15, -15, -15, -15 };
+        temporaryTait.AddThresholdModifier(NeedType.HEALTH, healthThresholdModifier);
+
+        //Energy-Thresholds all -15 (ist energievoller)
+        int[] energyThresholdModifier = new int[] { -15, -15, -15, -15, -15, -15, -15 };
+        temporaryTait.AddThresholdModifier(NeedType.ENERGY, energyThresholdModifier);
+
+        goodEmotion.AddTemporaryTrait(temporaryTait);
+        _personality.AddEmotion(goodEmotion);
+
+
+
+        //bad Emotion
+        Emotion badEmotion = new Emotion(EmotionType.BAD, -5, -1);
+        temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
+
+        //macht genau Gegenteil vom Feedback was er gelernt hat?!?
+        temporaryTait.AddFeedbackModifier(-100);
+
+        //Health-Thresholds all +15 (wird schneller “krank”)
+        healthThresholdModifier = new int[] { 15, 15, 15, 15, 15, 15, 15 };
+        temporaryTait.AddThresholdModifier(NeedType.HEALTH, healthThresholdModifier);
+
+        //Social-Thresholds all +15 (fühlt sich unsozialer)
+        int[] socialThresholdModifier = new int[] { 15, 15, 15, 15, 15, 15, 15 };
+        temporaryTait.AddThresholdModifier(NeedType.SOCIAL, socialThresholdModifier);
+
+        badEmotion.AddTemporaryTrait(temporaryTait);
+        _personality.AddEmotion(badEmotion);
     }
 }

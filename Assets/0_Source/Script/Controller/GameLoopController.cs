@@ -15,6 +15,8 @@ public class GameLoopController : GameLoop {
 
     public bool waitForFeedback;
     public static int ASK_FOR_ITEM_FACTOR = 0;
+    private Item askItem;
+    private bool askForItemShown = false;
 
     public GameLoopController(ApplicationManager manager, GameData data) {
         _manager = manager;
@@ -33,9 +35,20 @@ public class GameLoopController : GameLoop {
             {
                 if (feedback != 0)
                 {
-                    //Store Feedback in Activity
+                    //Store Feedback in Activity               
                     _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
 
+                    if(_data.Person.executedEmotion == EmotionType.NORMAL)
+                    {
+                        if(feedback < 0)
+                        {
+                            _data.Person.emotionCounter -= 1;
+                        }
+                        else
+                        {
+                            _data.Person.emotionCounter += 1;
+                        }
+                    }
                 } else
                 {
                     _lastActivity.Feedback.AddNoFeedbackGiven(_lastExperience.BaseNeeds);
@@ -51,28 +64,35 @@ public class GameLoopController : GameLoop {
 
     private IEnumerator Run()
     {
-        while (true)
+        while (_data.Person.IsAlive)
         {
-            yield return _manager.StartCoroutine(DoActivityRoutine());
-
+            // actualize the others lemos' knowledge about your needs
             if (_manager.Multiplayer.IsConnected)
             {
-                //TODO: randomize this
-                _manager.Multiplayer.SendFeedbackRequest(_lastActivity);
+                _manager.Multiplayer.SendNeeds(new PersonalityNode(_data.Person).Needs);
+            }
+
+            yield return _manager.StartCoroutine(DoActivityRoutine());
+
+            System.Random rand = new System.Random();
+            if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
+            {
+                //random feedback request (25%)
+                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                if (receivingFeedback)
+                {
+                   _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
+                }
             }
 
             bool sentFeedback = false;
-
-            System.Random rand = new System.Random();
-            //random feedback (25%)
-            bool givingFeedback = rand.NextDouble() < 0.25 ? true : false;
 
             float timer = 0;
             while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
             {
                 timer += Time.deltaTime;
 
-                if (!sentFeedback && givingFeedback)
+                if (!sentFeedback)
                 {
                     if (_manager.Multiplayer.IsFeedbackRequestPending())
                     {
@@ -80,23 +100,23 @@ public class GameLoopController : GameLoop {
                         // SEND FEEDBACK TO ANOTHER LEMO
                         Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
                         PersonalityNode personality = new PersonalityNode(_data.Person);
-                        personality.changeNeeds(new PersonalityNode(_manager.Multiplayer.GetRemotePersonality()).Needs);
+                        personality.changeNeeds(_manager.Multiplayer.RemoteNeeds);
                         Experience experience = feedbackActivity.GetExperience(personality);
                         float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
                         PersonalityNode newPerson = new PersonalityNode(personality,
                                                     experience,
                                                     feedback);
                         float evaluation = newPerson.SelfEvaluation;
-                        DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
+                        //DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
                         if (evaluation > 0)
                         {
                             _manager.Multiplayer.SendFeedback(1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO: 1", DebugController.DebugType.Multiplayer);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": 1", DebugController.DebugType.Multiplayer);
                         }
                         else
                         {
                             _manager.Multiplayer.SendFeedback(-1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO: -1", DebugController.DebugType.Multiplayer);
+                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": -1", DebugController.DebugType.Multiplayer);
                         }
                     }
                 }
@@ -109,6 +129,9 @@ public class GameLoopController : GameLoop {
                 GiveFeedback(0);
             }
 
+
+            _data.Person.checkEmotion();
+
             if (saveCounter >= _manager.AutomaticSaveAfterActions)
             {
                 _data.SaveData();
@@ -118,7 +141,13 @@ public class GameLoopController : GameLoop {
             {
                 saveCounter++;
             }
+
+            yield return new WaitForSeconds(2);
         }
+
+        //GAME OVER
+
+        ApplicationManager.Instance.GameOver();
     }
 
     private IEnumerator DoActivityRoutine()
@@ -137,7 +166,24 @@ public class GameLoopController : GameLoop {
 
         _data.Person.PrintAllRewards();
 
-        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected);
+
+        //add point to happy emotion when Lemo gets Item it wants
+        if(askItem != null)
+        debug.Log("AskItem: " + askItem.Name, DebugController.DebugType.Emotion);
+        if (_data.Person.executedEmotion == EmotionType.NORMAL)
+        {
+            if (askForItemShown && (askItem != null) && (_data.Person.GetItems().ContainsValue(askItem)))
+            {
+                _data.Person.emotionCounter += 1;
+            }
+            if(askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
+            {
+                _data.Person.emotionCounter -= 1;
+            }
+        }
+
+        
+        _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected, _manager.Multiplayer.GetPendingActivity());
 
         float timer = 0;
 
@@ -151,7 +197,9 @@ public class GameLoopController : GameLoop {
         int askActivityID = -1;
 
         debug.Log("Calculation took " + timer + " seconds " + _data.Intelligence.GetValue() + " " + activityID, DebugController.DebugType.Activity);
-        
+
+        askItem = null;
+        askForItemShown = false;
         bool askForItem = _data.Intelligence.GetValue() <= ASK_FOR_ITEM_FACTOR;
 
         if (askForItem)
@@ -173,12 +221,11 @@ public class GameLoopController : GameLoop {
             debug.Log("Item Found", DebugController.DebugType.GameFlow);
         }
 
-
         if (activityID != -1)
         {
             if (askForItem)
             {
-                Item askItem = null;
+                askItem = null;
 
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
@@ -197,6 +244,7 @@ public class GameLoopController : GameLoop {
                     if (_data.Person.GetItem(askItem.ID, false) == null)
                     {
                         _manager.ShowItemAlert(askItem);
+                        askForItemShown = true;
 
                         yield return new WaitForSeconds(2);
                     }
@@ -211,8 +259,23 @@ public class GameLoopController : GameLoop {
             debug.Log("Get Activity", DebugController.DebugType.GameFlow);
 
             _lastActivity = _data.Person.GetActivity(activityID);
+            
+            if(_lastActivity == null)
+            {
+                for (int i = 0; i < _data.Items.Count; i++)
+                {
+                    foreach (Activity activity in _data.Items[i].GetAllActivities())
+                    {
+                        if (activity.ID == activityID)
+                        {
+                            _lastActivity = activity;
+                        }
+                    }
+                }
+            }
 
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
+            //DebugController.Instance.Log("Locals activity " + _lastActivity.Name + ", Object: " + _lastActivity.GetHashCode(), DebugController.DebugType.Multiplayer);
 
             if (_lastActivity.IsMultiplayer) {
                 if (_lastActivity.IsRequest) {
@@ -223,11 +286,14 @@ public class GameLoopController : GameLoop {
                         _manager.Multiplayer.DeclineRequest();
                     }
 
+                    _manager.Multiplayer.setLocalAlert(true);
+
                     _manager.Multiplayer.SendActivityRequest(_lastActivity);
 
                     while (_manager.Multiplayer.IsWaitingForAnswer()) {
                         yield return 0;
                     }
+                    _manager.Multiplayer.setLocalAlert(false);
                 }
             }
             else if(_manager.Multiplayer.IsRequestPending()) {
@@ -236,15 +302,28 @@ public class GameLoopController : GameLoop {
 
             debug.Log("Do Activity", DebugController.DebugType.GameFlow);
 
-            _lastExperience = _lastActivity.DoActivity(_data.Person);
+            if (_lastActivity.IsDeclined)
+            {
+                _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+            }
+            else
+            {
+                //Show Activity
+                _manager.ShowMessage(_lastActivity.feedBackString);
+            }
 
-            //Show Activity
-            _manager.ShowMessage(_lastActivity.feedBackString);
+            _lastExperience = _lastActivity.DoActivity(_data.Person);
+            
+            _manager.Multiplayer.ClearActivity();
 
             //Ask for Feedback
             waitForFeedback = true;
 
-            _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity, _data.Person);
+            _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+            if (_manager.Multiplayer.IsConnected)
+            {
+                _manager.Multiplayer.SendCurrentActivity(_lastActivity.Name);
+            }
 
             debug.Log("Animate", DebugController.DebugType.GameFlow);
 
