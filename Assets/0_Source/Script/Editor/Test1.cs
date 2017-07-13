@@ -1,24 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
 class Test1 : EditorWindow
-{
-    Rect buttonpos = new Rect(2,40,80,40);
+{ 
+    // TempData
+    string[] itemList = { "Item1", "Item2", "Item3", "Item4" };     // list of all Items
+    int[] itemrows = { 3, 7, 5, 15 };                               // list of rows Items has
 
-    int buttonValue = 0;
+    //todo load items
 
-    int[] selection = new int[10];
-    //int selection = 0;
-    //Rect optionPos = new Rect(0, 160, 100, 40);
+    // Data
+    Rect buttonpos = new Rect(2,40,80,40);  // Pos des ItemSelectButtons
+    int buttonValue = 0;                    // Value of the Button, first selection
+    Rect[] textAreaPos = new Rect[13];      // Position of the LabelArea
 
-    Rect[] optionPos = new Rect[10];
-    Rect[] textAreaPos = new Rect[10];
-
-    string[] itemList = { "Item1", "Item2", "Item3" };
-
-    string[] textAreaLabels = { "minHealth", "maxHealth",
+    // Holder
+    int[,] selection = new int[15,14];     // 15 Lines with 13 Values for store Line selected Options
+   
+    // Labels
+    string[] textAreaLabels = { "Reward-ID","Value","Status",
+                                "minHealth", "maxHealth",
                                 "minHunger", "maxHunger",
                                 "minSatisfact.", "maxSatisfact.",
                                 "minSocial", "maxSocial",
@@ -28,84 +33,85 @@ class Test1 : EditorWindow
     string[] arrayItemOptions = {   "None", "SUICIDAL", "SUPER_BAD", "VERY_BAD", "BAD",
                                     "NEUTRAL", "GOOD", "VERY_GOOD", "SUPER_GOOD" };
 
-    //string[] moreLabels = { "Reward ID", "Value", "Type" };
+    string[] arrayStatusOptions = { "Health", "Hunger", "Satisfaction", "Social", "Energy" };
 
-
-
+    // Show Window
     [MenuItem("Window/MyWindows/TestWindow")]
-
     public static void ShowWindow()
     {
         EditorWindow.GetWindow(typeof(Test1));
     }
 
+    // Show GUI
     void OnGUI()
     {
-
-        //Rect contextRect = new Rect(10, 10, 100, 100);
-        //EditorGUI.DrawRect(contextRect, Color.red);
-        //GUILayout.Button(buttonpos, ItelmList[0]);
-
+        // Itemauswahl
         GUILayout.Label("Select Item", EditorStyles.boldLabel);
         buttonValue = EditorGUI.Popup(buttonpos, buttonValue, itemList);
-        //GUILayout.Label("Item Properties", EditorStyles.boldLabel);
+        // todo: itemchange need to reload new item probs and save the old
 
-        textAreaLine(140);
+        // Erzeugt die Überschriften der Rewards
+        textAreaLine(80);
 
-
-        //selection = EditorGUI.Popup(optionPos, selection, arrayItemOptions);
-        OptionLine(160);
-        OptionLine(200);
-        OptionLine(240);
-
-        // GUILayout.TextField("Test");
-
+        // Erzeugt Die (Rewards) OptionLines in Anzahl wie in itemrows vorgegeben, abhänig vom gewählten Index des Popups
+        for (int i = 0; i < itemrows[EditorGUI.Popup(buttonpos, buttonValue, itemList)]; i++)
+        {
+            OptionLine(100 + 40 * i, i);
+        }
+        
     }
 
+    // *********
+    // Functions
+    // *********
+
+    // TextDescriptionArea
     void textAreaLine(int ypos)
     {
-        textAreaPos[0] = new Rect(0, ypos, 100, 20);
-        textAreaPos[1] = new Rect(100, ypos, 100, 20);
-        textAreaPos[2] = new Rect(200, ypos, 100, 20);
-        textAreaPos[3] = new Rect(300, ypos, 100, 20);
-        textAreaPos[4] = new Rect(400, ypos, 100, 20);
-        textAreaPos[5] = new Rect(500, ypos, 100, 20);
-        textAreaPos[6] = new Rect(600, ypos, 100, 20);
-        textAreaPos[7] = new Rect(700, ypos, 100, 20);
-        textAreaPos[8] = new Rect(800, ypos, 100, 20);
-        textAreaPos[9] = new Rect(900, ypos, 100, 20);
-
-        for (int i = 0; i < 10; i++)
+        // LabelPositionen
+        for (int i = 0; i < 13; i++)
+        {
+            textAreaPos[i] = new Rect(0+100*i, ypos, 100, 20);
+        }
+   
+        // LabelNahmen einsetzen
+        for (int i = 0; i < 13; i++)
         {
             EditorGUI.TextArea(textAreaPos[i], textAreaLabels[i], EditorStyles.boldLabel);
         }
     }
 
-    void OptionLine(int ypos)
+    // OptionLine
+    void OptionLine(int ypos, int lineNr)
     {
-        //selection[0] = EditorGUI.Popup(optionPos[0], selection[0], arrayItemOptions);
-        //selection[1] = EditorGUI.Popup(optionPos[1], selection[1], arrayItemOptions);
-        /*
+        string placeholder = selection[lineNr, 12].ToString();
+
+        selection[lineNr, 13] = lineNr;
+        // ID (selection[13])
+        EditorGUI.TextArea(new Rect(0, ypos, 100, 40), selection[lineNr, 13].ToString(), EditorStyles.boldLabel);
+
+        // Value (selection[12])
+        //EditorGUI.TextField(new Rect(100, ypos, 100, 40), "0", EditorStyles.boldLabel);
+        placeholder = EditorGUI.TextField(new Rect(100, ypos, 100, 40), placeholder, EditorStyles.label);
+        selection[lineNr, 12] = Int32.Parse(placeholder);
+
+        // Status Selection (selection[11])
+        selection[lineNr,11] = EditorGUI.Popup(new Rect(200, ypos, 100, 40), selection[lineNr, 11], arrayStatusOptions);
+
+        // RewardRange Selection
         for (int i = 0; i < 10; i++)
         {
-            selection[i] = 0;
-        }*/
-
-        optionPos[0] = new Rect(0, ypos, 100, 40);
-        optionPos[1] = new Rect(100, ypos, 100, 40);
-        optionPos[2] = new Rect(200, ypos, 100, 40);
-        optionPos[3] = new Rect(300, ypos, 100, 40);
-        optionPos[4] = new Rect(400, ypos, 100, 40);
-        optionPos[5] = new Rect(500, ypos, 100, 40);
-        optionPos[6] = new Rect(600, ypos, 100, 40);
-        optionPos[7] = new Rect(700, ypos, 100, 40);
-        optionPos[8] = new Rect(800, ypos, 100, 40);
-        optionPos[9] = new Rect(900, ypos, 100, 40);
-
-        for (int i = 0; i < 10; i++)
-        {
-            selection[i] = EditorGUI.Popup(optionPos[i], selection[i], arrayItemOptions);
+            // Status Selection
+            selection[lineNr,i] = EditorGUI.Popup(new Rect(300 + 100 * i, ypos, 100, 40), selection[lineNr,i], arrayItemOptions);
         }
+    }
+
+    void loadSelection(int itemNr)
+    {
+
+    }
+    void saveSelection(int itemNr)
+    {
 
     }
 }
