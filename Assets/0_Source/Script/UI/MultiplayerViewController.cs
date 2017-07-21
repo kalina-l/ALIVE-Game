@@ -160,7 +160,7 @@ public class MultiplayerViewController : AbstractViewController {
             _searchRect.anchoredPosition = animationCenter;
             targetIndex = 0;
             
-            while (ApplicationManager.Instance.Multiplayer.IsConnected)
+            while (ApplicationManager.Instance.Multiplayer.IsConnected || !_isMultiplayerOn)
             {
                 yield return 0;
             }
