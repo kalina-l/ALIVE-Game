@@ -214,6 +214,7 @@ public class ApplicationManager : MonoBehaviour {
             MultiplayerViewController.endMultiplayerView();
         }
 
+        /*
         // Editor Multiplayer Simulation
         if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)
         {
@@ -234,6 +235,7 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
+        */
     }
 
     IEnumerator ConnectRemoteSimulation ()
