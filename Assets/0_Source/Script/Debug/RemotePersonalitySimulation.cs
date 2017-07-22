@@ -24,6 +24,8 @@ public class SimulationController : MultiplayerConnection
     public void disconnect ()
     {
         Connected = false;
+        Lemo.SetRemoteTexture("no_texture");
+        Lemo.setRemoteAlert(false);
     }
 
     public void SetMultiplayerController(MultiplayerController multiplayerController)
@@ -71,6 +73,14 @@ public class SimulationController : MultiplayerConnection
                 String texture = (String)newData.content;
                 Lemo.SetRemoteTexture(texture);
                 break;
+            case "itemAdded":
+                int itemId = (int)newData.content;
+                Lemo.GetItem(itemId, true);
+                break;
+            case "itemRemoved":
+                Lemo.GetItem(-1, false);
+                break;
+
         }
     }
 }
@@ -146,10 +156,12 @@ public class RemotePersonalitySimulation : GameLoop {
 
             _actionCounter++;
 
-            if(_actionCounter > UnityEngine.Random.value * 20)
+            //if(_actionCounter > UnityEngine.Random.value * 20)
+            if(_data.Person.Items.Count == 0 && UnityEngine.Random.value > 0.5 && _actionCounter > 4)
             {
                 //give random item
                 int randomItem = (int)(_data.Items.Count * UnityEngine.Random.value);
+                _actionCounter = 0;
 
                 _data.Person.AddItem(_data.Items[randomItem].ID, _data.Items[randomItem]);
             }
@@ -249,11 +261,21 @@ public class RemotePersonalitySimulation : GameLoop {
 
             _multiplayer.ClearActivity();
 
-            _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+            if (isRunning)
+            {
+                _manager.MultiplayerViewController.RemoteCharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+            }
             _multiplayer.SendCurrentActivity(_lastActivity.Name);
             while (_manager.MultiplayerViewController.RemoteCharacterAnimation.IsAnimating)
             {
                 yield return 0;
+            }
+            if (_lastActivity.item != null)
+            {
+                if (_lastActivity.item.uses >= _lastActivity.item.maxUses)
+                {
+                    _data.Person.RemoveItem(_lastActivity.item.ID);
+                }
             }
         }
         else

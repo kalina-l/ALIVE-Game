@@ -9,6 +9,7 @@ public class MultiplayerViewController : AbstractViewController {
 
     private GameObject _remoteLemo;
     public AnimationController remoteAnimationController;
+    private GameObject _itemObject;
 
     public AnimationController RemoteCharacterAnimation { get; set; }
 
@@ -28,6 +29,9 @@ public class MultiplayerViewController : AbstractViewController {
 
     public MultiplayerViewController (Transform parent)
     {
+        _remoteLemo = GraphicsHelper.Instance.remoteLemo;
+        RemoteCharacterAnimation = new AnimationController(_remoteLemo);
+
         Rect = CreateContainer("MultiplayerUI", parent,
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
@@ -86,10 +90,8 @@ public class MultiplayerViewController : AbstractViewController {
     public void startMultiplayerView()
     {
         _isMultiplayerOn = true;
-
-        showRemote();
+        
         ApplicationManager.Instance.MoveItemAlert(true);
-        RemoteCharacterAnimation = new AnimationController(_remoteLemo);
         ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.multiplayerCameraAnchor.rotation);
         ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, angle, 0), _switchTime));
@@ -98,12 +100,12 @@ public class MultiplayerViewController : AbstractViewController {
     public void endMultiplayerView()
     {
         _isMultiplayerOn = false;
-
+        
         ApplicationManager.Instance.MoveItemAlert(false);
         ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime));
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.singleplayerCameraAnchor.rotation);
         ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, -angle, 0), _switchTime));
-        UnityEngine.Object.Destroy(_remoteLemo);
+        //UnityEngine.Object.Destroy(_remoteLemo);
     }
         
     private IEnumerator moveCamera(Vector3 source, Vector3 target, float overTime)
@@ -129,12 +131,12 @@ public class MultiplayerViewController : AbstractViewController {
     }
 
     //show remote
-    public void showRemote()
-    {
-        _remoteLemo = GameObject.Instantiate(GraphicsHelper.Instance.lemo, GraphicsHelper.Instance.multiplayerLemoAnchor);
-        _remoteLemo.GetComponentInChildren<Renderer>().material = GraphicsHelper.Instance.materials[0];
-        _remoteLemo.transform.localPosition = Vector3.zero;
-    }
+    //public void showremote()
+    //{
+    //    //_remotelemo = gameobject.instantiate(graphicshelper.instance.lemo, graphicshelper.instance.multiplayerlemoanchor);
+    //    //_remotelemo.getcomponentinchildren<renderer>().material = graphicshelper.instance.materials[0];
+    //    //_remotelemo.transform.localposition = vector3.zero;
+    //}
 
     public void setupTexture(Material material)
     {
@@ -160,14 +162,12 @@ public class MultiplayerViewController : AbstractViewController {
             _searchRect.anchoredPosition = animationCenter;
             targetIndex = 0;
             
-            while (ApplicationManager.Instance.Multiplayer.IsConnected)
+            while (ApplicationManager.Instance.Multiplayer.IsConnected || !_isMultiplayerOn)
             {
                 yield return 0;
             }
 
             timer = 0;
-
-            //
 
             yield return new WaitForSeconds(2);
 
@@ -369,4 +369,20 @@ public class MultiplayerViewController : AbstractViewController {
 
     }
 
+    public void addItem(int id)
+    {
+        Transform parent = GraphicsHelper.Instance.remoteItemAnchor;
+
+        _itemObject = GameObject.Instantiate(GraphicsHelper.Instance.GetItemObject(id), parent);
+
+        //_itemObject.GetComponent<ItemBoxObject>().Setup(this);
+    }
+
+    public void removeItem()
+    {
+        if (_itemObject != null)
+        {
+            UnityEngine.Object.Destroy(_itemObject);
+        }
+    }
 }

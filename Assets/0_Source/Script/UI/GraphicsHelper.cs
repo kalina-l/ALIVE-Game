@@ -9,9 +9,10 @@ public class GraphicsHelper : MonoBehaviour {
     public Transform camera;
 
     public GameObject lemo;
+    public GameObject remoteLemo;
     public Material[] materials;
     public Transform itemAnchor;
-    public Transform multiplayerLemoAnchor;
+    public Transform remoteItemAnchor;
     public Transform multiplayerCameraAnchor;
     public Transform singleplayerCameraAnchor;
 
@@ -101,6 +102,19 @@ public class GraphicsHelper : MonoBehaviour {
             case "Ball":
                 return ballPrefab;
             case "Cake":
+                return cakePrefab;
+        }
+
+        return null;
+    }
+
+    public GameObject GetItemObject(int itemId)
+    {
+        switch (itemId)
+        {
+            case 2:
+                return ballPrefab;
+            case 3:
                 return cakePrefab;
         }
 

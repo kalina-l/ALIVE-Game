@@ -29,7 +29,6 @@ public class MultiplayerController {
 
     private GameData _gameData;
     private Personality _localPersonality;
-    //private MultiplayerController _remoteController;
 
     private string _id;
 
@@ -114,7 +113,6 @@ public class MultiplayerController {
     }
 
     public void StartMultiplayer() {
-        //_remoteController = remoteController;
         MultiplayerOn = true;
         _happeningController.connect();
 
@@ -183,7 +181,6 @@ public class MultiplayerController {
         _gettingFeedbackRequest = false;
         _happeningController.sendMessage("feedback", feedback);
         ApplicationManager.Instance.ShowRemoteFeedback(feedback);
-        // _remoteController.GetFeedback(feedback);
 
         if(_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, true);
     }
@@ -238,6 +235,34 @@ public class MultiplayerController {
 
         showRemoteAlert = true;
         if (_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerRequest(activityID, false);
+    }
+
+    public void SendItem(int id, bool added)
+    {
+        if(added)
+        {
+            _happeningController.sendMessage("itemAdded", id);
+        }
+        else
+        {
+            _happeningController.sendMessage("itemRemoved", null);
+        }
+    }
+
+    public void GetItem(int id, bool added)
+    {
+        if(_id != "local")
+        {
+            return;
+        }
+
+        if(added)
+        {
+            ApplicationManager.Instance.AddRemoteItem(id);
+        } else
+        {
+            ApplicationManager.Instance.RemoveRemoteItem();
+        }
     }
 
     public void AcceptRequest()
