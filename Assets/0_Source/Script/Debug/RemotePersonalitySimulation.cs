@@ -135,16 +135,8 @@ public class RemotePersonalitySimulation : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
+            // -----------------
             System.Random rand = new System.Random();
-            if (_multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
-            {
-                //TODO: randomize this
-                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
-                if (receivingFeedback)
-                {
-                    _multiplayer.SendFeedbackRequest(_lastActivity.ID);
-                }
-            }
 
             if (_multiplayer.IsFeedbackRequestPending())
             {
@@ -260,6 +252,17 @@ public class RemotePersonalitySimulation : GameLoop {
             _lastExperience = _lastActivity.DoActivity(_data.Person);
 
             _multiplayer.ClearActivity();
+
+            System.Random rand = new System.Random();
+            if (_multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
+            {
+                //TODO: randomize this
+                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                if (receivingFeedback)
+                {
+                    _multiplayer.SendFeedbackRequest(_lastActivity.ID);
+                }
+            }
 
             if (isRunning)
             {

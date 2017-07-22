@@ -75,16 +75,7 @@ public class GameLoopController : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            System.Random rand = new System.Random();
-            if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
-            {
-                //random feedback request (25%)
-                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
-                if (receivingFeedback)
-                {
-                   _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
-                }
-            }
+           // -----------------
 
             bool sentFeedback = false;
 
@@ -305,7 +296,7 @@ public class GameLoopController : GameLoop {
 
             if (_lastActivity.IsDeclined)
             {
-                _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+                _manager.ShowMessage("REJECTED");
             }
             else
             {
@@ -316,6 +307,17 @@ public class GameLoopController : GameLoop {
             _lastExperience = _lastActivity.DoActivity(_data.Person);
             
             _manager.Multiplayer.ClearActivity();
+
+            System.Random rand = new System.Random();
+            if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
+            {
+                //random feedback request (25%)
+                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                if (receivingFeedback)
+                {
+                    _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
+                }
+            }
 
             //Ask for Feedback
             waitForFeedback = true;
