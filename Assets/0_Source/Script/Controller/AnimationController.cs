@@ -122,8 +122,19 @@ public class AnimationController {
 
         _animation.SetTrigger("WakeUp");
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(7);
 
         IsAnimating = false;
+    }
+
+    public void StartSequence()
+    {
+        _animation.Play("WakeUp");
+        //_animation.SetTrigger("WakeUp");
+    }
+
+    public void GameOver()
+    {
+        _animation.Play("Death");
     }
 }

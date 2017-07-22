@@ -11,17 +11,26 @@ public class GameOverViewController : AbstractViewController {
     private Image _restartImage;
     private Text _restartText;
 
+    private Image _logoImage;
+    private Image _titleImage;
+
     private bool _restart = false;
 
-	public GameOverViewController(Transform parent)
+    private AnimationController _animation;
+
+    private bool _gameOver;
+
+    public GameOverViewController(Transform parent, AnimationController animation)
     {
+        _animation = animation;
+
         Rect = CreateContainer("GameOver", parent,
-            Vector2.zero, new Vector2(1080, 1920),
-            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f));
+            Vector2.zero, new Vector2(0, 0),
+            new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
 
-        _background = AddSprite(Rect, null, GraphicsHelper.Instance.SpriteColorBlackHidden);
-        _background.raycastTarget = false;
+        _background = AddSprite(Rect, null, GraphicsHelper.Instance.SpriteColorBlack);
+        _background.raycastTarget = true;
 
         //GameOvertext
         _gameOverText = AddText(
@@ -56,11 +65,34 @@ public class GameOverViewController : AbstractViewController {
         _restartText.raycastTarget = false;
 
         CreateButton(_restartImage.rectTransform, delegate { Restart(); });
+
+
+        //TitleScreen
+
+        _titleImage = AddSprite(
+                            CreateContainer("Title", Rect,
+                            new Vector2(-126f, 102f), new Vector2(466, 258),
+                            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                            GraphicsHelper.Instance.title,
+                            GraphicsHelper.Instance.SpriteColorWhiteHidden);
+        _titleImage.raycastTarget = false;
+
+        _logoImage = AddSprite(
+                            CreateContainer("Logo", Rect,
+                            new Vector2(0f, 100f), new Vector2(325, 330),
+                            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                            GraphicsHelper.Instance.logo,
+                            GraphicsHelper.Instance.SpriteColorWhiteHidden);
+        _logoImage.raycastTarget = false;
     }
 
     public void GameOver()
     {
-        ApplicationManager.Instance.StartCoroutine(GameOverRoutine());
+        if (!_gameOver)
+        {
+            _gameOver = true;
+            ApplicationManager.Instance.StartCoroutine(GameOverRoutine());
+        }
     }
 
     private void Restart()
@@ -70,7 +102,7 @@ public class GameOverViewController : AbstractViewController {
 
     private IEnumerator GameOverRoutine()
     {
-        //TODO: play death animation
+        _animation.GameOver();
 
         _background.raycastTarget = true;
 
@@ -137,5 +169,77 @@ public class GameOverViewController : AbstractViewController {
         yield return new WaitForSeconds(1);
 
         ApplicationManager.Instance.reset();
+    }
+
+    public IEnumerator StartSequence()
+    {
+        _background.raycastTarget = true;
+        Vector2 logoStartPos = new Vector2(0, 100);
+        Vector2 logoEndPos = new Vector2(198, 100);
+
+        GraphicsHelper gh = GraphicsHelper.Instance;
+
+        float timer = 0;
+
+        
+
+        //1. logo appears
+        while(timer < 1)
+        {
+            timer += Time.deltaTime * 0.5f;
+            _logoImage.color = gh.LerpColor(gh.SpriteColorWhiteHidden, gh.SpriteColorWhite, timer);
+
+            yield return 0;
+        }
+
+        timer = 0;
+
+        //2. black to white fade + logo transforms into title
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 4;
+            _background.color = gh.LerpColor(gh.SpriteColorBlack, gh.SpriteColorWhite, timer);
+
+            _logoImage.rectTransform.anchoredPosition = Vector2.Lerp(logoStartPos, logoEndPos, timer*0.6f);
+            _titleImage.color = gh.LerpColor(gh.SpriteColorWhiteHidden, gh.SpriteColorWhite, timer*0.5f);
+
+            yield return 0;
+        }
+
+        _animation.StartSequence();
+
+        timer = 0;
+
+        //3. white to transparent fade
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 4;
+            _background.color = gh.LerpColor(gh.SpriteColorWhite, gh.SpriteColorWhiteHidden, timer);
+
+            _logoImage.rectTransform.anchoredPosition = Vector2.Lerp(logoStartPos, logoEndPos, 0.6f + (timer * 0.4f));
+            _titleImage.color = gh.LerpColor(gh.SpriteColorWhiteHidden, gh.SpriteColorWhite, 0.5f + (timer * 0.5f));
+
+            yield return 0;
+        }
+
+        yield return new WaitForSeconds(4);
+
+        timer = 0;
+
+        //4. title fades
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime * 2;
+
+            _logoImage.color = gh.LerpColor(gh.SpriteColorWhite, gh.SpriteColorWhiteHidden, timer);
+            _titleImage.color = gh.LerpColor(gh.SpriteColorWhite, gh.SpriteColorWhiteHidden, timer);
+
+            yield return 0;
+        }
+
+        _background.raycastTarget = false;
     }
 }

@@ -24,13 +24,13 @@ public class OutputViewController : AbstractViewController {
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
 
-        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.outputFrameSprite, GraphicsHelper.Instance.SpriteColorWhite);
+        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.outputFrameSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         RectTransform fillImage = CreateContainer("Fill", Rect,
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
 
-        _fillImage = AddSprite(fillImage, GraphicsHelper.Instance.outputFillSprite, new Color(0, 0, 0, 1));
+        _fillImage = AddSprite(fillImage, GraphicsHelper.Instance.outputFillSprite, new Color(0, 0, 0, 0));
 
         OutputText = AddText(
             CreateContainer("OutputText", Rect,

@@ -99,17 +99,29 @@ public class ApplicationManager : MonoBehaviour {
         _remoteData = new GameData(LoadStates.CSV);
         _remoteMultiplayerController = new MultiplayerController(_remoteData, _remoteSimulationContoller, "remote");
 
+        _gameOver = new GameOverViewController(UICanvas.transform, CharacterAnimation);
+
         //GameLoop
         _gameLoop = new GameLoopController(this, _data);
 
         _multiplayer.setGameLoop(_gameLoop);
 
-        _gameOver = new GameOverViewController(UICanvas.transform);
+        
     }
 
     public void GameOver()
     {
         _gameOver.GameOver();
+    }
+
+    public void EndGame()
+    {
+        _data.Person.IsAlive = false;
+    }
+
+    public IEnumerator StartGame()
+    {
+        return _gameOver.StartSequence();
     }
 
     public void reset()
