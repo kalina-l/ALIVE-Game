@@ -28,7 +28,6 @@ public class ConnectionController {
             _happeningController.Plugin.sendData(client, "HI, I AM LEMO");
         }
         IsConnected = false;
-        _happeningController.Lemo.setRemoteAlert(false);
         _isWaitingForClient = true;
     }
 
@@ -57,7 +56,7 @@ public class ConnectionController {
             _isWaitingForClient = false;
             IsConnected = true;
             Remote = remote;
-            _happeningController.sendMessage("texture", GraphicsHelper.Instance.lemo.GetComponentInChildren<Renderer>().material.name);
+            _happeningController.connected();
         } else
         {
             _happeningController.Plugin.sendData(remote, "request denied");
@@ -74,6 +73,8 @@ public class ConnectionController {
         ApplicationManager.Instance.StartCoroutine(SaveIdForTime(30));
         IsConnectionRestored = false;
         _happeningController.Lemo.SetRemoteTexture("no_texture");
+        _happeningController.Lemo.GetItem(-1, added: false);
+        _happeningController.Lemo.setRemoteAlert(false);
 
         StartConnection();
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimationController {
 
-    private Animator _animation; 
+    private Animator _animation;
 
     public bool IsAnimating { get; private set; }
 

@@ -45,7 +45,6 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
         _serializer = new fsSerializer();
 		Plugin = new HappeningPlugin();
         connectionController = new ConnectionController(this);
-		sendBroadcastMessage();
 	}
 
 	void Update() {
@@ -92,6 +91,15 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
     public void connect()
     {
         connectionController.StartConnection();
+    }
+
+    public void connected()
+    {
+        sendMessage("texture", GraphicsHelper.Instance.lemo.GetComponentInChildren<Renderer>().material.name);
+        foreach(KeyValuePair<int, Item> itemPair in Lemo.GetPersonality().Items)
+        {
+            sendMessage("itemAdded", itemPair.Key);
+        }
     }
 
     public void disconnect ()
@@ -203,7 +211,14 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
                         String activityName = (String)dataContainer.content;
                         Lemo.GetCurrentActivity(activityName);
                         break;
-                }
+                    case "itemAdded":
+                        int itemId = (int)dataContainer.content;
+                        Lemo.GetItem(itemId, true);
+                        break;
+                    case "itemRemoved":
+                        Lemo.GetItem(-1, false);
+                        break;
+            }
             
 
         }

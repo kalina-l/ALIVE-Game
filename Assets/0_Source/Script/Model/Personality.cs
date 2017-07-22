@@ -350,6 +350,11 @@ public class Personality {
     {
         DebugController.Instance.Log("---------- Add Item " + item.Name + " -------------", DebugController.DebugType.Activity);
 
+        if(Multiplayer.IsConnected)
+        {
+            Multiplayer.SendItem(id, added:true);
+        }
+
         Items[id] = item;
 		item.uses = 0;
     }
@@ -359,6 +364,11 @@ public class Personality {
         if (Items.ContainsKey(id))
         {
             DebugController.Instance.Log("---------- Remove Item " + Items[id].Name + " -------------", DebugController.DebugType.Activity);
+
+            if (Multiplayer.IsConnected)
+            {
+                Multiplayer.SendItem(id, added: false);
+            }
 
             Items[id].uses = 0;
             Items.Remove(id);

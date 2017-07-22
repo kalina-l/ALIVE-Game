@@ -17,6 +17,7 @@ public class ItemBoxViewController : AbstractViewController
     private DragItemContainer _itemInSlot;
 
     private GameObject _itemObject;
+    private GameObject _remoteItemObject;
 
 
     public ItemBoxViewController(Transform parent, List<Item> itemList, Personality personality)

@@ -219,12 +219,6 @@ public class Activity {
 
 		if (item != null) {
 			item.uses += useConsume;
-
-            /*
-			if (item.uses >= item.maxUses) {
-				ApplicationManager.Instance.RemoveItem ();
-			}
-            */
 		}
 
         IsRequest = false;

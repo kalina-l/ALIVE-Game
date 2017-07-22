@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
-using KKSpeech;
 
 public enum LoadStates { Dummy, CSV, SavedState};
 
 public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
-
-    public Text debugText;
 
     public Canvas UICanvas;
     public LoadStates LoadFrom;
@@ -171,11 +168,6 @@ public class ApplicationManager : MonoBehaviour {
         }
     }
 
-    public void SetupRemoteTexture(Material material)
-    {
-        MultiplayerViewController.setupTexture(material);
-    }
-
     public void UpdateUI()
     {
         _conditionMonitor.UpdateSlider(_data.Person);
@@ -197,17 +189,19 @@ public class ApplicationManager : MonoBehaviour {
         return _feedback;
     }
 
-    public void ToggleMultiplayer()
+    public void SetupRemoteTexture(Material material)
     {
-        if (!Multiplayer.IsConnected)
-        {
-            //_simulation = new RemotePersonalitySimulation(this);
-            //_multiplayer.ConnectWithRemote(_simulation.GetController());
-        }
-        else
-        {
-            Multiplayer.EndMultiplayer();
-        }
+        MultiplayerViewController.setupTexture(material);
+    }
+
+    public void AddRemoteItem(int itemId)
+    {
+        MultiplayerViewController.addItem(itemId);
+    }
+
+    public void RemoveRemoteItem()
+    {
+        MultiplayerViewController.removeItem();
     }
 
     void Update() {
@@ -225,9 +219,9 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
-
-        /*
+        
         // Editor Multiplayer Simulation
+#if UNITY_EDITOR
         if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)
         {
             rotated = true;
@@ -238,16 +232,19 @@ public class ApplicationManager : MonoBehaviour {
             connectRemote = false;
             StartCoroutine(ConnectRemoteSimulation());
         }
-        if (Multiplayer.MultiplayerOn && !simulateRemote && rotated)
+        if (!simulateRemote && rotated)
         {
             rotated = false;
-            _simulation.StopSimulation();
-            _simulation = null;
-            _remoteMultiplayerController.EndMultiplayer();
-            Multiplayer.EndMultiplayer();
+            if (_simulation != null)
+            {
+                _simulation.StopSimulation();
+                _simulation = null;
+                _remoteMultiplayerController.EndMultiplayer();
+                Multiplayer.EndMultiplayer();
+            }
             MultiplayerViewController.endMultiplayerView();
         }
-        */
+#endif
     }
 
     IEnumerator ConnectRemoteSimulation ()

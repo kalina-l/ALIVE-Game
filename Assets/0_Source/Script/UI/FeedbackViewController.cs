@@ -7,6 +7,7 @@ public enum FeedbackType { Audio, Video, Touch, Button, Multiplayer }
 public class FeedbackViewController : AbstractViewController {
 
     private Button _startRecording; // audio
+    private Image _recordingPoint;
     private bool _isRecording; // attached to audio AND video
 
     private Vector2 _buttonSize = new Vector2(256, 256);
@@ -36,7 +37,7 @@ public class FeedbackViewController : AbstractViewController {
         Rect.offsetMin = Vector2.zero;
         View = Rect.gameObject;
 
-        _audioFeedbackController = new AudioFeedbackController(this);
+        _audioFeedbackController = new AudioFeedbackController(this, Rect);
         _touchController = new TouchController(this, Rect);
         _videoFeedbackController = new VideoFeedbackController(this, Rect);
 
@@ -52,6 +53,12 @@ public class FeedbackViewController : AbstractViewController {
 
         _showMenu = false;
 
+        _recordingPoint = AddSprite(CreateContainer("RecordingPoint", Rect,
+                                    new Vector2(50, 0), new Vector2(100, 100),
+                                    new Vector2(0, 0.1f), new Vector2(0, 0.1f), new Vector2(0, 0.5f)),
+                                    GraphicsHelper.Instance.recordingPoint, GraphicsHelper.Instance.SpriteColorWhite);
+        _recordingPoint.enabled = false;
+
         Image menuImage = AddSprite(_feedbackMenu, GraphicsHelper.Instance.feedbackMenu, GraphicsHelper.Instance.SpriteColorWhite);
         menuImage.raycastTarget = false;
 
@@ -61,15 +68,16 @@ public class FeedbackViewController : AbstractViewController {
                                     new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f)),
                                     delegate { _audioFeedbackController.StartRecording(); }
                                     );
+
         AddSprite(_startRecording.GetComponent<RectTransform>(), null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         RectTransform startStreamingRect =
                                     CreateContainer("StartStreaming", _feedbackMenu,
                                     new Vector2(0, -77), new Vector2(150, 150),
                                     new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f));                                 
-        PointerListener pl = startStreamingRect.gameObject.AddComponent<PointerListener>();
-        pl.AddOnDownDelegate(_videoFeedbackController.StartRecording);
-        pl.AddOnUpDelegate(_videoFeedbackController.StopRecording);
+        PointerListener plVideo = startStreamingRect.gameObject.AddComponent<PointerListener>();
+        plVideo.AddOnDownDelegate(_videoFeedbackController.StartRecording);
+        plVideo.AddOnUpDelegate(_videoFeedbackController.StopRecording);
         AddSprite(startStreamingRect.GetComponent<RectTransform>(), null, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         RectTransform buttonRect = CreateContainer("MenuButton", _feedbackMenu,
@@ -162,12 +170,15 @@ public class FeedbackViewController : AbstractViewController {
         return _isRecording;
     }
 
+    public void SetRecordingPoint(bool isRecordingAudio)
+    {
+        _recordingPoint.enabled = isRecordingAudio;
+    }
+
     public void SendFeedBack(int feedback, FeedbackType feedbackType)
     {
-        SetIsRecording(false);
         lastFeedbackType = feedbackType;
         ApplicationManager.Instance.GiveFeedback(feedback);
-
     }
 
     public FeedbackType getLastFeedbackType()
