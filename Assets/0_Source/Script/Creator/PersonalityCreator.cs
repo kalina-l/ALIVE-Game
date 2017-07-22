@@ -130,7 +130,7 @@ public class PersonalityCreator
                         if (!baseActivity)
                         {
                             act.Name = item.Name + "." + personalityCSV[i][j];
-                            act.feedBackString = personalityCSV[i][j] + " " + item.Name;
+                            //act.feedBackString = personalityCSV[i][j] + " " + item.Name;
                         }
                         break;
                     case "Rewards":
@@ -173,6 +173,11 @@ public class PersonalityCreator
                         break;
                 }
             }
+            if (!act.IsMultiplayer && !baseActivity)
+            {
+                act.feedBackString = act.feedBackString + " " + act.item.Name;
+            }
+
             if (baseActivity)
             {
                 _personality.AddBaseActivity(act);

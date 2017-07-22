@@ -71,7 +71,7 @@ public class OutputViewController : AbstractViewController {
 
             Rect.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, curve.Evaluate(timer));
 
-            OutputText.fontSize = (int)Mathf.Lerp(0, 50, curve.Evaluate(timer));
+            OutputText.fontSize = (int)Mathf.Lerp(0, 45, curve.Evaluate(timer));
             OutputText.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.TextColorHidden, GraphicsHelper.Instance.TextColor, curve.Evaluate(timer));
             _background.color = GraphicsHelper.Instance.LerpColor(GraphicsHelper.Instance.SpriteColorWhiteHidden, GraphicsHelper.Instance.SpriteColorWhite, curve.Evaluate(timer));
             _fillImage.color = GraphicsHelper.Instance.LerpColor(fillHiddenColor, fillNeutralColor, curve.Evaluate(timer));
