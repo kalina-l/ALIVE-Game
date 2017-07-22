@@ -64,6 +64,8 @@ public class GameLoopController : GameLoop {
 
     private IEnumerator Run()
     {
+        yield return _manager.StartCoroutine(_manager.StartGame());
+
         while (_data.Person.IsAlive)
         {
             // actualize the others lemos' knowledge about your needs

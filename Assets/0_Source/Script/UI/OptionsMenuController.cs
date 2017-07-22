@@ -141,7 +141,7 @@ public class OptionsMenuController : AbstractViewController {
     public void Restart()
     {
         ToggleMenu();
-        ApplicationManager.Instance.GameOver();
+        ApplicationManager.Instance.EndGame();
     }
     
 }
