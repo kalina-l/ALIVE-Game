@@ -30,6 +30,8 @@ public class GraphicsHelper : MonoBehaviour {
     public Sprite title;
 
     public Sprite feedbackMenu;
+    public Sprite recordingPoint;
+    public Text audioDebugText;
 
     public Sprite outputFrameSprite;
     public Sprite outputFillSprite;

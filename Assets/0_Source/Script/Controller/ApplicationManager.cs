@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
-using KKSpeech;
 
 public enum LoadStates { Dummy, CSV, SavedState};
 
 public class ApplicationManager : MonoBehaviour {
 
     public static ApplicationManager Instance;
-
-    public Text debugText;
 
     public Canvas UICanvas;
     public LoadStates LoadFrom;

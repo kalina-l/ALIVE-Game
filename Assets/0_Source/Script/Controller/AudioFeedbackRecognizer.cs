@@ -5,9 +5,7 @@ using UnityEngine.UI;
 using KKSpeech;
 
 public class AudioFeedbackRecognizer : MonoBehaviour {
-
-    public Text recordDebugger;
-
+    
     private AudioFeedbackController _controller;
 
     public void Setup(AudioFeedbackController controller)
@@ -30,7 +28,7 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
         }
         else
         {
-            recordDebugger.text = "Sorry, but this device doesn't support speech recognition";
+            //recordDebugger.text = "Sorry, but this device doesn't support speech recognition";
         }
     }
 	
@@ -44,27 +42,33 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
         SpeechRecognizer.StartRecording(true);
     }
 
+    public void StopRecording()
+    {
+        SpeechRecognizer.StopIfRecording();
+        _controller.RecordingStopped();
+    }
+
     public void OnFinalResult(string result)
     {
-        
+        _controller.RecordingStopped();
     }
 
     public void OnPartialResult(string result)
     {
-        recordDebugger.text = result;
+        _controller.setAudioDebugText(result);
         result = result.ToLower();
         int feedback = 0;
         if (result.Contains("gut gemacht") || result.Contains("braver junge") || result.Contains("sehr gut") || result.Contains("nicht schlecht"))
         {
             feedback = 1;
             _controller.SendFeedback(feedback);
-            SpeechRecognizer.StopIfRecording();
+            StopRecording();
         }
         else if (result.Contains("aufhören") || result.Contains("so nicht") || result.Contains("aus") || result.Contains("stopp"))
         {
             feedback = -1;
             _controller.SendFeedback(feedback);
-            SpeechRecognizer.StopIfRecording();
+            StopRecording();
         }
     }
 
@@ -72,20 +76,21 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
     {
         if (!available)
         {
-            recordDebugger.text = "Speech Recognition not available";
+            //recordDebugger.text = "Speech Recognition not available";
         }
     }
 
     public void OnAuthorizationStatusFetched(AuthorizationStatus status)
     {
         if(status != AuthorizationStatus.Authorized) {
-            recordDebugger.text = "Cannot use Speech Recognition, authorization status is " + status;
+            //recordDebugger.text = "Cannot use Speech Recognition, authorization status is " + status;
         }
     }
 
     public void OnError(string error)
     {
         Debug.LogError(error);
+        StopRecording();
         //recordDebugger.text = "Something went wrong... Try again! \n [" + error + "]";
     }
 
@@ -98,7 +103,7 @@ public class AudioFeedbackRecognizer : MonoBehaviour {
         else
         {
             SpeechRecognizer.StartRecording(true);
-            recordDebugger.text = "Say something :-)";
+            //recordDebugger.text = "Say something :-)";
         }
     }
 }
