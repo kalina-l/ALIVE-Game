@@ -144,6 +144,7 @@ public class TouchController : AbstractViewController {
         {
             ApplicationManager.Instance.StopCoroutine(showHandRoutine);
         }
+        _feedbackViewController.SetIsRecording(false);
         handIsAnimating = false;
         handImage.enabled = false;
     }

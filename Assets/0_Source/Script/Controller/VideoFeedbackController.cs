@@ -56,6 +56,7 @@ public class VideoFeedbackController
     {
         slider.ResetSlider();
         slider.SetActive(false);
+        _feedbackViewController.SetIsRecording(false);
         videoInput.stopRecording();
     }
 
