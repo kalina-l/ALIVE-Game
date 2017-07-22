@@ -32,6 +32,9 @@ public class AnimationController {
             case "Ball.Eat":
                 EatAnimation(false);
                 break;
+            case "Ball.Play with":
+                PlayAnimation(true);
+                break;
             default:
                 PlayIdleAnimation(needs);
                 break;
@@ -57,15 +60,14 @@ public class AnimationController {
 
     private void PlayAnimation(bool isBall)
     {
-        _animationTime = 2.5f;
-
         if (isBall)
         {
-            //TODO
+            _animationTime = 3.0f;
+            _animation.Play("PlayBall");
         }
         else
         {
-            //TODO: add fx
+            _animationTime = 2.5f;
             _animation.Play("PlayCake");
         }
 
