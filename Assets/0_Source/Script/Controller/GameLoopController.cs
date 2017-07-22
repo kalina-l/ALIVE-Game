@@ -76,75 +76,78 @@ public class GameLoopController : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
-            System.Random rand = new System.Random();
-            if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
+            if (_data.Person.IsAlive)
             {
-                //random feedback request (25%)
-                bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
-                if (receivingFeedback)
+                System.Random rand = new System.Random();
+                if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
                 {
-                   _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
-                }
-            }
-
-            bool sentFeedback = false;
-
-            float timer = 0;
-            while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
-            {
-                timer += Time.deltaTime;
-
-                if (!sentFeedback)
-                {
-                    if (_manager.Multiplayer.IsFeedbackRequestPending())
+                    //random feedback request (25%)
+                    bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                    if (receivingFeedback)
                     {
-
-                        // SEND FEEDBACK TO ANOTHER LEMO
-                        Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
-                        PersonalityNode personality = new PersonalityNode(_data.Person);
-                        personality.changeNeeds(_manager.Multiplayer.RemoteNeeds);
-                        Experience experience = feedbackActivity.GetExperience(personality);
-                        float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
-                        PersonalityNode newPerson = new PersonalityNode(personality,
-                                                    experience,
-                                                    feedback);
-                        float evaluation = newPerson.SelfEvaluation;
-                        //DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
-                        if (evaluation > 0)
-                        {
-                            _manager.Multiplayer.SendFeedback(1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": 1", DebugController.DebugType.Multiplayer);
-                        }
-                        else
-                        {
-                            _manager.Multiplayer.SendFeedback(-1);
-                            DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": -1", DebugController.DebugType.Multiplayer);
-                        }
+                        _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
                     }
                 }
 
-                yield return 0;
+                bool sentFeedback = false;
+
+                float timer = 0;
+                while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
+                {
+                    timer += Time.deltaTime;
+
+                    if (!sentFeedback)
+                    {
+                        if (_manager.Multiplayer.IsFeedbackRequestPending())
+                        {
+
+                            // SEND FEEDBACK TO ANOTHER LEMO
+                            Activity feedbackActivity = _manager.Multiplayer.GetFeedbackActivity();
+                            PersonalityNode personality = new PersonalityNode(_data.Person);
+                            personality.changeNeeds(_manager.Multiplayer.RemoteNeeds);
+                            Experience experience = feedbackActivity.GetExperience(personality);
+                            float feedback = feedbackActivity.Feedback.GetFeedback(personality.Needs);
+                            PersonalityNode newPerson = new PersonalityNode(personality,
+                                                        experience,
+                                                        feedback);
+                            float evaluation = newPerson.SelfEvaluation;
+                            //DebugController.Instance.Log("My evaluation: " + evaluation, DebugController.DebugType.Multiplayer);
+                            if (evaluation > 0)
+                            {
+                                _manager.Multiplayer.SendFeedback(1);
+                                DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": 1", DebugController.DebugType.Multiplayer);
+                            }
+                            else
+                            {
+                                _manager.Multiplayer.SendFeedback(-1);
+                                DebugController.Instance.Log("Send feedback to the remote LEMO for " + feedbackActivity.Name + ": -1", DebugController.DebugType.Multiplayer);
+                            }
+                        }
+                    }
+
+                    yield return 0;
+                }
+
+                if (waitForFeedback)
+                {
+                    GiveFeedback(0);
+                }
+
+
+                _data.Person.checkEmotion();
+
+                if (saveCounter >= _manager.AutomaticSaveAfterActions)
+                {
+                    _data.SaveData();
+                    saveCounter = 1;
+                }
+                else
+                {
+                    saveCounter++;
+                }
+
+                yield return new WaitForSeconds(2);
             }
-
-            if (waitForFeedback)
-            {
-                GiveFeedback(0);
-            }
-
-
-            _data.Person.checkEmotion();
-
-            if (saveCounter >= _manager.AutomaticSaveAfterActions)
-            {
-                _data.SaveData();
-                saveCounter = 1;
-            }
-            else
-            {
-                saveCounter++;
-            }
-
-            yield return new WaitForSeconds(2);
         }
 
         //GAME OVER
@@ -292,7 +295,7 @@ public class GameLoopController : GameLoop {
 
                     _manager.Multiplayer.SendActivityRequest(_lastActivity);
 
-                    while (_manager.Multiplayer.IsWaitingForAnswer()) {
+                    while (_manager.Multiplayer.IsWaitingForAnswer() && _data.Person.IsAlive) {
                         yield return 0;
                     }
                     _manager.Multiplayer.setLocalAlert(false);
@@ -302,41 +305,44 @@ public class GameLoopController : GameLoop {
                 _manager.Multiplayer.DeclineRequest();
             }
 
-            debug.Log("Do Activity", DebugController.DebugType.GameFlow);
-
-            if (_lastActivity.IsDeclined)
+            if (_data.Person.IsAlive)
             {
-                _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+                debug.Log("Do Activity", DebugController.DebugType.GameFlow);
+
+                if (_lastActivity.IsDeclined)
+                {
+                    _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+                }
+                else
+                {
+                    //Show Activity
+                    _manager.ShowMessage(_lastActivity.feedBackString);
+                }
+
+                _lastExperience = _lastActivity.DoActivity(_data.Person);
+
+                _manager.Multiplayer.ClearActivity();
+
+                //Ask for Feedback
+                waitForFeedback = true;
+
+                _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
+                if (_manager.Multiplayer.IsConnected)
+                {
+                    _manager.Multiplayer.SendCurrentActivity(_lastActivity.Name);
+                }
+
+                debug.Log("Animate", DebugController.DebugType.GameFlow);
+
+                while (_manager.CharacterAnimation.IsAnimating)
+                {
+                    yield return 0;
+                }
+
+                debug.Log("UpdateUI", DebugController.DebugType.GameFlow);
+
+                _manager.UpdateUI();
             }
-            else
-            {
-                //Show Activity
-                _manager.ShowMessage(_lastActivity.feedBackString);
-            }
-
-            _lastExperience = _lastActivity.DoActivity(_data.Person);
-            
-            _manager.Multiplayer.ClearActivity();
-
-            //Ask for Feedback
-            waitForFeedback = true;
-
-            _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
-            if (_manager.Multiplayer.IsConnected)
-            {
-                _manager.Multiplayer.SendCurrentActivity(_lastActivity.Name);
-            }
-
-            debug.Log("Animate", DebugController.DebugType.GameFlow);
-
-            while (_manager.CharacterAnimation.IsAnimating)
-            {
-                yield return 0;
-            }
-
-            debug.Log("UpdateUI", DebugController.DebugType.GameFlow);
-
-            _manager.UpdateUI();
             
         }
         else
