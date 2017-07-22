@@ -13,6 +13,9 @@ public class ItemBoxObject : MonoBehaviour {
 
     void OnMouseUpAsButton()
     {
-        _controller.RemoveItemFromSlot();
+        if (!_controller.IsAnimating)
+        {
+            _controller.RemoveItemFromSlot();
+        }
     }
 }

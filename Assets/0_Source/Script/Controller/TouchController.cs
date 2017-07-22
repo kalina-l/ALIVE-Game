@@ -47,7 +47,14 @@ public class TouchController : AbstractViewController {
         float x = screenPosition.x / Screen.width;
         float y = screenPosition.y / Screen.height;
 
-        return new Vector2(x * 1080, y * 1920);
+        if (Screen.width > Screen.height)
+        {
+            return new Vector2(x * 1920, y * 1080);
+        }
+        else
+        {
+            return new Vector2(x * 1080, y * 1920);
+        }
     }
 
     public void ShowFistFeedback(Vector2 position)

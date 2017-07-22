@@ -180,7 +180,7 @@ public class MultiplayerController {
     {
         _gettingFeedbackRequest = false;
         _happeningController.sendMessage("feedback", feedback);
-        ApplicationManager.Instance.ShowRemoteFeedback(feedback);
+        if (_id == "local") ApplicationManager.Instance.ShowRemoteFeedback(feedback);
 
         if(_id == "local") ApplicationManager.Instance.MultiplayerViewController.ShowMultiplayerResponse(feedback > 0, true);
     }

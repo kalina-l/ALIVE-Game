@@ -62,15 +62,17 @@ public class ApplicationManager : MonoBehaviour {
         //Data
         _data = new GameData(LoadFrom);
 
+        CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
+
         //UI
         _alert = new AlertViewController(UICanvas.transform);
         _output = new OutputViewController(UICanvas.transform);
         _feedback = new FeedbackViewController(UICanvas.transform, _data.Intelligence);
-        _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person);
+        _itemBox = new ItemBoxViewController(UICanvas.transform, _data.Items, _data.Person, CharacterAnimation);
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
         _options = new OptionsMenuController(UICanvas.transform, _data.Person);
 
-        CharacterAnimation = new AnimationController(GraphicsHelper.Instance.lemo);
+        
         
         if (resetButton)
         {
