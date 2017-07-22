@@ -19,9 +19,14 @@ public class ItemBoxViewController : AbstractViewController
     private GameObject _itemObject;
     private GameObject _remoteItemObject;
 
+    private AnimationController _animation;
 
-    public ItemBoxViewController(Transform parent, List<Item> itemList, Personality personality)
+    public bool IsAnimating { get { return _animation.IsAnimating; } }
+
+
+    public ItemBoxViewController(Transform parent, List<Item> itemList, Personality personality, AnimationController animation)
     {
+        _animation = animation;
         Dictionary<int, Item> items = new Dictionary<int, Item>();
 
         foreach (Item item in itemList)

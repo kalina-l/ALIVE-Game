@@ -90,6 +90,8 @@ public class GameLoopController : GameLoop {
 
                 bool sentFeedback = false;
 
+                DebugController.Instance.Log("Start Feedback " + _manager.getFeedbackController().IsRecording(), DebugController.DebugType.GameFlow);
+
                 float timer = 0;
                 while (timer < _manager.WaitTime || _manager.getFeedbackController().IsRecording())
                 {
@@ -131,6 +133,8 @@ public class GameLoopController : GameLoop {
                 {
                     GiveFeedback(0);
                 }
+
+                DebugController.Instance.Log("Feedback Done", DebugController.DebugType.GameFlow);
 
 
                 _data.Person.checkEmotion();
