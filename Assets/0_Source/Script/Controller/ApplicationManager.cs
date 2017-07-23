@@ -176,9 +176,9 @@ public class ApplicationManager : MonoBehaviour {
         _itemBox.UpdateBox(_data.Person);
     }
 
-    public void ShowMessage(string message)
+    public void ShowMessage(string message, bool isMultiplayer)
     {
-        _output.DisplayMessage(message);
+        _output.DisplayMessage(message, isMultiplayer);
     }
 
     public bool getWaitForFeedback()

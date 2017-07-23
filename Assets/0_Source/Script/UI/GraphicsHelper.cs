@@ -80,6 +80,7 @@ public class GraphicsHelper : MonoBehaviour {
 
     public AnimationCurve SliderAnimation;
     public AnimationCurve AlertAnimation;
+    public AnimationCurve BlinkAnimation;
 
     public GameObject cakePrefab;
     public GameObject ballPrefab;

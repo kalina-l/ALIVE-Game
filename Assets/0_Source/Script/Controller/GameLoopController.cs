@@ -316,12 +316,12 @@ public class GameLoopController : GameLoop
 
                 if (_lastActivity.IsDeclined)
                 {
-                    _manager.ShowMessage("REJECTED");
+                    _manager.ShowMessage("REJECTED", false);
                 }
                 else
                 {
                     //Show Activity
-                    _manager.ShowMessage(_lastActivity.feedBackString);
+                    _manager.ShowMessage(_lastActivity.feedBackString, _lastActivity.IsMultiplayer);
                 }
 
                 _lastExperience = _lastActivity.DoActivity(_data.Person);
