@@ -139,6 +139,8 @@ public class GameLoopController : GameLoop {
 
                 _data.Person.checkEmotion();
 
+                _manager.CharacterAnimation.SetEmotion(_data.Person.executedEmotion);
+
                 if (saveCounter >= _manager.AutomaticSaveAfterActions)
                 {
                     _data.SaveData();

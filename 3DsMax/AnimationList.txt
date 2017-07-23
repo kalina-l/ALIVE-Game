@@ -1,15 +1,19 @@
 Idle 001-059
-Yawn 060-149
+Yawn 060-149 (low Energy)
 FallAsleep 150-270
 Sleep 270-389
 WakeUp 390 - 510
-Sneeze 510 - 569
+Sneeze 510 - 569 (low Health)
 Play 570 - 719
-Dance 730 - 789
-Tongue 800 - 940
+Dance 730 - 789 (high Emotion)
+Tongue 800 - 940 (low Hunger)
 
 Eat 940 - 1000
 PlayCake 1000 - 1120
 EatBall 1140 - 1230
 PlayBall 1230 - 1380
+LookAround 1380 - 1500 (low Social)
+Sigh 1500 - 1590 (low Satisfaction)
+SadIdle 1600 - 1659 (low Emotion)
+HappyIdle 1680 - 1739 (high Emotion)
 
