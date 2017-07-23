@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameLoopController : GameLoop {
+public class GameLoopController : GameLoop
+{
 
     private ApplicationManager _manager;
     private GameData _data;
@@ -17,7 +18,8 @@ public class GameLoopController : GameLoop {
     private Item askItem;
     private bool askForItemShown = false;
 
-    public GameLoopController(ApplicationManager manager, GameData data) {
+    public GameLoopController(ApplicationManager manager, GameData data)
+    {
         _manager = manager;
         _data = data;
 
@@ -37,9 +39,9 @@ public class GameLoopController : GameLoop {
                     //Store Feedback in Activity               
                     _lastActivity.Feedback.AddFeedback(_lastExperience.BaseNeeds, feedback);
 
-                    if(_data.Person.executedEmotion == EmotionType.NORMAL)
+                    if (_data.Person.executedEmotion == EmotionType.NORMAL)
                     {
-                        if(feedback < 0)
+                        if (feedback < 0)
                         {
                             _data.Person.emotionCounter -= 1;
                         }
@@ -48,7 +50,8 @@ public class GameLoopController : GameLoop {
                             _data.Person.emotionCounter += 1;
                         }
                     }
-                } else
+                }
+                else
                 {
                     _lastActivity.Feedback.AddNoFeedbackGiven(_lastExperience.BaseNeeds);
                 }
@@ -75,18 +78,9 @@ public class GameLoopController : GameLoop {
 
             yield return _manager.StartCoroutine(DoActivityRoutine());
 
+
             if (_data.Person.IsAlive)
             {
-                System.Random rand = new System.Random();
-                if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
-                {
-                    //random feedback request (25%)
-                    bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
-                    if (receivingFeedback)
-                    {
-                        _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
-                    }
-                }
 
                 bool sentFeedback = false;
 
@@ -165,7 +159,7 @@ public class GameLoopController : GameLoop {
         DebugController debug = DebugController.Instance;
 
         debug.Log("Start of Loop", DebugController.DebugType.GameFlow);
-        
+
 
         if (_manager.Multiplayer.IsRequestPending())
         {
@@ -178,21 +172,21 @@ public class GameLoopController : GameLoop {
 
 
         //add point to happy emotion when Lemo gets Item it wants
-        if(askItem != null)
-        debug.Log("AskItem: " + askItem.Name, DebugController.DebugType.Emotion);
+        if (askItem != null)
+            debug.Log("AskItem: " + askItem.Name, DebugController.DebugType.Emotion);
         if (_data.Person.executedEmotion == EmotionType.NORMAL)
         {
             if (askForItemShown && (askItem != null) && (_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter += 1;
             }
-            if(askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
+            if (askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter -= 1;
             }
         }
 
-        
+
         _data.Intelligence.GetNextActivity(_data.Person, _manager.Multiplayer.IsConnected, _manager.Multiplayer.GetPendingActivity());
 
         float timer = 0;
@@ -263,14 +257,14 @@ public class GameLoopController : GameLoop {
                 {
                     debug.Log("NO EXTRA ITEM NEEDED - I want to " + _data.Person.GetActivity(activityID).feedBackString, DebugController.DebugType.GameFlow);
                 }
-                
+
             }
 
             debug.Log("Get Activity", DebugController.DebugType.GameFlow);
 
             _lastActivity = _data.Person.GetActivity(activityID);
-            
-            if(_lastActivity == null)
+
+            if (_lastActivity == null)
             {
                 for (int i = 0; i < _data.Items.Count; i++)
                 {
@@ -287,12 +281,16 @@ public class GameLoopController : GameLoop {
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
             //DebugController.Instance.Log("Locals activity " + _lastActivity.Name + ", Object: " + _lastActivity.GetHashCode(), DebugController.DebugType.Multiplayer);
 
-            if (_lastActivity.IsMultiplayer) {
-                if (_lastActivity.IsRequest) {
+            if (_lastActivity.IsMultiplayer)
+            {
+                if (_lastActivity.IsRequest)
+                {
                     _manager.Multiplayer.AcceptRequest();
                 }
-                else {
-                    if (_manager.Multiplayer.IsRequestPending()) {
+                else
+                {
+                    if (_manager.Multiplayer.IsRequestPending())
+                    {
                         _manager.Multiplayer.DeclineRequest();
                     }
 
@@ -300,13 +298,15 @@ public class GameLoopController : GameLoop {
 
                     _manager.Multiplayer.SendActivityRequest(_lastActivity);
 
-                    while (_manager.Multiplayer.IsWaitingForAnswer() && _data.Person.IsAlive) {
+                    while (_manager.Multiplayer.IsWaitingForAnswer() && _data.Person.IsAlive)
+                    {
                         yield return 0;
                     }
                     _manager.Multiplayer.setLocalAlert(false);
                 }
             }
-            else if(_manager.Multiplayer.IsRequestPending()) {
+            else if (_manager.Multiplayer.IsRequestPending())
+            {
                 _manager.Multiplayer.DeclineRequest();
             }
 
@@ -316,7 +316,7 @@ public class GameLoopController : GameLoop {
 
                 if (_lastActivity.IsDeclined)
                 {
-                    _manager.ShowMessage("wanted to do: " + _lastActivity.feedBackString + ", but only got a rejection reward");
+                    _manager.ShowMessage("REJECTED");
                 }
                 else
                 {
@@ -325,8 +325,18 @@ public class GameLoopController : GameLoop {
                 }
 
                 _lastExperience = _lastActivity.DoActivity(_data.Person);
-
                 _manager.Multiplayer.ClearActivity();
+
+                System.Random rand = new System.Random();
+                if (_manager.Multiplayer.IsConnected && !_lastActivity.IsMultiplayer)
+                {
+                    //random feedback request (25%)
+                    bool receivingFeedback = rand.NextDouble() < 0.25 ? true : false;
+                    if (receivingFeedback)
+                    {
+                        _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
+                    }
+                }
 
                 //Ask for Feedback
                 waitForFeedback = true;
@@ -348,7 +358,7 @@ public class GameLoopController : GameLoop {
 
                 _manager.UpdateUI();
             }
-            
+
         }
         else
         {

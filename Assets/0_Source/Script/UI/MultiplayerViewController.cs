@@ -27,6 +27,9 @@ public class MultiplayerViewController : AbstractViewController {
 
     private Vector2 _alertSize;
 
+    private IEnumerator rotateCameraRoutine;
+    private IEnumerator moveCameraRoutine;
+
     public MultiplayerViewController (Transform parent)
     {
         _remoteLemo = GraphicsHelper.Instance.remoteLemo;
@@ -64,7 +67,7 @@ public class MultiplayerViewController : AbstractViewController {
         localIconRect.offsetMax = new Vector2(-86, -56);
 
         _localAlertIcon = AddSprite(localIconRect, null, GraphicsHelper.Instance.SpriteColorWhite);
-
+        
         //remote alert
         RectTransform remoteAlertRect = CreateContainer("RemoteAlert", Rect,
             new Vector2(320, -100), Vector2.zero,
@@ -92,9 +95,15 @@ public class MultiplayerViewController : AbstractViewController {
         _isMultiplayerOn = true;
         
         ApplicationManager.Instance.MoveItemAlert(true);
-        ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime));
+
+        if(moveCameraRoutine != null) ApplicationManager.Instance.StopCoroutine(moveCameraRoutine);
+        moveCameraRoutine = moveCamera(_camera.position, GraphicsHelper.Instance.multiplayerCameraAnchor.position, _switchTime);
+        ApplicationManager.Instance.StartCoroutine(moveCameraRoutine);
+
+        if (rotateCameraRoutine != null) ApplicationManager.Instance.StopCoroutine(rotateCameraRoutine);
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.multiplayerCameraAnchor.rotation);
-        ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, angle, 0), _switchTime));
+        rotateCameraRoutine = rotateCamera(new Vector3(0, angle, 0), _switchTime);
+        ApplicationManager.Instance.StartCoroutine(rotateCameraRoutine);
     }
 
     public void endMultiplayerView()
@@ -102,9 +111,13 @@ public class MultiplayerViewController : AbstractViewController {
         _isMultiplayerOn = false;
         
         ApplicationManager.Instance.MoveItemAlert(false);
-        ApplicationManager.Instance.StartCoroutine(moveCamera(_camera.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime));
+        if (moveCameraRoutine != null) ApplicationManager.Instance.StopCoroutine(moveCameraRoutine);
+        moveCameraRoutine = moveCamera(_camera.position, GraphicsHelper.Instance.singleplayerCameraAnchor.position, _switchTime);
+        ApplicationManager.Instance.StartCoroutine(moveCameraRoutine);
+        if (rotateCameraRoutine != null) ApplicationManager.Instance.StopCoroutine(rotateCameraRoutine);
         float angle = Quaternion.Angle(_camera.rotation, GraphicsHelper.Instance.singleplayerCameraAnchor.rotation);
-        ApplicationManager.Instance.StartCoroutine(rotateCamera(new Vector3(0, -angle, 0), _switchTime));
+        rotateCameraRoutine = rotateCamera(new Vector3(0, -angle, 0), _switchTime);
+        ApplicationManager.Instance.StartCoroutine(rotateCameraRoutine);
         //UnityEngine.Object.Destroy(_remoteLemo);
     }
         
