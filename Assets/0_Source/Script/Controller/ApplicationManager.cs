@@ -148,6 +148,17 @@ public class ApplicationManager : MonoBehaviour {
         _feedback.ShowFeedback(feedback);
     }
 
+    public void ShowEmotion(int emotion)
+    {
+        if(emotion < 0)
+        {
+            GraphicsHelper.Instance.negativeEmotionFX.Play();
+        } else if(emotion > 0)
+        {
+            GraphicsHelper.Instance.positiveEmotionFX.Play();
+        }
+    }
+
     public void ShowRemoteFeedback(int feedback)
     {
         _feedback.ShowRemoteFeedback(feedback);

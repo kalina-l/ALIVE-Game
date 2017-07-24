@@ -44,10 +44,12 @@ public class GameLoopController : GameLoop
                         if (feedback < 0)
                         {
                             _data.Person.emotionCounter -= 1;
+                            ApplicationManager.Instance.ShowEmotion(-1);
                         }
                         else
                         {
                             _data.Person.emotionCounter += 1;
+                            ApplicationManager.Instance.ShowEmotion(1);
                         }
                     }
                 }
@@ -179,10 +181,12 @@ public class GameLoopController : GameLoop
             if (askForItemShown && (askItem != null) && (_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter += 1;
+                ApplicationManager.Instance.ShowEmotion(1);
             }
             if (askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter -= 1;
+                ApplicationManager.Instance.ShowEmotion(-1);
             }
         }
 

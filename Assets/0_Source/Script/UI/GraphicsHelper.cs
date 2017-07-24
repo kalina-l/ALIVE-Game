@@ -26,6 +26,9 @@ public class GraphicsHelper : MonoBehaviour {
     public ParticleSystem remotePositiveFX;
     public ParticleSystem remoteNegativeFX;
 
+    public ParticleSystem positiveEmotionFX;
+    public ParticleSystem negativeEmotionFX;
+
     public Sprite logo;
     public Sprite title;
 
