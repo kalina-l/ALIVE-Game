@@ -106,6 +106,9 @@ public class HappeningController : MonoBehaviour, MultiplayerConnection {
     {
         Lemo.SetRemoteTexture("no_texture");
         Plugin.sendData(connectionController.Remote, "closeConnection");
+        Lemo.GetItem(-1, added: false);
+        Lemo.setRemoteAlert(false);
+        Lemo.setLocalAlert(false);
     }
     // Callbacks
 

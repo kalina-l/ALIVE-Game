@@ -221,7 +221,7 @@ public class ApplicationManager : MonoBehaviour {
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
         }
-        
+
         // Editor Multiplayer Simulation
 #if UNITY_EDITOR
         if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)

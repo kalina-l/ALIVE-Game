@@ -76,6 +76,7 @@ public class DragItemContainer : AbstractViewController {
     {
         DebugController.Instance.Log("Give Item!", DebugController.DebugType.UI);
 
+        _parentViewController.AddItemToSlot(_icon, this);
         _personality.AddItem(_item.ID, _item);
 
         _given = true;
@@ -83,7 +84,6 @@ public class DragItemContainer : AbstractViewController {
         _itemImage.color = GraphicsHelper.Instance.SpriteColorWhiteHidden;
         _itemImage.raycastTarget = false;
 
-        _parentViewController.AddItemToSlot(_icon, this);
         _parentViewController.ToggleBox();
     }
 

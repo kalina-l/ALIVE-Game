@@ -15,6 +15,8 @@ namespace Lean.Touch
         private bool blockPetting;
         private float maximumPetDuration = 4;
 
+        private float draggedItemFingerMagnitude;
+
         private float raycastTimer = 0;
 
         private TouchController _controller;
@@ -50,7 +52,11 @@ namespace Lean.Touch
         public void OnFingerSet(LeanFinger finger)
         {
 
-            if (DragItemHandler.itemIsDragged) return;
+            if (DragItemHandler.itemIsDragged)
+            {
+                finger.Age = 0;
+                return;
+            }
 
             if(isPetting)
             {
@@ -88,7 +94,7 @@ namespace Lean.Touch
         private void StartPetting(LeanFinger finger)
         {
             Vector2 distanceVector = finger.ScreenPosition - finger.StartScreenPosition;
-            if (distanceVector.magnitude > 50 && finger.Age > 0.2)
+            if (distanceVector.magnitude > 50 && finger.Age > 0.4)
             {
                 _controller.StartPetting();
                 isPetting = true;

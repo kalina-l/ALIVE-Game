@@ -217,9 +217,13 @@ public class Activity {
             LearnedExperiences.Add(xp);
         }
 
-		if (item != null) {
-			item.uses += useConsume;
-		}
+        if (!IsMultiplayer || !IsDeclined)
+        {
+            if (item != null)
+            {
+                item.uses += useConsume;
+            }
+        }
 
         IsRequest = false;
         IsDeclined = false;

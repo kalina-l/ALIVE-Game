@@ -26,6 +26,8 @@ public class SimulationController : MultiplayerConnection
         Connected = false;
         Lemo.SetRemoteTexture("no_texture");
         Lemo.setRemoteAlert(false);
+        Lemo.GetItem(-1, added: false);
+        Lemo.setLocalAlert(false);
     }
 
     public void SetMultiplayerController(MultiplayerController multiplayerController)

@@ -278,6 +278,7 @@ public class GameLoopController : GameLoop
 
             debug.Log("Do Multiplayer", DebugController.DebugType.GameFlow);
             //DebugController.Instance.Log("Locals activity " + _lastActivity.Name + ", Object: " + _lastActivity.GetHashCode(), DebugController.DebugType.Multiplayer);
+            waitForFeedback = true;
 
             if (_lastActivity.IsMultiplayer)
             {
@@ -298,7 +299,19 @@ public class GameLoopController : GameLoop
 
                     while (_manager.Multiplayer.IsWaitingForAnswer() && _data.Person.IsAlive)
                     {
+                        if (_lastActivity.IsRequest)
+                        {
+                            _manager.Multiplayer.AcceptRequest();
+                        }
+                        else if (_manager.Multiplayer.IsRequestPending())
+                        {
+                            _manager.Multiplayer.DeclineRequest();
+                        }
                         yield return 0;
+                    }
+                    if(!_manager.Multiplayer.IsConnected)
+                    {
+                        yield break;
                     }
                     _manager.Multiplayer.setLocalAlert(false);
                 }
@@ -335,10 +348,7 @@ public class GameLoopController : GameLoop
                         _manager.Multiplayer.SendFeedbackRequest(_lastActivity.ID);
                     }
                 }
-
-                //Ask for Feedback
-                waitForFeedback = true;
-
+                
                 _manager.CharacterAnimation.PlayActivityAnimation(_lastActivity.Name, new PersonalityNode(_data.Person).Needs);
                 if (_manager.Multiplayer.IsConnected)
                 {

@@ -23,8 +23,10 @@ public class ConnectionController {
     public void StartConnection ()
     {
         HappeningClients clients = _happeningController.Plugin.getClients();
+        Debug.Log("Number of connected clients: " + clients.clients.Count);
         foreach (HappeningClients.HappeningClient client in clients.clients)
         {
+            Debug.Log("client: " + client.uuid + "found!");
             _happeningController.Plugin.sendData(client, "HI, I AM LEMO");
         }
         IsConnected = false;
@@ -75,6 +77,7 @@ public class ConnectionController {
         _happeningController.Lemo.SetRemoteTexture("no_texture");
         _happeningController.Lemo.GetItem(-1, added: false);
         _happeningController.Lemo.setRemoteAlert(false);
+        _happeningController.Lemo.setLocalAlert(false);
 
         StartConnection();
     }
