@@ -26,6 +26,9 @@ public class GraphicsHelper : MonoBehaviour {
     public ParticleSystem remotePositiveFX;
     public ParticleSystem remoteNegativeFX;
 
+    public ParticleSystem positiveEmotionFX;
+    public ParticleSystem negativeEmotionFX;
+
     public Sprite logo;
     public Sprite title;
 
@@ -80,6 +83,7 @@ public class GraphicsHelper : MonoBehaviour {
 
     public AnimationCurve SliderAnimation;
     public AnimationCurve AlertAnimation;
+    public AnimationCurve BlinkAnimation;
 
     public GameObject cakePrefab;
     public GameObject ballPrefab;

@@ -44,10 +44,12 @@ public class GameLoopController : GameLoop
                         if (feedback < 0)
                         {
                             _data.Person.emotionCounter -= 1;
+                            ApplicationManager.Instance.ShowEmotion(-1);
                         }
                         else
                         {
                             _data.Person.emotionCounter += 1;
+                            ApplicationManager.Instance.ShowEmotion(1);
                         }
                     }
                 }
@@ -133,6 +135,8 @@ public class GameLoopController : GameLoop
 
                 _data.Person.checkEmotion();
 
+                _manager.CharacterAnimation.SetEmotion(_data.Person.executedEmotion);
+
                 if (saveCounter >= _manager.AutomaticSaveAfterActions)
                 {
                     _data.SaveData();
@@ -177,10 +181,12 @@ public class GameLoopController : GameLoop
             if (askForItemShown && (askItem != null) && (_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter += 1;
+                ApplicationManager.Instance.ShowEmotion(1);
             }
             if (askForItemShown && (askItem != null) && (!_data.Person.GetItems().ContainsValue(askItem)))
             {
                 _data.Person.emotionCounter -= 1;
+                ApplicationManager.Instance.ShowEmotion(-1);
             }
         }
 
@@ -327,12 +333,12 @@ public class GameLoopController : GameLoop
 
                 if (_lastActivity.IsDeclined)
                 {
-                    _manager.ShowMessage("REJECTED");
+                    _manager.ShowMessage("REJECTED", false);
                 }
                 else
                 {
                     //Show Activity
-                    _manager.ShowMessage(_lastActivity.feedBackString);
+                    _manager.ShowMessage(_lastActivity.feedBackString, _lastActivity.IsMultiplayer);
                 }
 
                 _lastExperience = _lastActivity.DoActivity(_data.Person);

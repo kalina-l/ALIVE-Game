@@ -418,12 +418,14 @@ public class Personality {
             if(lastEmotionCounter == emotionCounter)
             {
                 emotionCounter = emotionCounter < 0 ? emotionCounter + 1 : emotionCounter - 1;
+                ApplicationManager.Instance.ShowEmotion(emotionCounter < 0 ? 1 : -1);
             }
         }
         else
         {
             emotionCounter = emotionCounter < 0 ? emotionCounter+1 : emotionCounter-1;
-            if(emotionCounter == 0)
+            ApplicationManager.Instance.ShowEmotion(emotionCounter < 0 ? 1 : -1);
+            if (emotionCounter == 0)
             {
                 DeactivateEmotion(Emotions[executedEmotion]);
             }

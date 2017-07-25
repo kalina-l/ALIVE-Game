@@ -9,10 +9,35 @@ public class AnimationController {
     public bool IsAnimating { get; private set; }
 
     private float _animationTime;
+    private float _currentEmotion;
 
 	public AnimationController(GameObject lemo)
     {
         _animation = lemo.GetComponent<Animator>();
+    }
+
+    public void SetEmotion(EmotionType type)
+    {
+        float emotion = 0f;
+
+        switch (type)
+        {
+            case EmotionType.BAD:
+                emotion = 0f;
+                break;
+            case EmotionType.NORMAL:
+                emotion = 0.5f;
+                break;
+            case EmotionType.GOOD:
+                emotion = 1f;
+                break;
+        }
+
+
+        if (emotion != _currentEmotion)
+        {
+            ApplicationManager.Instance.StartCoroutine(EmotionRoutine(emotion));
+        }
     }
 
     public void PlayActivityAnimation(string activityName, Dictionary<NeedType, Evaluation> needs) {
@@ -78,29 +103,57 @@ public class AnimationController {
 
         _animationTime = 1.5f;
 
+        List<string> idleAnims = new List<string>();
+
         if(needs[NeedType.ENERGY] < Evaluation.BAD) {
             //Play sleepy Idle
-            _animation.Play("Idle_Yawn");
-        } else if(needs[NeedType.HEALTH] < Evaluation.BAD) {
-            //Play sneeze Idle
-            _animation.Play("Idle_Sneeze");
-        } else if (needs[NeedType.HUNGER] < Evaluation.BAD) {
-            //Play tongue Idle
-            _animation.Play("Idle_Tongue");
-        } else if (needs[NeedType.SATISFACTION] < Evaluation.BAD){
-            //TODO: Play sad Idle
-            _animation.Play("Idle_Tongue");
-        } else if (needs[NeedType.SOCIAL] < Evaluation.BAD){
-            //TODO: Play lonely Idle
-            _animation.Play("Idle_Tongue");
-        } else {
-            //Play dance Idle
-            _animation.Play("Idle_Dance");
+            idleAnims.Add("Idle_Yawn");
+        }
 
-            //TODO: play cry idle
+        if (needs[NeedType.HEALTH] < Evaluation.BAD) {
+            //Play sneeze Idle
+            idleAnims.Add("Idle_Sneeze");
+        }
+
+        if (needs[NeedType.HUNGER] < Evaluation.BAD) {
+            //Play tongue Idle
+            idleAnims.Add("Idle_Tongue");
+        }
+
+        if (needs[NeedType.SATISFACTION] < Evaluation.BAD){
+            //Play bored Idle
+            idleAnims.Add("Idle_Bored");
+        }
+
+        if (needs[NeedType.SOCIAL] < Evaluation.BAD){
+            //Play lonely Idle
+            idleAnims.Add("Idle_Lonely");
+        }
+
+        if(idleAnims.Count == 0) {
+            //Play dance Idle because everything is fine
+            _animation.Play("Idle_Dance");
+        } else {
+            _animation.Play(idleAnims[(int)(idleAnims.Count * Random.value)]);
         }
 
         ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
+    }
+
+    private IEnumerator EmotionRoutine(float targetEmotion)
+    {
+        float timer = 0;
+        float startEmotion = _currentEmotion;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime * 2;
+
+            _currentEmotion = Mathf.Lerp(_currentEmotion, targetEmotion, timer);
+            _animation.SetFloat("Emotion", _currentEmotion);
+
+            yield return 0;
+        }
     }
 
     private IEnumerator AnimationRoutine()
@@ -122,7 +175,7 @@ public class AnimationController {
 
         _animation.SetTrigger("WakeUp");
 
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(3);
 
         IsAnimating = false;
     }

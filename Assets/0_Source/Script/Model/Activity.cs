@@ -126,6 +126,7 @@ public class Activity {
                 if (parentPersonality.executedEmotion == EmotionType.NORMAL)
                 {
                     parentPersonality.emotionCounter += 1;
+                    ApplicationManager.Instance.ShowEmotion(1);
                 }
                 GetAcceptReward().DoReward(parentPersonality, need);
 
@@ -139,6 +140,7 @@ public class Activity {
                 if (parentPersonality.executedEmotion == EmotionType.NORMAL)
                 {
                     parentPersonality.emotionCounter -= 1;
+                    ApplicationManager.Instance.ShowEmotion(-1);
                 }
 
                 GetRejectionReward().DoReward(parentPersonality, need);

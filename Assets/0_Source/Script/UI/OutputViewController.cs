@@ -13,24 +13,42 @@ public class OutputViewController : AbstractViewController {
     private Image _background;
     private Image _fillImage;
 
+    private Vector2 _singlePlayerPos;
+    private Vector2 _singlePlayerAnchor;
+    private Vector2 _singlePlayerSize;
+
+    private Vector2 _multiPlayerPos;
+    private Vector2 _multiPlayerAnchor;
+    private Vector2 _multiPlayerSize;
+
     public OutputViewController(Transform parent)
     {
+        _singlePlayerPos = new Vector2(540, -155);
+        _singlePlayerAnchor = new Vector2(0, 1f);
+        _singlePlayerSize = new Vector2(320, 100);
+
+        _multiPlayerPos = new Vector2(0, -155);
+        _multiPlayerPos = new Vector2(0.5f, 1f);
+        _multiPlayerSize = new Vector2(640, 100);
+
         Rect = CreateContainer("Output", parent,
-            new Vector2(540, -155), new Vector2(320, 100),
+            _singlePlayerPos, new Vector2(320, 100),
             new Vector2(0, 1f), new Vector2(0, 1f), new Vector2(0.5f, 0.5f));
         View = Rect.gameObject;
-
-        RectTransform backgroundImage = CreateContainer("Background", Rect,
-            new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
-
-        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.outputFrameSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
 
         RectTransform fillImage = CreateContainer("Fill", Rect,
             new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
 
         _fillImage = AddSprite(fillImage, GraphicsHelper.Instance.outputFillSprite, new Color(0, 0, 0, 0));
+        _fillImage.type = Image.Type.Sliced;
+
+        RectTransform backgroundImage = CreateContainer("Background", Rect,
+            new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(1, 1), new Vector2(0.5f, 0.5f));
+
+        _background = AddSprite(backgroundImage, GraphicsHelper.Instance.outputFrameSprite, GraphicsHelper.Instance.SpriteColorWhiteHidden);
+        _background.type = Image.Type.Sliced;
 
         OutputText = AddText(
             CreateContainer("OutputText", Rect,
@@ -39,10 +57,10 @@ public class OutputViewController : AbstractViewController {
             GraphicsHelper.Instance.UIFont, 80, TextAnchor.MiddleCenter);
     }
 
-    public void DisplayMessage(string msg)
+    public void DisplayMessage(string msg, bool isMultiplayer)
     {
         //OutputText.text = msg;
-        ApplicationManager.Instance.StartCoroutine(AnimateText(msg));
+        ApplicationManager.Instance.StartCoroutine(AnimateText(msg, isMultiplayer));
     }
 
     public void ShowFeedback(int feedback)
@@ -51,10 +69,26 @@ public class OutputViewController : AbstractViewController {
         _waitForFeedback = false;
     }
 
-    private IEnumerator AnimateText(string msg)
+    private IEnumerator AnimateText(string msg, bool isMultiplayer)
     {
+        if (isMultiplayer)
+        {
+            Rect.anchoredPosition = _multiPlayerPos;
+            Rect.anchorMin = _multiPlayerAnchor;
+            Rect.anchorMax = _multiPlayerAnchor;
+            Rect.sizeDelta = _multiPlayerSize;
+        }
+        else
+        {
+            Rect.anchoredPosition = _singlePlayerPos;
+            Rect.anchorMin = _singlePlayerAnchor;
+            Rect.anchorMax = _singlePlayerAnchor;
+            Rect.sizeDelta = _singlePlayerSize;
+        }
+
         float timer = 0;
         AnimationCurve curve = GraphicsHelper.Instance.AlertAnimation;
+        AnimationCurve blink = GraphicsHelper.Instance.BlinkAnimation;
 
         OutputText.text = msg;
 
