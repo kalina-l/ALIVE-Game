@@ -66,7 +66,8 @@ public class GameData {
                 }
                 Dictionary<TraitType, Trait> traitList = creatorCSV.TraitList;
 
-                //Person.AddTrait(traitList[TraitType.ENERGETIC], Items);
+                Person.AddTrait(traitList[TraitType.LETHARGIC], Items);
+                Person.AddTrait(traitList[TraitType.GREEDY], Items);
                 //foreach (KeyValuePair<TraitType, Trait> kvp in traitList)
                 //{
                 //    if (Random.value <= 0.33)

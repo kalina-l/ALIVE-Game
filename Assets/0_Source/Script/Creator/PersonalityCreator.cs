@@ -428,7 +428,7 @@ public class PersonalityCreator
                                             case '+':
                                                 similarExperienceModifier -= 5;
                                                 break;
-                                            //every - means that the similarExperienceDifference will decrease so the Lemo will try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
+                                            //every - means that the similarExperienceDifference will decrease (so the value will increase - 3x+5 = 0) so the Lemo will try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
                                             //->BRAVE
                                             case '-':
                                                 similarExperienceModifier += 5;
