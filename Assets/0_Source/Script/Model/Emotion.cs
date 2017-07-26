@@ -93,14 +93,14 @@ public class Emotion {
             }
         }
 
-        foreach (KeyValuePair<int, Activity> kvp in personality.BaseActivities)
-        {
-            DebugController.Instance.Log(kvp.Value.Name + ": ", DebugController.DebugType.Emotion);
-            foreach (Reward reward in kvp.Value.RewardList)
-            {
-                DebugController.Instance.Log(reward.ID + ": " + reward.RewardType + " " + reward.RewardValue, DebugController.DebugType.Emotion);
-            }
-        }
+        //foreach (KeyValuePair<int, Activity> kvp in personality.BaseActivities)
+        //{
+        //    DebugController.Instance.Log(kvp.Value.Name + ": ", DebugController.DebugType.Emotion);
+        //    foreach (Reward reward in kvp.Value.RewardList)
+        //    {
+        //        DebugController.Instance.Log(reward.ID + ": " + reward.RewardType + " " + reward.RewardValue, DebugController.DebugType.Emotion);
+        //    }
+        //}
 
         foreach (KeyValuePair<int, Activity> kvp in personality.BaseActivities)
         {
