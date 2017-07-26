@@ -145,6 +145,20 @@ public class Activity {
 
                 GetRejectionReward().DoReward(parentPersonality, need);
             }
+            else if (!IsRequest)
+            {
+                if (parentPersonality.executedEmotion == EmotionType.NORMAL)
+                {
+                    parentPersonality.emotionCounter += 1;
+                    ApplicationManager.Instance.ShowEmotion(1);
+                }
+                GetAcceptReward().DoReward(parentPersonality, need);
+
+                foreach (Reward reward in RewardList)
+                {
+                    reward.DoReward(parentPersonality, need);
+                }
+            }
         }
         else {
             foreach (Reward reward in RewardList)
