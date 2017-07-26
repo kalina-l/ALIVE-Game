@@ -126,6 +126,7 @@ public class Activity {
                 if (parentPersonality.executedEmotion == EmotionType.NORMAL)
                 {
                     parentPersonality.emotionCounter += 1;
+                    DebugController.Instance.Log("Emotion Counter: "+parentPersonality.emotionCounter+" |Multiplayer-Request from other Lemo was accepted from my Lemo", DebugController.DebugType.Emotion);
                     ApplicationManager.Instance.ShowEmotion(1);
                 }
                 GetAcceptReward().DoReward(parentPersonality, need);
@@ -140,6 +141,7 @@ public class Activity {
                 if (parentPersonality.executedEmotion == EmotionType.NORMAL)
                 {
                     parentPersonality.emotionCounter -= 1;
+                    DebugController.Instance.Log("Emotion Counter: " + parentPersonality.emotionCounter + " |Multiplayer-Request from my Lemo was declined from other Lemo", DebugController.DebugType.Emotion);
                     ApplicationManager.Instance.ShowEmotion(-1);
                 }
 
@@ -150,6 +152,7 @@ public class Activity {
                 if (parentPersonality.executedEmotion == EmotionType.NORMAL)
                 {
                     parentPersonality.emotionCounter += 1;
+                    DebugController.Instance.Log("Emotion Counter: " + parentPersonality.emotionCounter + " |Multiplayer-Request from my Lemo was accepted from other Lemo", DebugController.DebugType.Emotion);
                     ApplicationManager.Instance.ShowEmotion(1);
                 }
                 GetAcceptReward().DoReward(parentPersonality, need);

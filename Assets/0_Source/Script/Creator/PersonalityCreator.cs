@@ -423,12 +423,12 @@ public class PersonalityCreator
                                     {
                                         switch (ch)
                                         {
-                                            //every + means that the similarExperienceDifference will increase so the Lemo will not try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
+                                            //every + means that the similarExperienceDifference will increase so the Lemo will not try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
                                             //->ANXIOUS
                                             case '+':
                                                 similarExperienceModifier -= 5;
                                                 break;
-                                            //every - means that the similarExperienceDifference will decrease so the Lemo will try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
+                                            //every - means that the similarExperienceDifference will decrease so the Lemo will try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
                                             //->BRAVE
                                             case '-':
                                                 similarExperienceModifier += 5;
@@ -456,7 +456,7 @@ public class PersonalityCreator
         //Emotions
 
         //good Emotion -> Aktivitäten mit Satisfaction: wenn fröhlich und das gemacht wird, was sowieso schon glücklich macht (-> positive Rewards werden ver-1.5-facht, negative Rewards werden halbiert)
-        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 5, 1);
+        Emotion goodEmotion = new Emotion(EmotionType.GOOD, 4, 1);
         Trait temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
 
         //Health-Thresholds all -15 (wird nicht so schnell “krank”)
@@ -473,7 +473,7 @@ public class PersonalityCreator
 
 
         //bad Emotion
-        Emotion badEmotion = new Emotion(EmotionType.BAD, -5, -1);
+        Emotion badEmotion = new Emotion(EmotionType.BAD, -4, -1);
         temporaryTait = new Trait(TraitType.TEMPORARY_TRAIT);
 
         //macht genau Gegenteil vom Feedback was er gelernt hat?!?

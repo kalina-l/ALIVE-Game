@@ -398,7 +398,7 @@ public class Personality {
 
     public void checkEmotion()
     {
-        DebugController.Instance.Log("EmotionCounter: " + emotionCounter, DebugController.DebugType.Emotion);
+        DebugController.Instance.Log("EmotionCounter: " + emotionCounter+" |general when checking Emotion", DebugController.DebugType.Emotion);
 
         if (executedEmotion == EmotionType.NORMAL)
         {
@@ -417,15 +417,35 @@ public class Personality {
 
             if(lastEmotionCounter == emotionCounter)
             {
-                emotionCounter = emotionCounter < 0 ? emotionCounter + 1 : emotionCounter - 1;
-                ApplicationManager.Instance.ShowEmotion(emotionCounter < 0 ? 1 : -1);
+                if(emotionCounter < 0)
+                {
+                    emotionCounter += 1;
+                    DebugController.Instance.Log("Emotion Counter: " + emotionCounter + " |bring to 0", DebugController.DebugType.Emotion);
+                    ApplicationManager.Instance.ShowEmotion(1);
+                }
+                else if(emotionCounter > 0)
+                {
+                    emotionCounter -= 1;
+                    DebugController.Instance.Log("Emotion Counter: " + emotionCounter + " |bring to 0", DebugController.DebugType.Emotion);
+                    ApplicationManager.Instance.ShowEmotion(-1);
+                }
             }
         }
         else
         {
-            emotionCounter = emotionCounter < 0 ? emotionCounter+1 : emotionCounter-1;
-            ApplicationManager.Instance.ShowEmotion(emotionCounter < 0 ? 1 : -1);
-            if (emotionCounter == 0)
+            if (emotionCounter < 0)
+            {
+                emotionCounter += 1;
+                DebugController.Instance.Log("Emotion Counter: " + emotionCounter + " |bring to 0", DebugController.DebugType.Emotion);
+                ApplicationManager.Instance.ShowEmotion(1);
+            }
+            else if (emotionCounter > 0)
+            {
+                emotionCounter -= 1;
+                DebugController.Instance.Log("Emotion Counter: " + emotionCounter + " |bring to 0", DebugController.DebugType.Emotion);
+                ApplicationManager.Instance.ShowEmotion(-1);
+            }
+            else
             {
                 DeactivateEmotion(Emotions[executedEmotion]);
             }
