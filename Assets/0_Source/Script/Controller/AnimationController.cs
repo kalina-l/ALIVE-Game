@@ -132,9 +132,9 @@ public class AnimationController {
 
         if(idleAnims.Count == 0) {
             //Play dance Idle because everything is fine
-            _animation.Play("Idle_Dance");
+            _animation.CrossFade("Idle_Dance", 0.25f);
         } else {
-            _animation.Play(idleAnims[(int)(idleAnims.Count * Random.value)]);
+            _animation.CrossFade(idleAnims[(int)(idleAnims.Count * Random.value)], 0.25f);
         }
 
         ApplicationManager.Instance.StartCoroutine(AnimationRoutine());
@@ -188,6 +188,6 @@ public class AnimationController {
 
     public void GameOver()
     {
-        _animation.Play("Death");
+        _animation.CrossFade("Death", 0.25f);
     }
 }

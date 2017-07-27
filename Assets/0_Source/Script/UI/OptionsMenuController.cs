@@ -15,6 +15,8 @@ public class OptionsMenuController : AbstractViewController {
 
     private bool _animate;
 
+    private Text _toggleSimText;
+
 	public OptionsMenuController(Transform parent, Personality personality)
     {
         _manager = ApplicationManager.Instance;
@@ -79,7 +81,7 @@ public class OptionsMenuController : AbstractViewController {
         //RestartButton
         Image restartImage = AddSprite(
                             CreateContainer("RestartButton", _background.rectTransform,
-                            new Vector2(0, -380), new Vector2(320, 100),
+                            new Vector2(0, -435), new Vector2(320, 100),
                             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
                             GraphicsHelper.Instance.outputFrameSprite,
                             GraphicsHelper.Instance.SpriteColorWhite);
@@ -96,6 +98,27 @@ public class OptionsMenuController : AbstractViewController {
         restartText.raycastTarget = false;
 
         CreateButton(restartImage.rectTransform, delegate { Restart(); });
+
+        //RestartButton
+        Image toggleSimImage = AddSprite(
+                            CreateContainer("RestartButton", _background.rectTransform,
+                            new Vector2(0, -320), new Vector2(320, 100),
+                            new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f)),
+                            GraphicsHelper.Instance.outputFrameSprite,
+                            GraphicsHelper.Instance.SpriteColorWhite);
+
+        _toggleSimText = AddText(
+                            CreateContainer("RestartText", toggleSimImage.rectTransform,
+                            Vector2.zero, Vector2.zero,
+                            new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(0.5f, 0.5f)),
+                            GraphicsHelper.Instance.UIFont,
+                            50,
+                            TextAnchor.MiddleCenter);
+        _toggleSimText.text = "Sim On";
+        _toggleSimText.color = GraphicsHelper.Instance.SpriteColorWhite;
+        _toggleSimText.raycastTarget = false;
+
+        CreateButton(toggleSimImage.rectTransform, delegate { ToggleSimulation(); });
 
         _background.rectTransform.localScale = Vector2.zero;
         _showMenu = false;
@@ -142,6 +165,20 @@ public class OptionsMenuController : AbstractViewController {
     {
         ToggleMenu();
         ApplicationManager.Instance.EndGame();
+    }
+
+    public void ToggleSimulation()
+    {
+        if (ApplicationManager.Instance.SimulateMultiplayer)
+        {
+            ApplicationManager.Instance.SimulateMultiplayer = false;
+            _toggleSimText.text = "Sim On";
+        }
+        else
+        {
+            ApplicationManager.Instance.SimulateMultiplayer = true;
+            _toggleSimText.text = "Sim Off";
+        }
     }
     
 }

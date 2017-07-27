@@ -51,6 +51,8 @@ public class ApplicationManager : MonoBehaviour {
     public MultiplayerController Multiplayer { get { return _multiplayer; } }
     public MultiplayerViewController MultiplayerViewController { get; set; }
 
+    public bool SimulateMultiplayer { get; set; }
+
     void Awake()
     {
         Instance = this;
@@ -218,50 +220,55 @@ public class ApplicationManager : MonoBehaviour {
     }
 
     void Update() {
-        if((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) && !rotated)
+
+        bool debugLandscape = false;
+        bool debugPortrait = false;
+
+#if UNITY_EDITOR
+        debugLandscape = (Screen.width > Screen.height);
+        debugPortrait = (Screen.width <= Screen.height) ;
+#endif
+
+        if ((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) || debugLandscape && !rotated)
         {
             rotated = true;
-            Multiplayer.SetConnectionController(_happeningController);
-            Multiplayer.StartMultiplayer();
+
+            if (SimulateMultiplayer)
+            {
+                StartCoroutine(ConnectRemoteSimulation());
+            }
+            else
+            {
+                Multiplayer.SetConnectionController(_happeningController);
+                Multiplayer.StartMultiplayer();
+            }
+
             MultiplayerViewController.startMultiplayerView();
         }
 
-        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) && rotated)
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) || debugPortrait && rotated)
         {
             rotated = false;
+
+            if (SimulateMultiplayer)
+            {
+                if (_simulation != null)
+                {
+                    _simulation.StopSimulation();
+                    _simulation = null;
+                    _remoteMultiplayerController.EndMultiplayer();
+                }
+            }
+
             Multiplayer.EndMultiplayer();
             MultiplayerViewController.endMultiplayerView();
+            
         }
-
-        // Editor Multiplayer Simulation
-#if UNITY_EDITOR
-        if (!Multiplayer.MultiplayerOn && simulateRemote && !rotated)
-        {
-            rotated = true;
-            MultiplayerViewController.startMultiplayerView();
-        }
-        if (simulateRemote && connectRemote)
-        {
-            connectRemote = false;
-            StartCoroutine(ConnectRemoteSimulation());
-        }
-        if (!simulateRemote && rotated)
-        {
-            rotated = false;
-            if (_simulation != null)
-            {
-                _simulation.StopSimulation();
-                _simulation = null;
-                _remoteMultiplayerController.EndMultiplayer();
-                Multiplayer.EndMultiplayer();
-            }
-            MultiplayerViewController.endMultiplayerView();
-        }
-#endif
     }
 
     IEnumerator ConnectRemoteSimulation ()
     {
+        Debug.Log("Start Routine !!!! " + rotated);
         yield return new WaitForSeconds(2);
 
         // Remote

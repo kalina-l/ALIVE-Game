@@ -18,7 +18,7 @@ public class MultiplayerController {
 
     public bool MultiplayerOn;
     public bool IsConnected {
-        get { return MultiplayerOn && (_happeningController.Connected); }
+        get { return MultiplayerOn && ((_happeningController.Connected) || ApplicationManager.Instance.SimulateMultiplayer); }
         private set { IsConnected = value; } }
     private MultiplayerConnection _happeningController;
 
@@ -114,14 +114,18 @@ public class MultiplayerController {
 
     public void StartMultiplayer() {
         MultiplayerOn = true;
+#if !UNITY_EDITOR
         _happeningController.connect();
+#endif
 
         DebugController.Instance.Log("MULTIPLAYER ON", DebugController.DebugType.Multiplayer);
     }
 	
     public void EndMultiplayer() {
         //_remoteController = null;
+#if !UNITY_EDITOR
         _happeningController.disconnect();
+#endif
         MultiplayerOn = false;
     }
 

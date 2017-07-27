@@ -28,7 +28,7 @@ public class OutputViewController : AbstractViewController {
         _singlePlayerSize = new Vector2(320, 100);
 
         _multiPlayerPos = new Vector2(0, -155);
-        _multiPlayerPos = new Vector2(0.5f, 1f);
+        _multiPlayerAnchor = new Vector2(0.5f, 1f);
         _multiPlayerSize = new Vector2(640, 100);
 
         Rect = CreateContainer("Output", parent,
