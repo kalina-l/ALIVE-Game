@@ -72,11 +72,11 @@ public class Experience {
 
     public void AddFavorableRewards()
     {
-        Rewards[NeedType.HUNGER] = 3;
-        Rewards[NeedType.ENERGY] = 3;
-        Rewards[NeedType.HEALTH] = 3;
-        Rewards[NeedType.SATISFACTION] = 3;
-        Rewards[NeedType.SOCIAL] = 3;
+        Rewards[NeedType.HUNGER] = 1;
+        Rewards[NeedType.ENERGY] = 1;
+        Rewards[NeedType.HEALTH] = 1;
+        Rewards[NeedType.SATISFACTION] = 1;
+        Rewards[NeedType.SOCIAL] = 1;
     }
 
     public Experience(Personality basePersonality, Personality resultPersonality)

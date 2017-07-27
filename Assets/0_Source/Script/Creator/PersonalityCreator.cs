@@ -423,13 +423,13 @@ public class PersonalityCreator
                                     {
                                         switch (ch)
                                         {
-                                            //every + means that the similarExperienceDifference will increase so the Lemo will not try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
-                                            //->ANXIOUS
+                                            //every + means that the similarExperienceDifference will increase so the Lemo will try new Activities with "random learned" rewards (extreme case(value=int.MinValue): every closest experience will be taken -> see Activity)
+                                            //->BRAVE!
                                             case '+':
                                                 similarExperienceModifier -= 5;
                                                 break;
-                                            //every - means that the similarExperienceDifference will decrease (so the value will increase - 3x+5 = 0) so the Lemo will try new Activities with "random learned" rewards (extreme case (value=0): no close experience will be taken -> see Activity)
-                                            //->BRAVE
+                                            //every - means that the similarExperienceDifference will decrease (so the value will increase - 3x+5 = 0) so the Lemo will try no new Activities with "random learned" rewards if the rewards from learned experiences are too good(extreme case (value=0): no close experience will be taken -> see Activity)
+                                            // --> ANXIOUS!!!
                                             case '-':
                                                 similarExperienceModifier += 5;
                                                 break;
