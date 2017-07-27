@@ -114,9 +114,16 @@ public class MultiplayerController {
 
     public void StartMultiplayer() {
         MultiplayerOn = true;
-#if !UNITY_EDITOR
-        _happeningController.connect();
-#endif
+
+        if (_happeningController != null)
+        {
+            _happeningController.connect();
+        }
+        else
+        {
+            DebugController.Instance.Log("ERROR NOTHING HAPPENING", DebugController.DebugType.Multiplayer);
+        }
+
 
         DebugController.Instance.Log("MULTIPLAYER ON", DebugController.DebugType.Multiplayer);
     }

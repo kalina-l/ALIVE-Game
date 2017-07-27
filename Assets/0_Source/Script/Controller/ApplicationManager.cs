@@ -17,11 +17,6 @@ public class ApplicationManager : MonoBehaviour {
     public float WaitTime = 2;
     public int AutomaticSaveAfterActions = 5;
 
-    public bool resetButton;
-
-    public bool simulateRemote;
-    public bool connectRemote;
-
     //AI
     private GameData _data;
     private GameLoopController _gameLoop;
@@ -74,12 +69,6 @@ public class ApplicationManager : MonoBehaviour {
         _conditionMonitor = new ConditionViewController(UICanvas.transform, _data.Person);
         _options = new OptionsMenuController(UICanvas.transform, _data.Person);
 
-        
-        
-        if (resetButton)
-        {
-            new ResetViewController(UICanvas.transform);
-        }
 
         if (_data.Person.GetItems().Count >= 1)
         {
@@ -229,9 +218,13 @@ public class ApplicationManager : MonoBehaviour {
         debugPortrait = (Screen.width <= Screen.height) ;
 #endif
 
-        if ((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight) || debugLandscape && !rotated)
+        if ((Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight || debugLandscape) && !rotated)
         {
+            DebugController.Instance.Log("Activate Multiplayer: " + Input.deviceOrientation.ToString() + " " + debugLandscape.ToString() + " " + rotated.ToString(), DebugController.DebugType.Multiplayer);
+
             rotated = true;
+
+            
 
             if (SimulateMultiplayer)
             {
@@ -246,8 +239,11 @@ public class ApplicationManager : MonoBehaviour {
             MultiplayerViewController.startMultiplayerView();
         }
 
-        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown) || debugPortrait && rotated)
+        if ((Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown || debugPortrait) && rotated)
         {
+            DebugController.Instance.Log("Dectivate Multiplayer: " + Input.deviceOrientation.ToString() + " " + debugPortrait.ToString() + " " + rotated.ToString(), DebugController.DebugType.Multiplayer);
+
+
             rotated = false;
 
             if (SimulateMultiplayer)
