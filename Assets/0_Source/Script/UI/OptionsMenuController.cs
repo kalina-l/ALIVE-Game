@@ -93,7 +93,7 @@ public class OptionsMenuController : AbstractViewController {
                             GraphicsHelper.Instance.UIFont,
                             50,
                             TextAnchor.MiddleCenter);
-        restartText.text = "Quit";
+        restartText.text = "Game Over";
         restartText.color = GraphicsHelper.Instance.SpriteColorWhite;
         restartText.raycastTarget = false;
 

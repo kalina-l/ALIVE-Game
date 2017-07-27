@@ -184,8 +184,6 @@ public class Activity {
 
         if (fatalCount > 0)
         {
-            DebugController.Instance.Log(fatalCount + " Fatal Stats!!!!!!!!", DebugController.DebugType.Activity);
-
             foreach (KeyValuePair<NeedType, Need> n in parentPersonality.Conditions)
             {
                 n.Value.Value -= fatalCount * 20;
@@ -204,6 +202,8 @@ public class Activity {
 
         if (fatalCount >= 4)
         {
+            DebugController.Instance.Log(fatalCount + " Fatal Stats - GAME OVER!!!!!!!!", DebugController.DebugType.Activity);
+
             parentPersonality.IsAlive = false;
         }
 
